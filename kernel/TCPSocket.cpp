@@ -138,7 +138,6 @@ bool CTCPSocketManage::Start(SocketType serverType)
 	// 创建连接线程
 	m_socketThread.push_back(new std::thread(ThreadAccept, this));
 
-	COUT_LOG(LOG_CINFO, "service TCPSocketManage start end");
 	return true;
 }
 

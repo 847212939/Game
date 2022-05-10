@@ -5,7 +5,19 @@
 using namespace PLAYER;
 RegisteredAccount::RegisteredAccount()
 {
-	m_CMysqlHelper.init("127.0.0.1", "root", "123456", "Heart");
+	StartDB();
+}
+
+RegisteredAccount::~RegisteredAccount()
+{
+
+}
+
+// 启动数据库
+bool RegisteredAccount::StartDB()
+{
+	// 链接数据库
+	m_CMysqlHelper.init("127.0.0.1", "root", "", "game", "", 3366);
 	try
 	{
 		m_CMysqlHelper.connect();
@@ -13,12 +25,11 @@ RegisteredAccount::RegisteredAccount()
 	catch (MysqlHelper_Exception& excep)
 	{
 		COUT_LOG(LOG_CERROR, "连接数据库失败:%s", excep.errorInfo.c_str());
+		return false;
 	}
-}
 
-RegisteredAccount::~RegisteredAccount()
-{
-
+	COUT_LOG(LOG_CINFO, "DB connect successed...");
+	return true;
 }
 
 // 处理消息

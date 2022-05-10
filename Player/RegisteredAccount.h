@@ -13,6 +13,8 @@ namespace PLAYER
 		virtual ~RegisteredAccount();
 
 	public:
+		// 启动数据库
+		bool StartDB();
 		//	处理消息
 		void HandelMessage(PlayerInfo* pInfo);
 		// 分发消息
