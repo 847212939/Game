@@ -14,7 +14,7 @@ using namespace DRMU;
 
 int main()
 {
-	CGameLogManage::Instance()->SetLogFileType(SERVICE_TYPE_DB);
+	LogManager()->SetLogFileType(SERVICE_TYPE_LOGIC);
 	TCPClient tcpClien;
 
 	return 0;
