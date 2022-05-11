@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-PlayerCenter::PlayerCenter()
+PlayerCenter::PlayerCenter(PlayerPreproces* pPlayerPreproces) : m_pPlayerPreproces(pPlayerPreproces)
 {
 
 }
@@ -11,7 +11,13 @@ PlayerCenter::~PlayerCenter()
 }
 
 // 分发消息
-void PlayerCenter::DispatchMessage()
+void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+{
+
+}
+
+// 初始化回调函数
+void PlayerCenter::InitCallBackFun()
 {
 
 }

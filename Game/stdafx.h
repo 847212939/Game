@@ -48,7 +48,8 @@
 // 日志管理类
 #include "../kernel/LogManager.h"
 
-
+// 玩家消息定义
+#include "../Player/MessageCmd.h"
 // 玩家信息
 #include "../Player/PlayerInfo.h"
 // 玩家

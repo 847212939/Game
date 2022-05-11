@@ -4,12 +4,19 @@
 class PlayerPreproces
 {
 public:
+	// 注册登录子协议
+	enum class PlayerPreprocesCmd
+	{
+		cs_register     = 1,  // 注册
+		cs_login        = 2,  // 登录
+	};
+public:
 	// 玩家账户信息
 	typedef std::map<std::string, std::string> AccountMap;
 	// 数据库语句list<sql>
 	typedef std::list<std::string> SqlList;
 	// 消息回调函数
-	typedef std::map<int, std::function<bool(PlayerInfo*)>> CallBackFunMap;
+	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;
 
 public:
 	PlayerPreproces(TCPClient* pTCPClient);
@@ -17,7 +24,7 @@ public:
 
 public:
 	// 处理消息
-	void HandlerMessage(PlayerInfo* pInfo);
+	void HandlerMessage(PlayerInfo* pPlayerInfo);
 	// insert mysql
 	void SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql
@@ -38,8 +45,14 @@ public:
 	PlayerCenter& GetPlayerCenter();
 	// 获取回调函数map
 	CallBackFunMap& GetCallBackFunMap();
+	// 加入回调函数
+	void AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
+	// 回调函数
+	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 private:
+	// 初始化消息回调函数
+	bool intCallBackFun();
 	// 初始化DB
 	bool InitDB();
 	// 线程启动
@@ -47,9 +60,9 @@ private:
 	// 数据库执行
 	void HandlerExecuteDB();
 	// 分发消息
-	void DispatchMessage();
+	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	// 注册账号
-	bool RegisterAccount(std::string& id, std::string& passwaed);
+	void RegisterAccount(PlayerInfo* pPlayerInfo);
 	// 检查账号信息
 	bool CheckUserAccount(std::string& id, std::string& passwaed);
 	// 加载玩家账号信息

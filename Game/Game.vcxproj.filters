@@ -138,5 +138,8 @@
     <ClInclude Include="..\Player\PlayerInfo.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
     </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>玩家信息\注册信息</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

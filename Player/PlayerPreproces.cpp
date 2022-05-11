@@ -1,7 +1,10 @@
 #include "../Game/stdafx.h"
 
-PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) : m_pTCPClient(pTCPClient)
+PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) : 
+	m_pTCPClient(pTCPClient), 
+	m_PlayerCenter(this)
 {
+	intCallBackFun();
 	InitDB();
 	Run();
 }
@@ -9,6 +12,14 @@ PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) : m_pTCPClient(pTCPClien
 PlayerPreproces::~PlayerPreproces()
 {
 
+}
+
+// 初始化消息回调函数
+bool PlayerPreproces::intCallBackFun()
+{
+	// 登录注册回调函数
+	AddCallBackFun(MsgCmd::MsgCmd_RegisterAccount, std::move(std::bind(&PlayerPreproces::RegisterAccount, this, std::placeholders::_1)));
+	return true;
 }
 
 // 启动数据库
@@ -31,9 +42,33 @@ bool PlayerPreproces::InitDB()
 }
 
 // 注册账号
-bool PlayerPreproces::RegisterAccount(std::string& id, std::string& passwaed)
+void PlayerPreproces::RegisterAccount(PlayerInfo* pPlayerInfo)
 {
-	return true;
+	if (!pPlayerInfo)
+	{
+		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
+		return;
+	}
+	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
+	{
+		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
+		return;
+	}
+	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
+	{
+		COUT_LOG(LOG_CERROR, "网络链接关闭");
+		return;
+	}
+	unsigned int uAssistantID = pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
+	switch ((PlayerPreprocesCmd)uAssistantID)
+	{
+	case PlayerPreprocesCmd::cs_register:
+		break;
+	case PlayerPreprocesCmd::cs_login:
+		break;
+	default:
+		break;
+	}
 }
 
 // 检查账号信息
@@ -134,33 +169,51 @@ void PlayerPreproces::HandlerExecuteDB()
 }
 
 // 处理消息
-void PlayerPreproces::HandlerMessage(PlayerInfo* pInfo)
+void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 {
-	if (!pInfo)
+	if (!pPlayerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!pInfo");
+		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
 		return;
 	}
-	if (!pInfo->m_pMsg || !pInfo->m_pTcpSockInfo)
+	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!pInfo->pMsg || !pInfo->pTcpSockInfo");
+		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
+		return;
+	}
+	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
+	{
+		COUT_LOG(LOG_CERROR, "网络链接关闭");
+		return;
+	}
+	unsigned int uMainID = pPlayerInfo->m_pMsg->netMessageHead.uMainID;
+	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
+	{
+		COUT_LOG(LOG_CERROR, "没有找到住消息类型 cmd = %d", uMainID);
 		return;
 	}
 	// websocket服务器
-	if (pInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
+	if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
 
 	}
 	else // TCP socket
 	{
-
+		if (uMainID == (unsigned int)MsgCmd::MsgCmd_RegisterAccount)
+		{
+			CallBackFun((MsgCmd)uMainID, pPlayerInfo);
+		}
+		else
+		{
+			DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
+		}
 	}
 }
 
 // 分发消息
-void PlayerPreproces::DispatchMessage()
+void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	m_PlayerCenter.DispatchMessage();
+	m_PlayerCenter.DispatchMessage(cmd, pPlayerInfo);
 }
 
 // 创建角色
@@ -208,6 +261,26 @@ PlayerCenter& PlayerPreproces::GetPlayerCenter()
 PlayerPreproces::CallBackFunMap& PlayerPreproces::GetCallBackFunMap()
 {
 	return m_CallBackFunMap;
+}
+
+// 加入回调函数
+void PlayerPreproces::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
+{
+	m_CallBackFunMap.insert(std::make_pair(cmd, fun));
+}
+
+// 回调函数
+bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+{
+	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
+	if (it == m_CallBackFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "没有查找到相应的回调函数 cmd = %d", cmd);
+		return false;
+	}
+
+	it->second(pPlayerInfo);
+	return true;
 }
 
 // insert mysql

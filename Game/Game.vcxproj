@@ -177,6 +177,7 @@
     <ClInclude Include="..\kernel\TCPClient.h" />
     <ClInclude Include="..\kernel\TCPSocket.h" />
     <ClInclude Include="..\kernel\Util.h" />
+    <ClInclude Include="..\Player\MessageCmd.h" />
     <ClInclude Include="..\Player\Player.h" />
     <ClInclude Include="..\Player\PlayerCenter.h" />
     <ClInclude Include="..\Player\PlayerInfo.h" />
