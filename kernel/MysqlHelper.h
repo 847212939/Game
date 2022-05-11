@@ -199,7 +199,7 @@ public:
 	* DB_INT:数字类型
 	* DB_STR:字符串类型
 	*/
-	enum FT
+	enum class FT
 	{
 		DB_INT,
 		DB_STR,

@@ -124,7 +124,7 @@ std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const RE
 		if (it == mpColumns.begin())
 		{
 			sColumnNames << "`" << it->first << "`";
-			if (it->second.first == DB_INT)
+			if (it->second.first == FT::DB_INT)
 			{
 				sColumnValues << it->second.second;
 			}
@@ -136,7 +136,7 @@ std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const RE
 		else
 		{
 			sColumnNames << ",`" << it->first << "`";
-			if (it->second.first == DB_INT)
+			if (it->second.first == FT::DB_INT)
 			{
 				sColumnValues << "," + it->second.second;
 			}
@@ -163,7 +163,7 @@ std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const R
 		if (it == mpColumns.begin())
 		{
 			sColumnNames << "`" << it->first << "`";
-			if (it->second.first == DB_INT)
+			if (it->second.first == FT::DB_INT)
 			{
 				sColumnValues << it->second.second;
 			}
@@ -175,7 +175,7 @@ std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const R
 		else
 		{
 			sColumnNames << ",`" << it->first << "`";
-			if (it->second.first == DB_INT)
+			if (it->second.first == FT::DB_INT)
 			{
 				sColumnValues << "," + it->second.second;
 			}
@@ -208,7 +208,7 @@ std::string CMysqlHelper::buildUpdateSQL(const std::string& sTableName, const RE
 			sColumnNameValueSet << ",`" << it->first << "`";
 		}
 
-		if (it->second.first == DB_INT)
+		if (it->second.first == FT::DB_INT)
 		{
 			sColumnNameValueSet << "= " << it->second.second;
 		}
