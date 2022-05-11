@@ -82,6 +82,9 @@
     <ClCompile Include="..\Player\WebSocket.cpp">
       <Filter>玩家信息\网络</Filter>
     </ClCompile>
+    <ClCompile Include="..\Player\PlayerInfo.cpp">
+      <Filter>玩家信息\注册信息</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerInfo.h">
+      <Filter>玩家信息\注册信息</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

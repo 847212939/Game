@@ -47,6 +47,8 @@
 // 日志管理类
 #include "../kernel/LogManager.h"
 
+// 玩家信息
+#include "../Player/PlayerInfo.h"
 // 玩家
 #include "../Player/Player.h"
 // 玩家管理

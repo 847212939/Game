@@ -24,7 +24,8 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 	sprintf(buf, "[%04d-%02d-%02d %02d:%02d:%02d]", sysTime.wYear, sysTime.wMonth, sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond);
 	// 线程ID和level
-	sprintf(buf + strlen(buf), "%s ", levelName);
+	unsigned long threadID = GetCurrentThreadId();
+	sprintf(buf + strlen(buf), "%s[%05lu] ", levelName, threadID);
 
 	// 参数
 	va_list args;
@@ -83,7 +84,8 @@ void CLog::Write(const char* pLogFile, const char* pFuncName, const char* pForma
 	sprintf(buf, "[%04d-%02d-%02d %02d:%02d:%02d]", sysTime.wYear, sysTime.wMonth, sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond);
 	// 线程ID和level
 	const char* levelName = levelNames[LOG_INFO];
-	sprintf(buf + strlen(buf), "%s ", levelName);
+	unsigned long threadID = GetCurrentThreadId();
+	sprintf(buf + strlen(buf), "%s[%05lu] ", levelName, threadID);
 
 	// 参数
 	va_list args;

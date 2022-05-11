@@ -1,17 +1,5 @@
 #pragma once
 
-// 玩家信息
-struct PlayerInfo
-{
-	void* pData;
-	SocketType				uSrverType;
-	SocketReadLine* pMsg;
-	const TCPSocketInfo* pTcpSockInfo;
-
-	PlayerInfo();
-	~PlayerInfo();
-};
-
 // 玩家类
 class Player
 {
