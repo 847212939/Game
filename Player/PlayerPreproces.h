@@ -22,6 +22,8 @@ public:
 	bool SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName= "userid", std::string dataName ="data");
 	// update mysql
 	bool SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
+	// 获取通知条件变量
+	ConditionVariable& GetConditionVariable();
 
 private:
 	// 初始化DB
@@ -40,8 +42,6 @@ private:
 	void DispatchMessage();
 	// 创建角色
 	bool CreatePlayr();
-	// 获取通知条件变量
-	ConditionVariable& GetConditionVariable();
 
 private:
 	// 条件变量数据库用
