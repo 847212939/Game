@@ -149,7 +149,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pInfo)
 	{
 
 	}
-	else // 其他服务器
+	else // TCP socket
 	{
 
 	}
