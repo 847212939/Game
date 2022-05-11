@@ -138,14 +138,16 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pInfo)
 {
 	if (!pInfo)
 	{
+		COUT_LOG(LOG_CERROR, "!pInfo");
 		return;
 	}
-	if (!pInfo->pMsg || !pInfo->pTcpSockInfo)
+	if (!pInfo->m_pMsg || !pInfo->m_pTcpSockInfo)
 	{
+		COUT_LOG(LOG_CERROR, "!pInfo->pMsg || !pInfo->pTcpSockInfo");
 		return;
 	}
 	// websocket服务器
-	if (pInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
+	if (pInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
 
 	}
@@ -200,6 +202,12 @@ CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 PlayerCenter& PlayerPreproces::GetPlayerCenter()
 {
 	return m_PlayerCenter;
+}
+
+// 获取回调函数map
+PlayerPreproces::CallBackFunMap& PlayerPreproces::GetCallBackFunMap()
+{
+	return m_CallBackFunMap;
 }
 
 // insert mysql

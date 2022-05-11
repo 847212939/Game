@@ -3,7 +3,7 @@
 TCPClient::TCPClient() : m_pRegisteredAccount(new PlayerPreproces(this))
 {
 	Init(128, 8888);
-	Start(SERVICE_TYPE_LOGIC);
+	Start(ServiceType::SERVICE_TYPE_LOGIC);
 	Run();
 }
 
@@ -65,10 +65,10 @@ void TCPClient::HandlerRecvDataList()
 		{
 			const TCPSocketInfo& tcpInfo = socketInfoVec[index];
 			PlayerInfo Info;
-			Info.pMsg = pMsg;
-			Info.pData = pData;
-			Info.pTcpSockInfo = &tcpInfo;
-			Info.uSrverType = GetServerType();
+			Info.m_pMsg = pMsg;
+			Info.m_pData = pData;
+			Info.m_pTcpSockInfo = &tcpInfo;
+			Info.m_uSrverType = GetServerType();
 			m_pRegisteredAccount->HandlerMessage(&Info);
 		}
 		else

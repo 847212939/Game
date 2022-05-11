@@ -1,6 +1,11 @@
 #include "../Game/stdafx.h"
 
-PlayerInfo::PlayerInfo() : pData(nullptr), pMsg(nullptr), pTcpSockInfo(nullptr), uSrverType(SERVICE_TYPE_LOGIC)
+PlayerInfo::PlayerInfo() :
+	m_pMsg(nullptr), 
+	m_pData(nullptr),
+	m_uSrverType(ServiceType::SERVICE_TYPE_LOGIC),
+	m_userId(""),
+	m_pTcpSockInfo(nullptr)
 {
 
 }

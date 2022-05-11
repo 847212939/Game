@@ -4,21 +4,18 @@
 class Player
 {
 public:
-	typedef long long UserId;
 
 public:
-	Player(TCPSocketInfo* sockInfo);
+	Player(PlayerInfo* pPlayerInfo);
 	~Player();
 
 public:
 	// 获取玩家id
-	UserId GetUserId();
-	// 获取玩家链接信息
-	TCPSocketInfo* GetTCPSocketInfo();
+	std::string GetUserId();
+	// 获取玩家信息
+	PlayerInfo* GetPlayerInfo();
 
 private:
-	// 玩家id
-	UserId m_userId;
-	// 玩家链接信息
-	TCPSocketInfo* m_TCPSocketInfo;
+	// 玩家信息
+	PlayerInfo* m_PlayerInfo;
 };

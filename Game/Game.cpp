@@ -2,11 +2,24 @@
 
 int main()
 {
-	LogManager()->SetLogFileType(SERVICE_TYPE_LOGIC);
+	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
 	TCPClient tcpClien;
 
 	return 0;
 }
+
+//int main()
+//{
+//	//std::function<void(int,int)> func = std::bind(&Subscriber::Notify, this, std::placeholders::_1, std::placeholders::_2);
+//	std::function<bool(PlayerInfo*)> f;
+//	return 0;
+//}
+//
+//
+
+// 
+// 
+// 
 //
 //#include "../kernel/Util.h"
 //#include <iostream>

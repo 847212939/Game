@@ -39,13 +39,15 @@
 #include "../kernel/ConditionVariable.h"
 // 数据处理
 #include "../kernel/DataLine.h"
-// 网络
+// 网络基类
 #include "../kernel/TCPSocket.h"
+// 网络客户端
 #include "../kernel/TCPClient.h"
 // 工具类
 #include "../kernel/Util.h"
 // 日志管理类
 #include "../kernel/LogManager.h"
+
 
 // 玩家信息
 #include "../Player/PlayerInfo.h"
@@ -55,9 +57,11 @@
 #include "../Player/PlayerCenter.h"
 // 信息在注册
 #include "../Player/PlayerPreproces.h"
-// websoccket
+// 加密解密websocket
 #include "../Player/Sha1Base64.h"
+// websocket
 #include "../Player/WebSocket.h"
+// webserver
 #include "../Player/server.h"
 
 #pragma comment(lib,"ws2_32.lib")

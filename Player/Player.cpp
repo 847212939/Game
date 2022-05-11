@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Player::Player(TCPSocketInfo* sockInfo) : m_userId(0), m_TCPSocketInfo(sockInfo)
+Player::Player(PlayerInfo* pPlayerInfo) : m_PlayerInfo(pPlayerInfo)
 {
 
 }
@@ -11,17 +11,18 @@ Player::~Player()
 }
 
 // 获取玩家id
-Player::UserId Player::GetUserId()
+std::string Player::GetUserId()
 {
-	return m_userId;
+	if (!m_PlayerInfo)
+	{
+		return "";
+	}
+
+	return m_PlayerInfo->m_userId;
 }
 
-// 获取玩家链接信息
-TCPSocketInfo* Player::GetTCPSocketInfo()
+// 获取玩家信息
+PlayerInfo* Player::GetPlayerInfo()
 {
-	if (!m_TCPSocketInfo)
-	{
-		return nullptr;
-	}
-	return m_TCPSocketInfo;
+	return m_PlayerInfo;
 }

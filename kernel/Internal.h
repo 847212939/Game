@@ -8,7 +8,7 @@
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
 
 // 服务器类型
-enum ServiceType
+enum class ServiceType
 {
 	SERVICE_TYPE_BEGIN = 0,
 	SERVICE_TYPE_LOGIC,		// 逻辑服务器

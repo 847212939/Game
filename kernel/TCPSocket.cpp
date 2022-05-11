@@ -454,7 +454,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 
 	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == SERVICE_TYPE_LOGON)
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGON)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;

@@ -3,10 +3,14 @@
 // 玩家预处理
 class PlayerPreproces
 {
+public:
 	// 玩家账户信息
 	typedef std::map<std::string, std::string> AccountMap;
 	// 数据库语句list<sql>
 	typedef std::list<std::string> SqlList;
+	// 消息回调函数
+	typedef std::map<int, std::function<bool(PlayerInfo*)>> CallBackFunMap;
+
 public:
 	PlayerPreproces(TCPClient* pTCPClient);
 	virtual ~PlayerPreproces();
@@ -32,6 +36,8 @@ public:
 	CMysqlHelper& GetCMysqlHelper();
 	// 获取玩家管理
 	PlayerCenter& GetPlayerCenter();
+	// 获取回调函数map
+	CallBackFunMap& GetCallBackFunMap();
 
 private:
 	// 初始化DB
@@ -64,5 +70,7 @@ private:
 	CMysqlHelper	m_CMysqlHelper;
 	//玩家账户信息
 	AccountMap		m_accountMap;
+	// 回调函数
+	CallBackFunMap	m_CallBackFunMap;
 	
 };

@@ -195,7 +195,7 @@ CGameLogManage::CGameLogManage()
 	strPth += "\\log\\";
 
 	m_logPath = strPth;
-	m_serviceType = 0;
+	m_serviceType = (ServiceType)0;
 }
 
 CGameLogManage::~CGameLogManage()
@@ -224,26 +224,26 @@ void CGameLogManage::Release()
 	m_filesFpMap.clear();
 }
 
-void CGameLogManage::SetLogFileType(int serviceType)
+void CGameLogManage::SetLogFileType(ServiceType serviceType)
 {
-	if (serviceType <= SERVICE_TYPE_BEGIN || serviceType >= SERVICE_TYPE_END)
+	if (serviceType <= ServiceType::SERVICE_TYPE_BEGIN || serviceType >= ServiceType::SERVICE_TYPE_END)
 	{
 		return;
 	}
 	std::string nameStr;
-	if (serviceType == SERVICE_TYPE_LOGIC)
+	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
 		nameStr += "LogicServer";
 	}
-	else if (serviceType == SERVICE_TYPE_DB)
+	else if (serviceType == ServiceType::SERVICE_TYPE_DB)
 	{
 		nameStr += "DBServer";
 	}
-	else if (serviceType == SERVICE_TYPE_GATA)
+	else if (serviceType == ServiceType::SERVICE_TYPE_GATA)
 	{
 		nameStr += "GataServer";
 	}
-	else if (serviceType == SERVICE_TYPE_GAMECENTER)
+	else if (serviceType == ServiceType::SERVICE_TYPE_GAMECENTER)
 	{
 		nameStr += "GameCenterServer";
 	}
@@ -254,7 +254,7 @@ void CGameLogManage::SetLogFileType(int serviceType)
 
 std::string CGameLogManage::GetErrorLog()
 {
-	if (m_serviceType <= SERVICE_TYPE_BEGIN || m_serviceType >= SERVICE_TYPE_END)
+	if (m_serviceType <= ServiceType::SERVICE_TYPE_BEGIN || m_serviceType >= ServiceType::SERVICE_TYPE_END)
 	{
 		return "";
 	}

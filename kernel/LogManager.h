@@ -19,7 +19,7 @@ public:
 public:
 	void Release();
 	// 设置服务器类型
-	void SetLogFileType(int threadType);
+	void SetLogFileType(ServiceType serviceType);
 	// 获取对应线程的errorlog
 	std::string GetErrorLog();
 	// 增加指定文件的fp
@@ -36,13 +36,13 @@ public:
 private:
 	std::mutex m_mutex;
 	// 日志文件map
-	std::map<int, std::string> m_LogFilesMap;
+	std::map<ServiceType, std::string> m_LogFilesMap;
 	// 文件描述符map
 	std::unordered_map<std::string, FILE*> m_filesFpMap;
 	// 进程日志目录
 	std::string m_logPath;
 	//服务器类型
-	int m_serviceType;
+	ServiceType m_serviceType;
 };
 
 //// 日志类
