@@ -67,7 +67,7 @@
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\RegisteredAccount.cpp">
+    <ClCompile Include="..\Player\PlayerPreproces.cpp">
       <Filter>玩家信息\注册信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
@@ -111,7 +111,7 @@
     <ClInclude Include="..\kernel\Util.h">
       <Filter>数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\RegisteredAccount.h">
+    <ClInclude Include="..\Player\PlayerPreproces.h">
       <Filter>玩家信息\注册信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerCenter.h">

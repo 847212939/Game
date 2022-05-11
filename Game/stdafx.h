@@ -52,7 +52,7 @@
 // 玩家管理
 #include "../Player/PlayerCenter.h"
 // 信息在注册
-#include "../Player/RegisteredAccount.h"
+#include "../Player/PlayerPreproces.h"
 // websoccket
 #include "../Player/Sha1Base64.h"
 #include "../Player/WebSocket.h"

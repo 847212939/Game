@@ -1,20 +1,25 @@
 #pragma once
 
-class RegisteredAccount
+// 玩家预处理
+class PlayerPreproces
 {
 	// 数据库语句unordered_map<tableName, sql>
 	typedef std::unordered_map<std::string, std::string> SqlMap;
 public:
-	RegisteredAccount(TCPClient* pTCPClient);
-	virtual ~RegisteredAccount();
+	PlayerPreproces(TCPClient* pTCPClient);
+	virtual ~PlayerPreproces();
 
 public:
-	// 启动数据库
+	// 初始化DB
 	bool InitDB();
-	//线程启动
+	// 加载玩家账号信息
+	bool LoadUserAccount();
+	// 线程启动
 	bool Run();
-	//	处理消息
-	void HandelMessage(PlayerInfo* pInfo);
+	// 数据库执行
+	void HandlerExecuteDB();
+	// 处理消息
+	void HandlerMessage(PlayerInfo* pInfo);
 	// 分发消息
 	void DispatchMessage();
 	// 创建角色
@@ -25,7 +30,7 @@ private:
 	// 数据库语链表
 	SqlMap			m_sqlMap;
 	// 网络
-	TCPClient*		m_TCPClient;
+	TCPClient*		m_pTCPClient;
 	// 玩家中心管理器
 	PlayerCenter	m_PlayerCenter;
 	// 数据库

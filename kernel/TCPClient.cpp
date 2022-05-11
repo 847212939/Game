@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-TCPClient::TCPClient() : m_pRegisteredAccount(new RegisteredAccount(this))
+TCPClient::TCPClient() : m_pRegisteredAccount(new PlayerPreproces(this))
 {
 	Init(128, 8888);
 	Start(SocketType::SOCKET_TYPE_TCP);
@@ -15,6 +15,10 @@ TCPClient::~TCPClient()
 		std::vector<std::thread*>::reverse_iterator it = threadVec.rbegin();
 		(*it)->join();
 		SafeDelete(*it);
+	}
+	if (m_pRegisteredAccount)
+	{
+		SafeDelete(m_pRegisteredAccount);
 	}
 }
 
@@ -65,7 +69,7 @@ void TCPClient::HandlerRecvDataList()
 			Info.pData = pData;
 			Info.pTcpSockInfo = &tcpInfo;
 			Info.uSrverType = GetServerType();
-			m_pRegisteredAccount->HandelMessage(&Info);
+			m_pRegisteredAccount->HandlerMessage(&Info);
 		}
 		else
 		{
