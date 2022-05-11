@@ -136,8 +136,16 @@ void PlayerPreproces::HandlerExecuteDB()
 // 处理消息
 void PlayerPreproces::HandlerMessage(PlayerInfo* pInfo)
 {
+	if (!pInfo)
+	{
+		return;
+	}
+	if (!pInfo->pMsg || !pInfo->pTcpSockInfo)
+	{
+		return;
+	}
 	// websocket服务器
-	if (pInfo->uSrverType == SocketType::SOCKET_TYPE_WEBSOCKET)
+	if (pInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
 
 	}
@@ -165,8 +173,37 @@ ConditionVariable& PlayerPreproces::GetConditionVariable()
 	return m_cond;
 }
 
+// 获取玩家账户信息
+PlayerPreproces::AccountMap& PlayerPreproces::GetAccountMap()
+{
+	return m_accountMap;
+}
+
+// 获取网络句柄
+TCPClient* PlayerPreproces::GetTCPClient()
+{
+	if (m_pTCPClient)
+	{
+		return m_pTCPClient;
+	}
+
+	return nullptr;
+}
+
+// 获取数据库
+CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
+{
+	return m_CMysqlHelper;
+}
+
+// 获取玩家管理
+PlayerCenter& PlayerPreproces::GetPlayerCenter()
+{
+	return m_PlayerCenter;
+}
+
 // insert mysql
-bool PlayerPreproces::SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPreproces::SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	CMysqlHelper::RECORD_DATA mpColumns;
 
@@ -180,12 +217,10 @@ bool PlayerPreproces::SaveInsertSQL(std::string sqlName, std::string name, std::
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
-
-	return true;
 }
 
 // update mysql
-bool PlayerPreproces::SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPreproces::SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	CMysqlHelper::RECORD_DATA mpColumns;
 
@@ -199,12 +234,10 @@ bool PlayerPreproces::SaveUpdateSQL(std::string sqlName, std::string name, std::
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
-
-	return true;
 }
 
 // Replace mysql
-bool PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	CMysqlHelper::RECORD_DATA mpColumns;
 
@@ -218,12 +251,10 @@ bool PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string name, std:
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
-
-	return true;
 }
 
 // delete mysql
-bool PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
+void PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
@@ -233,6 +264,4 @@ bool PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCon
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
-
-	return true;
 }
