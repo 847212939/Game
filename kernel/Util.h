@@ -50,9 +50,19 @@ namespace DRMU
 	class Util
 	{
 	public:
+		Util();
+		~Util();
+	public:
 		// 生成UUID全局函数
 		static std::string CreateUuid();
-
+		//获取一个随机数
+		static unsigned int GetRandNum();
+		// 获取[A,B)随机数,min<= 随机数 < iMax
+		static int GetRandRange(int iMin, int iMax);
+	private:
+		//随机函数接口
+		static std::random_device	m_rd;
+		static std::mt19937			m_mt;
 	};
 }
 

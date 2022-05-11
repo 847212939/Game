@@ -1,6 +1,7 @@
 #include "Util.h"
 
 using namespace DRMU;
+
 COstringstream::COstringstream()
 {
 	m_os << std::hex;
@@ -163,4 +164,34 @@ std::string Util::CreateUuid()
 	ss << std::hex << random(seed);
 
 	return ss.str();
+}
+
+std::mt19937		Util::m_mt(m_rd());
+std::random_device	Util::m_rd;
+
+Util::Util()
+{
+
+}
+
+Util::~Util()
+{
+
+}
+
+// 获取随机数
+unsigned int Util::GetRandNum()
+{
+	return m_mt();
+}
+
+// 获取[A,B)随机数,min<= 随机数 < iMax
+int Util::GetRandRange(int iMin, int iMax)
+{
+	if (iMin >= iMax)
+	{
+		return GetRandNum();
+	}
+
+	return iMin + (int)(GetRandNum() % (iMax - iMin));
 }
