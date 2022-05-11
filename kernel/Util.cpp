@@ -1,6 +1,4 @@
-#include "Util.h"
-
-using namespace DRMU;
+#include "../Game/stdafx.h"
 
 COstringstream::COstringstream()
 {
@@ -166,6 +164,7 @@ std::string Util::CreateUuid()
 	return ss.str();
 }
 
+// ∑Ω∑®¿‡
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
 

@@ -1,6 +1,5 @@
-#include "Player.h"
+#include "../Game/stdafx.h"
 
-using namespace PLAYER;
 PlayerInfo::PlayerInfo() : pData(nullptr), pMsg(nullptr), pTcpSockInfo(nullptr), uSrverType(SocketType::SOCKET_TYPE_TCP)
 {
 

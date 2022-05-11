@@ -1,8 +1,6 @@
-#include "Log.h"
-#include "TCPClient.h"
-#include <thread>
+#include "../Game/stdafx.h"
 
-TCPClient::TCPClient()
+TCPClient::TCPClient() : m_pRegisteredAccount(new RegisteredAccount(this))
 {
 	Init(128, 8888);
 	Start(SocketType::SOCKET_TYPE_TCP);
@@ -62,12 +60,12 @@ void TCPClient::HandlerRecvDataList()
 		if (index >= 0 && index < socketInfoVec.size())
 		{
 			const TCPSocketInfo& tcpInfo = socketInfoVec[index];
-			PLAYER::PlayerInfo Info;
+			PlayerInfo Info;
 			Info.pMsg = pMsg;
 			Info.pData = pData;
 			Info.pTcpSockInfo = &tcpInfo;
 			Info.uSrverType = GetServerType();
-			m_RegisteredAccount.HandelMessage(&Info);
+			m_pRegisteredAccount->HandelMessage(&Info);
 		}
 		else
 		{

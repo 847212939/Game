@@ -1,11 +1,9 @@
-#include "PlayerInclude.h"
-#include "RegisteredAccount.h"
-#include "Player.h"
+#include "../Game/stdafx.h"
 
-using namespace PLAYER;
-RegisteredAccount::RegisteredAccount()
+RegisteredAccount::RegisteredAccount(TCPClient* pTCPClient) : m_TCPClient(pTCPClient)
 {
-	StartDB();
+	InitDB();
+	Run();
 }
 
 RegisteredAccount::~RegisteredAccount()
@@ -14,7 +12,7 @@ RegisteredAccount::~RegisteredAccount()
 }
 
 // 启动数据库
-bool RegisteredAccount::StartDB()
+bool RegisteredAccount::InitDB()
 {
 	// 链接数据库
 	m_CMysqlHelper.init("127.0.0.1", "root", "", "game", "", 3366);
@@ -29,6 +27,11 @@ bool RegisteredAccount::StartDB()
 	}
 
 	COUT_LOG(LOG_CINFO, "DB connect successed...");
+	return true;
+}
+
+bool RegisteredAccount::Run()
+{
 	return true;
 }
 
@@ -56,4 +59,10 @@ void RegisteredAccount::DispatchMessage()
 bool RegisteredAccount::CreatePlayr()
 {
 	return m_PlayerCenter.CreatePlayr();
+}
+
+// 获取通知条件变量
+ConditionVariable& RegisteredAccount::GetConditionVariable()
+{
+	return m_cond;
 }

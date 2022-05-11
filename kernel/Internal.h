@@ -1,10 +1,4 @@
 #pragma once
-#include <event2/bufferevent.h>
-#include <event2/buffer.h>
-#include <event2/listener.h>
-#include <event2/util.h>
-#include <event2/event.h>
-#include <mutex>
 
 //处理类型定义
 #define HD_SOCKET_READ					1							//SOCKET 读取事件处理			

@@ -1,8 +1,5 @@
-#include "WebSocket.h"
-#include <WinSock2.h>
-#include "Sha1Base64.h"
+#include "../Game/stdafx.h"
 
-using namespace PLAYER;
 WebSocket::WebSocketPkt::WebSocketPkt() : m_MsgType(WebSocketPkt::MsgType::MsgType_Handshake), m_Fin(0), m_OpCode(0), m_Mask(0), m_PayloadLength(0), m_Data("")
 {
 	memset(m_MaskingKey, 0, sizeof(m_MaskingKey));

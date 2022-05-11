@@ -1,6 +1,5 @@
-#include "PlayerCenter.h"
+#include "../Game/stdafx.h"
 
-using namespace PLAYER;
 PlayerCenter::PlayerCenter()
 {
 

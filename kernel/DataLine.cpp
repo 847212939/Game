@@ -1,5 +1,4 @@
-#include "Log.h"
-#include "DataLine.h"
+#include "../Game/stdafx.h"
 
 CDataLine::CDataLine() : m_dataListSize(0)
 {

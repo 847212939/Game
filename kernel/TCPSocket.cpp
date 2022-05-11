@@ -1,13 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include "Log.h"
-#include <WinSock2.h>
-#include <chrono>
-#include <thread>
-#include <fcntl.h>
-#include "TCPSocket.h"
-#include "DataLine.h"
-#pragma comment(lib,"ws2_32.lib")
+#include "../Game/stdafx.h"
 
 //接收线程参数
 struct RecvThreadParam

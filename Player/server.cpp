@@ -1,8 +1,5 @@
-﻿#include "server.h"
-#include "WebSocket.h"
-#include<iostream>
+﻿#include "../Game/stdafx.h"
 
-using namespace PLAYER;
 void Server::safeCloseClient(ClientItem *cmsg)
 {
 	if (cmsg == nullptr) return;

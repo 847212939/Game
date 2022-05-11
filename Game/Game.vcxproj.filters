@@ -41,9 +41,6 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\玩家">
       <UniqueIdentifier>{aaf6facd-69c3-4e32-9f2d-cecd0fdd9949}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\头文件">
-      <UniqueIdentifier>{181f1a6d-16a2-4b7e-a0ec-fb25d8a45d16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家信息\网络">
       <UniqueIdentifier>{a686e9c7-44e9-4d55-8725-c69956d22b80}</UniqueIdentifier>
     </Filter>
@@ -123,9 +120,6 @@
     <ClInclude Include="..\Player\Player.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerInclude.h">
-      <Filter>玩家信息\头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\server.h">
       <Filter>玩家信息\网络</Filter>
     </ClInclude>
@@ -135,8 +129,8 @@
     <ClInclude Include="..\Player\WebSocket.h">
       <Filter>玩家信息\网络</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\KernelInclude.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="stdafx.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,16 +1,4 @@
-﻿#include <stdlib.h>
-#include <stdio.h>
-#include <sstream>
-#include <iostream>
-#include <WS2tcpip.h>
-#include "../kernel/Log.h"
-#include "../kernel/Util.h"
-#include "../kernel/Internal.h"
-#include "../kernel/Internal.h"
-#include "../kernel/TCPSocket.h"
-#include "../kernel/TCPClient.h"
-
-using namespace DRMU;
+﻿#include "stdafx.h"
 
 int main()
 {

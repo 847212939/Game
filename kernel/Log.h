@@ -1,10 +1,5 @@
 #pragma once
 
-#include "LogManager.h"
-#include "Util.h"
-#include <array>
-
-using namespace DRMU;
 // 日志等级
 enum LogLevel
 {

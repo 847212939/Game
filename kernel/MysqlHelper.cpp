@@ -1,9 +1,6 @@
-#include "MysqlHelper.h"
-#include <string.h>
-#include <sstream>
+#include "../Game/stdafx.h"
 
-using namespace DRMU;
-CMysqlHelper::CMysqlHelper() :m_bConnected(false)
+CMysqlHelper::CMysqlHelper() : m_bConnected(false)
 {
 	m_pstMql = mysql_init(NULL);
 }

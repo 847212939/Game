@@ -1,9 +1,4 @@
 ﻿#pragma once
-#include <string>
-#include <WinSock2.h>
-#include <Ws2tcpip.h>
-#include <map>
-#pragma comment(lib,"ws2_32.lib")
 
 struct ClientItem
 {
