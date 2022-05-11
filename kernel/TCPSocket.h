@@ -12,7 +12,7 @@ public:
 	// 取消初始化
 	virtual bool UnInit();
 	// 开始服务
-	virtual bool Start(SocketType serverType);
+	virtual bool Start(ServiceType serverType);
 	// 停止服务
 	virtual bool Stop();
 
@@ -42,7 +42,7 @@ public:
 	// 获取线程运行状态
 	bool GetRuninged();
 	// 获取服务器类型
-	SocketType GetServerType();
+	ServiceType GetServerType();
 
 private:
 	// 设置tcp属性
@@ -104,6 +104,6 @@ private:
 	unsigned int				m_uCurSocketSize;
 	unsigned int				m_uCurSocketIndex;
 
-	SocketType					m_iServiceType;
+	ServiceType					m_iServiceType;
 	std::vector<std::thread*>	m_socketThread;
 };

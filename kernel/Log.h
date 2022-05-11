@@ -12,18 +12,6 @@ enum LogLevel
 	LOG_END,
 };
 
-// 服务器类型
-enum ServiceType
-{
-	SERVICE_TYPE_BEGIN = 0,
-	SERVICE_TYPE_LOGIC,		// 逻辑服务器
-	SERVICE_TYPE_DB,		// DB服务器
-	SERVICE_TYPE_GATA,		// 网关服务器
-	SERVICE_TYPE_GAMECENTER,// GameCenter
-	SERVICE_TYPE_LOGON,		// LOGON
-	SERVICE_TYPE_END,
-};
-
 const std::array<const char*, LOG_END> levelNames = { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };
 
 #define LogManager() CGameLogManage::Instance()

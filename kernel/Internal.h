@@ -7,6 +7,18 @@
 #define HD_TIMER_MESSAGE				4							//定时器消息处理
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
 
+// 服务器类型
+enum ServiceType
+{
+	SERVICE_TYPE_BEGIN = 0,
+	SERVICE_TYPE_LOGIC,		// 逻辑服务器
+	SERVICE_TYPE_DB,		// DB服务器
+	SERVICE_TYPE_GATA,		// 网关服务器
+	SERVICE_TYPE_GAMECENTER,// GameCenter
+	SERVICE_TYPE_LOGON,		// LOGON
+	SERVICE_TYPE_END,
+};
+
 // socket类型
 enum class SocketType
 {

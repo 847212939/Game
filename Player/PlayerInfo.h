@@ -8,7 +8,7 @@ struct PlayerInfo
 
 	SocketReadLine* pMsg;
 	void*			pData;
-	SocketType		uSrverType;
+	ServiceType		uSrverType;
 	const TCPSocketInfo* pTcpSockInfo;
 
 };

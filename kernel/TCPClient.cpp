@@ -3,7 +3,7 @@
 TCPClient::TCPClient() : m_pRegisteredAccount(new PlayerPreproces(this))
 {
 	Init(128, 8888);
-	Start(SocketType::SOCKET_TYPE_TCP);
+	Start(SERVICE_TYPE_LOGIC);
 	Run();
 }
 
