@@ -19,11 +19,11 @@ PlayerPreproces::~PlayerPreproces()
 void PlayerPreproces::initCallBackFun()
 {
 	// µÇÂ¼×¢²á»Øµ÷º¯Êý
-	AddCallBackFun(MsgCmd::MsgCmd_RegisterAccount, std::move(std::bind(&PlayerPreproces::RegisterAccount, this, std::placeholders::_1)));
+	AddCallBackFun(MsgCmd::MsgCmd_RegisterAccount, std::move(std::bind(&PlayerPreproces::LoginInAccount, this, std::placeholders::_1)));
 }
 
-// ×¢²áÕËºÅ
-void PlayerPreproces::RegisterAccount(PlayerInfo* pPlayerInfo)
+// µÇÂ¼
+void PlayerPreproces::LoginInAccount(PlayerInfo* pPlayerInfo)
 {
 	if (!pPlayerInfo)
 	{
@@ -41,19 +41,52 @@ void PlayerPreproces::RegisterAccount(PlayerInfo* pPlayerInfo)
 		return;
 	}
 	unsigned int uAssistantID = pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
+	std::string str = (char*)pPlayerInfo->m_pData;
+	CIstringstream is(str);
+	std::string id, pw;
+	is >> id >> pw;
 	switch ((PlayerPreprocesCmd)uAssistantID)
 	{
 	case PlayerPreprocesCmd::cs_register:
+	{
+		Register(id, pw, pPlayerInfo);
 		break;
+	}
 	case PlayerPreprocesCmd::cs_login:
+	{
+		if (LoginIn(id, pw, pPlayerInfo))
+		{
+			CreatePlayr(pPlayerInfo);
+		}
 		break;
+	}
 	default:
 		break;
 	}
 }
 
+// ×¢²áÕËºÅ
+bool PlayerPreproces::Register(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
+{
+	if (id.empty() || passwaed.empty())
+	{
+		// ÕËºÅ²»´æÔÚ
+		return false;
+	}
+
+	std::string userId = Util::CreateUuid();
+
+	m_accountMap.insert(std::make_pair(id, passwaed));
+	m_AccountUserIDMap.insert(std::make_pair(id, userId));
+
+	// ±£´æÊý¾Ý¿â
+	SaveReplaceSQL("useraccount", id, passwaed);
+	SaveReplaceSQL("userid", id, userId);
+	return true;
+}
+
 // ¼ì²éÕËºÅÊÇ·ñ´æÔÚ
-bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
+bool PlayerPreproces::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
 {
 	if (id.empty() || passwaed.empty())
 	{
@@ -113,12 +146,34 @@ bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed, P
 // ¼ÓÔØÍæ¼Òuserid
 std::string PlayerPreproces::LoadUserId(std::string& id)
 {
+	CMysqlHelper::MysqlData data;
+	LoadOneSql(id, "userid", data);
+	if (data.size() > 0)
+	{
+		SqlKeyDataMap& dataMap = data[0];
+		SqlKeyDataMap::iterator it = dataMap.find("data");
+		if (it != dataMap.end())
+		{
+			return it->second;
+		}
+	}
 	return "";
 }
 
 // ¼ÓÔØÍæ¼ÒÕËºÅÐÅÏ¢
 std::string PlayerPreproces::LoadUserAccount(std::string& id)
 {
+	CMysqlHelper::MysqlData data;
+	LoadOneSql(id, "useraccount", data);
+	if (data.size() > 0)
+	{
+		SqlKeyDataMap& dataMap = data[0];
+		SqlKeyDataMap::iterator it = dataMap.find("data");
+		if (it != dataMap.end())
+		{
+			return it->second;
+		}
+	}
 	return "";
 }
 
@@ -216,7 +271,10 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 		}
 		else
 		{
-			DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
+			if (!pPlayerInfo->m_userId.empty())
+			{
+				DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
+			}
 		}
 	}
 }

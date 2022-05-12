@@ -19,6 +19,8 @@ public:
 	typedef std::list<std::string> SqlList;
 	// 消息回调函数
 	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;
+	// 数据库查询结果
+	typedef std::map<std::string, std::string> SqlKeyDataMap;
 
 public:
 	PlayerPreproces(TCPClient* pTCPClient);
@@ -67,10 +69,12 @@ private:
 	void HandlerExecuteSql();
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	// 登录
+	void LoginInAccount(PlayerInfo* pPlayerInfo);
 	// 注册账号
-	void RegisterAccount(PlayerInfo* pPlayerInfo);
-	// // 检查账号是否存在
-	bool CheckUserAccount(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
+	bool Register(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
+	// 检查账号是否存在
+	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 	// 加载玩家账号信息
 	std::string LoadUserAccount(std::string& id);
 	// 加载玩家userid
