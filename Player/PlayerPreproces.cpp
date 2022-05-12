@@ -103,6 +103,8 @@ bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed, P
 			{
 				pPlayerInfo->m_userId = userId;
 			}
+			m_accountMap.insert(std::make_pair(id, pw));
+			m_AccountUserIDMap.insert(std::make_pair(id, userId));
 			return true;
 		}
 	}
