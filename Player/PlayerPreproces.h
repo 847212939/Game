@@ -11,8 +11,10 @@ public:
 		cs_login        = 2,  // 登录
 	};
 public:
-	// 玩家账户信息
+	// 玩家账户信息<账户，密码>
 	typedef std::map<std::string, std::string> AccountMap;
+	// 玩家账户<账户, userId>
+	typedef std::map<std::string, std::string> AccountUserIDMap;
 	// 数据库语句list<sql>
 	typedef std::list<std::string> SqlList;
 	// 消息回调函数
@@ -25,6 +27,10 @@ public:
 public:
 	// 处理消息
 	void HandlerMessage(PlayerInfo* pPlayerInfo);
+	// 加载一条数据库
+	bool LoadOneSql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
+	// 加载多条数据库
+	bool LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	// insert mysql
 	void SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql
@@ -41,8 +47,8 @@ public:
 	TCPClient* GetTCPClient();
 	// 获取数据库
 	CMysqlHelper& GetCMysqlHelper();
-	// 获取玩家管理
-	PlayerCenter& GetPlayerCenter();
+	// 获取场景
+	Scene& GetScene();
 	// 获取回调函数map
 	CallBackFunMap& GetCallBackFunMap();
 	// 加入回调函数
@@ -52,38 +58,42 @@ public:
 
 private:
 	// 初始化消息回调函数
-	bool intCallBackFun();
+	void initCallBackFun();
 	// 初始化DB
 	bool InitDB();
 	// 线程启动
 	bool Run();
 	// 数据库执行
-	void HandlerExecuteDB();
+	void HandlerExecuteSql();
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	// 注册账号
 	void RegisterAccount(PlayerInfo* pPlayerInfo);
-	// 检查账号信息
-	bool CheckUserAccount(std::string& id, std::string& passwaed);
+	// // 检查账号是否存在
+	bool CheckUserAccount(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 	// 加载玩家账号信息
 	std::string LoadUserAccount(std::string& id);
+	// 加载玩家userid
+	std::string LoadUserId(std::string& id);
 	// 创建角色
-	bool CreatePlayr();
+	bool CreatePlayr(PlayerInfo* pPlayerInfo);
 
 private:
 	// 条件变量数据库用
 	ConditionVariable m_cond;
 	// 数据库语链表
-	SqlList			m_sqlList;
+	SqlList           m_sqlList;
 	// 网络
-	TCPClient*		m_pTCPClient;
-	// 玩家中心管理器
-	PlayerCenter	m_PlayerCenter;
+	TCPClient*        m_pTCPClient;
+	// 玩家场景
+	Scene             m_scene;
 	// 数据库
-	CMysqlHelper	m_CMysqlHelper;
+	CMysqlHelper      m_CMysqlHelper;
 	//玩家账户信息
-	AccountMap		m_accountMap;
+	AccountMap        m_accountMap;
 	// 回调函数
-	CallBackFunMap	m_CallBackFunMap;
+	CallBackFunMap    m_CallBackFunMap;
+	// 账户和userId
+	AccountUserIDMap  m_AccountUserIDMap;
 	
 };

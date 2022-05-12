@@ -56,6 +56,8 @@
 #include "../Player/Player.h"
 // 玩家管理
 #include "../Player/PlayerCenter.h"
+// 场景
+#include "../Player/Scene.h"
 // 信息在注册
 #include "../Player/PlayerPreproces.h"
 // 加密解密websocket

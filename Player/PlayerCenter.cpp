@@ -1,6 +1,7 @@
 #include "../Game/stdafx.h"
 
-PlayerCenter::PlayerCenter(PlayerPreproces* pPlayerPreproces) : m_pPlayerPreproces(pPlayerPreproces)
+PlayerCenter::PlayerCenter(Scene* pScene) : 
+	m_pScene(pScene)
 {
 
 }

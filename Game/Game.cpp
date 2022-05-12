@@ -3,7 +3,7 @@
 int main()
 {
 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-	TCPClient tcpClien;
+	TCPClient clien;
 
 	return 0;
 }

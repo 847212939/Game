@@ -1,10 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) : 
-	m_pTCPClient(pTCPClient), 
-	m_PlayerCenter(this)
+PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
+	m_pTCPClient(pTCPClient),
+	m_scene(this)
 {
-	intCallBackFun();
+	initCallBackFun();
 	InitDB();
 	Run();
 }
@@ -15,30 +16,10 @@ PlayerPreproces::~PlayerPreproces()
 }
 
 // 初始化消息回调函数
-bool PlayerPreproces::intCallBackFun()
+void PlayerPreproces::initCallBackFun()
 {
 	// 登录注册回调函数
 	AddCallBackFun(MsgCmd::MsgCmd_RegisterAccount, std::move(std::bind(&PlayerPreproces::RegisterAccount, this, std::placeholders::_1)));
-	return true;
-}
-
-// 启动数据库
-bool PlayerPreproces::InitDB()
-{
-	// 链接数据库
-	m_CMysqlHelper.init("127.0.0.1", "root", "", "game", "", 3366);
-	try
-	{
-		m_CMysqlHelper.connect();
-	}
-	catch (MysqlHelper_Exception& excep)
-	{
-		COUT_LOG(LOG_CERROR, "连接数据库失败:%s", excep.errorInfo.c_str());
-		return false;
-	}
-
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	return true;
 }
 
 // 注册账号
@@ -71,13 +52,12 @@ void PlayerPreproces::RegisterAccount(PlayerInfo* pPlayerInfo)
 	}
 }
 
-// 检查账号信息
-bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed)
+// 检查账号是否存在
+bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
 {
 	if (id.empty() || passwaed.empty())
 	{
-		// 账号或者密码错误
-		// send
+		// 账号不存在
 		return false;
 	}
 	AccountMap::const_iterator it = m_accountMap.find(id);
@@ -92,8 +72,11 @@ bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed)
 		}
 		else
 		{
-			// 账号密码验证通过
-			// send
+			AccountUserIDMap::const_iterator userIdIt = m_AccountUserIDMap.find(id);
+			if (userIdIt != m_AccountUserIDMap.end())
+			{
+				pPlayerInfo->m_userId = userIdIt->second;
+			}
 			return true;
 		}
 	}
@@ -111,17 +94,24 @@ bool PlayerPreproces::CheckUserAccount(std::string& id, std::string& passwaed)
 		{
 			// 密码错误
 			// send
-			m_accountMap[id] = pw;
 			return false;
 		}
 		else
 		{
-			// 账号密码验证通过
-			// send
-			m_accountMap[id] = pw;
+			std::string userId = LoadUserId(id);
+			if (!userId.empty())
+			{
+				pPlayerInfo->m_userId = userId;
+			}
 			return true;
 		}
 	}
+}
+
+// 加载玩家userid
+std::string PlayerPreproces::LoadUserId(std::string& id)
+{
+	return "";
 }
 
 // 加载玩家账号信息
@@ -130,15 +120,34 @@ std::string PlayerPreproces::LoadUserAccount(std::string& id)
 	return "";
 }
 
+// 启动数据库
+bool PlayerPreproces::InitDB()
+{
+	// 链接数据库
+	m_CMysqlHelper.init("127.0.0.1", "root", "", "game", "", 3366);
+	try
+	{
+		m_CMysqlHelper.connect();
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "连接数据库失败:%s", excep.errorInfo.c_str());
+		return false;
+	}
+
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	return true;
+}
+
 bool PlayerPreproces::Run()
 {
 	std::vector<std::thread*>& threadVec = m_pTCPClient->GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteDB, this));
+	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteSql, this));
 	return true;
 }
 
 // 数据库执行
-void PlayerPreproces::HandlerExecuteDB()
+void PlayerPreproces::HandlerExecuteSql()
 {
 	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread begin...");
 	while (m_pTCPClient->GetRuninged())
@@ -213,13 +222,13 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 // 分发消息
 void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	m_PlayerCenter.DispatchMessage(cmd, pPlayerInfo);
+	m_scene.DispatchMessage(cmd, pPlayerInfo);
 }
 
 // 创建角色
-bool PlayerPreproces::CreatePlayr()
+bool PlayerPreproces::CreatePlayr(PlayerInfo* pPlayerInfo)
 {
-	return m_PlayerCenter.CreatePlayr();
+	return m_scene.CreatePlayr(pPlayerInfo);
 }
 
 // 获取通知条件变量
@@ -251,10 +260,10 @@ CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 	return m_CMysqlHelper;
 }
 
-// 获取玩家管理
-PlayerCenter& PlayerPreproces::GetPlayerCenter()
+// 获取场景
+Scene& PlayerPreproces::GetScene()
 {
-	return m_PlayerCenter;
+	return m_scene;
 }
 
 // 获取回调函数map
@@ -266,7 +275,14 @@ PlayerPreproces::CallBackFunMap& PlayerPreproces::GetCallBackFunMap()
 // 加入回调函数
 void PlayerPreproces::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	m_CallBackFunMap.insert(std::make_pair(cmd, fun));
+	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
+	if (it == m_CallBackFunMap.end())
+	{
+		m_CallBackFunMap.insert(std::make_pair(cmd, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CINFO, "已经存在该消息的回调请检查代码 cmd = %d", cmd);
 }
 
 // 回调函数
@@ -345,4 +361,42 @@ void PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCon
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
+}
+
+// 加载一条数据库
+bool PlayerPreproces::LoadOneSql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr /*= "data"*/)
+{
+	char sql[1024] = "";
+	sprintf(sql, "select * from %s where userid=%s", sqlName.c_str(), userId.c_str());
+
+	try
+	{
+		m_CMysqlHelper.queryRecord(sql, queryData);
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %s", excep.errorInfo.c_str(), userId.c_str());
+		return false;
+	}
+
+	return true;
+}
+
+// 加载多条数据库
+bool PlayerPreproces::LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr /*= "data"*/)
+{
+	char sql[1024] = "";
+	sprintf(sql, "select * from %s", sqlName.c_str());
+
+	try
+	{
+		m_CMysqlHelper.queryRecord(sql, queryData);
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %s", excep.errorInfo.c_str(), userId.c_str());
+		return false;
+	}
+
+	return true;
 }

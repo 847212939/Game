@@ -44,6 +44,9 @@
     <Filter Include="玩家信息\网络">
       <UniqueIdentifier>{a686e9c7-44e9-4d55-8725-c69956d22b80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家信息\场景">
+      <UniqueIdentifier>{a0ffe58f-e304-4b3e-a9bd-6c02b43a4647}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -84,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="..\Player\PlayerInfo.cpp">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Scene.cpp">
+      <Filter>玩家信息\场景</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="..\Player\MessageCmd.h">
       <Filter>玩家信息\注册信息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Scene.h">
+      <Filter>玩家信息\场景</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -163,6 +163,7 @@
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
     <ClCompile Include="..\Player\PlayerInfo.cpp" />
     <ClCompile Include="..\Player\PlayerPreproces.cpp" />
+    <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\server.cpp" />
     <ClCompile Include="..\Player\WebSocket.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\Player\PlayerCenter.h" />
     <ClInclude Include="..\Player\PlayerInfo.h" />
     <ClInclude Include="..\Player\PlayerPreproces.h" />
+    <ClInclude Include="..\Player\Scene.h" />
     <ClInclude Include="..\Player\server.h" />
     <ClInclude Include="..\Player\Sha1Base64.h" />
     <ClInclude Include="..\Player\WebSocket.h" />

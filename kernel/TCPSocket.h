@@ -86,24 +86,24 @@ private:
 	static int DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
 	static int Socketpair(int family, int type, int protocol, SOCKET recv[2]);
 private:
-	event_base* m_listenerBase;
+	event_base*                 m_listenerBase;
 	std::vector<WorkThreadInfo> m_workBaseVec;
-	ConditionVariable			m_ConditionVariable;
+	ConditionVariable           m_ConditionVariable;
 
-	CDataLine* m_pSendDataLine;	//发送队列
-	CDataLine* m_pRecvDataLine;	//接受对列
+	CDataLine*                  m_pSendDataLine;	//发送队列
+	CDataLine*                  m_pRecvDataLine;	//接受对列
 
-	std::vector<TCPSocketInfo>	m_socketInfoVec;
-	std::set<unsigned int>		m_heartBeatSocketSet;
+	std::vector<TCPSocketInfo>  m_socketInfoVec;
+	std::set<unsigned int>      m_heartBeatSocketSet;
 
-	bool						m_running;
-	char						m_bindIP[48];
-	unsigned short				m_port;
-	SocketType					m_socketType;
-	unsigned int				m_uMaxSocketSize; // libevent 单线程默认的32000
-	unsigned int				m_uCurSocketSize;
-	unsigned int				m_uCurSocketIndex;
+	bool                        m_running;
+	char                        m_bindIP[48];
+	unsigned short              m_port;
+	SocketType                  m_socketType;
+	unsigned int                m_uMaxSocketSize; // libevent 单线程默认的32000
+	unsigned int                m_uCurSocketSize;
+	unsigned int                m_uCurSocketIndex;
 
-	ServiceType					m_iServiceType;
-	std::vector<std::thread*>	m_socketThread;
+	ServiceType                 m_iServiceType;
+	std::vector<std::thread*>   m_socketThread;
 };

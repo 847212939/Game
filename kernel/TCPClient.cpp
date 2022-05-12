@@ -1,6 +1,7 @@
 #include "../Game/stdafx.h"
 
-TCPClient::TCPClient() : m_pRegisteredAccount(new PlayerPreproces(this))
+TCPClient::TCPClient() : 
+	m_pRegisteredAccount(new PlayerPreproces(this))
 {
 	Init(128, 8888);
 	Start(ServiceType::SERVICE_TYPE_LOGIC);

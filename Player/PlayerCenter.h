@@ -1,5 +1,6 @@
 #pragma once
 
+class Scene;
 class PlayerCenter
 {
 public:
@@ -7,7 +8,7 @@ public:
 	typedef std::map<std::string, Player*> UserIdPlayerMap;
 
 public:
-	PlayerCenter(PlayerPreproces* pPlayerPreproces);
+	PlayerCenter(Scene* pScene);
 	virtual ~PlayerCenter();
 
 public:
@@ -21,8 +22,8 @@ private:
 	void InitCallBackFun();
 
 private:
-	// 玩家预处理
-	PlayerPreproces* m_pPlayerPreproces;
+	// 玩家场景
+	Scene*          m_pScene;
 	// pair<SOCKET, Player*> 一个SOCKET绑定一个玩家
 	SocketPlayerMap m_SocketPlayerMap;
 	// pair<userID, Player*> 一个userId绑定一个玩家
