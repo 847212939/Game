@@ -143,6 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\include;C:\code\libevent_project\build_project_vs2019_64\openssl\include;C:\code\libevent_project\build_project_vs2019_64\zlib2\include;C:\code\mysql-5.7.26-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +168,7 @@
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\server.cpp" />
     <ClCompile Include="..\Player\WebSocket.cpp" />
+    <ClCompile Include="..\study\Mixin.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +190,7 @@
     <ClInclude Include="..\Player\server.h" />
     <ClInclude Include="..\Player\Sha1Base64.h" />
     <ClInclude Include="..\Player\WebSocket.h" />
+    <ClInclude Include="..\study\Mixin.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

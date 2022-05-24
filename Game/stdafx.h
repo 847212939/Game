@@ -67,4 +67,22 @@
 // webserver
 #include "../Player/server.h"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Ä£°åÑ§Ï°
+#include "../study/Mixin.h"
+
 #pragma comment(lib,"ws2_32.lib")

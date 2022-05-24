@@ -2,11 +2,64 @@
 
 int main()
 {
-	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-	TCPClient clien;
-
-	return 0;
+	TestFun();
+// 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+// 	TCPClient clien;
 }
+
+//#include <set>
+//
+//// 活动内玩家信息
+//struct Data
+//{
+//	int playerId = 0;
+//	int sorce = 0;
+//	int killPeopleCount = 0;
+//
+//	bool operator < (const Data& other) const
+//	{
+//		if (sorce != other.sorce) return sorce < other.sorce;
+//		return false;
+//	}
+//
+//	Data(int s) { sorce = s; }
+//	Data() {}
+//	~Data() {}
+//};
+//
+//typedef	std::multiset<Data> RankSet;
+//
+//int main()
+//{
+//	/*LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+//	TCPClient clien;*/
+//
+//	RankSet mySet;
+//	Data data;
+//	data.sorce = 100;
+//	mySet.insert(data);
+//
+//	mySet.insert(data);
+//	mySet.insert(data);
+//	mySet.insert(data);
+//
+//	Data data1;
+//	data1.sorce = 500;
+//	mySet.insert(data1);
+//
+//	Data data2;
+//	data2.sorce = 20;
+//	mySet.insert(data2);
+//
+//	Data data3;
+//	data3.sorce = 200;
+//	mySet.insert(data3);
+//
+//	const int x = 100;
+//	size_t count = mySet.count(x);
+//
+//	return 0;
+//}
 
 //int main()
 //{
