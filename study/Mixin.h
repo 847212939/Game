@@ -64,14 +64,14 @@ public:
 	std::vector<T> m_familyVec;
 };
 
-using RoleNpc = Role<RoleNpcAttr>;
-using RolePlayer = Role<RolePlayerAttr>;
-using RoleMonster = Role<RoleMonsterAttr>;
-using AllParent = Role<RoleNpcAttr, RolePlayerAttr, RoleMonsterAttr>;
+using RoleNpc            = Role<RoleNpcAttr>;
+using RolePlayer         = Role<RolePlayerAttr>;
+using RoleMonster        = Role<RoleMonsterAttr>;
+using AllParent          = Role<RoleNpcAttr, RolePlayerAttr, RoleMonsterAttr>;
 
-using RoleNpcFamily = Family<RoleNpc>;
-using RolePlayerFamily = Family<RolePlayer>;
-using RoleMonsterFamily = Family<RoleMonster>;
-using AllParentFamily = Family<AllParent>;
+using RoleNpcFamily      = Family<RoleNpc>;
+using RolePlayerFamily   = Family<RolePlayer>;
+using RoleMonsterFamily  = Family<RoleMonster>;
+using AllParentFamily    = Family<AllParent>;
 
 void TestFun();
