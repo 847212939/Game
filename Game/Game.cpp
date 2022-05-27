@@ -2,10 +2,20 @@
 
 int main()
 {
-	TestFun();
-// 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-// 	TCPClient clien;
+	std::vector<int> a;
+	std::vector<int> b;
+
+	std::vector<int> c = a + b;
+
+	return 0;
 }
+
+//int main()
+//{
+//	TestFun();
+//	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+//	TCPClient clien;
+//}
 
 //#include <set>
 //

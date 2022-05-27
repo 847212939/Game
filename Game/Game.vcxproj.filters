@@ -53,6 +53,9 @@
     <Filter Include="模板学习\混入">
       <UniqueIdentifier>{b1a48271-e020-4a58-8b59-17658db114c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="模板学习\SFIAE">
+      <UniqueIdentifier>{c647976c-03eb-4b69-89fd-d2d2acfffd8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\study\Mixin.h">
       <Filter>模板学习\混入</Filter>
+    </ClInclude>
+    <ClInclude Include="..\study\Addition.h">
+      <Filter>模板学习\SFIAE</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
