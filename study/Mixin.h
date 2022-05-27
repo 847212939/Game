@@ -74,4 +74,3 @@ using RolePlayerFamily   = Family<RolePlayer>;
 using RoleMonsterFamily  = Family<RoleMonster>;
 using AllParentFamily    = Family<AllParent>;
 
-void TestFun();

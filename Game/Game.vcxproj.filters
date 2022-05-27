@@ -56,6 +56,9 @@
     <Filter Include="模板学习\SFIAE">
       <UniqueIdentifier>{c647976c-03eb-4b69-89fd-d2d2acfffd8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="模板学习\测试用例">
+      <UniqueIdentifier>{167a9929-bac3-4b01-b5bb-2888cd50cdb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -100,8 +103,8 @@
     <ClCompile Include="..\Player\Scene.cpp">
       <Filter>玩家信息\场景</Filter>
     </ClCompile>
-    <ClCompile Include="..\study\Mixin.cpp">
-      <Filter>模板学习\混入</Filter>
+    <ClCompile Include="..\study\Test.cpp">
+      <Filter>模板学习\测试用例</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="..\study\Addition.h">
       <Filter>模板学习\SFIAE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\study\Test.h">
+      <Filter>模板学习\测试用例</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

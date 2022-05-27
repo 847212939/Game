@@ -87,4 +87,10 @@
 // SFIAE
 #include "../study/Addition.h"
 
+
+
+// 测试用的放在最下面
+#include "../study/Test.h"
+
 #pragma comment(lib,"ws2_32.lib")
+

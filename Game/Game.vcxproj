@@ -168,7 +168,7 @@
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\server.cpp" />
     <ClCompile Include="..\Player\WebSocket.cpp" />
-    <ClCompile Include="..\study\Mixin.cpp" />
+    <ClCompile Include="..\study\Test.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +192,7 @@
     <ClInclude Include="..\Player\WebSocket.h" />
     <ClInclude Include="..\study\Addition.h" />
     <ClInclude Include="..\study\Mixin.h" />
+    <ClInclude Include="..\study\Test.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

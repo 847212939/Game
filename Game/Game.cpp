@@ -2,10 +2,8 @@
 
 int main()
 {
-	std::vector<int> a;
-	std::vector<int> b;
-
-	std::vector<int> c = a + b;
+	TEST::TestFun();
+	TEST::TestFun1();
 
 	return 0;
 }
