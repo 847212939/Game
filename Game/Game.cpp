@@ -2,9 +2,10 @@
 
 int main()
 {
-	TestFun();
-// 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-// 	TCPClient clien;
+	TEST::TestFun();
+	TEST::TestFun1();
+
+	return 0;
 }
 
 //int main()
