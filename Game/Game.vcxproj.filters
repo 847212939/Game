@@ -59,6 +59,9 @@
     <Filter Include="模板学习\测试用例">
       <UniqueIdentifier>{167a9929-bac3-4b01-b5bb-2888cd50cdb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="模板学习\可调用对象">
+      <UniqueIdentifier>{5eec96c4-4b85-48f7-925e-4661c2524e28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="..\study\Test.h">
       <Filter>模板学习\测试用例</Filter>
+    </ClInclude>
+    <ClInclude Include="..\study\Function.h">
+      <Filter>模板学习\可调用对象</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

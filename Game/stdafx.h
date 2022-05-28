@@ -86,6 +86,8 @@
 #include "../study/Mixin.h"
 // SFIAE
 #include "../study/Addition.h"
+// 可调用对象
+#include "../study/Function.h"
 
 
 
