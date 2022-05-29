@@ -40,4 +40,12 @@ void TEST::TestFun2()
 void TEST::TestFun3()
 {
 	std::function<void(int)> f = [](int p) {};
+
+	function_call_back<int(int)> f1 = [](int p) 
+	{
+		std::cout << "你是大傻逼" << p <<std::endl;
+		return p;
+	};
+
+	std::cout << "你是大傻逼" << f1(10) << std::endl;
 }

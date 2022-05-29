@@ -4,6 +4,8 @@ int main()
 {
 	TEST::TestFun();
 	TEST::TestFun1();
+	TEST::TestFun2();
+	TEST::TestFun3();
 
 	return 0;
 }
