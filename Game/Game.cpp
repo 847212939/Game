@@ -2,10 +2,7 @@
 
 int main()
 {
-	TEST::TestFun();
-	TEST::TestFun1();
-	TEST::TestFun2();
-	TEST::TestFun3();
+	TEST::TestFun4();
 
 	return 0;
 }

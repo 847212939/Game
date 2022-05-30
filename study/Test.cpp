@@ -49,3 +49,15 @@ void TEST::TestFun3()
 
 	std::cout << "你是大傻逼" << f1(10) << std::endl;
 }
+
+void TEST::TestFun4()
+{
+	int arr[8][8][8];
+	std::cout << typeid(decltype(arr)).name() << std::endl;
+
+	// 把一个数组中的数组类型部分移除掉，只保留元素类型。
+	// 采用递归实现手法
+	std::remove_all_extents<decltype(arr)>::type a = 10;
+
+	std::cout << typeid(decltype(a)).name() << std::endl;
+}
