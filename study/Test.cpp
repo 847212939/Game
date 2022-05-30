@@ -41,7 +41,7 @@ void TEST::TestFun3()
 {
 	std::function<void(int)> f = [](int p) {};
 
-	MYSTD::function_call_back<int(int)> f1 = [](int p)
+	function_call_back<int(int)> f1 = [](int p)
 	{
 		std::cout << "ÄãÊÇ´óÉµ±Æ" << p <<std::endl;
 		return p;
