@@ -61,3 +61,10 @@ void TEST::TestFun4()
 
 	std::cout << typeid(decltype(a)).name() << std::endl;
 }
+
+// std::integer_sequence
+void TEST::TestFun5()		
+{
+	IntegerSequence<int, 5>::type tmpobj5;
+	std::cout << "tmpobj5的类型为：" << typeid(decltype(tmpobj5)).name() << std::endl;
+}

@@ -2,7 +2,7 @@
 
 int main()
 {
-	TEST::TestFun4();
+	TEST::TestFun5();
 
 	return 0;
 }

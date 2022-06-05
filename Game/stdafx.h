@@ -88,6 +88,8 @@
 #include "../study/Addition.h"
 // 可调用对象
 #include "../study/Function.h"
+// 将一个数字重复生成一个类型
+#include "../study/IntegerSequence.h"
 
 
 
