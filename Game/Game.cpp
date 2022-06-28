@@ -2,17 +2,31 @@
 
 int main()
 {
-	TEST::TestFun5();
+	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
 
-	return 0;
+ 	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	COUT_LOG(LOG_CINFO, "mysql init successed...");
+	TCPClient clien;
 }
-
+ 
 //int main()
 //{
-//	TestFun();
-//	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-//	TCPClient clien;
+//	TEST::TestFun5();
+//
+//	return 0;
 //}
+
 
 //#include <set>
 //

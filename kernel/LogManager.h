@@ -30,8 +30,16 @@ public:
 	void SetLogPath(const std::string& path);
 	// 获取进程日志目录
 	std::string GetLogPath();
-	//获得锁
+	// 获得锁
 	std::mutex& GetMutex();
+	// 日志缓存
+	std::multimap<FILE*, std::string>& GetLogMap();
+	// 日志打印
+	void Fflush();
+
+private:
+	// 日志处理线程
+	void HandlerLogThread();
 
 private:
 	std::mutex m_mutex;
@@ -43,6 +51,10 @@ private:
 	std::string m_logPath;
 	//服务器类型
 	ServiceType m_serviceType;
+	// 日志缓存
+	std::multimap<FILE*, std::string> m_logMap;
+	// 日志线程
+	std::vector<std::thread*> m_threadVec;
 };
 
 //// 日志类
@@ -54,9 +66,4 @@ public:
 
 public:
 	static void Write(const char* pLogFile, int level, const char* pFile, int line, const char* pFuncName, const char* pFormat, ...);
-	static void Write(const char* pLogFile, const char* pFuncName, const char* pFormat, ...);
-	// 把buf中的内容写入logFile
-	static void Write(const char* pLogFile, const char* buf);
-	// 把buf中的内容写入logFile，文件名字用户自己定义
-	static void Write(const char* pLogFile, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...);
 };

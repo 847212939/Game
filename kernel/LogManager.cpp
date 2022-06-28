@@ -61,130 +61,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		LogManager()->AddLogFileFp(pLogfile, fp);
 	}
 
+	std::multimap<FILE*, std::string>& logMap = LogManager()->GetLogMap();
 	std::lock_guard<std::mutex> guard(LogManager()->GetMutex());
-
-	fputs(buf, fp);
-	fflush(fp);
-
-}
-
-void CLog::Write(const char* pLogFile, const char* pFuncName, const char* pFormat, ...)
-{
-	if (!pLogFile || !pFuncName || !pFormat)
-	{
-		return;
-	}
-
-	char buf[MAX_LOG_BUF_SIZE] = "";
-
-	// 时间
-	SYSTEMTIME sysTime;
-	GetLocalTime(&sysTime);
-
-	sprintf(buf, "[%04d-%02d-%02d %02d:%02d:%02d]", sysTime.wYear, sysTime.wMonth, sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond);
-	// 线程ID和level
-	const char* levelName = levelNames[LOG_INFO];
-	unsigned long threadID = GetCurrentThreadId();
-	sprintf(buf + strlen(buf), "%s[%05lu] ", levelName, threadID);
-
-	// 参数
-	va_list args;
-	va_start(args, pFormat);
-
-	vsprintf(buf + strlen(buf), pFormat, args);
-	va_end(args);
-
-	sprintf(buf + strlen(buf), " %s\n", pFuncName);
-
-	std::string strPath = LogManager()->GetLogPath() + pLogFile;
-
-	FILE* fp = LogManager()->GetLogFileFp(std::move(pLogFile));
-	if (!fp)
-	{
-		fp = fopen(strPath.c_str(), "a+");
-		if (!fp)
-		{
-			return;
-		}
-		LogManager()->AddLogFileFp(pLogFile, fp);
-	}
-
-	std::lock_guard<std::mutex> guard(LogManager()->GetMutex());
-
-	fputs(buf, fp);
-	fflush(fp);
-}
-
-void CLog::Write(const char* pLogFile, const char* buf)
-{
-	if (!pLogFile || !buf)
-	{
-		return;
-	}
-
-	std::string strPath = LogManager()->GetLogPath() + pLogFile;
-
-	FILE* fp = LogManager()->GetLogFileFp(std::move(pLogFile));
-	if (!fp)
-	{
-		fp = fopen(strPath.c_str(), "a+");
-		if (!fp)
-		{
-			return;
-		}
-		LogManager()->AddLogFileFp(pLogFile, fp);
-	}
-
-	std::lock_guard<std::mutex> guard(LogManager()->GetMutex());
-
-	fputs(buf, fp);
-	fflush(fp);
-}
-
-void CLog::Write(const char* pLogFile, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...)
-{
-	if (!pLogFile || !pFile || !pFuncName || !pBuf)
-	{
-		return;
-	}
-
-	char buf[MAX_LOG_BUF_SIZE] = "";
-
-	// 时间
-	SYSTEMTIME sysTime;
-	GetLocalTime(&sysTime);
-
-	sprintf(buf, "[%04d-%02d-%02d %02d:%02d:%02d] ", sysTime.wYear, sysTime.wMonth, sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond);
-
-	// 参数
-	va_list args;
-	va_start(args, pBuf);
-
-	vsprintf(buf + strlen(buf), pBuf, args);
-	va_end(args);
-
-	sprintf(buf + strlen(buf), "\n");
-	//sprintf(buf + strlen(buf), "{%s %s %d}\n", pFile, pFuncName, line);
-
-	std::string strPath = LogManager()->GetLogPath();
-	std::string strFile = pLogFile;
-	strFile += ".log";
-	strPath += strFile;
-	FILE* fp = LogManager()->GetLogFileFp(std::move(strFile));
-	if (!fp)
-	{
-		fp = fopen(strPath.c_str(), "a+");
-		if (!fp)
-		{
-			return;
-		}
-		LogManager()->AddLogFileFp(strFile.c_str(), fp);
-	}
-
-	std::lock_guard<std::mutex> guard(LogManager()->GetMutex());
-
-	fputs(buf, fp);
-	fflush(fp);
+	logMap.insert(std::make_pair(fp, buf));
 }
 
 CGameLogManage::CGameLogManage()
@@ -196,11 +75,19 @@ CGameLogManage::CGameLogManage()
 
 	m_logPath = strPth;
 	m_serviceType = (ServiceType)0;
+
+	m_threadVec.push_back(new std::thread(&CGameLogManage::HandlerLogThread, this));
 }
 
 CGameLogManage::~CGameLogManage()
 {
 	//Release();
+	while (!m_threadVec.empty())
+	{
+		std::vector<std::thread*>::reverse_iterator it = m_threadVec.rbegin();
+		(*it)->join();
+		SafeDelete(*it);
+	}
 }
 
 CGameLogManage* CGameLogManage::Instance()
@@ -331,4 +218,40 @@ std::string CGameLogManage::GetLogPath()
 std::mutex& CGameLogManage::GetMutex()
 { 
 	return m_mutex; 
+}
+
+// 日志缓存
+std::multimap<FILE*, std::string>& CGameLogManage::GetLogMap()
+{
+	return m_logMap;
+}
+
+// 日志打印
+void CGameLogManage::Fflush()
+{
+	std::multimap<FILE*, std::string> logMap;
+
+	m_mutex.lock();
+	std::swap(logMap, m_logMap);
+	m_mutex.unlock();
+
+	for (std::multimap<FILE*, std::string>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
+	{
+		fputs(it->second.c_str(), it->first);
+		fflush(it->first);
+	}
+}
+
+// 日志处理线程
+void CGameLogManage::HandlerLogThread()
+{
+	while (true)
+	{
+		// 日志五秒钟打印一次
+		std::this_thread::sleep_for(std::chrono::seconds(6));
+		if (!m_logMap.empty())
+		{
+			Fflush();
+		}
+	}
 }
