@@ -23,9 +23,6 @@ else if (ERRTYPE == LOG_WARN) { CLog::Write(LogManager()->GetErrorLog().c_str(),
 else if (ERRTYPE == LOG_CERROR) { CLog::Write(LogManager()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); }\
 else if (ERRTYPE == LOG_CINFO) { CLog::Write(LogManager()->GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); }
 
-// 普通日志输出，文件名用户自定义
-#define FILE_LOG(filename, ...)	{ CLog::Write(filename, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); }
-
 //计算数组维数
 #define  CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 //安全删除指针
