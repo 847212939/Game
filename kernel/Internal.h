@@ -52,11 +52,11 @@ struct DataLineHead
 //网络数据包结构头
 struct NetMessageHead
 {
-	unsigned int uMainID;							///处理主类型
-	unsigned int uAssistantID;						///辅助处理类型 ID
-	unsigned int uHandleCode;						///数据包处理代码
-	unsigned int uIdentification;					///身份标识（不同的协议里面有不同的含义）
-	unsigned int uMessageSize;						///数据包大小
+	unsigned int uMainID;							////处理主类型
+	unsigned int uAssistantID;						////辅助处理类型 ID
+	unsigned int uHandleCode;						////数据包处理代码
+	unsigned int uIdentification;					////身份标识（不同的协议里面有不同的含义）
+	unsigned int uMessageSize;						////数据包大小
 
 	NetMessageHead() { memset(this, 0, sizeof(NetMessageHead)); }
 };
@@ -98,7 +98,7 @@ struct PlatformSocketInfo
 	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
 
-//发送数据队列包头
+// 发送数据队列包头
 struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;							//队列头
@@ -107,7 +107,7 @@ struct SendDataLineHead
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
 
-//SOCKET读取通知结构定义
+// SOCKET读取通知结构定义
 struct SocketReadLine
 {
 	DataLineHead						LineHead;					//队列头

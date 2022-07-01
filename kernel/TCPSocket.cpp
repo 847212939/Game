@@ -156,7 +156,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	{
 		//获取数据
 		unsigned int bytes = pDataLine->GetData(&pDataLineHead);
-		if (bytes == 0 || pDataLineHead == NULL)
+		if (bytes == 0 || pDataLineHead == nullptr)
 		{
 			continue;
 		}
@@ -297,7 +297,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	// 开辟工作线程池
 	for (int i = 0; i < workBaseCount; i++)
 	{
-		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
+		threadVev.push_back(std::thread(ThreadRSSocketThread, (void*)&uniqueParam[i]));
 	}
 
 	event_base_dispatch(pThis->m_listenerBase);
@@ -363,7 +363,7 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 	lastThreadIndex++;
 }
 
-void CTCPSocketManage::ThreadRSSocket(void* pThreadData)
+void CTCPSocketManage::ThreadRSSocketThread(void* pThreadData)
 {
 	RecvThreadParam* param = (RecvThreadParam*)pThreadData;
 	if (!param)
