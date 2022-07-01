@@ -63,20 +63,20 @@ private:
 	bool RecvData(bufferevent* bev, int index);
 
 	// SOCKET 连接应答线程
-	static void ThreadAccept(void* pThreadData);
+	static void ThreadAcceptThread(void* pThreadData);
 	// SOCKET 数据接收线程
 	static void ThreadRSSocket(void* pThreadData);
 	// SOCKET 数据发送线程
-	static void ThreadSendMsg(void* pThreadData);
+	static void ThreadSendMsgThread(void* pThreadData);
 
 	// 回调函数
-	// 新的连接到来，ThreadAccept线程函数
+	// 新的连接到来，ThreadAcceptThread线程函数
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 	// 新的数据到来，ThreadRSSocket线程函数
 	static void ReadCB(struct bufferevent*, void*);
 	// 连接关闭等等错误消息，ThreadRSSocket线程函数
 	static void EventCB(struct bufferevent*, short, void*);
-	// accept失败，ThreadAccept线程函数
+	// accept失败，ThreadAcceptThread线程函数
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);
 	// 新的连接到来，ThreadRSSocket线程函数
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);

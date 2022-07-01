@@ -127,14 +127,14 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	}
 
 	// 创建发送线程
-	m_socketThread.push_back(new std::thread(ThreadSendMsg, this));
+	m_socketThread.push_back(new std::thread(ThreadSendMsgThread, this));
 	// 创建连接线程
-	m_socketThread.push_back(new std::thread(ThreadAccept, this));
+	m_socketThread.push_back(new std::thread(ThreadAcceptThread, this));
 
 	return true;
 }
 
-void CTCPSocketManage::ThreadSendMsg(void* pThreadData)
+void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 {
 	CTCPSocketManage* pThis = (CTCPSocketManage*)pThreadData;
 	if (!pThis)
@@ -150,7 +150,7 @@ void CTCPSocketManage::ThreadSendMsg(void* pThreadData)
 
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 
-	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsg thread begin...");
+	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsgThread thread begin...");
 
 	while (pThis->m_running)
 	{
@@ -194,12 +194,12 @@ void CTCPSocketManage::ThreadSendMsg(void* pThreadData)
 		}
 	}
 
-	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsg exit.");
+	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsgThread exit.");
 
 	return;
 }
 
-void CTCPSocketManage::ThreadAccept(void* pThreadData)
+void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 {
 	CTCPSocketManage* pThis = (CTCPSocketManage*)pThreadData;
 	if (!pThis)
@@ -210,7 +210,7 @@ void CTCPSocketManage::ThreadAccept(void* pThreadData)
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
-	COUT_LOG(LOG_INFO, "ThreadAccept thread begin...");
+	COUT_LOG(LOG_INFO, "ThreadAcceptThread thread begin...");
 
 	// libevent服务器 
 	struct evconnlistener* listener;
@@ -311,7 +311,7 @@ void CTCPSocketManage::ThreadAccept(void* pThreadData)
 		event_free(pThis->m_workBaseVec[i].event);
 	}
 
-	COUT_LOG(LOG_INFO, "ThreadAccept thread exit.");
+	COUT_LOG(LOG_INFO, "ThreadAcceptThread thread exit.");
 
 	return;
 }
@@ -853,37 +853,53 @@ void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 
 int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
 {
+	if (!addr_info)
+	{
+		return -1;
+	}
+
 	SOCKET listener, client, server;
 	int opt = 1;
 
 	listener = server = client = INVALID_SOCKET;
 	listener = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //创建服务器socket并进行绑定监听等
 	if (INVALID_SOCKET == listener)
+	{
 		goto fail;
+	}
 
 	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
 	if (SOCKET_ERROR == bind(listener, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == getsockname(listener, addr_info->ai_addr, (int*)&addr_info->ai_addrlen))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == listen(listener, 5))
+	{
 		goto fail;
+	}
 
 	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //创建客户端socket，并连接服务器
 
 	if (INVALID_SOCKET == client)
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == connect(client, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	{
 		goto fail;
+	}
 
 	server = accept(listener, 0, 0);
 
 	if (INVALID_SOCKET == server)
+	{
 		goto fail;
+	}
 
 	closesocket(listener);
 
@@ -893,14 +909,22 @@ int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2
 	return 0;
 fail:
 	if (INVALID_SOCKET != listener)
+	{
 		closesocket(listener);
+	}
 	if (INVALID_SOCKET != client)
+	{
 		closesocket(client);
+	}
 	return -1;
 }
 
 int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
 {
+	if (!addr_info)
+	{
+		return -1;
+	}
 	SOCKET client, server;
 	struct addrinfo addr, * result = NULL;
 	const char* address;
@@ -910,19 +934,27 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 
 	server = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol);
 	if (INVALID_SOCKET == server)
+	{
 		goto fail;
+	}
 
 	setsockopt(server, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
 	if (SOCKET_ERROR == bind(server, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == getsockname(server, addr_info->ai_addr, (int*)&addr_info->ai_addrlen))
+	{
 		goto fail;
+	}
 
 	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol);
+
 	if (INVALID_SOCKET == client)
+	{
 		goto fail;
+	}
 
 	memset(&addr, 0, sizeof(addr));
 	addr.ai_family = addr_info->ai_family;
@@ -930,25 +962,36 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 	addr.ai_protocol = addr_info->ai_protocol;
 
 	if (AF_INET6 == addr.ai_family)
+	{
 		address = "0:0:0:0:0:0:0:1";
+	}
 	else
+	{
 		address = "127.0.0.1";
-
+	}
 	if (getaddrinfo(address, "0", &addr, &result))
+	{
 		goto fail;
+	}
 
 	setsockopt(client, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+
 	if (SOCKET_ERROR == bind(client, result->ai_addr, static_cast<int>(result->ai_addrlen)))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == getsockname(client, result->ai_addr, (int*)&result->ai_addrlen))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == connect(server, result->ai_addr, static_cast<int>(result->ai_addrlen)))
+	{
 		goto fail;
-
+	}
 	if (SOCKET_ERROR == connect(client, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	{
 		goto fail;
+	}
 
 	freeaddrinfo(result);
 	sock[0] = client;
@@ -957,11 +1000,18 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 
 fail:
 	if (INVALID_SOCKET != client)
+	{
 		closesocket(client);
+	}
 	if (INVALID_SOCKET != server)
+	{
 		closesocket(server);
+	}
 	if (result)
+	{
 		freeaddrinfo(result);
+	}
+
 	return -1;
 }
 
