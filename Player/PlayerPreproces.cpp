@@ -199,12 +199,12 @@ bool PlayerPreproces::InitDB()
 bool PlayerPreproces::Run()
 {
 	std::vector<std::thread*>& threadVec = m_pTCPClient->GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteSql, this));
+	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
 	return true;
 }
 
 // 数据库执行
-void PlayerPreproces::HandlerExecuteSql()
+void PlayerPreproces::HandlerExecuteSqlThread()
 {
 	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread begin...");
 	while (m_pTCPClient->GetRuninged())
@@ -218,18 +218,24 @@ void PlayerPreproces::HandlerExecuteSql()
 			continue;
 		}
 
-		std::string sql = m_sqlList.front();
-		m_sqlList.pop_front();
+		SqlList sqlList;
+		std::swap(sqlList, m_sqlList);
 
 		uniqLock.unlock();
 
-		try
+		while (!sqlList.empty())
 		{
-			m_CMysqlHelper.execute(sql);
-		}
-		catch (MysqlHelper_Exception& excep)
-		{
-			COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+			std::string sql = sqlList.front();
+			sqlList.pop_front();
+
+			try
+			{
+				m_CMysqlHelper.execute(sql);
+			}
+			catch (MysqlHelper_Exception& excep)
+			{
+				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+			}
 		}
 	}
 }
@@ -263,7 +269,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 	{
 
 	}
-	else // TCP socket
+	else if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
 		if (uMainID == (unsigned int)MsgCmd::MsgCmd_RegisterAccount)
 		{

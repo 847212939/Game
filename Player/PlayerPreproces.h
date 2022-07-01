@@ -66,7 +66,7 @@ private:
 	// 线程启动
 	bool Run();
 	// 数据库执行
-	void HandlerExecuteSql();
+	void HandlerExecuteSqlThread();
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	// 登录

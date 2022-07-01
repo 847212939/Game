@@ -246,9 +246,7 @@ std::string CMysqlHelper::getVariables(const std::string& sName)
 
 void CMysqlHelper::execute(const std::string& sSql)
 {
-	/**
-	没有连上, 连接数据库
-	*/
+	// 没有连上, 连接数据库
 	if (!m_bConnected)
 	{
 		connect();
@@ -259,9 +257,7 @@ void CMysqlHelper::execute(const std::string& sSql)
 	int iRet = mysql_real_query(m_pstMql, sSql.c_str(), static_cast<unsigned long>(sSql.length()));
 	if (iRet != 0)
 	{
-		/**
-		自动重新连接
-		*/
+		// 自动重新连接
 		int iErrno = mysql_errno(m_pstMql);
 		if (iErrno == 2013 || iErrno == 2006)
 		{

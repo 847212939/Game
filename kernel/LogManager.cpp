@@ -237,8 +237,11 @@ void CGameLogManage::Fflush()
 
 	for (std::multimap<FILE*, std::string>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
 	{
-		fputs(it->second.c_str(), it->first);
-		fflush(it->first);
+		if (it->first)
+		{
+			fputs(it->second.c_str(), it->first);
+			fflush(it->first);
+		}
 	}
 }
 
@@ -248,7 +251,7 @@ void CGameLogManage::HandlerLogThread()
 	while (true)
 	{
 		// 日志五秒钟打印一次
-		std::this_thread::sleep_for(std::chrono::seconds(6));
+		std::this_thread::sleep_for(std::chrono::seconds(8));
 		if (!m_logMap.empty())
 		{
 			Fflush();

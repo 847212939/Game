@@ -26,10 +26,10 @@ TCPClient::~TCPClient()
 void TCPClient::Run()
 {
 	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&TCPClient::HandlerRecvDataList, this));
+	threadVec.push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 }
 
-void TCPClient::HandlerRecvDataList()
+void TCPClient::HandlerRecvDataListThread()
 {
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -43,7 +43,7 @@ void TCPClient::HandlerRecvDataList()
 	//Êý¾Ý»º´æ
 	void* pDataLineHead = NULL;
 
-	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataList thread begin...");
+	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataListThread thread begin...");
 
 	while (GetRuninged())
 	{
@@ -84,7 +84,7 @@ void TCPClient::HandlerRecvDataList()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataList exit...");
+	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataListThread exit...");
 
 	return;
 }

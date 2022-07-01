@@ -60,16 +60,6 @@
 #include "../Player/Scene.h"
 // 信息在注册
 #include "../Player/PlayerPreproces.h"
-// 加密解密websocket
-#include "../Player/Sha1Base64.h"
-// websocket
-#include "../Player/WebSocket.h"
-// webserver
-#include "../Player/server.h"
-
-
-
-
 
 
 
