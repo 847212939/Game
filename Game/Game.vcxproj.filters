@@ -41,9 +41,6 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\玩家">
       <UniqueIdentifier>{aaf6facd-69c3-4e32-9f2d-cecd0fdd9949}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\网络">
-      <UniqueIdentifier>{a686e9c7-44e9-4d55-8725-c69956d22b80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家信息\场景">
       <UniqueIdentifier>{a0ffe58f-e304-4b3e-a9bd-6c02b43a4647}</UniqueIdentifier>
     </Filter>
@@ -97,12 +94,6 @@
     <ClCompile Include="..\Player\Player.cpp">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\server.cpp">
-      <Filter>玩家信息\网络</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\WebSocket.cpp">
-      <Filter>玩家信息\网络</Filter>
-    </ClCompile>
     <ClCompile Include="..\Player\PlayerInfo.cpp">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
     </ClCompile>
@@ -149,15 +140,6 @@
     </ClInclude>
     <ClInclude Include="..\Player\Player.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\server.h">
-      <Filter>玩家信息\网络</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Sha1Base64.h">
-      <Filter>玩家信息\网络</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\WebSocket.h">
-      <Filter>玩家信息\网络</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
