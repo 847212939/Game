@@ -207,6 +207,8 @@ bool PlayerPreproces::Run()
 void PlayerPreproces::HandlerExecuteSqlThread()
 {
 	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread begin...");
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+
 	while (m_pTCPClient->GetRuninged())
 	{
 		//进入挂起状态
@@ -238,6 +240,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 			}
 		}
 	}
+	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread end...");
 }
 
 // 处理消息

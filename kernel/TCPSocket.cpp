@@ -152,7 +152,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	//数据缓存
 	void* pDataLineHead = NULL;
 
-	std::this_thread::sleep_for(std::chrono::seconds(3));
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsgThread thread begin...");
 
@@ -212,7 +212,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 		return;
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	COUT_LOG(LOG_INFO, "ThreadAcceptThread thread begin...");
 
@@ -593,13 +593,11 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	{
 		return false;
 	}
-
-	if (pHead->uMainID == MSG_MAIN_TEST) //心跳包
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
 	{
 		return true;
 	}
-
-	if (pHead->uMainID == MSG_MAIN_CONECT) //测试连接包
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
 	{
 		return true;
 	}

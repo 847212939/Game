@@ -42,7 +42,7 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	else if (level == LOG_CERROR)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-		std::cout << buf << "{func=" << pFuncName << " line=" << line << "}" << std::endl;
+		std::cout << buf << std::endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	}
 
