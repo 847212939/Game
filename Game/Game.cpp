@@ -3,20 +3,6 @@
 int main()
 {
 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
-
- 	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
 	TCPClient clien;
 }
  

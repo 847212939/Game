@@ -28,6 +28,10 @@ CTCPSocketManage::CTCPSocketManage()
 	{
 		COUT_LOG(LOG_CERROR, "Init socket dll err");
 	}
+	if (evthread_use_windows_threads() != 0)
+	{
+		COUT_LOG(LOG_CERROR, "evthread_use_windows_threads() is err");
+	}
 }
 
 CTCPSocketManage::~CTCPSocketManage()
