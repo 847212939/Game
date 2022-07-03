@@ -19,8 +19,6 @@ private:
 	void InitCallBackFun();
 
 private:
-	// 玩家预处理
-	PlayerPreproces* m_pPlayerPreproces;
-	// 玩家中心
-	PlayerCenter     m_PlayerCenter;
+	PlayerPreproces* m_pPlayerPreproces;	// 玩家预处理
+	PlayerCenter     m_PlayerCenter;		// 玩家中心
 };
