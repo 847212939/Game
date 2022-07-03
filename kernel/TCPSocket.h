@@ -74,9 +74,9 @@ private:
 	// 回调函数
 	// 新的连接到来，ThreadAcceptThread线程函数
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
-	// 新的数据到来，ThreadRSSocketThread线程函数
+	// 客户端数据读取
 	static void ReadCB(struct bufferevent*, void*);
-	// 连接关闭等等错误消息，ThreadRSSocketThread线程函数
+	// 连接关闭等等错误消息
 	static void EventCB(struct bufferevent*, short, void*);
 	// accept失败，ThreadAcceptThread线程函数
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);

@@ -249,7 +249,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	int workBaseCount = 0;
 	if (workBaseCount <= 1)
 	{
-		workBaseCount = 4;
+		workBaseCount = 16;
 	}
 
 	// 初始工作线程信息
@@ -496,7 +496,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
 	// 发送连接成功消息
-	//SendData(index, NULL, 0, 1, 1, 0, 0, tcpInfo.bev);
+	SendData(index, NULL, 0, 1, 1, 0, tcpInfo.bev);
 
 	COUT_LOG(LOG_INFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
@@ -589,7 +589,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size)
 {
-	if (!pHead)
+	if (!pBufferevent || !pHead)
 	{
 		return false;
 	}
@@ -784,7 +784,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	//// 服务器主动发起FIN包
 	//if (!isClientAutoClose)
 	//{
-	//	close(tcpInfo.acceptFd);
+	//	closesocket(tcpInfo.acceptFd);
 	//}
 
 	// 和发送线程相关的锁
@@ -1070,6 +1070,11 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKET recv
 
 bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
+	if (!pBufferevent)
+	{
+		COUT_LOG(LOG_CERROR, "!pBufferevent");
+		return false;
+	}
 	if (!IsConnected(index))
 	{
 		COUT_LOG(LOG_CERROR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
@@ -1103,6 +1108,7 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, in
 	if (m_pSendDataLine)
 	{
 		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
+		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
 		pLineHead->socketIndex = index;
 		pLineHead->pBufferevent = pBufferevent;
 
