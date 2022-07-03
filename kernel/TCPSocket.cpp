@@ -458,7 +458,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 
 	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGON)
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
@@ -523,9 +523,9 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 
 	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
 
-	std::unique_ptr<char[]> uniqueBuf(new char[maxSingleRead]);
+	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
 
-	size_t realAllSize = evbuffer_copyout(input, uniqueBuf.get(), maxSingleRead);
+	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
 	if (realAllSize <= 0)
 	{
 		return false;
@@ -535,7 +535,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	size_t handleRemainSize = realAllSize;
 
 	// 解出包头
-	NetMessageHead* pNetHead = (NetMessageHead*)uniqueBuf.get();
+	NetMessageHead* pNetHead = (NetMessageHead*)recvBuf.get();
 
 	// 错误判断
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
@@ -571,7 +571,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		if (realSize > 0)
 		{
 			// 没数据就为NULL
-			pData = (void*)(uniqueBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
+			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
 		}
 
 		// 派发数据
@@ -579,7 +579,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 
 		handleRemainSize -= messageSize;
 
-		pNetHead = (NetMessageHead*)(uniqueBuf.get() + realAllSize - handleRemainSize);
+		pNetHead = (NetMessageHead*)(recvBuf.get() + realAllSize - handleRemainSize);
 	}
 
 	evbuffer_drain(input, realAllSize - handleRemainSize);
@@ -595,6 +595,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
 	{
+		HeartbeatCheck((bufferevent*)pBufferevent, pHead);
 		return true;
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
@@ -630,6 +631,22 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 
 	return true;
 }
+
+// 心跳包校验
+void CTCPSocketManage::HeartbeatCheck(bufferevent* bev, NetMessageHead* pHead)
+{
+	if (!bev || !pHead)
+	{
+		COUT_LOG(LOG_ERROR, "!bev || !pHead");
+		return;
+	}
+
+	timeval tvRead;
+	tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
+	tvRead.tv_usec = 0;
+	bufferevent_set_timeouts(bev, &tvRead, NULL);
+}
+
 
 bool CTCPSocketManage::CloseSocket(int index)
 {
@@ -1066,10 +1083,10 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, in
 	}
 
 	// 整合一下数据
-	std::unique_ptr<char[]> unqueBuf(new char[sizeof(SendDataLineHead) + sizeof(NetMessageHead) + size]);
+	std::unique_ptr<char[]> SendBuf(new char[sizeof(SendDataLineHead) + sizeof(NetMessageHead) + size]);
 
 	// 拼接包头
-	NetMessageHead* pHead = reinterpret_cast<NetMessageHead*>((char*)unqueBuf.get() + sizeof(SendDataLineHead));
+	NetMessageHead* pHead = reinterpret_cast<NetMessageHead*>((char*)SendBuf.get() + sizeof(SendDataLineHead));
 	pHead->uMainID = mainID;
 	pHead->uAssistantID = assistID;
 	pHead->uMessageSize = sizeof(NetMessageHead) + size;
@@ -1079,13 +1096,13 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, in
 	// 包体
 	if (pData && size > 0)
 	{
-		memcpy(unqueBuf.get() + sizeof(SendDataLineHead) + sizeof(NetMessageHead), pData, size);
+		memcpy(SendBuf.get() + sizeof(SendDataLineHead) + sizeof(NetMessageHead), pData, size);
 	}
 
 	// 投递到发送队列
 	if (m_pSendDataLine)
 	{
-		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(unqueBuf.get());
+		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
 		pLineHead->socketIndex = index;
 		pLineHead->pBufferevent = pBufferevent;
 

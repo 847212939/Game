@@ -29,8 +29,6 @@ enum class SocketType
 //通用变量的定义
 const unsigned int			MAX_NUM_IP_ADDR_SIZE = 48;							// 最大数字IP地址长度
 const static int			ERROR_SERVICE_FULL = 15;							// 服务器人数已满
-const static unsigned int	MSG_MAIN_TEST = 1;									// 测试消息
-const static unsigned int	MSG_MAIN_CONECT = 2;								// 连接测试
 const int					MAX_POST_CONNECTED_COUNT = 128;						// 连接线程投递到接收线程socket最大数量
 const int					MAX_TEMP_SENDBUF_SIZE = 8 * 1024;					// 临时发送缓冲区大小，也是单条数据包的最大长度，可以改成16K
 const int					SOCKET_SEND_BUF_SIZE = MAX_TEMP_SENDBUF_SIZE * 8;	// TCP发送缓冲区最小值

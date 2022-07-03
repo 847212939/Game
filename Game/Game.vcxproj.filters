@@ -47,9 +47,6 @@
     <Filter Include="模板学习">
       <UniqueIdentifier>{c3be62fc-425d-43fa-bf99-d41e03ba5f22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="模板学习\混入">
-      <UniqueIdentifier>{b1a48271-e020-4a58-8b59-17658db114c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="模板学习\SFIAE">
       <UniqueIdentifier>{c647976c-03eb-4b69-89fd-d2d2acfffd8d}</UniqueIdentifier>
     </Filter>
@@ -61,6 +58,9 @@
     </Filter>
     <Filter Include="模板学习\生成类型">
       <UniqueIdentifier>{278d4dcc-6ee0-48e0-866e-23572f898c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家信息\玩家管理\游戏逻辑\属性">
+      <UniqueIdentifier>{aeeda643-46cd-4a35-abc6-e2d85c4c274a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +153,6 @@
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家信息\场景</Filter>
     </ClInclude>
-    <ClInclude Include="..\study\Mixin.h">
-      <Filter>模板学习\混入</Filter>
-    </ClInclude>
     <ClInclude Include="..\study\Addition.h">
       <Filter>模板学习\SFIAE</Filter>
     </ClInclude>
@@ -167,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\study\IntegerSequence.h">
       <Filter>模板学习\生成类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Attrs.h">
+      <Filter>玩家信息\玩家管理\游戏逻辑\属性</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

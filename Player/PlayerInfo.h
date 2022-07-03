@@ -8,14 +8,10 @@ public:
 	~PlayerInfo();
 
 public:
-	// SOCKET读取通知结构定义
-	SocketReadLine* m_pMsg;
-	// 玩家发送过来的数据
-	void*			m_pData;
-	// 服务器类型
-	ServiceType		m_uSrverType;
-	// 玩家id
-	std::string		m_userId;
-	// 玩家TCP的网络信息
-	const TCPSocketInfo* m_pTcpSockInfo;
+	
+	SocketReadLine* m_pMsg;					// SOCKET读取通知结构定义
+	void*			m_pData;				// 玩家发送过来的数据
+	ServiceType		m_uSrverType;			// 服务器类型
+	std::string		m_userId;				// 玩家id
+	const TCPSocketInfo* m_pTcpSockInfo;	// 玩家TCP的网络信息
 };

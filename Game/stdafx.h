@@ -51,6 +51,8 @@
 // 日志管理类
 #include "../kernel/LogManager.h"
 
+// 属性
+#include "../Player/Attrs.h"
 // 玩家信息
 #include "../Player/PlayerInfo.h"
 // 玩家
@@ -73,8 +75,6 @@
 
 
 
-// 模板学习
-#include "../study/Mixin.h"
 // SFIAE
 #include "../study/Addition.h"
 // 可调用对象

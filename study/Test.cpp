@@ -3,11 +3,11 @@
 void TEST::TestFun()
 {
 	// 模板混入实现多个基类的继承
-	RoleNpc roleNpc;
-	roleNpc.m_speack = "你是傻逼";
+	//RoleNpc roleNpc;
+	//roleNpc.speack = "你是傻逼";
 
-	RoleNpcFamily roleNpcFamily;
-	roleNpcFamily.m_familyVec.push_back(roleNpc);
+	//RoleNpcFamily roleNpcFamily;
+	//roleNpcFamily.m_familyVec.push_back(roleNpc);
 
 }
 

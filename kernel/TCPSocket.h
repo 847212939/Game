@@ -61,6 +61,8 @@ private:
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
+	// 心跳包校验
+	void HeartbeatCheck(bufferevent* bev, NetMessageHead* pHead);
 
 	// SOCKET 连接应答线程
 	static void ThreadAcceptThread(void* pThreadData);

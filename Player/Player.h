@@ -16,6 +16,6 @@ public:
 	PlayerInfo* GetPlayerInfo();
 
 private:
-	// 玩家信息
-	PlayerInfo* m_PlayerInfo;
+	PlayerInfo* m_PlayerInfo;   // 玩家信息
+	PlayerAttrs m_PlayerAttrs;  // 玩家属性
 };
