@@ -3,7 +3,7 @@
 TCPClient::TCPClient() : 
 	m_pRegisteredAccount(new PlayerPreproces(this))
 {
-	Init(32000, 8888);
+	Init(1024, 8888);
 	Start(ServiceType::SERVICE_TYPE_LOGIC);
 	Run();
 }

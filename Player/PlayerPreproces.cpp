@@ -264,7 +264,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 	unsigned int uMainID = pPlayerInfo->m_pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
-		COUT_LOG(LOG_CERROR, "没有找到住消息类型 cmd = %d", uMainID);
+		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
 	// websocket服务器

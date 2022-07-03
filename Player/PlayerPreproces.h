@@ -11,16 +11,11 @@ public:
 		cs_login        = 2,  // 登录
 	};
 public:
-	// 玩家账户信息<账户，密码>
-	typedef std::map<std::string, std::string> AccountMap;
-	// 玩家账户<账户, userId>
-	typedef std::map<std::string, std::string> AccountUserIDMap;
-	// 数据库语句list<sql>
-	typedef std::list<std::string> SqlList;
-	// 消息回调函数
-	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;
-	// 数据库查询结果
-	typedef std::map<std::string, std::string> SqlKeyDataMap;
+	typedef std::map<std::string, std::string> AccountMap;						// 玩家账户信息<账户，密码>
+	typedef std::map<std::string, std::string> AccountUserIDMap;				// 玩家账户<账户, userId>
+	typedef std::list<std::string> SqlList;										// 数据库语句list<sql>	
+	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;	// 消息回调函数
+	typedef std::map<std::string, std::string> SqlKeyDataMap;					// 数据库查询结果
 
 public:
 	PlayerPreproces(TCPClient* pTCPClient);
@@ -83,21 +78,12 @@ private:
 	bool CreatePlayr(PlayerInfo* pPlayerInfo);
 
 private:
-	// 条件变量数据库用
-	ConditionVariable m_cond;
-	// 数据库语链表
-	SqlList           m_sqlList;
-	// 网络
-	TCPClient*        m_pTCPClient;
-	// 玩家场景
-	Scene             m_scene;
-	// 数据库
-	CMysqlHelper      m_CMysqlHelper;
-	//玩家账户信息
-	AccountMap        m_accountMap;
-	// 回调函数
-	CallBackFunMap    m_CallBackFunMap;
-	// 账户和userId
-	AccountUserIDMap  m_AccountUserIDMap;
-	
+	ConditionVariable m_cond;				// 条件变量数据库用
+	SqlList           m_sqlList;			// 数据库语链表
+	TCPClient*        m_pTCPClient;			// 网络客户端
+	Scene             m_scene;				// 玩家场景
+	CMysqlHelper      m_CMysqlHelper;		// 数据库
+	AccountMap        m_accountMap;			// 玩家账户信息
+	CallBackFunMap    m_CallBackFunMap;		// 回调函数
+	AccountUserIDMap  m_AccountUserIDMap;	// 账户和userId
 };
