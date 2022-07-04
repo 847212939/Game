@@ -177,7 +177,7 @@
     <ClInclude Include="ConfigMgr.h">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
-    <ClInclude Include="Lua_ConfigMgr.h">
+    <ClInclude Include="Lua_ConfigMgr.cpp">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
   </ItemGroup>
