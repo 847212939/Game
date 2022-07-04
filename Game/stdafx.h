@@ -30,6 +30,15 @@
 #include <event2/thread.h>
 #include <mysql.h>
 
+// lua
+extern "C"
+{
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
+#include "tolua++.h"
+
 // 玩家消息定义
 #include "../Player/MessageCmd.h"
 // 网络
@@ -75,19 +84,3 @@
 
 // 测试用的放在最下面
 #include "../study/Test.h"
-
-// lua
-extern "C"
-{
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-}
-#include "tolua++.h"
-
-// 配置管理
-#include "ConfigMgr.h"
-
-
-#pragma comment(lib,"ws2_32.lib")
-

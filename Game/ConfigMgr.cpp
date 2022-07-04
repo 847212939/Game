@@ -1,4 +1,4 @@
-#include "../Game/stdafx.h"
+#include "ConfigMgr.h"
 
 ConfigMgr::ConfigMgr()
 {

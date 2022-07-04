@@ -1,7 +1,20 @@
 ﻿#include "stdafx.h"
 
+// 配置管理
+#include "ConfigMgr.h"
+
+extern int tolua_Config_open(lua_State* tolua_S);
+
 int main()
 {
+    lua_State* L = luaL_newstate();
+    luaL_openlibs(L);
+
+    tolua_Config_open(L);
+
+    luaL_dofile(L, "./test.lua");
+    lua_close(L);
+
 	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
 	TCPClient clien;
 }
