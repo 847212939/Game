@@ -889,7 +889,7 @@ int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2
 
 	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
-	if (SOCKET_ERROR == bind(listener, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	if (SOCKET_ERROR == ::bind(listener, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
 	{
 		goto fail;
 	}
@@ -959,7 +959,7 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 
 	setsockopt(server, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
-	if (SOCKET_ERROR == bind(server, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
+	if (SOCKET_ERROR == ::bind(server, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
 	{
 		goto fail;
 	}
@@ -995,7 +995,7 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 
 	setsockopt(client, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
-	if (SOCKET_ERROR == bind(client, result->ai_addr, static_cast<int>(result->ai_addrlen)))
+	if (SOCKET_ERROR == ::bind(client, result->ai_addr, static_cast<int>(result->ai_addrlen)))
 	{
 		goto fail;
 	}

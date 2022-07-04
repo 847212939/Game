@@ -62,6 +62,9 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\属性">
       <UniqueIdentifier>{aeeda643-46cd-4a35-abc6-e2d85c4c274a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家信息\配置加载">
+      <UniqueIdentifier>{1a73a25c-3a75-4e1b-ad77-48ac8d68025c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -102,6 +105,9 @@
     </ClCompile>
     <ClCompile Include="..\study\Test.cpp">
       <Filter>模板学习\测试用例</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\ConfigMgr.cpp">
+      <Filter>玩家信息\配置加载</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,5 +174,16 @@
     <ClInclude Include="..\Player\Attrs.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\属性</Filter>
     </ClInclude>
+    <ClInclude Include="..\Player\ConfigMgr.h">
+      <Filter>玩家信息\配置加载</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Lua_ConfigMgr.h">
+      <Filter>玩家信息\配置加载</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Player\Config.pkg">
+      <Filter>玩家信息\配置加载</Filter>
+    </None>
   </ItemGroup>
 </Project>

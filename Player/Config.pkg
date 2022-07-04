@@ -1,0 +1,12 @@
+ 
+$#include "ConfigMgr.h"
+ 
+class ConfigMgr
+{
+public:
+	ConfigMgr();
+	~ConfigMgr();
+ 
+	void Run();
+	void Run @ Run2(int a);
+};
