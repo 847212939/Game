@@ -1,14 +1,15 @@
-
-
 $#include "ConfigMgr.h" 
 
-class ConfigMgr { //tolua_export
-//tolua_begin 
+class ConfigMgr //tolua_export
+{ 
 public:
+
+//tolua_begin 
 	ConfigMgr();
 	~ConfigMgr();
  
 	void Run();
 	void Run @ Run2(int a);
-};
 //tolua_end 
+
+};

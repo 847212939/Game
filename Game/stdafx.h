@@ -84,3 +84,6 @@ extern "C"
 
 // 测试用的放在最下面
 #include "../study/Test.h"
+
+// 配置管理
+#include "ConfigMgr.h"

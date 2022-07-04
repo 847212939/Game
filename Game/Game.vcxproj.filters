@@ -67,7 +67,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\LogManager.cpp">
@@ -177,7 +177,7 @@
     <ClInclude Include="ConfigMgr.h">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
-    <ClInclude Include="Lua_ConfigMgr.cpp">
+    <ClInclude Include="Lua_ConfigMgr.h">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
   </ItemGroup>

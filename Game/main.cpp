@@ -1,9 +1,5 @@
 ﻿#include "stdafx.h"
-
-// 配置管理
-#include "ConfigMgr.h"
-
-extern int tolua_Config_open(lua_State* tolua_S);
+#include "Lua_ConfigMgr.h"
 
 int main()
 {

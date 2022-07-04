@@ -1,6 +1,6 @@
 #pragma once
 
-// tolua++.exe -o Lua_ConfigMgr.cpp Config.pkg
+// tolua++.exe -o Lua_ConfigMgr.h Config.pkg
 
 class ConfigMgr
 {

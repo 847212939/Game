@@ -124,13 +124,15 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\include;C:\code\libevent_project\build_project_vs2019_64\openssl\include;C:\code\libevent_project\build_project_vs2019_64\zlib2\include;C:\code\mysql-5.7.26-winx64\include;C:\code\libevent_project\build_project_vs2019_64\tolua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,7 +144,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\include;C:\code\libevent_project\build_project_vs2019_64\openssl\include;C:\code\libevent_project\build_project_vs2019_64\zlib2\include;C:\code\mysql-5.7.26-winx64\include;C:\code\libevent_project\build_project_vs2019_64\tolua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -152,6 +154,8 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libR;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;toLua.lib;Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -168,7 +172,7 @@
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\study\Test.cpp" />
     <ClCompile Include="ConfigMgr.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\ConditionVariable.h" />
@@ -192,7 +196,7 @@
     <ClInclude Include="..\study\IntegerSequence.h" />
     <ClInclude Include="..\study\Test.h" />
     <ClInclude Include="ConfigMgr.h" />
-    <ClInclude Include="Lua_ConfigMgr.cpp" />
+    <ClInclude Include="Lua_ConfigMgr.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
