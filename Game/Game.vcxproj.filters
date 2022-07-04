@@ -106,7 +106,7 @@
     <ClCompile Include="..\study\Test.cpp">
       <Filter>模板学习\测试用例</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\ConfigMgr.cpp">
+    <ClCompile Include="ConfigMgr.cpp">
       <Filter>玩家信息\配置加载</Filter>
     </ClCompile>
   </ItemGroup>
@@ -174,15 +174,15 @@
     <ClInclude Include="..\Player\Attrs.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\属性</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\ConfigMgr.h">
+    <ClInclude Include="ConfigMgr.h">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Lua_ConfigMgr.h">
+    <ClInclude Include="Lua_ConfigMgr.h">
       <Filter>玩家信息\配置加载</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Player\Config.pkg">
+    <None Include="Config.pkg">
       <Filter>玩家信息\配置加载</Filter>
     </None>
   </ItemGroup>

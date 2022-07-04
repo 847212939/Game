@@ -130,7 +130,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;LuaD.lib;toLuaD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libR;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;toLuaR.lib;LuaR.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;toLua.lib;Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -161,13 +161,13 @@
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
-    <ClCompile Include="..\Player\ConfigMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
     <ClCompile Include="..\Player\PlayerInfo.cpp" />
     <ClCompile Include="..\Player\PlayerPreproces.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\study\Test.cpp" />
+    <ClCompile Include="ConfigMgr.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,8 +181,6 @@
     <ClInclude Include="..\kernel\TCPSocket.h" />
     <ClInclude Include="..\kernel\Util.h" />
     <ClInclude Include="..\Player\Attrs.h" />
-    <ClInclude Include="..\Player\ConfigMgr.h" />
-    <ClInclude Include="..\Player\Lua_ConfigMgr.h" />
     <ClInclude Include="..\Player\MessageCmd.h" />
     <ClInclude Include="..\Player\Player.h" />
     <ClInclude Include="..\Player\PlayerCenter.h" />
@@ -193,10 +191,12 @@
     <ClInclude Include="..\study\Function.h" />
     <ClInclude Include="..\study\IntegerSequence.h" />
     <ClInclude Include="..\study\Test.h" />
+    <ClInclude Include="ConfigMgr.h" />
+    <ClInclude Include="Lua_ConfigMgr.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Player\Config.pkg" />
+    <None Include="Config.pkg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
