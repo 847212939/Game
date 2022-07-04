@@ -2,16 +2,16 @@
 
 // tolua++.exe -o Lua_ConfigMgr.h Config.pkg
 
-#include<iostream>
-using namespace std;
-
 class ConfigMgr
 {
 public:
+	static ConfigMgr* Instance();
+
+public:
+	void Run();
+	void Run(int a);
+
+private:
 	ConfigMgr();
 	~ConfigMgr();
-
-	void Run();
-
-	void Run(int a);
 };

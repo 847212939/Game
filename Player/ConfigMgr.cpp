@@ -1,5 +1,10 @@
 #include "../Game/stdafx.h"
 
+ConfigMgr* ConfigMgr::Instance()
+{
+	static ConfigMgr g_mgr;
+	return &g_mgr;
+}
 
 ConfigMgr::ConfigMgr()
 {
@@ -7,12 +12,12 @@ ConfigMgr::ConfigMgr()
 
 void ConfigMgr::Run()
 {
-	cout << "ConfigMgr Run" << endl;
+	COUT_LOG(LOG_CINFO, "ConfigMgr Run");
 }
 
 void ConfigMgr::Run(int a)
 {
-	cout << "ConfigMgr Run" << a << endl;
+	COUT_LOG(LOG_CINFO, "ConfigMgr Run");
 }
 
 ConfigMgr::~ConfigMgr()
