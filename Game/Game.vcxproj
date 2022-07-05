@@ -123,13 +123,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\include;C:\code\libevent_project\build_project_vs2019_64\openssl\include;C:\code\libevent_project\build_project_vs2019_64\zlib2\include;C:\code\mysql-5.7.26-winx64\include;C:\code\libevent_project\build_project_vs2019_64\tolua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Res\libevent\include;..\Res\mysql\include;..\Res\openssl\include;..\Res\tolua\include;..\Res\zlib2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Res\libevent\lib;..\Res\mysql\lib;..\Res\openssl\lib;..\Res\tolua\libD;..\Res\zlib2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\include;C:\code\libevent_project\build_project_vs2019_64\openssl\include;C:\code\libevent_project\build_project_vs2019_64\zlib2\include;C:\code\mysql-5.7.26-winx64\include;C:\code\libevent_project\build_project_vs2019_64\tolua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Res\libevent\include;..\Res\mysql\include;..\Res\openssl\include;..\Res\tolua\include;..\Res\zlib2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -152,8 +152,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\code\libevent_project\build_project_vs2019_64\libevent\lib;C:\code\libevent_project\build_project_vs2019_64\openssl\lib;C:\code\libevent_project\build_project_vs2019_64\zlib2\lib;C:\code\mysql-5.7.26-winx64\lib;C:\code\libevent_project\build_project_vs2019_64\tolua\libR;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;toLua.lib;Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Res\libevent\lib;..\Res\mysql\lib;..\Res\openssl\lib;..\Res\tolua\libD;..\Res\zlib2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
     </Link>
