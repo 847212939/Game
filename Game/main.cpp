@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
-#include "Lua_ConfigMgr.h"
+
+extern int tolua_Config_open(lua_State* tolua_S);
 
 int main()
 {

@@ -86,4 +86,4 @@ extern "C"
 #include "../study/Test.h"
 
 // ≈‰÷√π‹¿Ì
-#include "ConfigMgr.h"
+#include "../Config/ConfigMgr.h"

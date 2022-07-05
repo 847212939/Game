@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Tue Jul  5 02:37:20 2022.
+** Generated automatically by tolua++-1.0.92 on Wed Jul  6 01:25:35 2022.
 */
 
 #ifndef __cplusplus
@@ -13,7 +13,7 @@
 /* Exported function */
 TOLUA_API int  tolua_Config_open (lua_State* tolua_S);
 
-#include "ConfigMgr.h" 
+#include "../Game/stdafx.h"
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus

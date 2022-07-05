@@ -159,6 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Config\ConfigMgr.cpp" />
+    <ClCompile Include="..\Config\Lua_ConfigMgr.cpp" />
     <ClCompile Include="..\kernel\DataLine.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
@@ -171,10 +173,10 @@
     <ClCompile Include="..\Player\PlayerPreproces.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\study\Test.cpp" />
-    <ClCompile Include="ConfigMgr.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Config\ConfigMgr.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\Log.h" />
@@ -195,12 +197,10 @@
     <ClInclude Include="..\study\Function.h" />
     <ClInclude Include="..\study\IntegerSequence.h" />
     <ClInclude Include="..\study\Test.h" />
-    <ClInclude Include="ConfigMgr.h" />
-    <ClInclude Include="Lua_ConfigMgr.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config.pkg" />
+    <None Include="..\Config\Config.pkg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
