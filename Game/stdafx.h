@@ -39,51 +39,27 @@ extern "C"
 }
 #include "tolua++.h"
 
-// 玩家消息定义
-#include "../Player/MessageCmd.h"
-// 网络
-#include "../kernel/Internal.h"
-// 日志
-#include "../kernel/Log.h"
-// 数据库
-#include "../kernel/MysqlHelper.h"
-// 条件变量
-#include "../kernel/ConditionVariable.h"
-// 数据处理
-#include "../kernel/DataLine.h"
-// 网络基类
-#include "../kernel/TCPSocket.h"
-// 网络客户端
-#include "../kernel/TCPClient.h"
-// 工具类
-#include "../kernel/Util.h"
-// 日志管理类
-#include "../kernel/LogManager.h"
 
-// 属性
-#include "../Player/Attrs.h"
-// 玩家信息
-#include "../Player/PlayerInfo.h"
-// 玩家
-#include "../Player/Player.h"
-// 玩家管理
-#include "../Player/PlayerCenter.h"
-// 场景
-#include "../Player/Scene.h"
-// 信息在注册
-#include "../Player/PlayerPreproces.h"
+#include "../Player/MessageCmd.h"			// 玩家消息定义
+#include "../kernel/Internal.h"				// 网络
+#include "../kernel/Log.h"					// 日志
+#include "../kernel/MysqlHelper.h"			// 数据库
+#include "../kernel/ConditionVariable.h"	// 条件变量
+#include "../kernel/DataLine.h"				// 数据处理
+#include "../kernel/TCPSocket.h"			// 网络基类
+#include "../kernel/TCPClient.h"			// 网络客户端
+#include "../kernel/Util.h"					// 工具类
+#include "../kernel/LogManager.h"			// 日志管理类
+#include "../Player/Attrs.h"				// 属性
+#include "../Player/PlayerInfo.h"			// 玩家信息
+#include "../Player/Player.h"				// 玩家
+#include "../Player/PlayerCenter.h"			// 玩家管理
+#include "../Player/Scene.h"				// 场景
+#include "../Player/PlayerPreproces.h"		// 信息在注册
 
+#include "../study/Addition.h"				// SFIAE
+#include "../study/Function.h"				// 可调用对象
+#include "../study/IntegerSequence.h"		// 将一个数字重复生成一个类型
+#include "../study/Test.h"					// 测试用的放在最下面
 
-// SFIAE
-#include "../study/Addition.h"
-// 可调用对象
-#include "../study/Function.h"
-// 将一个数字重复生成一个类型
-#include "../study/IntegerSequence.h"
-
-
-// 测试用的放在最下面
-#include "../study/Test.h"
-
-// 配置管理
-#include "../Config/ConfigMgr.h"
+#include "../Config/ConfigMgr.h"			// 配置管理
