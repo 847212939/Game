@@ -1,6 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
+// 调试中用 线上注释掉
+#define DEBUG
+
 void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...)
 {
 	if (!pLogfile || !pFile || !pFuncName || !pBuf)
@@ -34,6 +37,8 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	vsprintf(buf + strlen(buf), pBuf, args);
 	va_end(args);
 
+#ifdef DEBUG
+
 	// 输出到控制台
 	if (level == LOG_CINFO)
 	{
@@ -46,7 +51,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	}
 
-	sprintf(buf + strlen(buf), "{%s %s %d}\n", pFile, pFuncName, line);
+#endif
+
+	sprintf(buf + strlen(buf), " {%s %s %d}\n", pFile, pFuncName, line);
 
 	std::string strPath = LogManager()->GetLogPath() + pLogfile;
 
