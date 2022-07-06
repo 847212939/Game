@@ -4,7 +4,7 @@ Scene::Scene(PlayerPreproces* pPlayerPreproces) :
 	m_pPlayerPreproces(pPlayerPreproces),
 	m_PlayerCenter(this)
 {
-
+	
 }
 
 Scene::~Scene()
@@ -15,12 +15,13 @@ Scene::~Scene()
 // 分发消息
 void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-
+	m_PlayerCenter.DispatchMessage(cmd, pPlayerInfo);
 }
 
 // 创建角色
-bool Scene::CreatePlayr(PlayerInfo* pPlayerInfo)
+bool Scene::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
+	m_PlayerCenter.CreatePlayr(index, pSockInfo, userId);
 	return true;
 }
 

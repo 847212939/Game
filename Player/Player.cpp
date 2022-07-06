@@ -1,6 +1,8 @@
 #include "../Game/stdafx.h"
 
-Player::Player(PlayerInfo* pPlayerInfo) : m_PlayerInfo(pPlayerInfo)
+Player::Player(const TCPSocketInfo* pSockInfo, std::string& userId) : 
+	m_pTcpSockInfo(pSockInfo),
+	m_userId(userId)
 {
 
 }
@@ -10,19 +12,31 @@ Player::~Player()
 
 }
 
-// 获取玩家id
-std::string Player::GetUserId()
+// 加载数据库
+void Player::LoadMysql()
 {
-	if (!m_PlayerInfo)
-	{
-		return "";
-	}
 
-	return m_PlayerInfo->m_userId;
+}
+
+bool Player::EnterScene()
+{
+	return true;
+}
+
+// 进入游戏
+void Player::EnterGame()
+{
+
+}
+
+// 获取玩家id
+std::string Player::GetUserId() const
+{
+	return m_userId;
 }
 
 // 获取玩家信息
-PlayerInfo* Player::GetPlayerInfo()
+const TCPSocketInfo* Player::GetTCPSocketInfo()
 {
-	return m_PlayerInfo;
+	return m_pTcpSockInfo;
 }

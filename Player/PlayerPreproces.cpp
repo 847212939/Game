@@ -40,107 +40,71 @@ void PlayerPreproces::LoginInAccount(PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "网络链接关闭");
 		return;
 	}
+
 	unsigned int uAssistantID = pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
 	std::string str = (char*)pPlayerInfo->m_pData;
 	CIstringstream is(str);
 	std::string id, pw;
 	is >> id >> pw;
-	switch ((PlayerPreprocesCmd)uAssistantID)
-	{
-	case PlayerPreprocesCmd::cs_register:
-	{
-		Register(id, pw, pPlayerInfo);
-		break;
-	}
-	case PlayerPreprocesCmd::cs_login:
+
+	if (PlayerPreprocesCmd::cs_login == (PlayerPreprocesCmd)uAssistantID)
 	{
 		if (LoginIn(id, pw, pPlayerInfo))
 		{
-			CreatePlayr(pPlayerInfo);
+			CreatePlayr((int)pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, pPlayerInfo->m_userId);
 		}
-		break;
-	}
-	default:
-		break;
 	}
 }
 
-// 注册账号
-bool PlayerPreproces::Register(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
-{
-	if (id.empty() || passwaed.empty())
-	{
-		// 账号不存在
-		return false;
-	}
-
-	std::string userId = Util::CreateUuid();
-
-	m_accountMap.insert(std::make_pair(id, passwaed));
-	m_AccountUserIDMap.insert(std::make_pair(id, userId));
-
-	// 保存数据库
-	SaveReplaceSQL("useraccount", id, passwaed);
-	SaveReplaceSQL("userid", id, userId);
-	return true;
-}
-
-// 检查账号是否存在
+// 登录
 bool PlayerPreproces::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
 {
 	if (id.empty() || passwaed.empty())
 	{
 		// 账号不存在
+		COUT_LOG(LOG_CINFO, "id or passworld is empty");
 		return false;
 	}
-	AccountMap::const_iterator it = m_accountMap.find(id);
-	if (it != m_accountMap.end())
+
+	std::string userId;
+
+	// 数据库查询
+	std::string pw = LoadUserAccount(id);
+	if (pw.empty())
 	{
-		// 内存查询
-		if (it->second != passwaed)
-		{
-			// 密码错误
-			// send
-			return false;
-		}
-		else
-		{
-			AccountUserIDMap::const_iterator userIdIt = m_AccountUserIDMap.find(id);
-			if (userIdIt != m_AccountUserIDMap.end())
-			{
-				pPlayerInfo->m_userId = userIdIt->second;
-			}
-			return true;
-		}
+		userId = Util::CreateUuid();
+
+		SaveReplaceSQL("useraccount", id, passwaed);
+		SaveReplaceSQL("userid", id, userId);
+
+		pPlayerInfo->m_userId = userId;
+		return true;
 	}
 	else
 	{
-		// 数据库查询
-		std::string pw = LoadUserAccount(id);
-		if (pw.empty())
-		{
-			// 账号错误
-			// send
-			return false;
-		}
 		if (pw != passwaed)
 		{
-			// 密码错误
-			// send
+			// 密码不正确
+			COUT_LOG(LOG_CINFO, "passworld is error");
 			return false;
 		}
 		else
 		{
-			std::string userId = LoadUserId(id);
-			if (!userId.empty())
+			// 密码正确
+			userId = LoadUserId(id);
+			if (userId.empty())
 			{
+				userId = Util::CreateUuid();
+
+				SaveReplaceSQL("userid", id, userId);
 				pPlayerInfo->m_userId = userId;
+				return true;
 			}
-			m_accountMap.insert(std::make_pair(id, pw));
-			m_AccountUserIDMap.insert(std::make_pair(id, userId));
-			return true;
 		}
 	}
+
+	pPlayerInfo->m_userId = userId;
+	return true;
 }
 
 // 加载玩家userid
@@ -249,6 +213,11 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 // 处理消息
 void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 {
+	if (!pPlayerInfo)
+	{
+		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
+		return;
+	}
 	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
 	{
 		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
@@ -268,7 +237,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 	// websocket服务器
 	if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
-
+		// 没处理
 	}
 	else if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
@@ -285,29 +254,27 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 	else
 	{
-		if (pPlayerInfo->m_loadDbed)
+		PlayerCenter& playerCenter = m_scene.GetPlayerCenter();
+		Player* player = playerCenter.GetPlayer(pPlayerInfo->m_pMsg->uIndex);
+		if (!player)
 		{
-			m_scene.DispatchMessage(cmd, pPlayerInfo);
+			COUT_LOG(LOG_CERROR, "player is nullptr cmd = %d", (int)cmd);
+			return;
 		}
+		m_scene.DispatchMessage(cmd, pPlayerInfo);
 	}
 }
 
 // 创建角色
-bool PlayerPreproces::CreatePlayr(PlayerInfo* pPlayerInfo)
+bool PlayerPreproces::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
-	return m_scene.CreatePlayr(pPlayerInfo);
+	return m_scene.CreatePlayr(index, pSockInfo, userId);
 }
 
 // 获取通知条件变量
 ConditionVariable& PlayerPreproces::GetConditionVariable()
 {
 	return m_cond;
-}
-
-// 获取玩家账户信息
-PlayerPreproces::AccountMap& PlayerPreproces::GetAccountMap()
-{
-	return m_accountMap;
 }
 
 // 获取网络句柄

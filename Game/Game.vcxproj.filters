@@ -62,11 +62,11 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\属性">
       <UniqueIdentifier>{aeeda643-46cd-4a35-abc6-e2d85c4c274a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="读取管理">
-      <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="脚本">
       <UniqueIdentifier>{5a12022b-f872-4d00-91e1-dd6c658650ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理">
+      <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,10 +110,10 @@
       <Filter>模板学习\测试用例</Filter>
     </ClCompile>
     <ClCompile Include="..\Config\ConfigMgr.cpp">
-      <Filter>读取管理</Filter>
+      <Filter>配置管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Config\LuaCfgMgr.cpp">
-      <Filter>读取管理</Filter>
+      <Filter>配置管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Lua\LuaMgr.cpp">
       <Filter>脚本</Filter>
@@ -184,18 +184,18 @@
       <Filter>玩家信息\玩家管理\游戏逻辑\属性</Filter>
     </ClInclude>
     <ClInclude Include="..\Config\ConfigMgr.h">
-      <Filter>读取管理</Filter>
+      <Filter>配置管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Lua\LuaMgr.h">
       <Filter>脚本</Filter>
     </ClInclude>
     <ClInclude Include="..\Config\BaseCfgMgr.h">
-      <Filter>读取管理</Filter>
+      <Filter>配置管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\Config.pkg">
-      <Filter>读取管理</Filter>
+      <Filter>配置管理</Filter>
     </None>
   </ItemGroup>
 </Project>
