@@ -160,13 +160,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Config\ConfigMgr.cpp" />
-    <ClCompile Include="..\Config\Lua_ConfigMgr.cpp" />
+    <ClCompile Include="..\Config\LuaCfgMgr.cpp" />
     <ClCompile Include="..\kernel\DataLine.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
+    <ClCompile Include="..\Lua\LuaMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
     <ClCompile Include="..\Player\PlayerInfo.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Config\BaseCfgMgr.h" />
     <ClInclude Include="..\Config\ConfigMgr.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="..\kernel\TCPClient.h" />
     <ClInclude Include="..\kernel\TCPSocket.h" />
     <ClInclude Include="..\kernel\Util.h" />
+    <ClInclude Include="..\Lua\LuaMgr.h" />
     <ClInclude Include="..\Player\Attrs.h" />
     <ClInclude Include="..\Player\MessageCmd.h" />
     <ClInclude Include="..\Player\Player.h" />

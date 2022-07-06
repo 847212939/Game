@@ -39,7 +39,6 @@ extern "C"
 }
 #include "tolua++.h"
 
-
 #include "../Player/MessageCmd.h"			// 玩家消息定义
 #include "../kernel/Internal.h"				// 网络
 #include "../kernel/Log.h"					// 日志
@@ -62,4 +61,6 @@ extern "C"
 #include "../study/IntegerSequence.h"		// 将一个数字重复生成一个类型
 #include "../study/Test.h"					// 测试用的放在最下面
 
+#include "../Config/BaseCfgMgr.h"			// 网络配置
 #include "../Config/ConfigMgr.h"			// 配置管理
+#include "../Lua/LuaMgr.h"					// lua虚拟机创建

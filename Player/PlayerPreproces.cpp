@@ -180,8 +180,11 @@ std::string PlayerPreproces::LoadUserAccount(std::string& id)
 // 启动数据库
 bool PlayerPreproces::InitDB()
 {
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	const DbCfg& dbCfg = baseCfgMgr.GetDbCfg();
+
 	// 链接数据库
-	m_CMysqlHelper.init("127.0.0.1", "root", "", "game", "", 3366);
+	m_CMysqlHelper.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);
 	try
 	{
 		m_CMysqlHelper.connect();

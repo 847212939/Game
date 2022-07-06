@@ -3,7 +3,10 @@
 TCPClient::TCPClient() : 
 	m_pRegisteredAccount(new PlayerPreproces(this))
 {
-	Init(1024, 8888);
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
+
+	Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str());
 	Start(ServiceType::SERVICE_TYPE_LOGIC);
 	Run();
 }

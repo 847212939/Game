@@ -4,16 +4,15 @@ extern int tolua_Config_open(lua_State* tolua_S);
 
 int main()
 {
-    lua_State* L = luaL_newstate();
-    luaL_openlibs(L);
-
-    tolua_Config_open(L);
-
-    luaL_dofile(L, "./test.lua");
-    lua_close(L);
-
-	LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+	LogMgr()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+	if (!LuaMgr()->InitCfgMgr())
+	{
+		return -1;
+	}
+	
 	TCPClient clien;
+
+	return 0;
 }
  
 //int main()
@@ -48,7 +47,7 @@ int main()
 //
 //int main()
 //{
-//	/*LogManager()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+//	/*LogMgr()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
 //	TCPClient clien;*/
 //
 //	RankSet mySet;

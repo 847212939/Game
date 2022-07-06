@@ -55,9 +55,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 	sprintf(buf + strlen(buf), " {%s %s %d}\n", pFile, pFuncName, line);
 
-	std::string strPath = LogManager()->GetLogPath() + pLogfile;
+	std::string strPath = LogMgr()->GetLogPath() + pLogfile;
 
-	FILE* fp = LogManager()->GetLogFileFp(std::move(pLogfile));
+	FILE* fp = LogMgr()->GetLogFileFp(std::move(pLogfile));
 	if (!fp)
 	{
 		fp = fopen(strPath.c_str(), "a+");
@@ -65,11 +65,11 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		{
 			return;
 		}
-		LogManager()->AddLogFileFp(pLogfile, fp);
+		LogMgr()->AddLogFileFp(pLogfile, fp);
 	}
 
-	std::multimap<FILE*, std::string>& logMap = LogManager()->GetLogMap();
-	std::lock_guard<std::mutex> guard(LogManager()->GetMutex());
+	std::multimap<FILE*, std::string>& logMap = LogMgr()->GetLogMap();
+	std::lock_guard<std::mutex> guard(LogMgr()->GetMutex());
 	logMap.insert(std::make_pair(fp, buf));
 }
 

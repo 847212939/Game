@@ -1,15 +1,33 @@
 $#include "../Game/stdafx.h"
 
-class ConfigMgr //tolua_export
+class ConfigMgr
 { 
 public:
-
-//tolua_begin 
 	ConfigMgr();
 	~ConfigMgr();
  
-	void Run();
-	void Run @ Run2(int a);
-//tolua_end 
+	void ReadLogicCfg(LogicCfg* config);
+	void ReadDbCfg(DbCfg* config);
+};
 
+struct LogicCfg
+{
+	std::string ip;
+	int port;
+	int maxSocketCnt;
+
+	LogicCfg();
+	~LogicCfg();
+};
+
+struct DbCfg
+{
+	std::string ip;
+	std::string user;
+	std::string passwd;
+	std::string database;
+	int port;
+
+	DbCfg();
+	~DbCfg();
 };
