@@ -239,7 +239,6 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 
 	// 获取接收线程池数量
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
 
 	int workBaseCount = baseCfgMgr.GetThreadCnt();
 	if (workBaseCount <= 1)
