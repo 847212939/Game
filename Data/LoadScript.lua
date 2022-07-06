@@ -2,7 +2,7 @@ ConfigMgr = ConfigMgr:new()
 ConfigMgrFnTable = {}
 package.path = ";;../Data/Config/?.lua"
 
-function ReadBaseCfg(ConfigMgr)
+function ReadBaseCfg()
 
     local BaseCfg = require "BaseCfg"
 
@@ -42,7 +42,7 @@ function LoadConfig()
     print("LoadConfig is begin...")
 
 	for i = 1, GetLength(ConfigMgrFnTable) do
-		ConfigMgrFnTable[i](ConfigMgr)
+		ConfigMgrFnTable[i]()
 	end
 
     print("LoadConfig is end...")
