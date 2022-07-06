@@ -159,7 +159,6 @@ bool PlayerPreproces::InitDB()
 		return false;
 	}
 
-	COUT_LOG(LOG_CINFO, "mysql init successed...");
 	return true;
 }
 
@@ -173,7 +172,7 @@ bool PlayerPreproces::Run()
 // 数据库执行
 void PlayerPreproces::HandlerExecuteSqlThread()
 {
-	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread begin...");
+	COUT_LOG(LOG_CINFO, "save mysql thread begin...");
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	while (m_pTCPClient->GetRuninged())
@@ -207,7 +206,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 			}
 		}
 	}
-	COUT_LOG(LOG_CINFO, "PlayerPreproces::HandlerDBSave thread end...");
+	COUT_LOG(LOG_CINFO, "save mysql thread end...");
 }
 
 // 处理消息

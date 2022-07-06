@@ -41,8 +41,6 @@ CTCPSocketManage::~CTCPSocketManage()
 
 bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = NULL*/, SocketType socketType /* = SocketType::SOCKET_TYPE_TCP*/)
 {
-	COUT_LOG(LOG_INFO, "service TCPSocketManage init begin...");
-
 	if (maxCount <= 0 || port <= 1000)
 	{
 		COUT_LOG(LOG_CERROR, "invalid params input maxCount=%d port=%d", maxCount, port);
@@ -64,8 +62,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = NULL*/, S
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
-	COUT_LOG(LOG_INFO, "service TCPSocketManage init end.");
-
 	return true;
 }
 
@@ -78,7 +74,7 @@ bool CTCPSocketManage::UnInit()
 
 bool CTCPSocketManage::Stop()
 {
-	COUT_LOG(LOG_CINFO, "service TCPSocketManage stop begin...");
+	COUT_LOG(LOG_CINFO, "service tcp stop begin...");
 
 	if (!m_running)
 	{
@@ -104,18 +100,16 @@ bool CTCPSocketManage::Stop()
 		}
 	}
 
-	COUT_LOG(LOG_INFO, "service TCPSocketManage stop end...");
+	COUT_LOG(LOG_INFO, "service tcp stop end...");
 
 	return true;
 }
 
 bool CTCPSocketManage::Start(ServiceType serverType)
 {
-	COUT_LOG(LOG_CINFO, "service TCPSocketManage start begin...");
-
 	if (m_running == true)
 	{
-		COUT_LOG(LOG_CERROR, "service TCPSocketManage already have been running");
+		COUT_LOG(LOG_CERROR, "service tcp already have been running");
 		return false;
 	}
 
@@ -154,7 +148,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsgThread thread begin...");
+	COUT_LOG(LOG_CINFO, "send data thread begin...");
 
 	while (pThis->m_running)
 	{
@@ -198,7 +192,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 		}
 	}
 
-	COUT_LOG(LOG_INFO, "CTCPSocketManage::ThreadSendMsgThread exit.");
+	COUT_LOG(LOG_CINFO, "send data thread end...");
 
 	return;
 }
@@ -214,7 +208,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	COUT_LOG(LOG_INFO, "ThreadAcceptThread thread begin...");
+	COUT_LOG(LOG_CINFO, "accept thread begin...");
 
 	// libevent服务器 
 	struct evconnlistener* listener;
@@ -244,12 +238,13 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	evconnlistener_set_error_cb(listener, AcceptErrorCB);
 
 	// 获取接收线程池数量
-	/*const CommonConfig& commonConfig = ConfigManage()->GetCommonConfig();
-	int workBaseCount = commonConfig.WorkThreadNumber;*/
-	int workBaseCount = 0;
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
+
+	int workBaseCount = baseCfgMgr.GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
-		workBaseCount = 16;
+		workBaseCount = 8;
 	}
 
 	// 初始工作线程信息
@@ -315,7 +310,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 		event_free(pThis->m_workBaseVec[i].event);
 	}
 
-	COUT_LOG(LOG_INFO, "ThreadAcceptThread thread exit.");
+	COUT_LOG(LOG_CINFO, "accept thread end...");
 
 	return;
 }
@@ -375,6 +370,8 @@ void CTCPSocketManage::ThreadRSSocketThread(void* pThreadData)
 		COUT_LOG(LOG_CERROR, "thread param is null");
 		return;
 	}
+
+	COUT_LOG(LOG_CINFO, "thread poll %d begin...", param->index);
 
 	// 处于监听状态
 	event_base_dispatch(param->pThis->m_workBaseVec[param->index].base);

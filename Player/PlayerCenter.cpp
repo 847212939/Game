@@ -34,7 +34,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	COUT_LOG(LOG_CINFO, "Scene::HandlerPlayerThread thread begin...");
+	COUT_LOG(LOG_CINFO, "player create thread begin...");
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -74,7 +74,7 @@ void PlayerCenter::HandlerPlayerThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "Scene::HandlerPlayerThread thread end...");
+	COUT_LOG(LOG_CINFO, "player create thread end...");
 }
 
 

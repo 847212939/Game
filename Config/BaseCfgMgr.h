@@ -25,7 +25,7 @@ struct DbCfg
 class CBaseCfgMgr
 {
 public:
-	CBaseCfgMgr(){}
+	CBaseCfgMgr() : m_threadCnt(0){}
 	~CBaseCfgMgr(){}
 
 	void ReadLogicCfg(LogicCfg* config)
@@ -38,6 +38,11 @@ public:
 		m_DbCfg = *config;
 	}
 
+	void ReadThreadCntCfg(int cnt)
+	{
+		m_threadCnt = cnt;
+	}
+
 	const LogicCfg& GetLogicCfg()
 	{
 		return m_LogicCfg;
@@ -48,7 +53,13 @@ public:
 		return m_DbCfg;
 	}
 
+	int GetThreadCnt()
+	{
+		return m_threadCnt;
+	}
+
 private:
+	int			m_threadCnt;
 	LogicCfg	m_LogicCfg;
 	DbCfg		m_DbCfg;
 };

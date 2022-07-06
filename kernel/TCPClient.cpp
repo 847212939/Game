@@ -46,7 +46,7 @@ void TCPClient::HandlerRecvDataListThread()
 	//Êý¾Ý»º´æ
 	void* pDataLineHead = NULL;
 
-	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataListThread thread begin...");
+	COUT_LOG(LOG_CINFO, "recv data thread begin...");
 
 	while (GetRuninged())
 	{
@@ -87,7 +87,7 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "TCPClient::HandlerRecvDataListThread exit...");
+	COUT_LOG(LOG_CINFO, "recv data thread end...");
 
 	return;
 }

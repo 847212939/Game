@@ -1,9 +1,14 @@
-BaseCfg={
+BaseCfg = 
+{
+    --线程池的数量
+    ThreadCnt = 16,              
+
     LogicCfg =
     {
         ip = "127.0.0.1",
         port = 8888,
-        maxSocketCnt = 1024,    -- 最大链接数量 libevent 单线程默认的32000
+        -- 最大链接数量 libevent 单线程默认的32000
+        maxSocketCnt = 1024,    
     },
 
     DbCfg =

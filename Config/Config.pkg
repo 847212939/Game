@@ -8,6 +8,7 @@ public:
  
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);
+	void ReadThreadCntCfg(int cnt);
 };
 
 struct LogicCfg

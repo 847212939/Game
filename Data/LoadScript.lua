@@ -6,6 +6,10 @@ function ReadBaseCfg()
 
     local BaseCfg = require "BaseCfg"
 
+    if BaseCfg then
+        ConfigMgr:ReadThreadCntCfg(BaseCfg.ThreadCnt)
+    end
+
     local LogicCfg = LogicCfg:new()
     if BaseCfg then
         LogicCfg.ip = BaseCfg.LogicCfg.ip
