@@ -19,7 +19,7 @@ PlayerPreproces::~PlayerPreproces()
 void PlayerPreproces::initCallBackFun()
 {
 	// 登录注册回调函数
-	AddCallBackFun(MsgCmd::MsgCmd_RegisterAccount, std::move(std::bind(&PlayerPreproces::LoginInAccount, this, std::placeholders::_1)));
+	AddCallBackFun(MsgCmd::MsgCmd_Login, std::move(std::bind(&PlayerPreproces::LoginInAccount, this, std::placeholders::_1)));
 }
 
 // 登录
@@ -249,11 +249,6 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 // 处理消息
 void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 {
-	if (!pPlayerInfo)
-	{
-		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
-		return;
-	}
 	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
 	{
 		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
@@ -277,24 +272,24 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 	}
 	else if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
-		if (uMainID == (unsigned int)MsgCmd::MsgCmd_RegisterAccount)
-		{
-			CallBackFun((MsgCmd)uMainID, pPlayerInfo);
-		}
-		else
-		{
-			if (!pPlayerInfo->m_userId.empty())
-			{
-				DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
-			}
-		}
+		DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
 	}
 }
 
 // 分发消息
 void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	m_scene.DispatchMessage(cmd, pPlayerInfo);
+	if (cmd == MsgCmd::MsgCmd_Login)
+	{
+		CallBackFun(cmd, pPlayerInfo);
+	}
+	else
+	{
+		if (pPlayerInfo->m_loadDbed)
+		{
+			m_scene.DispatchMessage(cmd, pPlayerInfo);
+		}
+	}
 }
 
 // 创建角色

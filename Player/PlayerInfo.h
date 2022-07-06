@@ -14,4 +14,5 @@ public:
 	ServiceType		m_uSrverType;			// 服务器类型
 	std::string		m_userId;				// 玩家id
 	const TCPSocketInfo* m_pTcpSockInfo;	// 玩家TCP的网络信息
+	bool			m_loadDbed;				// 加载玩家数据库标志
 };
