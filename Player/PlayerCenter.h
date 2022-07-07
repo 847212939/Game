@@ -24,13 +24,11 @@ public:
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	// 创建角色
-	bool CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	bool CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
 	// 获取玩家
 	Player* GetPlayer(unsigned int index);
 
 private:
-	// 初始化回调函数
-	void InitCallBackFun();
 	// 玩家创建和数据库的加载
 	void HandlerPlayerThread();
 

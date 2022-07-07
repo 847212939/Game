@@ -370,7 +370,7 @@ void CTCPSocketManage::ThreadRSSocketThread(void* pThreadData)
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "thread poll %d begin...", param->index);
+	COUT_LOG(LOG_INFO, "thread poll %d begin...", param->index);
 
 	// ´¦ÓÚ¼àÌı×´Ì¬
 	event_base_dispatch(param->pThis->m_workBaseVec[param->index].base);

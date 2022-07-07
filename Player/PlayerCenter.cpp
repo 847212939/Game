@@ -16,8 +16,19 @@ PlayerCenter::PlayerCenter(Scene* pScene) :
 		player = nullptr;
 	}
 
-	std::vector<std::thread*>& threadVec = m_pScene->GetPlayerPreproces()->GetTCPClient()->GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	if (m_pScene)
+	{
+		PlayerPreproces* pPlayerPreproces = m_pScene->GetPlayerPreproces();
+		if (pPlayerPreproces)
+		{
+			TCPClient* pTCPClient = pPlayerPreproces->GetTCPClient();
+			if (pTCPClient)
+			{
+				std::vector<std::thread*>& threadVec = pTCPClient->GetSockeThreadVec();
+				threadVec.push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+			}
+		}
+	}
 }
 
 PlayerCenter::~PlayerCenter()
@@ -28,7 +39,42 @@ PlayerCenter::~PlayerCenter()
 // 分发消息
 void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-
+	if (!pPlayerInfo)
+	{
+		COUT_LOG(LOG_CERROR, " Dispatch message player info = null");
+		return;
+	}
+	if (!pPlayerInfo->m_pTcpSockInfo)
+	{
+		COUT_LOG(LOG_CERROR, " Dispatch message sock info = null");
+		return;
+	}
+	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
+	{
+		COUT_LOG(LOG_CINFO, " Dispatch message Link broken");
+		return;
+	}
+	Player* player = m_pPlayerVec[pPlayerInfo->m_pMsg->uIndex];
+	if (!player)
+	{
+		COUT_LOG(LOG_CERROR, " Dispatch message player = null index = %u", pPlayerInfo->m_pMsg->uIndex);
+		return;
+	}
+	if (strcmp(player->GetTCPSocketInfo()->ip, pPlayerInfo->m_pTcpSockInfo->ip) != 0)
+	{
+		COUT_LOG(LOG_CERROR, "The local IP address and remote IP address are not equal");
+		return;
+	}
+	if (player->GetIndex() != pPlayerInfo->m_pMsg->uIndex)
+	{
+		COUT_LOG(LOG_CERROR, "The socket index received by the player is inconsistent "
+			"player->GetIndex() = %u, "
+			"pPlayerInfo->m_pMsg->uIndex = %u", 
+			player->GetIndex(), 
+			pPlayerInfo->m_pMsg->uIndex);
+		return;
+	}
+	player->DispatchMessage(cmd, pPlayerInfo);
 }
 
 // 玩家创建和数据库的加载
@@ -36,9 +82,27 @@ void PlayerCenter::HandlerPlayerThread()
 {
 	COUT_LOG(LOG_CINFO, "player create thread begin...");
 
+	if (!m_pScene)
+	{
+		COUT_LOG(LOG_CERROR, "player create thread err m_pScene = null");
+		return;
+	}
+	PlayerPreproces* pPlayerPreproces = m_pScene->GetPlayerPreproces();
+	if (!pPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "player create thread err pPlayerPreproces = null");
+		return;
+	}
+	TCPClient* pTCPClient = pPlayerPreproces->GetTCPClient();
+	if (!pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "player create thread err pTCPClient = null");
+		return;
+	}
+
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
-	while (m_pScene->GetPlayerPreproces()->GetTCPClient()->GetRuninged())
+	while (pTCPClient->GetRuninged())
 	{
 		//进入挂起状态
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
@@ -49,25 +113,35 @@ void PlayerCenter::HandlerPlayerThread()
 			continue;
 		}
 
-		LoadPlayerList LoadPlayerList;
-		std::swap(LoadPlayerList, m_LoadPlayerList);
+		LoadPlayerList loadPlayerList;
+		std::swap(loadPlayerList, m_LoadPlayerList);
 
 		uniqLock.unlock();
 
-		while (!LoadPlayerList.empty())
+		while (!loadPlayerList.empty())
 		{
-			LoadPlayerKey loadPKey = LoadPlayerList.front();
-			LoadPlayerList.pop_front();
+			LoadPlayerKey loadPKey = loadPlayerList.front();
+			loadPlayerList.pop_front();
 
-			// 创建玩家
 			if (!loadPKey.pSockInfo->isConnect)
 			{
 				continue;
 			}
+			Player* player = m_pPlayerVec[loadPKey.index];
+			if (player)
+			{
+				new(player) Player(loadPKey.index, loadPKey.pSockInfo, loadPKey.userId);
+			}
+			else
+			{
+				player = new Player(loadPKey.index, loadPKey.pSockInfo, loadPKey.userId);
+			}
 
-			Player* player = new Player(loadPKey.pSockInfo, loadPKey.userId);
+			player->SetPlayerPreproces(pPlayerPreproces);
+
 			m_pPlayerVec[loadPKey.index] = player;
 
+			player->CallBackFunInit();
 			player->LoadMysql();
 			player->EnterGame();
 			player->EnterScene();
@@ -77,15 +151,8 @@ void PlayerCenter::HandlerPlayerThread()
 	COUT_LOG(LOG_CINFO, "player create thread end...");
 }
 
-
-// 初始化回调函数
-void PlayerCenter::InitCallBackFun()
-{
-
-}
-
 // 创建角色
-bool PlayerCenter::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+bool PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
 	m_cond.GetMutex().lock();
 	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, userId));

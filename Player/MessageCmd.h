@@ -7,5 +7,7 @@ enum class MsgCmd
 	MsgCmd_HeartBeat                   = 1,	// 心跳
 	MsgCmd_Testlink                    = 2, // 连接测试
 	MsgCmd_Login				       = 3,	// 玩家登录
+	MsgCmd_Move                        = 4,	// 移动
+
 	MsgCmd_End                              // 消息结束                      
 };

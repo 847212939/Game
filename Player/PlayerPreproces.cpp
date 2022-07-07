@@ -51,7 +51,7 @@ void PlayerPreproces::LoginInAccount(PlayerInfo* pPlayerInfo)
 	{
 		if (LoginIn(id, pw, pPlayerInfo))
 		{
-			CreatePlayr((int)pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, pPlayerInfo->m_userId);
+			CreatePlayer(pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, pPlayerInfo->m_userId);
 		}
 	}
 }
@@ -265,9 +265,9 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 创建角色
-bool PlayerPreproces::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+bool PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
-	return m_scene.CreatePlayr(index, pSockInfo, userId);
+	return m_scene.CreatePlayer(index, pSockInfo, userId);
 }
 
 // 获取通知条件变量

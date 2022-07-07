@@ -19,9 +19,9 @@ void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 创建角色
-bool Scene::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+bool Scene::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
-	m_PlayerCenter.CreatePlayr(index, pSockInfo, userId);
+	m_PlayerCenter.CreatePlayer(index, pSockInfo, userId);
 	return true;
 }
 
@@ -29,10 +29,4 @@ bool Scene::CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& 
 void Scene::InitCallBackFun()
 {
 
-}
-
-// 获取玩家预处理
-PlayerPreproces* Scene::GetPlayerPreproces()
-{
-	return m_pPlayerPreproces;
 }

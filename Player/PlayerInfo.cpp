@@ -5,8 +5,7 @@ PlayerInfo::PlayerInfo() :
 	m_pData(nullptr),
 	m_uSrverType(ServiceType::SERVICE_TYPE_LOGIC),
 	m_userId(""),
-	m_pTcpSockInfo(nullptr),
-	m_loadDbed(false)
+	m_pTcpSockInfo(nullptr)
 {
 
 }

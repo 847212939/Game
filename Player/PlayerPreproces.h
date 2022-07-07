@@ -74,7 +74,7 @@ private:
 	std::string LoadUserId(std::string& id);
 
 	// 创建角色
-	bool CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	bool CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
 
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用

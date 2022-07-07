@@ -10,9 +10,9 @@ public:
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	// 创建角色
-	bool CreatePlayr(int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	bool CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
 	// 获取玩家预处理
-	PlayerPreproces* GetPlayerPreproces();
+	PlayerPreproces* GetPlayerPreproces() { return m_pPlayerPreproces; }
 	// 获取玩家中心
 	PlayerCenter& GetPlayerCenter() { return m_PlayerCenter; }
 
