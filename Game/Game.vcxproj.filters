@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="日志">
-      <UniqueIdentifier>{bedad37b-81ca-4224-b7ec-1193f6004080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="数据库">
       <UniqueIdentifier>{4822518c-3dc1-44da-b82a-2ae2461ec0db}</UniqueIdentifier>
     </Filter>
@@ -19,9 +16,6 @@
     </Filter>
     <Filter Include="数据处理">
       <UniqueIdentifier>{2f53d39d-f0ef-41ce-a90f-e75f2fe99a0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络">
-      <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
     <Filter Include="玩家信息">
       <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
@@ -62,14 +56,20 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\属性">
       <UniqueIdentifier>{aeeda643-46cd-4a35-abc6-e2d85c4c274a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="脚本">
-      <UniqueIdentifier>{5a12022b-f872-4d00-91e1-dd6c658650ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
     <Filter Include="玩家信息\玩家管理\游戏逻辑\逻辑">
       <UniqueIdentifier>{5af86346-da39-4b6b-9ab4-e8907ca72ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="日志打印">
+      <UniqueIdentifier>{bedad37b-81ca-4224-b7ec-1193f6004080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="脚本处理">
+      <UniqueIdentifier>{5a12022b-f872-4d00-91e1-dd6c658650ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络处理">
+      <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,19 +77,19 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\LogManager.cpp">
-      <Filter>日志</Filter>
+      <Filter>日志打印</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\MysqlHelper.cpp">
       <Filter>数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPSocket.cpp">
-      <Filter>网络</Filter>
+      <Filter>网络处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\DataLine.cpp">
       <Filter>数据处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
-      <Filter>网络</Filter>
+      <Filter>网络处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>数据库</Filter>
@@ -119,12 +119,12 @@
       <Filter>配置管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Lua\LuaMgr.cpp">
-      <Filter>脚本</Filter>
+      <Filter>脚本处理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
-      <Filter>日志</Filter>
+      <Filter>日志打印</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\MysqlHelper.h">
       <Filter>数据库</Filter>
@@ -142,10 +142,10 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPSocket.h">
-      <Filter>网络</Filter>
+      <Filter>网络处理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPClient.h">
-      <Filter>网络</Filter>
+      <Filter>网络处理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Util.h">
       <Filter>数据库</Filter>
@@ -190,7 +190,7 @@
       <Filter>配置管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Lua\LuaMgr.h">
-      <Filter>脚本</Filter>
+      <Filter>脚本处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
