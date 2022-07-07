@@ -63,6 +63,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 
 		if (this->m_sqlList.size() <= 0)
 		{
+			uniqLock.unlock();
 			continue;
 		}
 

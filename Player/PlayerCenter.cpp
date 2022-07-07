@@ -148,6 +148,7 @@ void PlayerCenter::HandlerPlayerThread()
 
 		if (this->m_LoadPlayerList.size() <= 0)
 		{
+			uniqLock.unlock();
 			continue;
 		}
 

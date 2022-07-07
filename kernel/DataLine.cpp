@@ -67,6 +67,7 @@ unsigned int CDataLine::GetData(void** pDataBuffer)
 	//如果队列是空的，直接返回
 	if (m_dataListSize <= 0)
 	{
+		uniqLock.unlock();
 		return 0;
 	}
 
