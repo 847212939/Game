@@ -68,6 +68,9 @@
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家信息\玩家管理\游戏逻辑\逻辑">
+      <UniqueIdentifier>{5af86346-da39-4b6b-9ab4-e8907ca72ac6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
