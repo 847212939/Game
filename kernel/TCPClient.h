@@ -1,6 +1,6 @@
 #pragma once
 
-class PlayerPreproces;
+class SubPlayerPreproces;
 class TCPClient : public CTCPSocketManage
 {
 public:
@@ -15,5 +15,5 @@ private:
 
 private:
 	// ×¢²áÐÅÏ¢¼ì²é
-	PlayerPreproces* m_pRegisteredAccount;
+	SubPlayerPreproces* m_SubPlayerPreproces;
 };

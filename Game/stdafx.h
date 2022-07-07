@@ -55,9 +55,11 @@ extern "C"
 #include "../Player/Player.h"				// 玩家
 #include "../SubSys/SubPlayer.h"			// 逻辑处理类
 #include "../Player/PlayerCenter.h"			// 玩家管理
+#include "../SubSys/SubPlayerCenter.h"		// 玩家管理
 #include "../Player/Scene.h"				// 场景
+#include "../SubSys/SubScene.h"				// 场景
 #include "../Player/PlayerPreproces.h"		// 信息在注册
-
+#include "../SubSys/SubPlayerPreproces.h"			// 逻辑处理类
 
 #include "../study/Addition.h"				// SFIAE
 #include "../study/Function.h"				// 可调用对象

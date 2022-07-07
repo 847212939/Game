@@ -24,7 +24,7 @@ public:
 	void LoadMysql();						
 	void EnterGame();						
 	bool EnterScene();
-	void SetPlayerPreproces(PlayerPreproces* pp) { m_PlayerPreproces = pp; }
+	void SetPlayerPreproces(SubPlayerPreproces* pp) { m_SubPlayerPreproces = pp; }
 
 public:
 	// 回调函数
@@ -51,6 +51,6 @@ private:
 	PlayerAttrs				m_PlayerAttrs;		// 玩家属性
 	std::string				m_userId;			// 玩家id
 	const TCPSocketInfo*	m_pTcpSockInfo;		// 玩家TCP的网络信息
-	PlayerPreproces*		m_PlayerPreproces;	// 玩家预处理句柄
+	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
 	PlayerCallBackFunMap	m_CallBackFunMap;	// 回调函数
 };

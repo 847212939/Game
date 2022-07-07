@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
 TCPClient::TCPClient() : 
-	m_pRegisteredAccount(new PlayerPreproces(this))
+	m_SubPlayerPreproces(new SubPlayerPreproces(this))
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
@@ -20,9 +20,9 @@ TCPClient::~TCPClient()
 		(*it)->join();
 		SafeDelete(*it);
 	}
-	if (m_pRegisteredAccount)
+	if (m_SubPlayerPreproces)
 	{
-		SafeDelete(m_pRegisteredAccount);
+		SafeDelete(m_SubPlayerPreproces);
 	}
 }
 
@@ -73,7 +73,7 @@ void TCPClient::HandlerRecvDataListThread()
 			Info.m_pData = pData;
 			Info.m_pTcpSockInfo = &tcpInfo;
 			Info.m_uSrverType = GetServerType();
-			m_pRegisteredAccount->HandlerMessage(&Info);
+			m_SubPlayerPreproces->HandlerMessage(&Info);
 		}
 		else
 		{

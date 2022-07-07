@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
-PlayerCenter::PlayerCenter(Scene* pScene) : 
-	m_pScene(pScene)
+PlayerCenter::PlayerCenter(SubScene* pSubScene) : 
+	m_pScene(pSubScene)
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
@@ -11,17 +11,17 @@ PlayerCenter::PlayerCenter(Scene* pScene) :
 	m_pPlayerVec.resize((size_t)playerSize);
 
 	// 玩家全部初始化为空
-	for (auto* player : m_pPlayerVec)
+	for (auto* pSubPlayer : m_pPlayerVec)
 	{
-		player = nullptr;
+		pSubPlayer = nullptr;
 	}
 
 	if (m_pScene)
 	{
-		PlayerPreproces* pPlayerPreproces = m_pScene->GetPlayerPreproces();
-		if (pPlayerPreproces)
+		SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+		if (pSubPlayerPreproces)
 		{
-			TCPClient* pTCPClient = pPlayerPreproces->GetTCPClient();
+			TCPClient* pTCPClient = pSubPlayerPreproces->GetTCPClient();
 			if (pTCPClient)
 			{
 				std::vector<std::thread*>& threadVec = pTCPClient->GetSockeThreadVec();
@@ -39,9 +39,20 @@ PlayerCenter::~PlayerCenter()
 // 分发消息
 void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
+	if (!m_pScene)
+	{
+		COUT_LOG(LOG_CERROR, "Dispatch message scent = null cmd = %d", cmd);
+		return;
+	}
+	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "Dispatch message player preproces = null cmd = %d", cmd);
+		return;
+	}
 	if (!pPlayerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message player info = null cmd = %d", cmd);
+		COUT_LOG(LOG_CERROR, "Dispatch message pSubPlayer info = null cmd = %d", cmd);
 		return;
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo)
@@ -59,49 +70,59 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
 		return;
 	}
-	SubPlayer* player = GetSubPlayer(pPlayerInfo->m_pMsg->uIndex);
-	if (!player)
+	SubPlayer* pSubPlayer = GetSubPlayer(pPlayerInfo->m_pMsg->uIndex);
+	if (!pSubPlayer)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message player = null index = %u", pPlayerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "Dispatch message pSubPlayer = null index = %u", pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
-	if (strcmp(player->GetTCPSocketInfo()->ip, pPlayerInfo->m_pTcpSockInfo->ip) != 0)
+	if (strcmp(pSubPlayer->GetTCPSocketInfo()->ip, pPlayerInfo->m_pTcpSockInfo->ip) != 0)
 	{
 		COUT_LOG(LOG_CERROR, "The local IP address and remote IP address are not equal");
 		return;
 	}
-	if (player->GetIndex() != pPlayerInfo->m_pMsg->uIndex)
+	if (pSubPlayer->GetIndex() != pPlayerInfo->m_pMsg->uIndex)
 	{
-		COUT_LOG(LOG_CERROR, "The socket index received by the player is inconsistent "
-			"player->GetIndex() = %u, "
+		COUT_LOG(LOG_CERROR, "The socket index received by the pSubPlayer is inconsistent "
+			"pSubPlayer->GetIndex() = %u, "
 			"pPlayerInfo->m_pMsg->uIndex = %u", 
-			player->GetIndex(), 
+			pSubPlayer->GetIndex(), 
 			pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
-	player->DispatchMessage(cmd, pPlayerInfo);
+
+	switch (cmd)
+	{
+	case MsgCmd::MsgCmd_PlayerCenter:
+		// 玩家中心处理的消息.. 玩家间的互动
+		pSubPlayerPreproces->CallBackFun(cmd, pPlayerInfo);
+		break;
+	default:
+		pSubPlayer->DispatchMessage(cmd, pPlayerInfo);
+		break;
+	}
 }
 
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	COUT_LOG(LOG_CINFO, "player create thread begin...");
+	COUT_LOG(LOG_CINFO, "pSubPlayer create thread begin...");
 
 	if (!m_pScene)
 	{
-		COUT_LOG(LOG_CERROR, "player create thread err m_pScene = null");
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err m_pScene = null");
 		return;
 	}
-	PlayerPreproces* pPlayerPreproces = m_pScene->GetPlayerPreproces();
-	if (!pPlayerPreproces)
+	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	if (!pSubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CERROR, "player create thread err pPlayerPreproces = null");
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err pSubPlayerPreproces = null");
 		return;
 	}
-	TCPClient* pTCPClient = pPlayerPreproces->GetTCPClient();
+	TCPClient* pTCPClient = pSubPlayerPreproces->GetTCPClient();
 	if (!pTCPClient)
 	{
-		COUT_LOG(LOG_CERROR, "player create thread err pTCPClient = null");
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err pTCPClient = null");
 		return;
 	}
 
@@ -132,28 +153,28 @@ void PlayerCenter::HandlerPlayerThread()
 			{
 				continue;
 			}
-			SubPlayer* player = GetSubPlayer(loadPKey.GetIndex());
-			if (player)
+			SubPlayer* pSubPlayer = GetSubPlayer(loadPKey.GetIndex());
+			if (pSubPlayer)
 			{
-				new(player) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
+				new(pSubPlayer) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
 			}
 			else
 			{
-				player = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
+				pSubPlayer = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
 			}
 
-			player->SetPlayerPreproces(pPlayerPreproces);
+			pSubPlayer->SetPlayerPreproces(pSubPlayerPreproces);
 
-			m_pPlayerVec[loadPKey.GetIndex()] = player;
+			m_pPlayerVec[loadPKey.GetIndex()] = pSubPlayer;
 
-			player->CallBackFunInit();
-			player->LoadMysql();
-			player->EnterGame();
-			player->EnterScene();
+			pSubPlayer->CallBackFunInit();
+			pSubPlayer->LoadMysql();
+			pSubPlayer->EnterGame();
+			pSubPlayer->EnterScene();
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "player create thread end...");
+	COUT_LOG(LOG_CINFO, "pSubPlayer create thread end...");
 }
 
 // 创建角色
@@ -172,4 +193,10 @@ bool PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 SubPlayer* PlayerCenter::GetSubPlayer(unsigned int index)
 {
 	return m_pPlayerVec[index];
+}
+
+// 获取场景
+const SubScene* PlayerCenter::getScene()
+{
+	return m_pScene;
 }

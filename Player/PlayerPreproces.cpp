@@ -3,142 +3,15 @@
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_scene(this)
+	m_SubScene(dynamic_cast<SubPlayerPreproces*>(this))
 {
-	initCallBackFun();
 	InitDB();
-	Run();
+	RunThread();
 }
 
 PlayerPreproces::~PlayerPreproces()
 {
 
-}
-
-// 初始化消息回调函数
-void PlayerPreproces::initCallBackFun()
-{
-	// 登录注册回调函数
-	AddCallBackFun(MsgCmd::MsgCmd_Login, std::move(std::bind(&PlayerPreproces::LoginInAccount, this, std::placeholders::_1)));
-}
-
-// 登录
-void PlayerPreproces::LoginInAccount(PlayerInfo* pPlayerInfo)
-{
-	if (!pPlayerInfo)
-	{
-		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
-		return;
-	}
-	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
-	{
-		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
-		return;
-	}
-	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
-	{
-		COUT_LOG(LOG_CERROR, "Network link closed");
-		return;
-	}
-
-	unsigned int uAssistantID = pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
-	std::string str = (char*)pPlayerInfo->m_pData;
-	CIstringstream is(str);
-	std::string id, pw;
-	is >> id >> pw;
-
-	if (PlayerPreprocesCmd::cs_login == (PlayerPreprocesCmd)uAssistantID)
-	{
-		if (LoginIn(id, pw, pPlayerInfo))
-		{
-			CreatePlayer(pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, pPlayerInfo->m_userId);
-		}
-	}
-}
-
-// 登录
-bool PlayerPreproces::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
-{
-	if (id.empty() || passwaed.empty())
-	{
-		// 账号不存在
-		COUT_LOG(LOG_CINFO, "id or passworld is empty");
-		return false;
-	}
-
-	std::string userId;
-
-	// 数据库查询
-	std::string pw = LoadUserAccount(id);
-	if (pw.empty())
-	{
-		userId = Util::CreateUuid();
-
-		SaveReplaceSQL("useraccount", id, passwaed);
-		SaveReplaceSQL("userid", id, userId);
-
-		pPlayerInfo->m_userId = userId;
-		return true;
-	}
-	else
-	{
-		if (pw != passwaed)
-		{
-			// 密码不正确
-			COUT_LOG(LOG_CINFO, "passworld is error");
-			return false;
-		}
-		else
-		{
-			// 密码正确
-			userId = LoadUserId(id);
-			if (userId.empty())
-			{
-				userId = Util::CreateUuid();
-
-				SaveReplaceSQL("userid", id, userId);
-				pPlayerInfo->m_userId = userId;
-				return true;
-			}
-		}
-	}
-
-	pPlayerInfo->m_userId = userId;
-	return true;
-}
-
-// 加载玩家userid
-std::string PlayerPreproces::LoadUserId(std::string& id)
-{
-	CMysqlHelper::MysqlData data;
-	LoadOneSql(id, "userid", data);
-	if (data.size() > 0)
-	{
-		SqlKeyDataMap& dataMap = data[0];
-		SqlKeyDataMap::iterator it = dataMap.find("data");
-		if (it != dataMap.end())
-		{
-			return it->second;
-		}
-	}
-	return "";
-}
-
-// 加载玩家账号信息
-std::string PlayerPreproces::LoadUserAccount(std::string& id)
-{
-	CMysqlHelper::MysqlData data;
-	LoadOneSql(id, "useraccount", data);
-	if (data.size() > 0)
-	{
-		SqlKeyDataMap& dataMap = data[0];
-		SqlKeyDataMap::iterator it = dataMap.find("data");
-		if (it != dataMap.end())
-		{
-			return it->second;
-		}
-	}
-	return "";
 }
 
 // 启动数据库
@@ -162,7 +35,7 @@ bool PlayerPreproces::InitDB()
 	return true;
 }
 
-bool PlayerPreproces::Run()
+bool PlayerPreproces::RunThread()
 {
 	std::vector<std::thread*>& threadVec = m_pTCPClient->GetSockeThreadVec();
 	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
@@ -247,20 +120,22 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 // 分发消息
 void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	if (cmd == MsgCmd::MsgCmd_Login)
+	switch (cmd)
 	{
+	case MsgCmd::MsgCmd_Login:
+		// 处理登录协议等.. 玩家没有创建
 		CallBackFun(cmd, pPlayerInfo);
-	}
-	else
-	{
-		m_scene.DispatchMessage(cmd, pPlayerInfo);
+		break;
+	default:
+		m_SubScene.DispatchMessage(cmd, pPlayerInfo);
+		break;
 	}
 }
 
 // 创建角色
 bool PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
-	return m_scene.CreatePlayer(index, pSockInfo, userId);
+	return m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, userId);
 }
 
 // 获取通知条件变量
@@ -287,15 +162,9 @@ CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 }
 
 // 获取场景
-Scene& PlayerPreproces::GetScene()
+SubScene& PlayerPreproces::GetScene()
 {
-	return m_scene;
-}
-
-// 获取回调函数map
-PlayerPreproces::CallBackFunMap& PlayerPreproces::GetCallBackFunMap()
-{
-	return m_CallBackFunMap;
+	return m_SubScene;
 }
 
 // 加入回调函数

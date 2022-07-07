@@ -53,6 +53,9 @@
     <Filter Include="玩家信息\游戏逻辑">
       <UniqueIdentifier>{d235db6a-65b4-4da0-a53d-d39667202cb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家信息\消息处理">
+      <UniqueIdentifier>{a5a576d7-8998-49f2-8506-27b6c048380a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,7 +107,16 @@
       <Filter>玩家信息\玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayer.cpp">
-      <Filter>玩家信息\游戏逻辑</Filter>
+      <Filter>玩家信息\消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubScene.cpp">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
+      <Filter>玩家信息\消息处理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,11 +189,20 @@
     <ClInclude Include="..\Player\PlayerInfo.h">
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayer.h">
-      <Filter>玩家信息\游戏逻辑</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\Attribute.h">
       <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayer.h">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayerPreproces.h">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubScene.h">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayerCenter.h">
+      <Filter>玩家信息\消息处理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
 #include "../Game/stdafx.h"
 
-Scene::Scene(PlayerPreproces* pPlayerPreproces) : 
-	m_pPlayerPreproces(pPlayerPreproces),
-	m_PlayerCenter(this)
+Scene::Scene(SubPlayerPreproces* pSubPlayerPreproces) :
+	m_SubPlayerPreproces(pSubPlayerPreproces),
+	m_SubPlayerCenter(dynamic_cast<SubScene*>(this))
 {
 	
 }
@@ -15,18 +15,31 @@ Scene::~Scene()
 // 分发消息
 void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	m_PlayerCenter.DispatchMessage(cmd, pPlayerInfo);
+	if (!m_SubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "Dispatch message player preproces = null cmd = %d", cmd);
+		return;
+	}
+	switch (cmd)
+	{
+	case MsgCmd::MsgCmd_Scene:
+		// 场景类消息.. 处理场景内各种消息
+		m_SubPlayerPreproces->CallBackFun(cmd, pPlayerInfo);
+		break;
+	default:
+		m_SubPlayerCenter.DispatchMessage(cmd, pPlayerInfo);
+		break;
+	}
 }
 
-// 创建角色
-bool Scene::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
-{
-	m_PlayerCenter.CreatePlayer(index, pSockInfo, userId);
-	return true;
+// 获取玩家中心
+SubPlayerCenter& Scene::GetPlayerCenter()
+{ 
+	return m_SubPlayerCenter; 
 }
 
-// 初始化回调函数
-void Scene::InitCallBackFun()
-{
-
+// 获取玩家预处理
+SubPlayerPreproces* Scene::GetPlayerPreproces()
+{ 
+	return m_SubPlayerPreproces;
 }
