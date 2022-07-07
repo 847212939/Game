@@ -35,9 +35,6 @@
     <Filter Include="玩家信息\玩家管理\游戏逻辑\玩家">
       <UniqueIdentifier>{aaf6facd-69c3-4e32-9f2d-cecd0fdd9949}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\场景">
-      <UniqueIdentifier>{a0ffe58f-e304-4b3e-a9bd-6c02b43a4647}</UniqueIdentifier>
-    </Filter>
     <Filter Include="模板学习">
       <UniqueIdentifier>{c3be62fc-425d-43fa-bf99-d41e03ba5f22}</UniqueIdentifier>
     </Filter>
@@ -106,9 +103,6 @@
     <ClCompile Include="..\Player\PlayerInfo.cpp">
       <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家信息\场景</Filter>
-    </ClCompile>
     <ClCompile Include="..\study\Test.cpp">
       <Filter>模板学习\测试用例</Filter>
     </ClCompile>
@@ -123,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayer.cpp">
       <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Scene.cpp">
+      <Filter>玩家信息\玩家管理\玩家中心</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +168,6 @@
     <ClInclude Include="..\Player\MessageCmd.h">
       <Filter>玩家信息\注册信息</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家信息\场景</Filter>
-    </ClInclude>
     <ClInclude Include="..\study\Addition.h">
       <Filter>模板学习\SFIAE</Filter>
     </ClInclude>
@@ -200,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayer.h">
       <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Scene.h">
+      <Filter>玩家信息\玩家管理\玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
