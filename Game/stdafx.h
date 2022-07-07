@@ -50,7 +50,7 @@ extern "C"
 #include "../kernel/Util.h"					// 工具类
 #include "../kernel/LogManager.h"			// 日志管理类
 
-#include "../Player/Attrs.h"				// 属性
+#include "../Player/Attribute.h"			// 属性
 #include "../Player/PlayerInfo.h"			// 玩家信息
 #include "../Player/Player.h"				// 玩家
 #include "../SubSys/SubPlayer.h"			// 逻辑处理类

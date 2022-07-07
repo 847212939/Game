@@ -180,7 +180,7 @@
     <ClInclude Include="..\SubSys\SubPlayer.h">
       <Filter>玩家信息\游戏逻辑</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Attrs.h">
+    <ClInclude Include="..\Player\Attribute.h">
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
