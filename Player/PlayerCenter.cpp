@@ -59,7 +59,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
 		return;
 	}
-	Player* player = GetPlayer(pPlayerInfo->m_pMsg->uIndex);
+	SubPlayer* player = GetSubPlayer(pPlayerInfo->m_pMsg->uIndex);
 	if (!player)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message player = null index = %u", pPlayerInfo->m_pMsg->uIndex);
@@ -128,23 +128,23 @@ void PlayerCenter::HandlerPlayerThread()
 			LoadPlayerKey loadPKey = loadPlayerList.front();
 			loadPlayerList.pop_front();
 
-			if (!loadPKey.pSockInfo->isConnect)
+			if (!loadPKey.GetConnect())
 			{
 				continue;
 			}
-			Player* player = GetPlayer(loadPKey.index);
+			SubPlayer* player = GetSubPlayer(loadPKey.GetIndex());
 			if (player)
 			{
-				new(player) Player(loadPKey.index, loadPKey.pSockInfo, loadPKey.userId);
+				new(player) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
 			}
 			else
 			{
-				player = new Player(loadPKey.index, loadPKey.pSockInfo, loadPKey.userId);
+				player = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
 			}
 
 			player->SetPlayerPreproces(pPlayerPreproces);
 
-			m_pPlayerVec[loadPKey.index] = player;
+			m_pPlayerVec[loadPKey.GetIndex()] = player;
 
 			player->CallBackFunInit();
 			player->LoadMysql();
@@ -169,7 +169,7 @@ bool PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 }
 
 // »ñÈ¡Íæ¼Ò
-Player* PlayerCenter::GetPlayer(unsigned int index)
+SubPlayer* PlayerCenter::GetSubPlayer(unsigned int index)
 {
 	return m_pPlayerVec[index];
 }

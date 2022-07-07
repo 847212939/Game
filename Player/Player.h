@@ -6,7 +6,7 @@ class Player
 public:
 	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> PlayerCallBackFunMap;
 public:
-	Player(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId);
 	virtual ~Player();
 
 public:
@@ -24,7 +24,6 @@ public:
 	void LoadMysql();						
 	void EnterGame();						
 	bool EnterScene();
-	void CallBackFunInit();
 	void SetPlayerPreproces(PlayerPreproces* pp) { m_PlayerPreproces = pp; }
 
 public:
@@ -46,12 +45,6 @@ public:
 	void SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// update mysql
 	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
-
-public:
-	// 子系统
-private:
-	// 子系统
-	bool Move(PlayerInfo* pPlayerInfo);
 
 private:
 	unsigned int			m_index;			// 玩家索引

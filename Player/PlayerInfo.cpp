@@ -14,3 +14,23 @@ PlayerInfo::~PlayerInfo()
 {
 
 }
+
+const bool& LoadPlayerKey::GetConnect()
+{
+	return pSockInfo->isConnect;
+}
+
+const unsigned int& LoadPlayerKey::GetIndex()
+{
+	return index;
+}
+
+const TCPSocketInfo* LoadPlayerKey::GetSocketInfo()
+{
+	return pSockInfo;
+}
+
+const std::string& LoadPlayerKey::getUserId()
+{
+	return userId;
+}

@@ -15,3 +15,18 @@ public:
 	std::string		m_userId;				// 玩家id
 	const TCPSocketInfo* m_pTcpSockInfo;	// 玩家TCP的网络信息
 };
+
+struct LoadPlayerKey
+{
+	unsigned int index;
+	const TCPSocketInfo* pSockInfo;
+	std::string userId;
+
+	const bool& GetConnect();
+	const unsigned int& GetIndex();
+	const TCPSocketInfo* GetSocketInfo();
+	const std::string& getUserId();
+
+	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, std::string& Id) : index(nIndex), pSockInfo(sockInfo), userId(Id) {}
+	~LoadPlayerKey() {}
+};

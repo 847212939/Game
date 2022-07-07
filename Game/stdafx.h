@@ -49,12 +49,15 @@ extern "C"
 #include "../kernel/TCPClient.h"			// 网络客户端
 #include "../kernel/Util.h"					// 工具类
 #include "../kernel/LogManager.h"			// 日志管理类
+
 #include "../Player/Attrs.h"				// 属性
 #include "../Player/PlayerInfo.h"			// 玩家信息
 #include "../Player/Player.h"				// 玩家
+#include "../SubSys/SubPlayer.h"			// 逻辑处理类
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/Scene.h"				// 场景
 #include "../Player/PlayerPreproces.h"		// 信息在注册
+
 
 #include "../study/Addition.h"				// SFIAE
 #include "../study/Function.h"				// 可调用对象

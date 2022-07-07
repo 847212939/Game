@@ -121,6 +121,9 @@
     <ClCompile Include="..\Lua\LuaMgr.cpp">
       <Filter>脚本处理</Filter>
     </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayer.cpp">
+      <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
@@ -194,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayer.h">
+      <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

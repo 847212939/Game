@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Player::Player(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId) :
+Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId) :
 	m_pTcpSockInfo(pSockInfo),
 	m_userId(userId),
 	m_PlayerPreproces(nullptr),
@@ -27,12 +27,6 @@ bool Player::SendData(int index, void* pData, int size, int mainID, int assistID
 		return false;
 	}
 	return pTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
-}
-
-// 初始化回调函数
-void Player::CallBackFunInit()
-{
-	AddCallBackFun(MsgCmd::MsgCmd_Move, std::move(std::bind(&Player::Move, this, std::placeholders::_1)));
 }
 
 void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
@@ -67,19 +61,6 @@ std::string Player::GetUserId() const
 const TCPSocketInfo* Player::GetTCPSocketInfo()
 {
 	return m_pTcpSockInfo;
-}
-
-bool Player::Move(PlayerInfo* pPlayerInfo)
-{
-	unsigned int uAssistantID = pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
-	std::string str = (char*)pPlayerInfo->m_pData;
-	CIstringstream is(str);
-	unsigned int x = 0, y = 0;
-	is >> x >> y;
-
-	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
-
-	return true;
 }
 
 // 加入回调函数
