@@ -41,23 +41,28 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
 	if (!pPlayerInfo)
 	{
-		COUT_LOG(LOG_CERROR, " Dispatch message player info = null");
+		COUT_LOG(LOG_CERROR, "Dispatch message player info = null cmd = %d", cmd);
 		return;
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo)
 	{
-		COUT_LOG(LOG_CERROR, " Dispatch message sock info = null");
+		COUT_LOG(LOG_CERROR, "Dispatch message sock info = null cmd = %d", cmd);
 		return;
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
 	{
-		COUT_LOG(LOG_CINFO, " Dispatch message Link broken");
+		COUT_LOG(LOG_CINFO, "Dispatch message Link broken cmd = %d", cmd);
 		return;
 	}
-	Player* player = m_pPlayerVec[pPlayerInfo->m_pMsg->uIndex];
+	if (!pPlayerInfo->m_pMsg)
+	{
+		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
+		return;
+	}
+	Player* player = GetPlayer(pPlayerInfo->m_pMsg->uIndex);
 	if (!player)
 	{
-		COUT_LOG(LOG_CERROR, " Dispatch message player = null index = %u", pPlayerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "Dispatch message player = null index = %u", pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
 	if (strcmp(player->GetTCPSocketInfo()->ip, pPlayerInfo->m_pTcpSockInfo->ip) != 0)
@@ -127,7 +132,7 @@ void PlayerCenter::HandlerPlayerThread()
 			{
 				continue;
 			}
-			Player* player = m_pPlayerVec[loadPKey.index];
+			Player* player = GetPlayer(loadPKey.index);
 			if (player)
 			{
 				new(player) Player(loadPKey.index, loadPKey.pSockInfo, loadPKey.userId);

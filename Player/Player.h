@@ -4,31 +4,54 @@
 class Player
 {
 public:
-	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> PlayerCallBackFunMap;	// 消息回调函数
+	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> PlayerCallBackFunMap;
 public:
 	Player(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
-	~Player();
+	virtual ~Player();
 
 public:
-	// 分发消息
+	std::string GetUserId() const;
+	int GetIndex() { return m_index; }
+	const TCPSocketInfo* GetTCPSocketInfo();
+
+public:
+	// 消息处理
+	bool SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
-	// 初始化回调函数
+
+public:
+	// 玩家上线
+	void LoadMysql();						
+	void EnterGame();						
+	bool EnterScene();
 	void CallBackFunInit();
 	void SetPlayerPreproces(PlayerPreproces* pp) { m_PlayerPreproces = pp; }
 
-	int GetIndex() { return m_index; }
-	void LoadMysql();						// 加载数据库
-	void EnterGame();						// 进入游戏
-	bool EnterScene();						// 进入场景
-	std::string GetUserId() const;			// 获取玩家id
-	const TCPSocketInfo* GetTCPSocketInfo();// 获取玩家TCP的网络信息
-
-	// 消息回调
+public:
+	// 回调函数
 	void AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
+public:
+	// 数据库操作
+	// 加载一条数据库
+	bool LoadOneSql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
+	// 加载多条数据库
+	bool LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
+	// insert mysql
+	void SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	// delete mysql
+	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
+	// replace mysql
+	void SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	// update mysql
+	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
+
+public:
+	// 子系统
 private:
-	bool Move(PlayerInfo* pPlayerInfo);		// 移动
+	// 子系统
+	bool Move(PlayerInfo* pPlayerInfo);
 
 private:
 	unsigned int			m_index;			// 玩家索引

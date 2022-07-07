@@ -5,7 +5,7 @@ class PlayerInfo
 {
 public:
 	PlayerInfo();
-	~PlayerInfo();
+	virtual~PlayerInfo();
 
 public:
 	

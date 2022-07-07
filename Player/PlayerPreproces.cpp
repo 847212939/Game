@@ -37,7 +37,7 @@ void PlayerPreproces::LoginInAccount(PlayerInfo* pPlayerInfo)
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
 	{
-		COUT_LOG(LOG_CERROR, "网络链接关闭");
+		COUT_LOG(LOG_CERROR, "Network link closed");
 		return;
 	}
 
@@ -224,7 +224,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
 	{
-		COUT_LOG(LOG_CERROR, "网络链接关闭");
+		COUT_LOG(LOG_CERROR, "Network link closed");
 		return;
 	}
 	unsigned int uMainID = pPlayerInfo->m_pMsg->netMessageHead.uMainID;
@@ -253,13 +253,6 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 	else
 	{
-		PlayerCenter& playerCenter = m_scene.GetPlayerCenter();
-		Player* player = playerCenter.GetPlayer(pPlayerInfo->m_pMsg->uIndex);
-		if (!player)
-		{
-			COUT_LOG(LOG_CERROR, "player is nullptr cmd = %d", (int)cmd);
-			return;
-		}
 		m_scene.DispatchMessage(cmd, pPlayerInfo);
 	}
 }
@@ -315,7 +308,7 @@ void PlayerPreproces::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "已经存在该消息的回调请检查代码 cmd = %d", cmd);
+	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
 // 回调函数
@@ -324,7 +317,7 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
 	if (it == m_CallBackFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "没有查找到相应的回调函数 cmd = %d", cmd);
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 

@@ -4,7 +4,7 @@ class Scene
 {
 public:
 	Scene(PlayerPreproces* pPlayerPreproces);
-	~Scene();
+	virtual ~Scene();
 
 public:
 	// 分发消息
