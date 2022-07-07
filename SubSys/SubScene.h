@@ -3,7 +3,7 @@
 class SubScene : public Scene
 {
 public:
-	SubScene(SubPlayerPreproces* pSubPlayerPreproces);
+	SubScene();
 	~SubScene();
 
 private:

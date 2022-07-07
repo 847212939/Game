@@ -11,7 +11,6 @@ SubPlayer::~SubPlayer()
 
 }
 
-
 // 初始化回调函数
 void SubPlayer::CallBackFunInit()
 {

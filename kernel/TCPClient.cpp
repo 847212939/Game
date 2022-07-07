@@ -6,6 +6,7 @@ TCPClient::TCPClient() :
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
 
+	m_SubPlayerPreproces->Init();
 	Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str());
 	Start(ServiceType::SERVICE_TYPE_LOGIC);
 	Run();
@@ -46,7 +47,7 @@ void TCPClient::HandlerRecvDataListThread()
 	//Êý¾Ý»º´æ
 	void* pDataLineHead = NULL;
 
-	COUT_LOG(LOG_CINFO, "recv data thread begin...");
+	COUT_LOG(LOG_CINFO, "{{1002}}");
 
 	while (GetRuninged())
 	{

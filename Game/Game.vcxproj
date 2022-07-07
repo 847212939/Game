@@ -167,6 +167,7 @@
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
+    <ClCompile Include="..\Logic\LoginSys.cpp" />
     <ClCompile Include="..\Lua\LuaMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="..\kernel\TCPClient.h" />
     <ClInclude Include="..\kernel\TCPSocket.h" />
     <ClInclude Include="..\kernel\Util.h" />
+    <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Lua\LuaMgr.h" />
     <ClInclude Include="..\Player\Attribute.h" />
     <ClInclude Include="..\Player\MessageCmd.h" />

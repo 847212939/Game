@@ -66,7 +66,7 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 // 加入回调函数
 void Player::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	PlayerCallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
+	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
 	if (it == m_CallBackFunMap.end())
 	{
 		m_CallBackFunMap.insert(std::make_pair(cmd, fun));
@@ -79,7 +79,7 @@ void Player::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 // 回调函数
 bool Player::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	PlayerCallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
+	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
 	if (it == m_CallBackFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);

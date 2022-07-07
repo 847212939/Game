@@ -1,8 +1,9 @@
 #include "../Game/stdafx.h"
 
-SubScene::SubScene(SubPlayerPreproces* pSubPlayerPreproces) :
-	Scene(pSubPlayerPreproces)
+SubScene::SubScene() :
+	Scene()
 {
+	GetPlayerCenter().SetSubScene(this);
 	CallBackFunInit();
 }
 

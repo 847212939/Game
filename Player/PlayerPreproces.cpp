@@ -2,15 +2,22 @@
 #include "../Game/stdafx.h"
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
-	m_pTCPClient(pTCPClient),
-	m_SubScene(dynamic_cast<SubPlayerPreproces*>(this))
+	m_pTCPClient(pTCPClient)
 {
-	InitDB();
-	RunThread();
 }
 
 PlayerPreproces::~PlayerPreproces()
 {
+
+}
+
+void PlayerPreproces::Init()
+{
+	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
+
+	InitDB();
+	RunThread();
+	m_SubScene.Init();
 
 }
 
@@ -45,7 +52,7 @@ bool PlayerPreproces::RunThread()
 // 数据库执行
 void PlayerPreproces::HandlerExecuteSqlThread()
 {
-	COUT_LOG(LOG_CINFO, "save mysql thread begin...");
+	COUT_LOG(LOG_CINFO, "{{1005}}");
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	while (m_pTCPClient->GetRuninged())
@@ -133,9 +140,9 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 创建角色
-bool PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
-	return m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, userId);
+	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, userId);
 }
 
 // 获取通知条件变量
@@ -162,7 +169,7 @@ CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 }
 
 // 获取场景
-SubScene& PlayerPreproces::GetScene()
+SubScene& PlayerPreproces::GetSubScene()
 {
 	return m_SubScene;
 }

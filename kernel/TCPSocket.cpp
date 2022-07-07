@@ -148,7 +148,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	COUT_LOG(LOG_CINFO, "send data thread begin...");
+	COUT_LOG(LOG_CINFO, "{{1003}}");
 
 	while (pThis->m_running)
 	{
@@ -207,8 +207,6 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	}
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-
-	COUT_LOG(LOG_CINFO, "accept thread begin...");
 
 	// libevent·þÎñÆ÷ 
 	struct evconnlistener* listener;

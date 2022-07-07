@@ -255,7 +255,7 @@ void CGameLogManage::Fflush()
 // 日志处理线程
 void CGameLogManage::HandlerLogThread()
 {
-	COUT_LOG(LOG_CINFO, "log thread begin...");
+	COUT_LOG(LOG_CINFO, "{{1001}}");
 	while (true)
 	{
 		// 日志五秒钟打印一次

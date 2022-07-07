@@ -4,8 +4,6 @@
 class Player
 {
 public:
-	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> PlayerCallBackFunMap;
-public:
 	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId);
 	virtual ~Player();
 
@@ -52,5 +50,5 @@ private:
 	std::string				m_userId;			// 玩家id
 	const TCPSocketInfo*	m_pTcpSockInfo;		// 玩家TCP的网络信息
 	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
-	PlayerCallBackFunMap	m_CallBackFunMap;	// 回调函数
+	CallBackFunMap			m_CallBackFunMap;	// 回调函数
 };

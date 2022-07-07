@@ -6,12 +6,16 @@ class PlayerCenter
 public:
 	typedef std::list<LoadPlayerKey> LoadPlayerList;
 public:
+	PlayerCenter();
 	virtual ~PlayerCenter();
-	PlayerCenter(SubScene* pSubScene);
 
 public:
+	void Init();
+
+public:
+	void SetSubScene(SubScene* pSubScene);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
-	bool CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
 
 public:
 	const SubScene* getScene();

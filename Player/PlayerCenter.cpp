@@ -1,8 +1,36 @@
 #include "../Game/stdafx.h"
 
-PlayerCenter::PlayerCenter(SubScene* pSubScene) : 
-	m_pScene(pSubScene)
+PlayerCenter::PlayerCenter() : 
+	m_pScene(nullptr)
 {
+	
+}
+
+PlayerCenter::~PlayerCenter()
+{
+
+}
+
+void PlayerCenter::Init()
+{
+	if (!m_pScene)
+	{
+		COUT_LOG(LOG_CERROR, "Init scene = null");
+		return;
+	}
+	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "Init sub player preproces = null");
+		return;
+	}
+	TCPClient* pTCPClient = pSubPlayerPreproces->GetTCPClient();
+	if (!pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "Init tcp client = null");
+		return;
+	}
+
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
 
@@ -15,25 +43,9 @@ PlayerCenter::PlayerCenter(SubScene* pSubScene) :
 	{
 		pSubPlayer = nullptr;
 	}
-
-	if (m_pScene)
-	{
-		SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
-		if (pSubPlayerPreproces)
-		{
-			TCPClient* pTCPClient = pSubPlayerPreproces->GetTCPClient();
-			if (pTCPClient)
-			{
-				std::vector<std::thread*>& threadVec = pTCPClient->GetSockeThreadVec();
-				threadVec.push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
-			}
-		}
-	}
-}
-
-PlayerCenter::~PlayerCenter()
-{
-
+	
+	std::vector<std::thread*>& threadVec = pTCPClient->GetSockeThreadVec();
+	threadVec.push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
@@ -106,7 +118,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	COUT_LOG(LOG_CINFO, "pSubPlayer create thread begin...");
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	if (!m_pScene)
 	{
@@ -126,7 +138,7 @@ void PlayerCenter::HandlerPlayerThread()
 		return;
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	COUT_LOG(LOG_CINFO, "{{1004}}");
 
 	while (pTCPClient->GetRuninged())
 	{
@@ -177,16 +189,19 @@ void PlayerCenter::HandlerPlayerThread()
 	COUT_LOG(LOG_CINFO, "pSubPlayer create thread end...");
 }
 
+void PlayerCenter::SetSubScene(SubScene* pSubScene)
+{
+	m_pScene = pSubScene;
+}
+
 // 创建角色
-bool PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
 {
 	m_cond.GetMutex().lock();
 	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, userId));
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
-
-	return true;
 }
 
 // 获取玩家

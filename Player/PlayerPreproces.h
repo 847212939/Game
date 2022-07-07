@@ -5,12 +5,13 @@ class PlayerPreproces
 {
 public:
 	typedef std::list<std::string> SqlList;										// 数据库语句list<sql>	
-	typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;	// 消息回调函数
-	typedef std::map<std::string, std::string> SqlKeyDataMap;					// 数据库查询结果
 
 public:
 	PlayerPreproces(TCPClient* pTCPClient);
 	virtual ~PlayerPreproces();
+
+public:
+	void Init();
 
 public:
 	// 处理消息
@@ -31,7 +32,7 @@ public:
 	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
 public:
-	SubScene& GetScene();
+	SubScene& GetSubScene();
 	TCPClient* GetTCPClient();
 	CMysqlHelper& GetCMysqlHelper();
 	ConditionVariable& GetConditionVariable();
@@ -44,7 +45,7 @@ public:
 
 public:
 	// 创建角色
-	bool CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
 
 private:
 	// 初始化DB

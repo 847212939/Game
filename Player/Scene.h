@@ -3,11 +3,15 @@
 class Scene
 {
 public:
-	Scene(SubPlayerPreproces* pSubPlayerPreproces);
+	Scene();
 	virtual ~Scene();
 
 public:
+	void Init();
+
+public:
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void SetSubPlayerPreproces(SubPlayerPreproces* pSubPlayerPreproces);
 
 public:
 	SubPlayerCenter& GetPlayerCenter();

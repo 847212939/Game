@@ -3,12 +3,6 @@
 class SubPlayerPreproces : public PlayerPreproces
 {
 public:
-	// ×¢²áµÇÂ¼×ÓÐ­Òé
-	enum class SubPPMsgCmd
-	{
-		CS_Login = 1,  // µÇÂ¼
-	};
-public:
 	~SubPlayerPreproces();
 	SubPlayerPreproces(TCPClient* pTCPClient);
 
@@ -17,12 +11,5 @@ private:
 	void CallBackFunInit();
 
 private:
-	// µÇÂ¼
-	void LoginInAccount(PlayerInfo* pPlayerInfo);
-	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
-
-private:
-	std::string LoadUserId(std::string& id);
-	std::string LoadUserAccount(std::string& id);
-
+	LoginSys m_LoginSys;
 };

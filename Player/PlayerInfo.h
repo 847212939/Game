@@ -30,3 +30,6 @@ struct LoadPlayerKey
 	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, std::string& Id) : index(nIndex), pSockInfo(sockInfo), userId(Id) {}
 	~LoadPlayerKey() {}
 };
+
+typedef std::map<std::string, std::string> SqlKeyDataMap;					// 数据库查询结果
+typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;	// 消息回调函数

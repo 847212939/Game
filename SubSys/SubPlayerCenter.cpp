@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
-SubPlayerCenter::SubPlayerCenter(SubScene* pSubScene) : 
-	PlayerCenter(pSubScene)
+SubPlayerCenter::SubPlayerCenter() : 
+	PlayerCenter()
 {
 	CallBackFunInit();
 }

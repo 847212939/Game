@@ -56,6 +56,9 @@
     <Filter Include="玩家信息\消息处理">
       <UniqueIdentifier>{a5a576d7-8998-49f2-8506-27b6c048380a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家信息\游戏逻辑\玩家登录">
+      <UniqueIdentifier>{498363ca-7180-475c-a485-fece46b95818}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
       <Filter>玩家信息\消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\LoginSys.cpp">
+      <Filter>玩家信息\游戏逻辑\玩家登录</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayerCenter.h">
       <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\LoginSys.h">
+      <Filter>玩家信息\游戏逻辑\玩家登录</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
