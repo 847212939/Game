@@ -20,21 +20,6 @@
     <Filter Include="玩家信息">
       <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\玩家管理">
-      <UniqueIdentifier>{435c4b05-8e91-481d-8020-0d172509b5e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\玩家管理\游戏逻辑">
-      <UniqueIdentifier>{d235db6a-65b4-4da0-a53d-d39667202cb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\玩家管理\玩家中心">
-      <UniqueIdentifier>{4f0e6534-da46-4cd1-9b28-58d2efd0c9cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\注册信息">
-      <UniqueIdentifier>{f06f5cfe-86db-4799-9ae0-c6ac0aafd6e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\玩家管理\游戏逻辑\玩家">
-      <UniqueIdentifier>{aaf6facd-69c3-4e32-9f2d-cecd0fdd9949}</UniqueIdentifier>
-    </Filter>
     <Filter Include="模板学习">
       <UniqueIdentifier>{c3be62fc-425d-43fa-bf99-d41e03ba5f22}</UniqueIdentifier>
     </Filter>
@@ -50,14 +35,8 @@
     <Filter Include="模板学习\生成类型">
       <UniqueIdentifier>{278d4dcc-6ee0-48e0-866e-23572f898c61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\玩家管理\游戏逻辑\属性">
-      <UniqueIdentifier>{aeeda643-46cd-4a35-abc6-e2d85c4c274a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\玩家管理\游戏逻辑\逻辑">
-      <UniqueIdentifier>{5af86346-da39-4b6b-9ab4-e8907ca72ac6}</UniqueIdentifier>
     </Filter>
     <Filter Include="日志打印">
       <UniqueIdentifier>{bedad37b-81ca-4224-b7ec-1193f6004080}</UniqueIdentifier>
@@ -67,6 +46,12 @@
     </Filter>
     <Filter Include="网络处理">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家信息\玩家中心">
+      <UniqueIdentifier>{4f0e6534-da46-4cd1-9b28-58d2efd0c9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家信息\游戏逻辑">
+      <UniqueIdentifier>{d235db6a-65b4-4da0-a53d-d39667202cb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,17 +76,8 @@
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\PlayerPreproces.cpp">
-      <Filter>玩家信息\注册信息</Filter>
-    </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家信息\玩家管理\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerInfo.cpp">
-      <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
+      <Filter>玩家信息\玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\study\Test.cpp">
       <Filter>模板学习\测试用例</Filter>
@@ -115,11 +91,20 @@
     <ClCompile Include="..\Lua\LuaMgr.cpp">
       <Filter>脚本处理</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayer.cpp">
-      <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
-    </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家信息\玩家管理\玩家中心</Filter>
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPreproces.cpp">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Player.cpp">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerInfo.cpp">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayer.cpp">
+      <Filter>玩家信息\游戏逻辑</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,23 +135,11 @@
     <ClInclude Include="..\kernel\Util.h">
       <Filter>数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerPreproces.h">
-      <Filter>玩家信息\注册信息</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家信息\玩家管理\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
+      <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>玩家信息\玩家管理\游戏逻辑\玩家</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>玩家信息\注册信息</Filter>
     </ClInclude>
     <ClInclude Include="..\study\Addition.h">
       <Filter>模板学习\SFIAE</Filter>
@@ -180,9 +153,6 @@
     <ClInclude Include="..\study\IntegerSequence.h">
       <Filter>模板学习\生成类型</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Attrs.h">
-      <Filter>玩家信息\玩家管理\游戏逻辑\属性</Filter>
-    </ClInclude>
     <ClInclude Include="..\Config\ConfigMgr.h">
       <Filter>配置管理</Filter>
     </ClInclude>
@@ -192,11 +162,26 @@
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayer.h">
-      <Filter>玩家信息\玩家管理\游戏逻辑\逻辑</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家信息\玩家管理\玩家中心</Filter>
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPreproces.h">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Player.h">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerInfo.h">
+      <Filter>玩家信息\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayer.h">
+      <Filter>玩家信息\游戏逻辑</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Attrs.h">
+      <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
