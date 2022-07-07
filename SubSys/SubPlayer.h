@@ -3,8 +3,8 @@
 class SubPlayer : public Player
 {
 public:
-	SubPlayer(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId);
 	virtual ~SubPlayer();
+	SubPlayer(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId);
 
 public:
 	// 初始化回调函数

@@ -9,8 +9,8 @@ public:
 		CS_Login = 1,  // 登录
 	};
 public:
-	SubPlayerPreproces(TCPClient* pTCPClient);
 	~SubPlayerPreproces();
+	SubPlayerPreproces(TCPClient* pTCPClient);
 
 private:
 	// 初始化消息回调函数
@@ -22,7 +22,7 @@ private:
 	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 
 private:
-	std::string LoadUserAccount(std::string& id);
 	std::string LoadUserId(std::string& id);
+	std::string LoadUserAccount(std::string& id);
 
 };
