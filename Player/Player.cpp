@@ -1,10 +1,11 @@
 #include "../Game/stdafx.h"
 
-Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const long long& userId) :
+Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId) :
 	m_pTcpSockInfo(pSockInfo),
 	m_userId(userId),
 	m_SubPlayerPreproces(nullptr),
-	m_index(index)
+	m_index(index),
+	m_loadMysqled(false)
 {
 	m_NetCBFunMap.clear();
 }
@@ -35,7 +36,7 @@ void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 获取玩家id
-long long Player::GetUserId() const
+uint64_t Player::GetUserId() const
 {
 	return m_userId;
 }
@@ -73,7 +74,7 @@ bool Player::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
-void Player::AddMysqlCallback(std::string&& name, std::function<void(std::string&)>&& fun)
+void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun)
 {
 	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(name);
 	if (it == m_MysqlCBFunMap.end())
@@ -89,21 +90,7 @@ bool Player::CallBackFun()
 {
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		CMysqlHelper::MysqlData mysqlData;
-		LoadOneSql(m_userId, it->first, mysqlData);
-		if (mysqlData.size() <= 0)
-		{
-			continue;
-		}
-
-		SqlKeyDataMap& dataMap = mysqlData[0];
-		SqlKeyDataMap::iterator pos = dataMap.find("data");
-		if (pos == dataMap.end())
-		{
-			continue;
-		}
-
-		it->second(pos->second);
+		it->second(LoadOneSql(it->first, m_userId));
 	}
 	
 	return true;
@@ -111,26 +98,14 @@ bool Player::CallBackFun()
 
 // 数据库操作
 // 加载一条数据库
-bool Player::LoadOneSql(long long userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr)
+std::string Player::LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr)
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return false;
+		COUT_LOG(LOG_CERROR, "Player preproces is null userid = %lld", m_userId);
+		return "";
 	}
-	return m_SubPlayerPreproces->LoadOneSql(userId, sqlName, queryData, dataStr);
-}
-
-// 加载多条数据库
-bool Player::LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr)
-{
-	if (!m_SubPlayerPreproces)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return false;
-	}
-
-	return m_SubPlayerPreproces->LoadMulitySql(userId, sqlName, queryData, dataStr);
+	return m_SubPlayerPreproces->LoadOneSql(sqlName, userId, dataStr);
 }
 
 // insert mysql
@@ -158,7 +133,7 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 }
 
 // replace mysql
-void Player::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, long long userId, std::string keyName, std::string dataName)
+void Player::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -166,7 +141,7 @@ void Player::SaveReplaceSQL(std::string sqlName, std::string name, std::string d
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, name, data, userId, keyName, dataName);
+	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, userId, data, keyName, dataName);
 }
 
 // update mysql
@@ -185,6 +160,8 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string name, std::string da
 void Player::LoadMysql()
 {
 	CallBackFun();
+
+	m_loadMysqled = true;
 }
 
 bool Player::EnterScene()
@@ -201,5 +178,5 @@ void Player::EnterGame()
 // 玩家退出
 void Player::ExitGame()
 {
-
+	m_loadMysqled = false;
 }

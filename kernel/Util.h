@@ -57,7 +57,7 @@ public:
 		m_serverType = serverType;
 		m_serverID = serverID;
 	}
-	long long GenerateUID()
+	uint64_t GenerateUID()
 	{
 		time_t curSecond = time(NULL);
 		if (curSecond != m_lastSecond)
@@ -73,7 +73,7 @@ private:
 	int         m_serverType;
 	int	        m_serverID;
 	time_t      m_lastSecond;
-	long long   m_addID;
+	uint64_t   m_addID;
 };
 
 class Util
@@ -98,7 +98,7 @@ public:
 		return m_IDGen;
 	}
 	
-	long long CreateUserId()
+	uint64_t CreateUserId()
 	{
 		return m_IDGen.GenerateUID();
 	}

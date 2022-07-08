@@ -18,10 +18,10 @@ void MoveSys::CallBackInit()
 		return;
 	}
 	m_pSubPlayer->AddNetCallback(MsgCmd::MsgCmd_Move, std::move(std::bind(&MoveSys::NetworkCallback, this, std::placeholders::_1)));
-	m_pSubPlayer->AddMysqlCallback(std::string("move"), std::move(std::bind(&MoveSys::MysqlCallback, this, std::placeholders::_1)));
+	m_pSubPlayer->AddMysqlCallback("move", std::move(std::bind(&MoveSys::MysqlCallback, this, std::placeholders::_1)));
 }
 
-void MoveSys::MysqlCallback(std::string& data)
+void MoveSys::MysqlCallback(std::string&& data)
 {
 	if (!m_pSubPlayer)
 	{

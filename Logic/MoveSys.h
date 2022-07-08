@@ -15,7 +15,7 @@ public:
 private:
 	void CallBackInit();
 	void NetworkCallback(PlayerInfo* pPlayerInfo);
-	void MysqlCallback(std::string& data);
+	void MysqlCallback(std::string&& data);
 
 private:
 	bool MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo);

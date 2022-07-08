@@ -123,7 +123,7 @@ int main()
 //	CIstringstream is(os);
 //	int a = 0;
 //	is >> a;
-//	long long b = 0;
+//	uint64_t b = 0;
 //	is >> b;
 //	int c = 0;
 //	is >> c;

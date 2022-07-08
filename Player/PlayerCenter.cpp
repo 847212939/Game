@@ -88,6 +88,11 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message pSubPlayer = null index = %u", pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
+	if (!pSubPlayer->GetLoad())
+	{
+		COUT_LOG(LOG_CERROR, "Dispatch message mysql is unload index = %u", pPlayerInfo->m_pMsg->uIndex);
+		return;
+	}
 	if (strcmp(pSubPlayer->GetTCPSocketInfo()->ip, pPlayerInfo->m_pTcpSockInfo->ip) != 0)
 	{
 		COUT_LOG(LOG_CERROR, "The local IP address and remote IP address are not equal");
@@ -195,7 +200,7 @@ void PlayerCenter::SetSubScene(SubScene* pSubScene)
 }
 
 // ´´½¨½ÇÉ«
-void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, long long& userId)
+void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, uint64_t& userId)
 {
 	m_cond.GetMutex().lock();
 	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, userId));

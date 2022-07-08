@@ -30,7 +30,7 @@ const TCPSocketInfo* LoadPlayerKey::GetSocketInfo()
 	return pSockInfo;
 }
 
-const long long& LoadPlayerKey::getUserId()
+const uint64_t& LoadPlayerKey::getUserId()
 {
 	return userId;
 }

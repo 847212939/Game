@@ -83,22 +83,27 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 		return false;
 	}
 
-	long long userId = 0;
-
 	// 数据库查询
-	std::string pw = LoadUserAccount(id);
-	if (pw.empty())
+	std::string data = m_pSubPlayerPreproces->LoadOneSql(id, "useraccount");
+	if (data.empty())
 	{
-		userId = Util::Instance()->CreateUserId();
+		uint64_t userId = Util::Instance()->CreateUserId();
 
-		m_pSubPlayerPreproces->SaveReplaceSQL("useraccount", id, passwaed);
-		m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, "", userId);
+		COstringstream os;
+		os << passwaed << userId;
 
 		pPlayerInfo->m_userId = userId;
+		m_pSubPlayerPreproces->SaveReplaceSQL("useraccount", id, os);
+
 		return true;
 	}
 	else
 	{
+		std::string pw;
+		uint64_t userId = 0;
+		CIstringstream is(data);
+		is >> pw >> userId;
+		
 		if (pw != passwaed)
 		{
 			// 密码不正确
@@ -107,54 +112,16 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 		}
 		else
 		{
-			// 密码正确
-			userId = LoadUserId(id);
-			if (userId.empty())
+			if (userId == 0)
 			{
-				userId = Util::Instance()->CreateUserId();
-
-				m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, "", userId);
-				pPlayerInfo->m_userId = userId;
-				return true;
+				COUT_LOG(LOG_CERROR, "账户存在异常");
+				return false;
 			}
+
+			pPlayerInfo->m_userId = userId;
 		}
 	}
 
-	pPlayerInfo->m_userId = userId;
 	return true;
-}
-
-// 加载玩家userid
-std::string LoginSys::LoadUserId(long long& id)
-{
-	CMysqlHelper::MysqlData data;
-	m_pSubPlayerPreproces->LoadOneSql(id, "userid", data);
-	if (data.size() > 0)
-	{
-		SqlKeyDataMap& dataMap = data[0];
-		SqlKeyDataMap::iterator it = dataMap.find("data");
-		if (it != dataMap.end())
-		{
-			return it->second;
-		}
-	}
-	return "";
-}
-
-// 加载玩家账号信息
-std::string LoginSys::LoadUserAccount(std::string& id)
-{
-	CMysqlHelper::MysqlData data;
-	m_pSubPlayerPreproces->LoadOneSql(id, "useraccount", data);
-	if (data.size() > 0)
-	{
-		SqlKeyDataMap& dataMap = data[0];
-		SqlKeyDataMap::iterator it = dataMap.find("data");
-		if (it != dataMap.end())
-		{
-			return it->second;
-		}
-	}
-	return "";
 }
 
