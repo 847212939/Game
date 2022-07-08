@@ -21,7 +21,7 @@ private:
 	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 
 private:
-	std::string LoadUserId(std::string& id);
+	std::string LoadUserId(long long& id);
 	std::string LoadUserAccount(std::string& id);
 
 private:

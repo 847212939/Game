@@ -27,3 +27,8 @@ void ConfigMgr::ReadThreadCntCfg(int cnt)
 { 
 	m_CBaseCfgMgr.ReadThreadCntCfg(cnt); 
 }
+
+void ConfigMgr::ReadServerIDCfg(int id)
+{
+	m_CBaseCfgMgr.ReadServerIDCfg(id);
+}

@@ -19,7 +19,7 @@ public:
 
 public:
 	// 加载一条数据库
-	bool LoadOneSql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
+	bool LoadOneSql(long long userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	// 加载多条数据库
 	bool LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	// insert mysql
@@ -27,7 +27,7 @@ public:
 	// delete mysql
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	// replace mysql
-	void SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName= "userid", std::string dataName ="data");
+	void SaveReplaceSQL(std::string sqlName, std::string name, std::string data, long long userId = 0, std::string keyName= "userid", std::string dataName ="data");
 	// update mysql
 	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
@@ -43,7 +43,7 @@ public:
 
 public:
 	// 创建角色
-	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId);
+	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, long long& userId);
 
 private:
 	// 初始化DB

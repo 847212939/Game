@@ -195,7 +195,7 @@ void PlayerCenter::SetSubScene(SubScene* pSubScene)
 }
 
 // ´´½¨½ÇÉ«
-void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& userId)
+void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, long long& userId)
 {
 	m_cond.GetMutex().lock();
 	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, userId));

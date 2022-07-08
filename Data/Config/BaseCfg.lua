@@ -1,7 +1,10 @@
 BaseCfg = 
 {
+    --服务器ID
+    serverID = 1005, 
+
     --线程池的数量
-    ThreadCnt = 16,              
+    ThreadCnt = 16,
 
     LogicCfg =
     {

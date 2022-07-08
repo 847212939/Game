@@ -40,22 +40,73 @@ private:
 	std::istringstream	m_is;
 };
 
-// 方法类
+class IDGen
+{
+public:
+	IDGen() : 
+		m_serverType(), 
+		m_serverID(), 
+		m_lastSecond(0), 
+		m_addID(0)
+	{ }
+	virtual ~IDGen(){}
+
+public:
+	void Init(int serverType, int serverID)
+	{
+		m_serverType = serverType;
+		m_serverID = serverID;
+	}
+	long long GenerateUID()
+	{
+		time_t curSecond = time(NULL);
+		if (curSecond != m_lastSecond)
+		{
+			m_lastSecond = curSecond;
+			m_addID = 0;
+		}
+
+		return ((uint64_t)m_serverType << 59) + ((uint64_t)m_serverID << 52) + ((uint64_t)curSecond << 20) + ((uint64_t)m_addID++);
+	}
+
+private:
+	int         m_serverType;
+	int	        m_serverID;
+	time_t      m_lastSecond;
+	long long   m_addID;
+};
+
 class Util
 {
 public:
-	Util();
-	~Util();
+	static Util* Instance()
+	{
+		static Util g_mgr;
+		return &g_mgr;
+	}
+
+private:
+	Util(){}
+	~Util(){}
+
 public:
-	// 生成UUID全局函数
-	static std::string CreateUuid();
-	// 获取一个随机数
 	static unsigned int GetRandNum();
-	// 获取[A,B)随机数,min<= 随机数 < iMax
 	static int GetRandRange(int iMin, int iMax);
+
+	IDGen& GetIDGen()
+	{
+		return m_IDGen;
+	}
+	
+	long long CreateUserId()
+	{
+		return m_IDGen.GenerateUID();
+	}
+
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
+	IDGen						m_IDGen;
 };
 
 template<class T>

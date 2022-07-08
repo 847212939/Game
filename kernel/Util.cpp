@@ -151,32 +151,9 @@ CIstringstream& CIstringstream::operator >> (unsigned char* pBuf)
 	return *this;
 }
 
-// 生成UUID全局函数
-std::string Util::CreateUuid()
-{
-	std::stringstream ss;
-
-	std::mt19937 seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
-	std::uniform_int_distribution<std::size_t> random;
-
-	ss << std::hex << random(seed);
-
-	return ss.str();
-}
-
 // 方法类
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
-
-Util::Util()
-{
-
-}
-
-Util::~Util()
-{
-
-}
 
 // 获取随机数
 unsigned int Util::GetRandNum()

@@ -83,16 +83,16 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 		return false;
 	}
 
-	std::string userId;
+	long long userId = 0;
 
 	// 数据库查询
 	std::string pw = LoadUserAccount(id);
 	if (pw.empty())
 	{
-		userId = Util::CreateUuid();
+		userId = Util::Instance()->CreateUserId();
 
 		m_pSubPlayerPreproces->SaveReplaceSQL("useraccount", id, passwaed);
-		m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, userId);
+		m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, "", userId);
 
 		pPlayerInfo->m_userId = userId;
 		return true;
@@ -111,9 +111,9 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 			userId = LoadUserId(id);
 			if (userId.empty())
 			{
-				userId = Util::CreateUuid();
+				userId = Util::Instance()->CreateUserId();
 
-				m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, userId);
+				m_pSubPlayerPreproces->SaveReplaceSQL("userid", id, "", userId);
 				pPlayerInfo->m_userId = userId;
 				return true;
 			}
@@ -125,7 +125,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 }
 
 // 加载玩家userid
-std::string LoginSys::LoadUserId(std::string& id)
+std::string LoginSys::LoadUserId(long long& id)
 {
 	CMysqlHelper::MysqlData data;
 	m_pSubPlayerPreproces->LoadOneSql(id, "userid", data);

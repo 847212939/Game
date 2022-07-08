@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId) :
+Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const long long& userId) :
 	m_pTcpSockInfo(pSockInfo),
 	m_userId(userId),
 	m_SubPlayerPreproces(nullptr),
@@ -17,13 +17,13 @@ bool Player::SendData(int index, void* pData, int size, int mainID, int assistID
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null index = %d, userid = %s", index, m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null index = %d, userid = %lld", index, m_userId);
 		return false;
 	}
 	TCPClient* pTCPClient = m_SubPlayerPreproces->GetTCPClient();
 	if (!pTCPClient)
 	{
-		COUT_LOG(LOG_CINFO, "TCP Clien is null index = %d, userid = %s", index, m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "TCP Clien is null index = %d, userid = %lld", index, m_userId);
 		return false;
 	}
 	return pTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
@@ -35,7 +35,7 @@ void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 获取玩家id
-std::string Player::GetUserId() const
+long long Player::GetUserId() const
 {
 	return m_userId;
 }
@@ -73,16 +73,16 @@ bool Player::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
-void Player::AddMysqlCallback(std::pair<std::string, std::string>&& pr, std::function<void(std::string&)>&& fun)
+void Player::AddMysqlCallback(std::string&& name, std::function<void(std::string&)>&& fun)
 {
-	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(pr);
+	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(name);
 	if (it == m_MysqlCBFunMap.end())
 	{
-		m_MysqlCBFunMap.insert(std::make_pair(pr, fun));
+		m_MysqlCBFunMap.insert(std::make_pair(name, fun));
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %s", pr.first.c_str());
+	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %s", name.c_str());
 }
 
 bool Player::CallBackFun()
@@ -90,7 +90,7 @@ bool Player::CallBackFun()
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
 		CMysqlHelper::MysqlData mysqlData;
-		LoadOneSql(it->first.first, it->first.second, mysqlData);
+		LoadOneSql(m_userId, it->first, mysqlData);
 		if (mysqlData.size() <= 0)
 		{
 			continue;
@@ -111,11 +111,11 @@ bool Player::CallBackFun()
 
 // 数据库操作
 // 加载一条数据库
-bool Player::LoadOneSql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr)
+bool Player::LoadOneSql(long long userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr)
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return false;
 	}
 	return m_SubPlayerPreproces->LoadOneSql(userId, sqlName, queryData, dataStr);
@@ -126,7 +126,7 @@ bool Player::LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return false;
 	}
 
@@ -138,7 +138,7 @@ void Player::SaveInsertSQL(std::string sqlName, std::string name, std::string da
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return;
 	}
 
@@ -150,7 +150,7 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return;
 	}
 
@@ -158,15 +158,15 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 }
 
 // replace mysql
-void Player::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName, std::string dataName)
+void Player::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, long long userId, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, name, data, keyName, dataName);
+	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, name, data, userId, keyName, dataName);
 }
 
 // update mysql
@@ -174,7 +174,7 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string name, std::string da
 {
 	if (!m_SubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %s", m_userId.c_str());
+		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
 		return;
 	}
 

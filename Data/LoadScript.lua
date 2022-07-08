@@ -7,6 +7,10 @@ function ReadBaseCfg()
     local BaseCfg = require "BaseCfg"
 
     if BaseCfg then
+        ConfigMgr:ReadServerIDCfg(BaseCfg.serverID)
+    end
+
+    if BaseCfg then
         ConfigMgr:ReadThreadCntCfg(BaseCfg.ThreadCnt)
     end
 

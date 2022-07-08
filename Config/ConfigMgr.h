@@ -13,6 +13,7 @@ public:
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);
 	void ReadThreadCntCfg(int cnt);
+	void ReadServerIDCfg(int id);
 
 private:
 	CBaseCfgMgr m_CBaseCfgMgr;
