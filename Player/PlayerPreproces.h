@@ -38,9 +38,7 @@ public:
 	ConditionVariable& GetConditionVariable();
 
 public:
-	// 加入回调函数
-	void AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
-	// 回调函数
+	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -65,5 +63,5 @@ private:
 	TCPClient*        m_pTCPClient;			// 网络客户端
 	SubScene          m_SubScene;			// 玩家场景
 	CMysqlHelper      m_CMysqlHelper;		// 数据库
-	CallBackFunMap    m_CallBackFunMap;		// 回调函数
+	NetFunMap		  m_NetCBFunMap;		// 回调函数
 };

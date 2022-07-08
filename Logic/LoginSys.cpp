@@ -3,7 +3,7 @@
 LoginSys::LoginSys(SubPlayerPreproces* pSubPlayerPreproces) : 
 	m_pSubPlayerPreproces(pSubPlayerPreproces)
 {
-	CallBackFunInit();
+	CallBackInit();
 }
 
 LoginSys::~LoginSys()
@@ -11,17 +11,17 @@ LoginSys::~LoginSys()
 }
 
 // 初始化消息回调函数
-void LoginSys::CallBackFunInit()
+void LoginSys::CallBackInit()
 {
 	if (!m_pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "Player preproces is null");
 		return;
 	}
-	m_pSubPlayerPreproces->AddCallBackFun(MsgCmd::MsgCmd_Login, std::move(std::bind(&LoginSys::LoginInAccount, this, std::placeholders::_1)));
+	m_pSubPlayerPreproces->AddNetCallback(MsgCmd::MsgCmd_Login, std::move(std::bind(&LoginSys::NetworkCallback, this, std::placeholders::_1)));
 }
 
-void LoginSys::LoginInAccount(PlayerInfo* pPlayerInfo)
+void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 {
 	if (!m_pSubPlayerPreproces)
 	{

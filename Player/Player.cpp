@@ -6,7 +6,7 @@ Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const 
 	m_SubPlayerPreproces(nullptr),
 	m_index(index)
 {
-	m_CallBackFunMap.clear();
+	m_NetCBFunMap.clear();
 }
 
 Player::~Player()
@@ -34,23 +34,6 @@ void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	CallBackFun(cmd, pPlayerInfo);
 }
 
-// 加载数据库
-void Player::LoadMysql()
-{
-
-}
-
-bool Player::EnterScene()
-{
-	return true;
-}
-
-// 进入游戏
-void Player::EnterGame()
-{
-
-}
-
 // 获取玩家id
 std::string Player::GetUserId() const
 {
@@ -64,12 +47,12 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 }
 
 // 加入回调函数
-void Player::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
+void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
-	if (it == m_CallBackFunMap.end())
+	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	if (it == m_NetCBFunMap.end())
 	{
-		m_CallBackFunMap.insert(std::make_pair(cmd, fun));
+		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
 		return;
 	}
 
@@ -79,14 +62,50 @@ void Player::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 // 回调函数
 bool Player::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
-	if (it == m_CallBackFunMap.end())
+	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	if (it == m_NetCBFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 
 	it->second(pPlayerInfo);
+	return true;
+}
+
+void Player::AddMysqlCallback(std::pair<std::string, std::string>&& pr, std::function<void(std::string&)>&& fun)
+{
+	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(pr);
+	if (it == m_MysqlCBFunMap.end())
+	{
+		m_MysqlCBFunMap.insert(std::make_pair(pr, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %s", pr.first.c_str());
+}
+
+bool Player::CallBackFun()
+{
+	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
+	{
+		CMysqlHelper::MysqlData mysqlData;
+		LoadOneSql(it->first.first, it->first.second, mysqlData);
+		if (mysqlData.size() <= 0)
+		{
+			continue;
+		}
+
+		SqlKeyDataMap& dataMap = mysqlData[0];
+		SqlKeyDataMap::iterator pos = dataMap.find("data");
+		if (pos == dataMap.end())
+		{
+			continue;
+		}
+
+		it->second(pos->second);
+	}
+	
 	return true;
 }
 
@@ -160,4 +179,27 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string name, std::string da
 	}
 
 	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, name, data, sCondition, keyName, dataName);
+}
+
+// 加载数据库
+void Player::LoadMysql()
+{
+	CallBackFun();
+}
+
+bool Player::EnterScene()
+{
+	return true;
+}
+
+// 进入游戏
+void Player::EnterGame()
+{
+
+}
+
+// 玩家退出
+void Player::ExitGame()
+{
+
 }

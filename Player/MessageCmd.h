@@ -4,6 +4,7 @@
 enum class MsgCmd
 {
 	MsgCmd_Begin                       = 0, // 消息开始
+
 	MsgCmd_HeartBeat                   = 1,	// 心跳
 	MsgCmd_Testlink                    = 2, // 连接测试
 	MsgCmd_Login				       = 3,	// 玩家登录

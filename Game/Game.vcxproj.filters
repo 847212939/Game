@@ -56,7 +56,10 @@
     <Filter Include="玩家信息\消息处理">
       <UniqueIdentifier>{a5a576d7-8998-49f2-8506-27b6c048380a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\游戏逻辑\玩家登录">
+    <Filter Include="玩家信息\游戏逻辑\移动系统">
+      <UniqueIdentifier>{1fd789c8-3e84-4fce-b475-37e1238a96a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家信息\游戏逻辑\登录系统">
       <UniqueIdentifier>{498363ca-7180-475c-a485-fece46b95818}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -122,7 +125,10 @@
       <Filter>玩家信息\消息处理</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\LoginSys.cpp">
-      <Filter>玩家信息\游戏逻辑\玩家登录</Filter>
+      <Filter>玩家信息\游戏逻辑\登录系统</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\MoveSys.cpp">
+      <Filter>玩家信息\游戏逻辑\移动系统</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,9 +189,6 @@
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\PlayerPreproces.h">
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
@@ -193,9 +196,6 @@
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Attribute.h">
       <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayer.h">
@@ -211,7 +211,16 @@
       <Filter>玩家信息\消息处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\LoginSys.h">
-      <Filter>玩家信息\游戏逻辑\玩家登录</Filter>
+      <Filter>玩家信息\游戏逻辑\登录系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\MoveSys.h">
+      <Filter>玩家信息\游戏逻辑\移动系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Attribute.h">
+      <Filter>玩家信息\消息处理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -797,7 +797,26 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo.acceptFd);
 
-	COUT_LOG(LOG_CERROR, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
+	// 玩家下线
+	SubPlayerPreproces* pSubPlayerPreproces = ((TCPClient*)this)->GetSubPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CINFO, "TCP close pSubPlayerPreproces is null");
+		return;
+	}
+	SubScene& scene = pSubPlayerPreproces->GetSubScene();
+	SubPlayerCenter& subPlayerCenter = scene.GetPlayerCenter();
+	SubPlayer* pSubPlayer = subPlayerCenter.GetSubPlayer((unsigned int)index);
+	if (!pSubPlayer)
+	{
+		COUT_LOG(LOG_CINFO, "TCP close pSubPlayer is null");
+		return;
+	}
+
+	// 下线处理
+	pSubPlayer->ExitGame();
+
+	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
 }
 
 void CTCPSocketManage::SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize)

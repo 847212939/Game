@@ -31,5 +31,6 @@ struct LoadPlayerKey
 	~LoadPlayerKey() {}
 };
 
-typedef std::map<std::string, std::string> SqlKeyDataMap;					// 数据库查询结果
-typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>> CallBackFunMap;	// 消息回调函数
+typedef std::map<std::string, std::string>													SqlKeyDataMap;	// 数据库查询结果
+typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>									NetFunMap;		// 消息回调函数
+typedef std::map<std::pair<std::string, std::string>, std::function<void(std::string&)>>	MysqlFunMap;	// 消息回调函数

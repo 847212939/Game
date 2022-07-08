@@ -180,7 +180,6 @@ void PlayerCenter::HandlerPlayerThread()
 
 			m_pPlayerVec[loadPKey.GetIndex()] = pSubPlayer;
 
-			pSubPlayer->CallBackFunInit();
 			pSubPlayer->LoadMysql();
 			pSubPlayer->EnterGame();
 			pSubPlayer->EnterScene();

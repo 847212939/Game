@@ -7,13 +7,8 @@ public:
 	SubPlayer(const unsigned int& index, const TCPSocketInfo* pSockInfo, const std::string& userId);
 
 public:
-	// 初始化回调函数
-	void CallBackFunInit();
+	MoveSys& GetMoveSys() { return m_MoveSys; }
 
 private:
-	// 子系统
-	bool Move(PlayerInfo* pPlayerInfo);
-
-private:
-
+	MoveSys m_MoveSys;
 };

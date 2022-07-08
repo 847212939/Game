@@ -176,12 +176,12 @@ SubScene& PlayerPreproces::GetSubScene()
 }
 
 // 加入回调函数
-void PlayerPreproces::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
+void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
-	if (it == m_CallBackFunMap.end())
+	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	if (it == m_NetCBFunMap.end())
 	{
-		m_CallBackFunMap.insert(std::make_pair(cmd, fun));
+		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
 		return;
 	}
 
@@ -191,8 +191,8 @@ void PlayerPreproces::AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)
 // 回调函数
 bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	CallBackFunMap::iterator it = m_CallBackFunMap.find(cmd);
-	if (it == m_CallBackFunMap.end())
+	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	if (it == m_NetCBFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
 		return false;

@@ -53,6 +53,7 @@ extern "C"
 #include "../Player/Attribute.h"			// 属性
 #include "../Player/PlayerInfo.h"			// 玩家信息
 
+#include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
 #include "../SubSys/SubPlayer.h"			// 逻辑处理类
 
@@ -62,7 +63,7 @@ extern "C"
 #include "../Player/Scene.h"				// 场景
 #include "../SubSys/SubScene.h"				// 场景
 
-#include "../Logic/LoginSys.h"
+#include "../Logic/LoginSys.h"				// 登录
 #include "../Player/PlayerPreproces.h"		// 信息在注册
 #include "../SubSys/SubPlayerPreproces.h"	// 逻辑处理类
 

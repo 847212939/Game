@@ -21,6 +21,8 @@ public:
 	virtual bool SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	// 关闭连接(业务逻辑线程调用)
 	bool CloseSocket(int index);
+
+public:
 	// 获取接收dataline
 	CDataLine* GetRecvDataLine();
 	// 获取发送dataline
@@ -51,6 +53,7 @@ private:
 	// 设置应用层单次读取数据包的大小 bufferevent_set_max_single_read
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
+private:
 	// 分配socketIndex算法
 	int GetSocketIndex();
 	// 添加TCPSocketInfo
@@ -64,6 +67,7 @@ private:
 	// 心跳包校验
 	void HeartbeatCheck(bufferevent* bev, NetMessageHead* pHead);
 
+private:
 	// SOCKET 连接应答线程
 	static void ThreadAcceptThread(void* pThreadData);
 	// SOCKET 数据接收线程
@@ -71,6 +75,7 @@ private:
 	// SOCKET 数据发送线程
 	static void ThreadSendMsgThread(void* pThreadData);
 
+private:
 	// 回调函数
 	// 新的连接到来，ThreadAcceptThread线程函数
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
@@ -83,6 +88,7 @@ private:
 	// 新的连接到来，ThreadRSSocketThread线程函数
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
 
+private:
 	//自定义socketPair
 	static int StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
 	static int DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);

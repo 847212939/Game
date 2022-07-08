@@ -28,9 +28,12 @@ public:
 	CBaseCfgMgr() : m_threadCnt(0){}
 	~CBaseCfgMgr(){}
 
+public:
 	void ReadLogicCfg(LogicCfg* config) { m_LogicCfg = *config; }
 	void ReadDbCfg(DbCfg* config) { m_DbCfg = *config; }
 	void ReadThreadCntCfg(int cnt) { m_threadCnt = cnt; }
+
+public:
 	const LogicCfg& GetLogicCfg() { return m_LogicCfg; }
 	const DbCfg& GetDbCfg() { return m_DbCfg; }
 	int GetThreadCnt() { return m_threadCnt; }

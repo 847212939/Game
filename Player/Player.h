@@ -18,15 +18,23 @@ public:
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
-	// 玩家上线
-	void LoadMysql();						
-	void EnterGame();						
+	// 上线处理
+	void LoadMysql();
+	void EnterGame();
 	bool EnterScene();
+
+public:
+	// 下线处理
+	void ExitGame();
+
+public:
 	void SetPlayerPreproces(SubPlayerPreproces* pp) { m_SubPlayerPreproces = pp; }
 
 public:
 	// 回调函数
-	void AddCallBackFun(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
+	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
+	void AddMysqlCallback(std::pair<std::string, std::string>&& pr, std::function<void(std::string&)>&& fun);
+	bool CallBackFun();
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -45,10 +53,11 @@ public:
 	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 private:
-	unsigned int			m_index;			// 玩家索引
-	PlayerAttrs				m_PlayerAttrs;		// 玩家属性
-	std::string				m_userId;			// 玩家id
-	const TCPSocketInfo*	m_pTcpSockInfo;		// 玩家TCP的网络信息
+	unsigned int			m_index;				// 玩家索引
+	PlayerAttrs				m_PlayerAttrs;			// 玩家属性
+	std::string				m_userId;				// 玩家id
+	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
-	CallBackFunMap			m_CallBackFunMap;	// 回调函数
+	NetFunMap				m_NetCBFunMap;			// 回调函数集合
+	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
 };

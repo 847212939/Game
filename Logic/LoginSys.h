@@ -1,9 +1,9 @@
 #pragma once
 
+class SubPlayerPreproces;
 class LoginSys
 {
 public:
-	// ×¢²áµÇÂ¼×ÓÐ­Òé
 	enum class LoginSysMsgCmd
 	{
 		CS_Login = 1,  // µÇÂ¼
@@ -13,11 +13,10 @@ public:
 	~LoginSys();
 
 private:
-	void CallBackFunInit();
+	void CallBackInit();
+	void NetworkCallback(PlayerInfo* pPlayerInfo);
 
 private:
-	// µÇÂ¼
-	void LoginInAccount(PlayerInfo* pPlayerInfo);
 	bool LoginIn(CIstringstream& is, PlayerInfo* pPlayerInfo);
 	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 

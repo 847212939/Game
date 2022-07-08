@@ -92,3 +92,8 @@ void TCPClient::HandlerRecvDataListThread()
 
 	return;
 }
+
+SubPlayerPreproces* TCPClient::GetSubPlayerPreproces()
+{
+	return m_SubPlayerPreproces;
+}
