@@ -203,11 +203,14 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // insert mysql
-void PlayerPreproces::SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
+	std::ostringstream os;
+	os << userId;
+
 	CMysqlHelper::RECORD_DATA mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, name)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelper.buildInsertSQL(sqlName, mpColumns);
@@ -220,11 +223,14 @@ void PlayerPreproces::SaveInsertSQL(std::string sqlName, std::string name, std::
 }
 
 // update mysql
-void PlayerPreproces::SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPreproces::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
+	std::ostringstream os;
+	os << userId;
+
 	CMysqlHelper::RECORD_DATA mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, name)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelper.buildUpdateSQL(sqlName, mpColumns, sCondition);
@@ -237,11 +243,14 @@ void PlayerPreproces::SaveUpdateSQL(std::string sqlName, std::string name, std::
 }
 
 // Replace mysql
-void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string name, std::string data, std::string keyName, std::string dataName)
+void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
 {
+	std::ostringstream os;
+	os << userId;
+
 	CMysqlHelper::RECORD_DATA mpColumns;
 	
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, name)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelper.buildReplaceSQL(sqlName, mpColumns);
@@ -253,14 +262,11 @@ void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string name, std:
 	m_cond.NotifyOne();
 }
 
-void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName, std::string dataName)
 {
-	std::ostringstream os;
-	os << userId;
-
 	CMysqlHelper::RECORD_DATA mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, userId)));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelper.buildReplaceSQL(sqlName, mpColumns);
@@ -348,7 +354,7 @@ std::string PlayerPreproces::LoadOneSql(std::string sqlName, uint64_t userId, st
 }
 
 // 加载多条数据库
-bool PlayerPreproces::LoadMulitySql(std::string userId, std::string sqlName, CMysqlHelper::MysqlData& queryData, std::string dataStr /*= "data"*/)
+bool PlayerPreproces::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s", sqlName.c_str());
@@ -359,7 +365,7 @@ bool PlayerPreproces::LoadMulitySql(std::string userId, std::string sqlName, CMy
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %s", excep.errorInfo.c_str(), userId.c_str());
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %lld", excep.errorInfo.c_str(), userId);
 		return false;
 	}
 

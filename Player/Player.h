@@ -8,10 +8,10 @@ public:
 	virtual ~Player();
 
 public:
+	bool GetLoad();
+	int GetIndex();
 	uint64_t GetUserId() const;
-	int GetIndex() { return m_index; }
 	const TCPSocketInfo* GetTCPSocketInfo();
-	bool GetLoad() { return m_loadMysqled; }
 
 public:
 	// 消息处理
@@ -29,7 +29,8 @@ public:
 	void ExitGame();
 
 public:
-	void SetPlayerPreproces(SubPlayerPreproces* pp) { m_SubPlayerPreproces = pp; }
+	void SetPlayerPreproces(SubPlayerPreproces* pp);
+	void SetLoad(bool load);
 
 public:
 	// 回调函数
@@ -43,13 +44,13 @@ public:
 	// 加载一条数据库
 	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
 	// insert mysql
-	void SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	void SaveInsertSQL(std::string sqlName, uint64_t name, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	// replace mysql
 	void SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// update mysql
-	void SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
+	void SaveUpdateSQL(std::string sqlName, uint64_t name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 private:
 	bool					m_loadMysqled;			// 数据库加载完成标志

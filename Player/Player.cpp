@@ -109,7 +109,7 @@ std::string Player::LoadOneSql(std::string sqlName, uint64_t userId, std::string
 }
 
 // insert mysql
-void Player::SaveInsertSQL(std::string sqlName, std::string name, std::string data, std::string keyName, std::string dataName)
+void Player::SaveInsertSQL(std::string sqlName, uint64_t userid, std::string data, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -117,7 +117,7 @@ void Player::SaveInsertSQL(std::string sqlName, std::string name, std::string da
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveInsertSQL(sqlName, name, data, keyName, dataName);
+	m_SubPlayerPreproces->SaveInsertSQL(sqlName, userid, data, keyName, dataName);
 }
 
 // delete mysql
@@ -145,7 +145,7 @@ void Player::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string da
 }
 
 // update mysql
-void Player::SaveUpdateSQL(std::string sqlName, std::string name, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
+void Player::SaveUpdateSQL(std::string sqlName, uint64_t userid, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -153,7 +153,7 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string name, std::string da
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, name, data, sCondition, keyName, dataName);
+	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, userid, data, sCondition, keyName, dataName);
 }
 
 // º”‘ÿ ˝æ›ø‚
@@ -179,4 +179,24 @@ void Player::EnterGame()
 void Player::ExitGame()
 {
 	m_loadMysqled = false;
+}
+
+void Player::SetPlayerPreproces(SubPlayerPreproces* pp)
+{ 
+	m_SubPlayerPreproces = pp; 
+}
+
+void Player::SetLoad(bool load)
+{
+	m_loadMysqled = load;
+}
+
+int Player::GetIndex() 
+{ 
+	return m_index; 
+}
+
+bool Player::GetLoad() 
+{ 
+	return m_loadMysqled; 
 }
