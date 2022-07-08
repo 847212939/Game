@@ -23,7 +23,11 @@ void MoveSys::CallBackInit()
 
 void MoveSys::MysqlCallback(std::string& data)
 {
-
+	if (!m_pSubPlayer)
+	{
+		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
+		return;
+	}
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
@@ -35,17 +39,17 @@ void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 	}
 	if (!pPlayerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		COUT_LOG(LOG_CERROR, "MoveSys Player Info is null");
 		return;
 	}
 	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
 	{
-		COUT_LOG(LOG_CERROR, "player info pMsg is null or player info sock info is null");
+		COUT_LOG(LOG_CERROR, "MoveSys player info pMsg is null or player info sock info is null");
 		return;
 	}
 	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
 	{
-		COUT_LOG(LOG_CERROR, "Network link closed");
+		COUT_LOG(LOG_CERROR, "MoveSys Network link closed");
 		return;
 	}
 
