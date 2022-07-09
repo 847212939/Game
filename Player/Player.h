@@ -42,18 +42,18 @@ public:
 public:
 	// 数据库操作
 	// 加载一条数据库
-	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
+	std::string LoadOneSql(std::string sqlName, std::string dataStr = "data");
 	// insert mysql
-	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	void SaveInsertSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	// replace mysql
-	void SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	void SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// update mysql
-	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
+	void SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 private:
-	bool					m_loadMysqled;			// 数据库加载完成标志
+	bool					m_load;					// 玩家是否初始化完成
 	unsigned int			m_index;				// 玩家索引
 	PlayerAttrs				m_PlayerAttrs;			// 玩家属性
 	uint64_t				m_userId;				// 玩家id

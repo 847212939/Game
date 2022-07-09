@@ -5,7 +5,7 @@ Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const 
 	m_userId(userId),
 	m_SubPlayerPreproces(nullptr),
 	m_index(index),
-	m_loadMysqled(false)
+	m_load(false)
 {
 	m_NetCBFunMap.clear();
 }
@@ -90,7 +90,7 @@ bool Player::CallBackFun()
 {
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		it->second(LoadOneSql(it->first, m_userId));
+		it->second(LoadOneSql(it->first));
 	}
 	
 	return true;
@@ -98,18 +98,18 @@ bool Player::CallBackFun()
 
 // 数据库操作
 // 加载一条数据库
-std::string Player::LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr)
+std::string Player::LoadOneSql(std::string sqlName, std::string dataStr)
 {
 	if (!m_SubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "Player preproces is null userid = %lld", m_userId);
 		return "";
 	}
-	return m_SubPlayerPreproces->LoadOneSql(sqlName, userId, dataStr);
+	return m_SubPlayerPreproces->LoadOneSql(sqlName, m_userId, dataStr);
 }
 
 // insert mysql
-void Player::SaveInsertSQL(std::string sqlName, uint64_t userid, std::string data, std::string keyName, std::string dataName)
+void Player::SaveInsertSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -117,7 +117,7 @@ void Player::SaveInsertSQL(std::string sqlName, uint64_t userid, std::string dat
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveInsertSQL(sqlName, userid, data, keyName, dataName);
+	m_SubPlayerPreproces->SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // delete mysql
@@ -133,7 +133,7 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 }
 
 // replace mysql
-void Player::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
+void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -141,11 +141,11 @@ void Player::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string da
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, userId, data, keyName, dataName);
+	m_SubPlayerPreproces->SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // update mysql
-void Player::SaveUpdateSQL(std::string sqlName, uint64_t userid, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
+void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -153,15 +153,13 @@ void Player::SaveUpdateSQL(std::string sqlName, uint64_t userid, std::string dat
 		return;
 	}
 
-	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, userid, data, sCondition, keyName, dataName);
+	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
 }
 
 // 加载数据库
 void Player::LoadMysql()
 {
 	CallBackFun();
-
-	m_loadMysqled = true;
 }
 
 bool Player::EnterScene()
@@ -178,7 +176,7 @@ void Player::EnterGame()
 // 玩家退出
 void Player::ExitGame()
 {
-	m_loadMysqled = false;
+	m_load = false;
 }
 
 void Player::SetPlayerPreproces(SubPlayerPreproces* pp)
@@ -188,7 +186,7 @@ void Player::SetPlayerPreproces(SubPlayerPreproces* pp)
 
 void Player::SetLoad(bool load)
 {
-	m_loadMysqled = load;
+	m_load = load;
 }
 
 int Player::GetIndex() 
@@ -198,5 +196,5 @@ int Player::GetIndex()
 
 bool Player::GetLoad() 
 { 
-	return m_loadMysqled; 
+	return m_load; 
 }

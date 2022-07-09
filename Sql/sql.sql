@@ -31,10 +31,9 @@ SET FOREIGN_KEY_CHECKS=1;
 -- ----------------------------
 -- Table structure for move
 -- ----------------------------
-DROP TABLE IF EXISTS `move`;
 CREATE TABLE `move` (
-  `userid` int(64) NOT NULL,
+  `userid` bigint(20) NOT NULL,
   `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`userid`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
-SET FOREIGN_KEY_CHECKS=1;
+

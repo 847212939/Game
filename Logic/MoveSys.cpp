@@ -28,6 +28,17 @@ void MoveSys::MysqlCallback(std::string&& data)
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
 	}
+	if (data.empty())
+	{
+		return;
+	}
+
+	CIstringstream is(data);
+	unsigned int x = 0, y = 0;
+
+	is >> x >> y;
+
+	COUT_LOG(LOG_CERROR, "x = %u, y = %u", x, y);
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
@@ -54,8 +65,7 @@ void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 	}
 
 	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
-	std::string str = (char*)pPlayerInfo->m_pData;
-	CIstringstream is(str);
+	CIstringstream is((char*)pPlayerInfo->m_pData);
 
 	switch (uAssistantID)
 	{
@@ -76,7 +86,10 @@ bool MoveSys::MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo)
 	unsigned int x = 0, y = 0;
 	is >> x >> y;
 
-	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
+	COstringstream os;
+	os << x << y;
+
+	m_pSubPlayer->SaveReplaceSQL("move", os);
 
 	return true;
 }

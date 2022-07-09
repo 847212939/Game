@@ -188,6 +188,7 @@ void PlayerCenter::HandlerPlayerThread()
 			pSubPlayer->LoadMysql();
 			pSubPlayer->EnterGame();
 			pSubPlayer->EnterScene();
+			pSubPlayer->SetLoad(true);
 		}
 	}
 
