@@ -66,3 +66,13 @@ else\
 {\
 	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, obj, std::placeholders::_1)));\
 }
+
+#define RegisterCreat(pobj, name)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éĞ´·¨");\
+}\
+else\
+{\
+	pobj->CreateTable(name);\
+}

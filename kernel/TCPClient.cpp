@@ -6,7 +6,6 @@ TCPClient::TCPClient() :
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
 
-	m_SubPlayerPreproces->Init();
 	Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str());
 	Start(ServiceType::SERVICE_TYPE_LOGIC);
 	Run();
@@ -31,23 +30,25 @@ void TCPClient::Run()
 {
 	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
 	threadVec.push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	m_SubPlayerPreproces->Init();
 }
 
 void TCPClient::HandlerRecvDataListThread()
 {
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
 		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == NULL");
 		return;
 	}
+	if (!GetRuninged())
+	{
+		COUT_LOG(LOG_CERROR, "TCPClient::HandlerRecvDataListThread 初始化未完成");
+		return;
+	}
 
 	//数据缓存
 	void* pDataLineHead = NULL;
-
-	COUT_LOG(LOG_CINFO, "{{1002}}");
 
 	while (GetRuninged())
 	{

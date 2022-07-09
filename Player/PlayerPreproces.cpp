@@ -15,10 +15,12 @@ void PlayerPreproces::Init()
 {
 	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
 
-	InitDB();
+	if (!InitDB())
+	{
+		return;
+	}
 	RunThread();
 	m_SubScene.Init();
-
 }
 
 // 启动数据库
@@ -52,9 +54,11 @@ bool PlayerPreproces::RunThread()
 // 数据库执行
 void PlayerPreproces::HandlerExecuteSqlThread()
 {
-	COUT_LOG(LOG_CINFO, "{{1005}}");
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
+	if (!m_pTCPClient->GetRuninged())
+	{
+		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
+		return;
+	}
 	while (m_pTCPClient->GetRuninged())
 	{
 		//进入挂起状态
@@ -203,7 +207,7 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // create table
-void PlayerPreproces::CreateTable(const char* sql)
+void PlayerPreproces::CreateTableSql(const char* sql)
 {
 	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sql);
@@ -313,7 +317,7 @@ std::string PlayerPreproces::LoadOneSql(std::string userId, std::string sqlName,
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %lld", excep.errorInfo.c_str(), userId);
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return "";
 	}
 
@@ -345,7 +349,7 @@ std::string PlayerPreproces::LoadOneSql(std::string sqlName, uint64_t userId, st
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %lld", excep.errorInfo.c_str(), userId);
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return "";
 	}
 	if (queryData.size() <= 0)
@@ -375,7 +379,7 @@ bool PlayerPreproces::LoadMulitySql(std::string sqlName, uint64_t userId, CMysql
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s userId = %lld", excep.errorInfo.c_str(), userId);
+		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return false;
 	}
 

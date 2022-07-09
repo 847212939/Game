@@ -123,8 +123,6 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
 	if (!m_pScene)
 	{
 		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err m_pScene = null");
@@ -142,8 +140,11 @@ void PlayerCenter::HandlerPlayerThread()
 		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err pTCPClient = null");
 		return;
 	}
-
-	COUT_LOG(LOG_CINFO, "{{1004}}");
+	if (!pTCPClient->GetRuninged())
+	{
+		COUT_LOG(LOG_CERROR, "PlayerCenter::HandlerPlayerThread 初始化未完成");
+		return;
+	}
 
 	while (pTCPClient->GetRuninged())
 	{

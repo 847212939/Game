@@ -1,11 +1,5 @@
 #include "../Game/stdafx.h"
 
-char createtable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` bigint(20) NOT NULL,"
-"`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
-
 Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId, SubPlayerPreproces* pp) :
 	m_pTcpSockInfo(pSockInfo),
 	m_userId(userId),
@@ -74,16 +68,6 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 
 void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun)
 {
-	if (!m_SubPlayerPreproces)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-
-	char sql[CreateTableLen] = "";
-	sprintf_s(sql, CreateTableLen, createtable, name.c_str());
-	m_SubPlayerPreproces->CreateTable(sql);
-
 	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(name);
 	if (it == m_MysqlCBFunMap.end())
 	{

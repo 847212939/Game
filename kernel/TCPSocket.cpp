@@ -142,13 +142,19 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	}
 
 	CDataLine* pDataLine = pThis->GetSendDataLine();
+	if (!pDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "send list is null");
+		return;
+	}
+	if (!pThis->m_running)
+	{
+		COUT_LOG(LOG_CERROR, "初始化未完成");
+		return;
+	}
 
 	//数据缓存
 	void* pDataLineHead = NULL;
-
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
-	COUT_LOG(LOG_CINFO, "{{1003}}");
 
 	while (pThis->m_running)
 	{
@@ -205,8 +211,6 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 		COUT_LOG(LOG_CERROR, "thread param is null");
 		return;
 	}
-
-	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	// libevent服务器 
 	struct evconnlistener* listener;
