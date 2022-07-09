@@ -13,7 +13,7 @@ public:
 	~LoginSys();
 
 private:
-	void CallBackInit();
+	void Register();
 	void NetworkCallback(PlayerInfo* pPlayerInfo);
 
 private:

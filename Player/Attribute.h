@@ -1,39 +1,36 @@
 #pragma once
 
-// 混入编程
 template<typename... Parent>
 struct Attrs : public Parent...
 {
-	char id[64];
+	int nAttack;		// 攻击
+	int nDefense;		// 防御
+	int nMove;			// 移动
 
-	Attrs() : Parent()..., id(""){}
-	~Attrs() {}
+	Attrs() : Parent()..., nAttack(0), nDefense(0), nMove(0)
+	{}
+	~Attrs(){}
 };
 
 // NPC属性
 struct NpcAttr
 {
-	char speack[128];	// 说话
-
-	NpcAttr() : speack("") {}
-	~NpcAttr() {}
+	NpcAttr(){}
+	~NpcAttr(){}
 };
 
 // 玩家属性
 struct PlayerAttr
 {
-	int attack;		// 攻击
-	int defense;	// 防御
-
-	PlayerAttr() : attack(0), defense(0) {}
-	~PlayerAttr() {}
+	PlayerAttr(){}
+	~PlayerAttr(){}
 };
 
 // 怪物属性
 struct MonsterAttr
 {
-	MonsterAttr() {}
-	~MonsterAttr() {}
+	MonsterAttr(){}
+	~MonsterAttr(){}
 };
 
 // 属性类

@@ -32,7 +32,7 @@ bool Player::SendData(int index, void* pData, int size, int mainID, int assistID
 
 void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	CallBackFun(cmd, pPlayerInfo);
+	NetCallBackFun(cmd, pPlayerInfo);
 }
 
 // 获取玩家id
@@ -47,7 +47,11 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 	return m_pTcpSockInfo;
 }
 
-// 加入回调函数
+void Player::AddAttrsCallback(std::function<void(AttrsMap&)>&& fun)
+{
+	m_AttrsFunMap.push_back(fun);
+}
+
 void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
@@ -58,20 +62,6 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 	}
 
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
-}
-
-// 回调函数
-bool Player::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
-{
-	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
-	if (it == m_NetCBFunMap.end())
-	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
-		return false;
-	}
-
-	it->second(pPlayerInfo);
-	return true;
 }
 
 void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun)
@@ -86,14 +76,32 @@ void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %s", name.c_str());
 }
 
-bool Player::CallBackFun()
+void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+{
+	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	if (it == m_NetCBFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		return;
+	}
+
+	it->second(pPlayerInfo);
+}
+
+void Player::MysqlCallBackFun()
 {
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
 		it->second(LoadOneSql(it->first));
 	}
-	
-	return true;
+}
+
+void Player::AttrsCallBackFun()
+{
+	for (auto& fun : m_AttrsFunMap)
+	{
+		fun(m_AttrsMap);
+	}
 }
 
 // 数据库操作
@@ -159,7 +167,7 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::str
 // 加载数据库
 void Player::LoadMysql()
 {
-	CallBackFun();
+	MysqlCallBackFun();
 }
 
 bool Player::EnterScene()
@@ -170,7 +178,7 @@ bool Player::EnterScene()
 // 进入游戏
 void Player::EnterGame()
 {
-
+	AttrsCallBackFun();
 }
 
 // 玩家退出

@@ -1,6 +1,6 @@
 #pragma once
 
-// 玩家消息 对齐用空格啊
+// 玩家消息
 enum class MsgCmd
 {
 	MsgCmd_Begin                       = 0, // 消息开始

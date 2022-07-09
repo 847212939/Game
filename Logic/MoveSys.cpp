@@ -3,22 +3,18 @@
 MoveSys::MoveSys(SubPlayer* pSubPlayer) :
 	m_pSubPlayer(pSubPlayer)
 {
-	CallBackInit();
+	Register();
 }
 
 MoveSys::~MoveSys()
 {
 }
 
-void MoveSys::CallBackInit()
+void MoveSys::Register()
 {
-	if (!m_pSubPlayer)
-	{
-		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
-		return;
-	}
-	m_pSubPlayer->AddNetCallback(MsgCmd::MsgCmd_Move, std::move(std::bind(&MoveSys::NetworkCallback, this, std::placeholders::_1)));
-	m_pSubPlayer->AddMysqlCallback("move", std::move(std::bind(&MoveSys::MysqlCallback, this, std::placeholders::_1)));
+	RegisterAttrs(m_pSubPlayer, this, MoveSys::EnterGameCallback);
+	RegisterMysql(m_pSubPlayer, this, MoveSys::MysqlCallback, "move");
+	RegisterNetwk(m_pSubPlayer, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
 }
 
 void MoveSys::MysqlCallback(std::string&& data)
@@ -38,7 +34,16 @@ void MoveSys::MysqlCallback(std::string&& data)
 
 	is >> x >> y;
 
-	COUT_LOG(LOG_CERROR, "x = %u, y = %u", x, y);
+	COUT_LOG(LOG_INFO, "x = %u, y = %u", x, y);
+}
+
+void MoveSys::EnterGameCallback(AttrsMap& attrs)
+{
+	if (!m_pSubPlayer)
+	{
+		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
+		return;
+	}
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)

@@ -40,6 +40,7 @@ extern "C"
 #include "tolua++.h"
 
 #include "../Player/MessageCmd.h"			// 玩家消息定义
+#include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../kernel/Internal.h"				// 网络
 #include "../kernel/Log.h"					// 日志
 #include "../kernel/MysqlHelper.h"			// 数据库
@@ -66,11 +67,6 @@ extern "C"
 #include "../Logic/LoginSys.h"				// 登录
 #include "../Player/PlayerPreproces.h"		// 信息在注册
 #include "../SubSys/SubPlayerPreproces.h"	// 逻辑处理类
-
-#include "../study/Addition.h"				// SFIAE
-#include "../study/Function.h"				// 可调用对象
-#include "../study/IntegerSequence.h"		// 将一个数字重复生成一个类型
-#include "../study/Test.h"					// 测试用的放在最下面
 
 #include "../Config/BaseCfgMgr.h"			// 网络配置
 #include "../Config/ConfigMgr.h"			// 配置管理

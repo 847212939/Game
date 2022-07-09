@@ -166,7 +166,7 @@ void PlayerCenter::HandlerPlayerThread()
 		{
 			LoadPlayerKey loadPKey = loadPlayerList.front();
 			loadPlayerList.pop_front();
-
+			 
 			if (!loadPKey.GetConnect())
 			{
 				continue;

@@ -13,9 +13,10 @@ public:
 	~MoveSys();
 
 private:
-	void CallBackInit();
-	void NetworkCallback(PlayerInfo* pPlayerInfo);
+	void Register();
 	void MysqlCallback(std::string&& data);
+	void EnterGameCallback(AttrsMap& attrs);
+	void NetworkCallback(PlayerInfo* pPlayerInfo);
 
 private:
 	bool MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo);

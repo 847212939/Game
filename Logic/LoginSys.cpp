@@ -3,7 +3,7 @@
 LoginSys::LoginSys(SubPlayerPreproces* pSubPlayerPreproces) : 
 	m_pSubPlayerPreproces(pSubPlayerPreproces)
 {
-	CallBackInit();
+	Register();
 }
 
 LoginSys::~LoginSys()
@@ -11,14 +11,9 @@ LoginSys::~LoginSys()
 }
 
 // 初始化消息回调函数
-void LoginSys::CallBackInit()
+void LoginSys::Register()
 {
-	if (!m_pSubPlayerPreproces)
-	{
-		COUT_LOG(LOG_CERROR, "Player preproces is null");
-		return;
-	}
-	m_pSubPlayerPreproces->AddNetCallback(MsgCmd::MsgCmd_Login, std::move(std::bind(&LoginSys::NetworkCallback, this, std::placeholders::_1)));
+	RegisterNetwk(m_pSubPlayerPreproces, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
@@ -45,8 +40,7 @@ void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 	}
 
 	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
-	std::string str = (char*)pPlayerInfo->m_pData;
-	CIstringstream is(str);
+	CIstringstream is((char*)pPlayerInfo->m_pData);
 
 	switch (uAssistantID)
 	{

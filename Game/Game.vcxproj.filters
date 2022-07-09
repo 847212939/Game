@@ -20,21 +20,6 @@
     <Filter Include="玩家信息">
       <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="模板学习">
-      <UniqueIdentifier>{c3be62fc-425d-43fa-bf99-d41e03ba5f22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="模板学习\SFIAE">
-      <UniqueIdentifier>{c647976c-03eb-4b69-89fd-d2d2acfffd8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="模板学习\测试用例">
-      <UniqueIdentifier>{167a9929-bac3-4b01-b5bb-2888cd50cdb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="模板学习\可调用对象">
-      <UniqueIdentifier>{5eec96c4-4b85-48f7-925e-4661c2524e28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="模板学习\生成类型">
-      <UniqueIdentifier>{278d4dcc-6ee0-48e0-866e-23572f898c61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
@@ -87,9 +72,6 @@
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
       <Filter>玩家信息\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\study\Test.cpp">
-      <Filter>模板学习\测试用例</Filter>
     </ClCompile>
     <ClCompile Include="..\Config\ConfigMgr.cpp">
       <Filter>配置管理</Filter>
@@ -165,18 +147,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\study\Addition.h">
-      <Filter>模板学习\SFIAE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\study\Test.h">
-      <Filter>模板学习\测试用例</Filter>
-    </ClInclude>
-    <ClInclude Include="..\study\Function.h">
-      <Filter>模板学习\可调用对象</Filter>
-    </ClInclude>
-    <ClInclude Include="..\study\IntegerSequence.h">
-      <Filter>模板学习\生成类型</Filter>
-    </ClInclude>
     <ClInclude Include="..\Config\ConfigMgr.h">
       <Filter>配置管理</Filter>
     </ClInclude>
@@ -219,7 +189,7 @@
     <ClInclude Include="..\Player\MessageCmd.h">
       <Filter>玩家信息\消息处理</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Attribute.h">
+    <ClInclude Include="..\Player\AttrsCmd.h">
       <Filter>玩家信息\消息处理</Filter>
     </ClInclude>
   </ItemGroup>

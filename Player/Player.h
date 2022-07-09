@@ -34,10 +34,12 @@ public:
 
 public:
 	// 回调函数
+	void AddAttrsCallback(std::function<void(AttrsMap&)>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	void AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun);
-	bool CallBackFun();
-	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void AttrsCallBackFun();
+	void MysqlCallBackFun();
+	void NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
 	// 数据库操作
@@ -55,10 +57,11 @@ public:
 private:
 	bool					m_load;					// 玩家是否初始化完成
 	unsigned int			m_index;				// 玩家索引
-	PlayerAttrs				m_PlayerAttrs;			// 玩家属性
 	uint64_t				m_userId;				// 玩家id
 	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
+	AttrsMap				m_AttrsMap;				// 属性集合
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
+	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
 };
