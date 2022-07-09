@@ -28,11 +28,11 @@ else if (ERRTYPE == LOG_CINFO) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LO
 //计算数组维数
 #define  CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 //安全删除指针
-#define  SafeDelete(pData) { try { delete pData; } catch (...) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR"); } pData = NULL; } 
+#define  SafeDelete(pData) { try { delete pData; } catch (...) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR"); } pData = NULL; } 
 //安全删除指针
-#define  SafeDeleteArray(pData)	{ if (pData) { try { delete[] pData;} catch (...) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR"); } } } 
+#define  SafeDeleteArray(pData)	{ if (pData) { try { delete[] pData;} catch (...) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR"); } } } 
 //安全删除指针
-#define  SAFE_DELETE(pData) { if(pData){ try{ delete pData; } catch(...){ CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");  } pData = nullptr; } }
+#define  SAFE_DELETE(pData) { if(pData){ try{ delete pData; } catch(...){ CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");  } pData = nullptr; } }
 //判断大小函数
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))

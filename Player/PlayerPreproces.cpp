@@ -202,6 +202,16 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
+// create table
+void PlayerPreproces::CreateTable(const char* sql)
+{
+	m_cond.GetMutex().lock();
+	m_sqlList.push_back(sql);
+	m_cond.GetMutex().unlock();
+
+	m_cond.NotifyOne();
+}
+
 // insert mysql
 void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {

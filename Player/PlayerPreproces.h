@@ -23,6 +23,8 @@ public:
 	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
 	// 加载多条数据库
 	bool LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
+	// create table
+	void CreateTable(const char* sql);
 	// insert mysql
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql

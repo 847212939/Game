@@ -7,6 +7,7 @@
 #define HD_TIMER_MESSAGE				4							//定时器消息处理
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
 
+#define CreateTableLen					512
 // 服务器类型
 enum class ServiceType
 {

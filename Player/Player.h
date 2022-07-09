@@ -4,7 +4,7 @@
 class Player
 {
 public:
-	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId);
+	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId, SubPlayerPreproces* pp);
 	virtual ~Player();
 
 public:
@@ -29,7 +29,6 @@ public:
 	void ExitGame();
 
 public:
-	void SetPlayerPreproces(SubPlayerPreproces* pp);
 	void SetLoad(bool load);
 
 public:

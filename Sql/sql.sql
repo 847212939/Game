@@ -31,6 +31,7 @@ SET FOREIGN_KEY_CHECKS=1;
 -- ----------------------------
 -- Table structure for move
 -- ----------------------------
+DROP TABLE IF EXISTS `move`;
 CREATE TABLE `move` (
   `userid` bigint(20) NOT NULL,
   `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,

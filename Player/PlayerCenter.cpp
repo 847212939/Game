@@ -174,14 +174,12 @@ void PlayerCenter::HandlerPlayerThread()
 			SubPlayer* pSubPlayer = GetSubPlayer(loadPKey.GetIndex());
 			if (pSubPlayer)
 			{
-				new(pSubPlayer) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
+				new(pSubPlayer) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId(), pSubPlayerPreproces);
 			}
 			else
 			{
-				pSubPlayer = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId());
+				pSubPlayer = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId(), pSubPlayerPreproces);
 			}
-
-			pSubPlayer->SetPlayerPreproces(pSubPlayerPreproces);
 
 			m_pPlayerVec[loadPKey.GetIndex()] = pSubPlayer;
 
