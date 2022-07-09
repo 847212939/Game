@@ -60,7 +60,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 		//½øÈë¹ÒÆð×´Ì¬
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
 		m_cond.Wait(uniqLock, [this] { if (this->m_sqlList.size() > 0) { return true; } return false; });
-
+		
 		if (this->m_sqlList.size() <= 0)
 		{
 			uniqLock.unlock();

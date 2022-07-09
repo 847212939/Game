@@ -44,13 +44,13 @@ public:
 	// 加载一条数据库
 	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
 	// insert mysql
-	void SaveInsertSQL(std::string sqlName, uint64_t name, std::string data, std::string keyName = "userid", std::string dataName = "data");
+	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// delete mysql
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	// replace mysql
 	void SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	// update mysql
-	void SaveUpdateSQL(std::string sqlName, uint64_t name, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
+	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 private:
 	bool					m_loadMysqled;			// 数据库加载完成标志
