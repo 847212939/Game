@@ -11,7 +11,7 @@ BaseCfg =
         ip = "127.0.0.1",
         port = 8888,
         -- 最大链接数量 libevent 单线程默认的32000
-        maxSocketCnt = 1024,    
+        maxSocketCnt = 8192,    
     },
 
     DbCfg =

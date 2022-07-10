@@ -180,7 +180,6 @@ void PlayerCenter::HandlerPlayerThread()
 			{
 				continue;
 			}
-			pTCPClient->SendData(loadPKey.GetIndex(), NULL, 0, MsgCmd::MsgCmd_Login, 1, 0, loadPKey.GetSocketInfo()->bev);
 			SubPlayer* pSubPlayer = GetSubPlayer(loadPKey.GetIndex());
 			if (pSubPlayer)
 			{
@@ -196,6 +195,8 @@ void PlayerCenter::HandlerPlayerThread()
 			pSubPlayer->EnterGame();
 			pSubPlayer->EnterScene();
 			pSubPlayer->SetLoad(true);
+
+			pTCPClient->SendData(loadPKey.GetIndex(), NULL, 0, MsgCmd::MsgCmd_Login, 1, 0, loadPKey.GetSocketInfo()->bev);
 		}
 	}
 
