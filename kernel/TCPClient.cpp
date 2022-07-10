@@ -28,8 +28,7 @@ TCPClient::~TCPClient()
 
 void TCPClient::Run()
 {
-	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 	m_SubPlayerPreproces->Init();
 }
 

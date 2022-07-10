@@ -37,3 +37,8 @@ void SubPlayerPreproces::CreateTable(std::string name)
 
 	CreateTableSql(sql);
 }
+
+LoginSys& SubPlayerPreproces::GetLoginSys()
+{
+	return m_LoginSys;
+}

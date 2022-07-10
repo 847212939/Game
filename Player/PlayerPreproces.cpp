@@ -4,6 +4,7 @@
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient)
 {
+	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
 }
 
 PlayerPreproces::~PlayerPreproces()
@@ -13,12 +14,7 @@ PlayerPreproces::~PlayerPreproces()
 
 void PlayerPreproces::Init()
 {
-	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
-
-	if (!InitDB())
-	{
-		return;
-	}
+	InitDB();
 	RunThread();
 	m_SubScene.Init();
 }
@@ -46,8 +42,13 @@ bool PlayerPreproces::InitDB()
 
 bool PlayerPreproces::RunThread()
 {
-	std::vector<std::thread*>& threadVec = m_pTCPClient->GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "TCP Client init fail");
+	}
+
+	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
+
 	return true;
 }
 
@@ -145,9 +146,9 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 创建角色
-void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, uint64_t& userId)
+void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string pw)
 {
-	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, userId);
+	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
 }
 
 // 获取通知条件变量

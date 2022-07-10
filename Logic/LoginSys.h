@@ -8,9 +8,13 @@ public:
 	{
 		CS_Login = 1,  // µÇÂ¼
 	};
+
 public:
 	LoginSys(SubPlayerPreproces* pSubPlayerPreproces);
 	~LoginSys();
+
+public:
+	bool LoginIn(std::string& id, std::string& passwaed, uint64_t& userId);
 
 private:
 	void Register();
@@ -18,7 +22,6 @@ private:
 
 private:
 	bool LoginIn(CIstringstream& is, PlayerInfo* pPlayerInfo);
-	bool LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo);
 
 private:
 	SubPlayerPreproces* m_pSubPlayerPreproces;

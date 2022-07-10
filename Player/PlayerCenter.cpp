@@ -44,8 +44,7 @@ void PlayerCenter::Init()
 		pSubPlayer = nullptr;
 	}
 	
-	std::vector<std::thread*>& threadVec = pTCPClient->GetSockeThreadVec();
-	threadVec.push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
@@ -172,16 +171,24 @@ void PlayerCenter::HandlerPlayerThread()
 			{
 				continue;
 			}
+			uint64_t userId = 0;
+			if (!pSubPlayerPreproces->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
+			{
+				continue;
+			}
+			if (userId == 0)
+			{
+				continue;
+			}
 			SubPlayer* pSubPlayer = GetSubPlayer(loadPKey.GetIndex());
 			if (pSubPlayer)
 			{
-				new(pSubPlayer) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId(), pSubPlayerPreproces);
+				new(pSubPlayer) SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, pSubPlayerPreproces);
 			}
 			else
 			{
-				pSubPlayer = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), loadPKey.getUserId(), pSubPlayerPreproces);
+				pSubPlayer = new SubPlayer(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, pSubPlayerPreproces);
 			}
-
 			m_pPlayerVec[loadPKey.GetIndex()] = pSubPlayer;
 
 			pSubPlayer->LoadMysql();
@@ -200,10 +207,10 @@ void PlayerCenter::SetSubScene(SubScene* pSubScene)
 }
 
 // 创建角色
-void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, uint64_t& userId)
+void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
 	m_cond.GetMutex().lock();
-	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, userId));
+	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, id, pw));
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();

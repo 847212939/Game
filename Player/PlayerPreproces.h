@@ -47,7 +47,7 @@ public:
 
 public:
 	// 创建角色
-	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, uint64_t& userId);
+	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string pw);
 
 private:
 	// 初始化DB

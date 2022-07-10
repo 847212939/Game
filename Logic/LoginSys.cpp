@@ -59,16 +59,12 @@ bool LoginSys::LoginIn(CIstringstream& is, PlayerInfo* pPlayerInfo)
 	std::string id, pw;
 	is >> id >> pw;
 
-	if (!LoginIn(id, pw, pPlayerInfo))
-	{
-		return false;
-	}
-	m_pSubPlayerPreproces->CreatePlayer(pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, pPlayerInfo->m_userId);
+	m_pSubPlayerPreproces->CreatePlayer(pPlayerInfo->m_pMsg->uIndex, pPlayerInfo->m_pTcpSockInfo, id, pw);
 
 	return true;
 }
 
-bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlayerInfo)
+bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 {
 	if (id.empty() || passwaed.empty())
 	{
@@ -81,12 +77,11 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 	std::string data = m_pSubPlayerPreproces->LoadOneSql(id, "useraccount");
 	if (data.empty())
 	{
-		uint64_t userId = Util::Instance()->CreateUserId();
+		userId = Util::Instance()->CreateUserId();
 
 		COstringstream os;
 		os << passwaed << userId;
 
-		pPlayerInfo->m_userId = userId;
 		m_pSubPlayerPreproces->SaveReplaceSQL("useraccount", id, os);
 
 		return true;
@@ -94,7 +89,6 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 	else
 	{
 		std::string pw;
-		uint64_t userId = 0;
 		CIstringstream is(data);
 		is >> pw >> userId;
 		
@@ -111,8 +105,6 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, PlayerInfo* pPlay
 				COUT_LOG(LOG_CERROR, "ÕË»§´æÔÚÒì³£");
 				return false;
 			}
-
-			pPlayerInfo->m_userId = userId;
 		}
 	}
 

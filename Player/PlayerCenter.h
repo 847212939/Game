@@ -15,7 +15,7 @@ public:
 public:
 	void SetSubScene(SubScene* pSubScene);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
-	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, uint64_t& userId);
+	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 
 public:
 	const SubScene* getScene();

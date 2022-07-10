@@ -21,13 +21,15 @@ struct LoadPlayerKey
 	unsigned int			index;
 	uint64_t				userId;
 	const TCPSocketInfo*	pSockInfo;
+	std::string				id;
+	std::string				pw;
 
 	const bool& GetConnect();
 	const unsigned int& GetIndex();
 	const TCPSocketInfo* GetSocketInfo();
 	const uint64_t& getUserId();
 
-	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, uint64_t& Id) : index(nIndex), pSockInfo(sockInfo), userId(Id) {}
+	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, std::string& sId, std::string& sPw) : index(nIndex), pSockInfo(sockInfo), userId(0), id(sId), pw(sPw) {}
 	~LoadPlayerKey() {}
 };
 
