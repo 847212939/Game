@@ -33,12 +33,15 @@ public:
 
 public:
 	// 回调函数
-	void AddAttrsCallback(std::function<void(AttrsMap&)>&& fun);
+	void AddAttrsCallback(std::function<void()>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	void AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun);
 	void AttrsCallBackFun();
 	void MysqlCallBackFun();
 	void NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+
+public:
+	void AddAttributes(AttrsMap& attrs);
 
 public:
 	// 数据库操作

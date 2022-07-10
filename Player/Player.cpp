@@ -49,7 +49,7 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 	return m_pTcpSockInfo;
 }
 
-void Player::AddAttrsCallback(std::function<void(AttrsMap&)>&& fun)
+void Player::AddAttrsCallback(std::function<void()>&& fun)
 {
 	m_AttrsFunMap.push_back(fun);
 }
@@ -102,7 +102,7 @@ void Player::AttrsCallBackFun()
 {
 	for (auto& fun : m_AttrsFunMap)
 	{
-		fun(m_AttrsMap);
+		fun();
 	}
 }
 
@@ -202,4 +202,12 @@ int Player::GetIndex()
 bool Player::GetLoad() 
 { 
 	return m_load; 
+}
+
+void Player::AddAttributes(AttrsMap& attrs)
+{
+	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
+	{
+		m_AttrsMap[it->first] += it->second;
+	}
 }

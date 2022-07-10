@@ -37,7 +37,7 @@ void MoveSys::MysqlCallback(std::string&& data)
 	COUT_LOG(LOG_INFO, "x = %u, y = %u", x, y);
 }
 
-void MoveSys::EnterGameCallback(AttrsMap& attrs)
+void MoveSys::EnterGameCallback()
 {
 	if (!m_pSubPlayer)
 	{

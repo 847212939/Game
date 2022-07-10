@@ -14,8 +14,8 @@ public:
 
 private:
 	void Register();
+	void EnterGameCallback();
 	void MysqlCallback(std::string&& data);
-	void EnterGameCallback(AttrsMap& attrs);
 	void NetworkCallback(PlayerInfo* pPlayerInfo);
 
 private:
