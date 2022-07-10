@@ -18,7 +18,7 @@ public:
 
 public:
 	// 发送数据函数
-	virtual bool SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	virtual bool SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	// 关闭连接(业务逻辑线程调用)
 	bool CloseSocket(int index);
 

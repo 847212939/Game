@@ -15,7 +15,7 @@ public:
 
 public:
 	// 消息处理
-	bool SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:

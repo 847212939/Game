@@ -4,7 +4,6 @@
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient)
 {
-	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
 }
 
 PlayerPreproces::~PlayerPreproces()
@@ -14,6 +13,8 @@ PlayerPreproces::~PlayerPreproces()
 
 void PlayerPreproces::Init()
 {
+	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
+
 	InitDB();
 	RunThread();
 	m_SubScene.Init();
@@ -146,7 +147,7 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // ´´½¨½ÇÉ«
-void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string pw)
+void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
 	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
 }

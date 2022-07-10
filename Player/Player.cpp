@@ -16,7 +16,7 @@ Player::~Player()
 {
 }
 
-bool Player::SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
+bool Player::SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
 {
 	if (!m_SubPlayerPreproces)
 	{

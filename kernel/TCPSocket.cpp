@@ -494,7 +494,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
 	// 发送连接成功消息
-	SendData(index, NULL, 0, 1, 1, 0, tcpInfo.bev);
+	SendData(index, NULL, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
 
 	COUT_LOG(LOG_INFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
@@ -1085,7 +1085,7 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKET recv
 	return result;
 }
 
-bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
@@ -1109,7 +1109,7 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, int mainID, in
 
 	// 拼接包头
 	NetMessageHead* pHead = reinterpret_cast<NetMessageHead*>((char*)SendBuf.get() + sizeof(SendDataLineHead));
-	pHead->uMainID = mainID;
+	pHead->uMainID = (unsigned int)mainID;
 	pHead->uAssistantID = assistID;
 	pHead->uMessageSize = sizeof(NetMessageHead) + size;
 	pHead->uHandleCode = handleCode;
