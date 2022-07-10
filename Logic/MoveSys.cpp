@@ -34,7 +34,7 @@ void MoveSys::MysqlCallback(std::string&& data)
 
 	is >> x >> y;
 
-	COUT_LOG(LOG_INFO, "x = %u, y = %u", x, y);
+	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
 }
 
 void MoveSys::EnterGameCallback()

@@ -208,6 +208,13 @@ void Player::AddAttributes(AttrsMap& attrs)
 {
 	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{
-		m_AttrsMap[it->first] += it->second;
+		if ((AttrsCmd)it->first > AttrsCmd::AttrsCmd_Begin && (AttrsCmd)it->first < AttrsCmd::AttrsCmd_Begin)
+		{
+			m_AttrsMap[it->first] += it->second;
+		}
+		else
+		{
+			COUT_LOG(LOG_CERROR, "未知属性添加请 请检查AttrsCmd.h头文件 属性为:%d", it->first);
+		}
 	}
 }
