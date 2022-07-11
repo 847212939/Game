@@ -217,30 +217,6 @@ void Player::AddAttributes(AttrsMap& attrs)
 	}
 }
 
-void Player::SubAttributes(AttrsMap& attrs)
-{
-	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
-	{
-		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
-		{
-			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
-			continue;
-		}
-		AttrsMap::iterator pos = m_AttrsMap.find(it->first);
-		if (pos == m_AttrsMap.end())
-		{
-			m_AttrsMap[it->first] = 0;
-			continue;
-		}
-		if (pos->second < it->second)
-		{
-			m_AttrsMap[it->first] = 0;
-			continue;
-		}
-		m_AttrsMap[it->first] -= it->second;
-	}
-}
-
 void Player::RefreshProperties()
 {
 	COstringstream os;
