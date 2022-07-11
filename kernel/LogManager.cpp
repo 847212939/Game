@@ -2,7 +2,6 @@
 #include "../Game/stdafx.h"
 
 // 调试中用 线上注释掉
-#define DEBUG
 
 void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...)
 {
@@ -37,7 +36,7 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	vsprintf(buf + strlen(buf), pBuf, args);
 	va_end(args);
 
-#ifdef DEBUG
+#ifdef _DEBUG
 
 	// 输出到控制台
 	if (level == LOG_CINFO)
