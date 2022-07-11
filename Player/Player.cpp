@@ -166,6 +166,31 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::str
 	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
 }
 
+void Player::AddAttributes(AttrsMap& attrs)
+{
+	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
+	{
+		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
+		{
+			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
+			continue;
+		}
+		m_AttrsMap[it->first] += it->second;
+	}
+}
+
+void Player::RefreshProperties()
+{
+	COstringstream os;
+	os << (int)m_AttrsMap.size();
+	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
+	{
+		os << it->first << it->second;
+	}
+
+	SendData(m_index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, m_pTcpSockInfo->bev);
+}
+
 // 加载数据库
 void Player::LoadMysql()
 {
@@ -202,29 +227,4 @@ int Player::GetIndex()
 bool Player::GetLoad() 
 { 
 	return m_load; 
-}
-
-void Player::AddAttributes(AttrsMap& attrs)
-{
-	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
-	{
-		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
-		{
-			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
-			continue;
-		}
-		m_AttrsMap[it->first] += it->second;
-	}
-}
-
-void Player::RefreshProperties()
-{
-	COstringstream os;
-	os << (int)m_AttrsMap.size();
-	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
-	{
-		os << it->first << it->second;
-	}
-
-	SendData(m_index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, m_pTcpSockInfo->bev);
 }
