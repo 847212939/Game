@@ -42,7 +42,8 @@ public:
 
 public:
 	void AddAttributes(AttrsMap& attrs);
-	void RefreshProperties(COstringstream& os);
+	void SubAttributes(AttrsMap& attrs);
+	void RefreshProperties();
 
 public:
 	// Êý¾Ý¿â²Ù×÷

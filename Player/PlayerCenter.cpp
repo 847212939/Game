@@ -191,11 +191,7 @@ void PlayerCenter::HandlerPlayerThread()
 			pSubPlayer->LoadMysql();
 			pSubPlayer->EnterGame();
 			pSubPlayer->SetLoad(true);
-
-			COstringstream os;
-			pSubPlayer->RefreshProperties(os);
-			pTCPClient->SendData(loadPKey.GetIndex(), os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, loadPKey.GetSocketInfo()->bev);
-
+			pSubPlayer->RefreshProperties();
 			pSubPlayer->EnterScene();
 			pTCPClient->SendData(loadPKey.GetIndex(), NULL, 0, MsgCmd::MsgCmd_Login, 1, 0, loadPKey.GetSocketInfo()->bev);
 		}

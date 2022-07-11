@@ -208,22 +208,47 @@ void Player::AddAttributes(AttrsMap& attrs)
 {
 	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{
-		if ((AttrsCmd)it->first > AttrsCmd::AttrsCmd_Begin && (AttrsCmd)it->first < AttrsCmd::AttrsCmd_End)
+		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
 		{
-			m_AttrsMap[it->first] += it->second;
+			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
+			continue;
 		}
-		else
-		{
-			COUT_LOG(LOG_CERROR, "未知属性添加请 请检查AttrsCmd.h头文件 属性为:%d", it->first);
-		}
+		m_AttrsMap[it->first] += it->second;
 	}
 }
 
-void Player::RefreshProperties(COstringstream& os)
+void Player::SubAttributes(AttrsMap& attrs)
 {
+	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
+	{
+		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
+		{
+			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
+			continue;
+		}
+		AttrsMap::iterator pos = m_AttrsMap.find(it->first);
+		if (pos == m_AttrsMap.end())
+		{
+			m_AttrsMap[it->first] = 0;
+			continue;
+		}
+		if (pos->second < it->second)
+		{
+			m_AttrsMap[it->first] = 0;
+			continue;
+		}
+		m_AttrsMap[it->first] -= it->second;
+	}
+}
+
+void Player::RefreshProperties()
+{
+	COstringstream os;
 	os << (int)m_AttrsMap.size();
 	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{
 		os << it->first << it->second;
 	}
+
+	SendData(m_index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, m_pTcpSockInfo->bev);
 }
