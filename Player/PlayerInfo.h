@@ -34,6 +34,7 @@ struct LoadPlayerKey
 };
 
 typedef std::map<int, int>											AttrsMap;		// 属性
+typedef std::set<unsigned int>										OnLinePlayerSet;// 在线玩家
 typedef std::map<std::string, std::string>							SqlKeyDataMap;	// 数据库查询结果
 typedef std::vector<std::function<void()>>							AttrsFunMap;	// 消息回调函数
 typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>			NetFunMap;		// 消息回调函数

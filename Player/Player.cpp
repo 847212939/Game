@@ -16,7 +16,7 @@ Player::~Player()
 {
 }
 
-bool Player::SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
+bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
 {
 	if (!m_SubPlayerPreproces)
 	{
@@ -208,7 +208,7 @@ void Player::AddAttributes(AttrsMap& attrs)
 {
 	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{
-		if ((AttrsCmd)it->first > AttrsCmd::AttrsCmd_Begin && (AttrsCmd)it->first < AttrsCmd::AttrsCmd_Begin)
+		if ((AttrsCmd)it->first > AttrsCmd::AttrsCmd_Begin && (AttrsCmd)it->first < AttrsCmd::AttrsCmd_End)
 		{
 			m_AttrsMap[it->first] += it->second;
 		}
@@ -216,5 +216,14 @@ void Player::AddAttributes(AttrsMap& attrs)
 		{
 			COUT_LOG(LOG_CERROR, "未知属性添加请 请检查AttrsCmd.h头文件 属性为:%d", it->first);
 		}
+	}
+}
+
+void Player::RefreshProperties(COstringstream& os)
+{
+	os << (int)m_AttrsMap.size();
+	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
+	{
+		os << it->first << it->second;
 	}
 }

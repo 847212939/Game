@@ -20,6 +20,7 @@ public:
 public:
 	const SubScene* getScene();
 	SubPlayer* GetSubPlayer(unsigned int index);
+	const OnLinePlayerSet* GetSocketSet();
 
 private:
 	void HandlerPlayerThread();

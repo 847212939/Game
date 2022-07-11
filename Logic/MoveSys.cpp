@@ -44,6 +44,14 @@ void MoveSys::EnterGameCallback()
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
 	}
+
+	AttrsMap attrs;
+	for (int i = 1; i < 10; i++)
+	{
+		attrs[i] += i;
+	}
+
+	m_pSubPlayer->AddAttributes(attrs);
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)

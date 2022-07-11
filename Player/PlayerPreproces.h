@@ -24,6 +24,7 @@ public:
 	// 加载多条数据库
 	bool LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	// create table
+	void CreateTable(std::string name);
 	void CreateTableSql(const char* sql);
 	// insert mysql
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
@@ -60,6 +61,10 @@ private:
 	void HandlerExecuteSqlThread();
 	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+
+public:
+	static char createptable[CreateTableLen];
+	static char createpptable[CreateTableLen];
 
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用

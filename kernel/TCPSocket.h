@@ -18,7 +18,7 @@ public:
 
 public:
 	// 发送数据函数
-	virtual bool SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	virtual bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	// 关闭连接(业务逻辑线程调用)
 	bool CloseSocket(int index);
 
@@ -33,6 +33,7 @@ public:
 	bool IsConnected(int index);
 	// 获取socketSet
 	void GetSocketSet(std::vector<unsigned int>& vec);
+	const std::set<unsigned int>* GetSocketSet();
 	// 获取socketVector
 	const std::vector<TCPSocketInfo>& GetSocketVector();
 	// 获取连接ip
@@ -64,8 +65,6 @@ private:
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
-	// 心跳包校验
-	void HeartbeatCheck(bufferevent* bev, NetMessageHead* pHead);
 
 private:
 	// SOCKET 连接应答线程

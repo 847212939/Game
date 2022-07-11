@@ -15,7 +15,7 @@ public:
 
 public:
 	// 消息处理
-	bool SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -42,6 +42,7 @@ public:
 
 public:
 	void AddAttributes(AttrsMap& attrs);
+	void RefreshProperties(COstringstream& os);
 
 public:
 	// 数据库操作

@@ -10,7 +10,8 @@ enum class MsgCmd
 	MsgCmd_Login				       = 3,	// 玩家登录
 	MsgCmd_Scene                       = 4, // 场景消息
 	MsgCmd_PlayerCenter                = 5, // 玩家中心消息
-	MsgCmd_Move                        = 6,	// 移动
+	MsgCmd_RefreshProperties           = 6, // 属性刷新
+	MsgCmd_Move                        = 7,	// 移动
 
 	MsgCmd_End                              // 消息结束                      
 };

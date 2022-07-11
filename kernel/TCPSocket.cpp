@@ -593,7 +593,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
 	{
-		HeartbeatCheck((bufferevent*)pBufferevent, pHead);
 		return true;
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
@@ -630,22 +629,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	return true;
 }
 
-// 心跳包校验
-void CTCPSocketManage::HeartbeatCheck(bufferevent* bev, NetMessageHead* pHead)
-{
-	if (!bev || !pHead)
-	{
-		COUT_LOG(LOG_ERROR, "!bev || !pHead");
-		return;
-	}
-
-	timeval tvRead;
-	tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
-	tvRead.tv_usec = 0;
-	bufferevent_set_timeouts(bev, &tvRead, NULL);
-}
-
-
 bool CTCPSocketManage::CloseSocket(int index)
 {
 	RemoveTCPSocketStatus(index);
@@ -676,6 +659,11 @@ bool CTCPSocketManage::IsConnected(int index)
 	}
 
 	return m_socketInfoVec[index].isConnect;
+}
+
+const std::set<unsigned int>* CTCPSocketManage::GetSocketSet()
+{
+	return &m_heartBeatSocketSet;
 }
 
 void CTCPSocketManage::GetSocketSet(std::vector<UINT>& vec)
@@ -1085,7 +1073,7 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKET recv
 	return result;
 }
 
-bool CTCPSocketManage::SendData(int index, void* pData, int size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
@@ -1100,7 +1088,7 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, MsgCmd mainID,
 
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
-		COUT_LOG(LOG_CERROR, "invalid message size size=%d", size);
+		COUT_LOG(LOG_CERROR, "invalid message size size=%lld", size);
 		return false;
 	}
 
@@ -1111,7 +1099,7 @@ bool CTCPSocketManage::SendData(int index, void* pData, int size, MsgCmd mainID,
 	NetMessageHead* pHead = reinterpret_cast<NetMessageHead*>((char*)SendBuf.get() + sizeof(SendDataLineHead));
 	pHead->uMainID = (unsigned int)mainID;
 	pHead->uAssistantID = assistID;
-	pHead->uMessageSize = sizeof(NetMessageHead) + size;
+	pHead->uMessageSize = (unsigned int)(sizeof(NetMessageHead) + size);
 	pHead->uHandleCode = handleCode;
 	pHead->uIdentification = uIdentification;
 

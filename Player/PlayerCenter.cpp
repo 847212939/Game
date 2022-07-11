@@ -99,11 +99,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 	if (pSubPlayer->GetIndex() != pPlayerInfo->m_pMsg->uIndex)
 	{
-		COUT_LOG(LOG_CERROR, "The socket index received by the pSubPlayer is inconsistent "
-			"pSubPlayer->GetIndex() = %u, "
-			"pPlayerInfo->m_pMsg->uIndex = %u", 
-			pSubPlayer->GetIndex(), 
-			pPlayerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", pSubPlayer->GetIndex(), pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
 
@@ -172,7 +168,8 @@ void PlayerCenter::HandlerPlayerThread()
 				continue;
 			}
 			uint64_t userId = 0;
-			if (!pSubPlayerPreproces->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
+			LoginSys& loginSys = pSubPlayerPreproces->GetLoginSys();
+			if (!loginSys.LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
 				continue;
 			}
@@ -193,9 +190,13 @@ void PlayerCenter::HandlerPlayerThread()
 
 			pSubPlayer->LoadMysql();
 			pSubPlayer->EnterGame();
-			pSubPlayer->EnterScene();
 			pSubPlayer->SetLoad(true);
 
+			COstringstream os;
+			pSubPlayer->RefreshProperties(os);
+			pTCPClient->SendData(loadPKey.GetIndex(), os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, loadPKey.GetSocketInfo()->bev);
+
+			pSubPlayer->EnterScene();
 			pTCPClient->SendData(loadPKey.GetIndex(), NULL, 0, MsgCmd::MsgCmd_Login, 1, 0, loadPKey.GetSocketInfo()->bev);
 		}
 	}
@@ -222,6 +223,30 @@ void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 SubPlayer* PlayerCenter::GetSubPlayer(unsigned int index)
 {
 	return m_pPlayerVec[index];
+}
+
+// 获取在线玩家
+const OnLinePlayerSet* PlayerCenter::GetSocketSet()
+{
+	if (!m_pScene)
+	{
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err m_pScene = null");
+		return nullptr;
+	}
+	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err pSubPlayerPreproces = null");
+		return nullptr;
+	}
+	TCPClient* pTCPClient = pSubPlayerPreproces->GetTCPClient();
+	if (!pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "pSubPlayer create thread err pTCPClient = null");
+		return nullptr;
+	}
+
+	return pTCPClient->GetSocketSet();
 }
 
 // 获取场景

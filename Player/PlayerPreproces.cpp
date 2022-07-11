@@ -208,6 +208,26 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
+char PlayerPreproces::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
+"`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
+char PlayerPreproces::createpptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` bigint(20) NOT NULL,"
+"`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
+
+void PlayerPreproces::CreateTable(std::string name)
+{
+	char sql[CreateTableLen] = "";
+
+	sprintf_s(sql, CreateTableLen, createpptable, name.c_str());
+
+	CreateTableSql(sql);
+}
+
 // create table
 void PlayerPreproces::CreateTableSql(const char* sql)
 {
