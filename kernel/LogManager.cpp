@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-// 调试中用 线上注释掉
-
 void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...)
 {
 	if (!pLogfile || !pFile || !pFuncName || !pBuf)
