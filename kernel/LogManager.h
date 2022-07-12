@@ -35,11 +35,12 @@ public:
 	// 日志缓存
 	std::multimap<FILE*, std::string>& GetLogMap();
 	// 日志打印
-	void Fflush();
+	void Fflush(char* logBuf);
 
 private:
 	// 日志处理线程
 	void HandlerLogThread();
+	int GetLogHour(const std::string& str);
 
 private:
 	std::mutex m_mutex;

@@ -4,7 +4,7 @@ BaseCfg =
     serverID = 1005, 
 
     --线程池的数量
-    ThreadCnt = 16,
+    ThreadCnt = 3,
 
     LogicCfg =
     {

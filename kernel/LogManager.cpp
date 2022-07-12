@@ -36,8 +36,6 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	vsprintf(buf + strlen(buf), pBuf, args);
 	va_end(args);
 
-#ifdef _DEBUG
-
 	// 输出到控制台
 	if (level == LOG_CINFO)
 	{
@@ -49,8 +47,6 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		std::cout << buf << std::endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	}
-
-#endif
 
 	sprintf(buf + strlen(buf), " {%s %s %d}\n", pFile, pFuncName, line);
 
@@ -232,8 +228,25 @@ std::multimap<FILE*, std::string>& CGameLogManage::GetLogMap()
 	return m_logMap;
 }
 
+int CGameLogManage::GetLogHour(const std::string& str)
+{
+	size_t index1 = str.find(" ");
+	if (index1 == std::string::npos)
+	{
+		return 0;
+	}
+	size_t index2 = str.find(":");
+	if (index2 == std::string::npos)
+	{
+		return 0;
+	}
+
+	std::string outStr = str.substr(index1, index2 - index1);
+	return ::atoi(outStr.c_str());
+}
+
 // 日志打印
-void CGameLogManage::Fflush()
+void CGameLogManage::Fflush(char* logBuf)
 {
 	std::multimap<FILE*, std::string> logMap;
 
@@ -241,12 +254,47 @@ void CGameLogManage::Fflush()
 	std::swap(logMap, m_logMap);
 	m_mutex.unlock();
 
+	int min1 = 0;
+	size_t len = 0;
+	FILE* pFile = nullptr;
+
 	for (std::multimap<FILE*, std::string>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
 	{
-		if (it->first)
+		int min2 = GetLogHour(it->second);
+		if (min2 <= 0)
 		{
-			fputs(it->second.c_str(), it->first);
-			fflush(it->first);
+			continue;
+		}
+
+		if (!it->first)
+		{
+			continue;
+		}
+
+		if (len + it->second.size() >= LogBufLen || min1 != min2)
+		{
+			if (pFile)
+			{
+				logBuf[len] = 0;
+				fputs(logBuf, pFile);
+				fflush(pFile);
+				len = 0;
+			}
+		}
+
+		memcpy(logBuf + len, it->second.c_str(), it->second.size());
+		len += it->second.size();
+		min1 = min2;
+		pFile = it->first;
+	}
+
+	if (len < LogBufLen)
+	{
+		if (pFile)
+		{
+			logBuf[len] = 0;
+			fputs(logBuf, pFile);
+			fflush(pFile);
 		}
 	}
 }
@@ -254,13 +302,13 @@ void CGameLogManage::Fflush()
 // 日志处理线程
 void CGameLogManage::HandlerLogThread()
 {
+	char* logBuf = new char[LogBufLen];
 	while (true)
 	{
-		// 日志五秒钟打印一次
-		std::this_thread::sleep_for(std::chrono::seconds(8));
+		std::this_thread::sleep_for(std::chrono::seconds(30));
 		if (!m_logMap.empty())
 		{
-			Fflush();
+			Fflush(logBuf);
 		}
 	}
 	COUT_LOG(LOG_CINFO, "log thread end...");
