@@ -6,6 +6,9 @@ BaseCfg =
     --线程池的数量
     ThreadCnt = 3,
 
+    --日志打印时间秒
+    LogPrintfTime = 30,
+
     LogicCfg =
     {
         ip = "127.0.0.1",

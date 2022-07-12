@@ -11,6 +11,8 @@ int main()
 		return -1;
 	}
 
+	LogMgr()->Init();
+
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 
 	IDGen& idGen = Util::Instance()->GetIDGen();

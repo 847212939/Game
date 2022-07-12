@@ -14,6 +14,7 @@ public:
 	void ReadDbCfg(DbCfg* config);
 	void ReadThreadCntCfg(int cnt);
 	void ReadServerIDCfg(int id);
+	void ReadLogPrintTmCfg(int tm);
 
 private:
 	CBaseCfgMgr m_CBaseCfgMgr;

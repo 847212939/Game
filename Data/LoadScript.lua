@@ -14,6 +14,10 @@ function ReadBaseCfg()
         ConfigMgr:ReadThreadCntCfg(BaseCfg.ThreadCnt)
     end
 
+    if BaseCfg then
+        ConfigMgr:ReadLogPrintTmCfg(BaseCfg.LogPrintfTime)
+    end
+
     local LogicCfg = LogicCfg:new()
     if BaseCfg then
         LogicCfg.ip = BaseCfg.LogicCfg.ip

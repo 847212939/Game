@@ -36,6 +36,7 @@ public:
 	std::multimap<FILE*, std::string>& GetLogMap();
 	// 日志打印
 	void Fflush(char* logBuf);
+	void Init();
 
 private:
 	// 日志处理线程

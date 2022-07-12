@@ -25,7 +25,7 @@ struct DbCfg
 class CBaseCfgMgr
 {
 public:
-	CBaseCfgMgr() : m_serverID(0), m_threadCnt(0){}
+	CBaseCfgMgr() : m_serverID(0), m_threadCnt(0), m_logPrintTm(0) {}
 	~CBaseCfgMgr(){}
 
 public:
@@ -33,14 +33,17 @@ public:
 	void ReadDbCfg(DbCfg* config) { m_DbCfg = *config; }
 	void ReadThreadCntCfg(int cnt) { m_threadCnt = cnt; }
 	void ReadServerIDCfg(int id) { m_serverID = id; }
+	void ReadLogPrintTmCfg(int tm) { m_logPrintTm = tm; }
 
 public:
 	const LogicCfg& GetLogicCfg() { return m_LogicCfg; }
 	const DbCfg& GetDbCfg() { return m_DbCfg; }
 	int GetThreadCnt() { return m_threadCnt; }
 	int GetServerId() { return m_serverID; }
+	int GetLogPrintTm() { return m_logPrintTm; }
 
 private:
+	int			m_logPrintTm;
 	int			m_serverID;
 	int			m_threadCnt;
 	LogicCfg	m_LogicCfg;
