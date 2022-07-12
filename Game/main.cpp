@@ -1,11 +1,9 @@
 ﻿#include "stdafx.h"
 
-// GetProcessAffinityMask
-// SetProcessAffinityMask
-// SetThreadAffinityMask
 int main()
 {
 	LogMgr()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+
 	if (!LuaMgr()->InitCfgMgr())
 	{
 		return -1;

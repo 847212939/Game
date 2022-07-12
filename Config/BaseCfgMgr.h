@@ -29,18 +29,18 @@ public:
 	~CBaseCfgMgr(){}
 
 public:
+	void ReadServerIDCfg(int id)		{ m_serverID = id; }
+	void ReadThreadCntCfg(int cnt)		{ m_threadCnt = cnt; }
+	void ReadLogPrintTmCfg(int tm)		{ m_logPrintTm = tm; }
+	void ReadDbCfg(DbCfg* config)		{ m_DbCfg = *config; }
 	void ReadLogicCfg(LogicCfg* config) { m_LogicCfg = *config; }
-	void ReadDbCfg(DbCfg* config) { m_DbCfg = *config; }
-	void ReadThreadCntCfg(int cnt) { m_threadCnt = cnt; }
-	void ReadServerIDCfg(int id) { m_serverID = id; }
-	void ReadLogPrintTmCfg(int tm) { m_logPrintTm = tm; }
 
 public:
-	const LogicCfg& GetLogicCfg() { return m_LogicCfg; }
-	const DbCfg& GetDbCfg() { return m_DbCfg; }
-	int GetThreadCnt() { return m_threadCnt; }
-	int GetServerId() { return m_serverID; }
-	int GetLogPrintTm() { return m_logPrintTm; }
+	int GetServerId()					{ return m_serverID; }
+	int GetThreadCnt()					{ return m_threadCnt; }
+	int GetLogPrintTm()					{ return m_logPrintTm; }
+	const DbCfg& GetDbCfg()				{ return m_DbCfg; }
+	const LogicCfg& GetLogicCfg()		{ return m_LogicCfg; }
 
 private:
 	int			m_logPrintTm;
