@@ -33,7 +33,7 @@ public:
 	// 获得锁
 	std::mutex& GetMutex();
 	// 日志缓存
-	std::multimap<FILE*, std::string>& GetLogMap();
+	std::list<std::pair<FILE*, std::string>>& GetLogMap();
 	// 日志打印
 	void Fflush(char* logBuf);
 	void Init();
@@ -54,7 +54,7 @@ private:
 	//服务器类型
 	ServiceType m_serviceType;
 	// 日志缓存
-	std::multimap<FILE*, std::string> m_logMap;
+	std::list<std::pair<FILE*, std::string>> m_logMap;
 	// 日志线程
 	std::vector<std::thread*> m_threadVec;
 };

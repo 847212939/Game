@@ -63,9 +63,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		LogMgr()->AddLogFileFp(pLogfile, fp);
 	}
 
-	std::multimap<FILE*, std::string>& logMap = LogMgr()->GetLogMap();
+	std::list<std::pair<FILE*, std::string>>& logMap = LogMgr()->GetLogMap();
 	std::lock_guard<std::mutex> guard(LogMgr()->GetMutex());
-	logMap.insert(std::make_pair(fp, buf));
+	logMap.push_back(std::make_pair(fp, buf));
 }
 
 CGameLogManage::CGameLogManage()
@@ -221,7 +221,7 @@ std::mutex& CGameLogManage::GetMutex()
 }
 
 // 日志缓存
-std::multimap<FILE*, std::string>& CGameLogManage::GetLogMap()
+std::list<std::pair<FILE*, std::string>>& CGameLogManage::GetLogMap()
 {
 	return m_logMap;
 }
@@ -246,7 +246,7 @@ int CGameLogManage::GetLogHour(const std::string& str)
 // 日志打印
 void CGameLogManage::Fflush(char* logBuf)
 {
-	std::multimap<FILE*, std::string> logMap;
+	std::list<std::pair<FILE*, std::string>> logMap;
 
 	m_mutex.lock();
 	std::swap(logMap, m_logMap);
@@ -256,7 +256,7 @@ void CGameLogManage::Fflush(char* logBuf)
 	size_t len = 0;
 	FILE* pFile = nullptr;
 
-	for (std::multimap<FILE*, std::string>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
+	for (std::list<std::pair<FILE*, std::string>>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
 	{
 		int min2 = GetLogHour(it->second);
 		if (min2 <= 0)
