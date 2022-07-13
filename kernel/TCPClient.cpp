@@ -1,14 +1,28 @@
 #include "../Game/stdafx.h"
 
-TCPClient::TCPClient() : 
-	m_SubPlayerPreproces(new SubPlayerPreproces(this))
+TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
+{
+	
+}
+
+bool TCPClient::InitTCPClient()
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
 
-	Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str());
-	Start(ServiceType::SERVICE_TYPE_LOGIC);
+	if (!Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
+	{
+		return false;
+	}
+	if (!Start(ServiceType::SERVICE_TYPE_LOGIC))
+	{
+		return false;
+	}
+
 	Run();
+
+	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
+	return true;
 }
 
 TCPClient::~TCPClient()

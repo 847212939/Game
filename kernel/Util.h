@@ -44,8 +44,8 @@ class IDGen
 {
 public:
 	IDGen() : 
-		m_serverType(), 
-		m_serverID(), 
+		m_serverType(0), 
+		m_serverID(0), 
 		m_lastSecond(0), 
 		m_addID(0)
 	{ }

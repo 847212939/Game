@@ -9,6 +9,9 @@ public:
 	~ConfigMgr();
 
 public:
+	void CoutLog(const char* log);
+
+public:
 	CBaseCfgMgr& GetCBaseCfgMgr();
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);

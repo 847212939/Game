@@ -8,6 +8,9 @@ public:
 	virtual ~TCPClient();
 
 public:
+	bool InitTCPClient();
+
+public:
 	SubPlayerPreproces* GetSubPlayerPreproces();
 
 private:

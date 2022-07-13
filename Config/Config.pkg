@@ -5,7 +5,10 @@ class ConfigMgr
 public:
 	ConfigMgr();
 	~ConfigMgr();
- 
+
+public:
+	void CoutLog(const char* log);
+
 public:
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);

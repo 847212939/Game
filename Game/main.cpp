@@ -6,6 +6,7 @@ int main()
 
 	if (!LuaMgr()->InitCfgMgr())
 	{
+		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
 
@@ -17,6 +18,11 @@ int main()
 	idGen.Init((int)ServiceType::SERVICE_TYPE_LOGIC, baseCfgMgr.GetServerId());
 
 	TCPClient clien;
+	if (!clien.InitTCPClient())
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return -1;
+	}
 
 	return 0;
 }

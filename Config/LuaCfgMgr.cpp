@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Tue Jul 12 14:00:26 2022.
+** Generated automatically by tolua++-1.0.92 on Wed Jul 13 14:55:37 2022.
 */
 
 #ifndef __cplusplus
@@ -130,6 +130,39 @@ static int tolua_Config_ConfigMgr_delete00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: CoutLog of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_CoutLog00
+static int tolua_Config_ConfigMgr_CoutLog00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+  const char* log = ((const char*)  tolua_tostring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CoutLog'", NULL);
+#endif
+  {
+   self->CoutLog(log);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'CoutLog'.",&tolua_err);
  return 0;
 #endif
 }
@@ -729,6 +762,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_Config_ConfigMgr_new00_local);
    tolua_function(tolua_S,".call",tolua_Config_ConfigMgr_new00_local);
    tolua_function(tolua_S,"delete",tolua_Config_ConfigMgr_delete00);
+   tolua_function(tolua_S,"CoutLog",tolua_Config_ConfigMgr_CoutLog00);
    tolua_function(tolua_S,"ReadLogicCfg",tolua_Config_ConfigMgr_ReadLogicCfg00);
    tolua_function(tolua_S,"ReadDbCfg",tolua_Config_ConfigMgr_ReadDbCfg00);
    tolua_function(tolua_S,"ReadThreadCntCfg",tolua_Config_ConfigMgr_ReadThreadCntCfg00);
