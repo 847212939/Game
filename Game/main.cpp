@@ -26,20 +26,5 @@ int main()
 
 	LogMgr()->Init(run);
 
-	while (run)
-	{
-		std::string str;
-		std::cin >> str;
-
-		if (str == "exit")
-		{
-			break;
-		}
-	}
-
-	run = false;
-	clien.SetRuninged(false);
-	clien.NotifyAll();
-
 	return 0;
 }

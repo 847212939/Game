@@ -214,3 +214,20 @@ uint64_t IDGen::GenerateUID()
 
 	return ((uint64_t)m_serverType << 59) + ((uint64_t)m_serverID << 52) + ((uint64_t)curSecond << 20) + ((uint64_t)m_addID++);
 }
+
+// ³ÌĞòÍË³ö
+void Util::Exit(bool& run)
+{
+	std::string str;
+
+	while (run)
+	{
+		std::cin >> str;
+
+		if (str == "nishishabi")
+		{
+			run = false;
+			return;
+		}
+	}
+}
