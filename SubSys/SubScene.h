@@ -4,7 +4,7 @@ class SubScene : public Scene
 {
 public:
 	SubScene();
-	~SubScene();
+	virtual~SubScene();
 
 private:
 	// 初始化回调函数

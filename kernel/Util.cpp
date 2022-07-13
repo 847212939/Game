@@ -155,6 +155,12 @@ CIstringstream& CIstringstream::operator >> (unsigned char* pBuf)
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
 
+Util* Util::Instance()
+{
+	static Util g_mgr;
+	return &g_mgr;
+}
+
 // 获取随机数
 unsigned int Util::GetRandNum()
 {
@@ -170,4 +176,40 @@ int Util::GetRandRange(int iMin, int iMax)
 	}
 
 	return iMin + (int)(GetRandNum() % (iMax - iMin));
+}
+
+IDGen& Util::GetIDGen()
+{
+	return m_IDGen;
+}
+
+uint64_t Util::CreateUserId()
+{
+	return m_IDGen.GenerateUID();
+}
+
+IDGen::IDGen() :
+	m_serverType(0),
+	m_serverID(0),
+	m_lastSecond(0),
+	m_addID(0)
+{ 
+
+}
+
+void IDGen::Init(int serverType, int serverID)
+{
+	m_serverType = serverType;
+	m_serverID = serverID;
+}
+uint64_t IDGen::GenerateUID()
+{
+	time_t curSecond = time(NULL);
+	if (curSecond != m_lastSecond)
+	{
+		m_lastSecond = curSecond;
+		m_addID = 0;
+	}
+
+	return ((uint64_t)m_serverType << 59) + ((uint64_t)m_serverID << 52) + ((uint64_t)curSecond << 20) + ((uint64_t)m_addID++);
 }

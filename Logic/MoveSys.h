@@ -10,7 +10,7 @@ public:
 	};
 public:
 	MoveSys(SubPlayer* pSubPlayer);
-	~MoveSys();
+	virtual~MoveSys();
 
 private:
 	void Register();

@@ -26,7 +26,7 @@ class CBaseCfgMgr
 {
 public:
 	CBaseCfgMgr() : m_serverID(0), m_threadCnt(0), m_logPrintTm(0) {}
-	~CBaseCfgMgr(){}
+	virtual~CBaseCfgMgr(){}
 
 public:
 	void ReadServerIDCfg(int id)		{ m_serverID = id; }

@@ -47,6 +47,9 @@
     <Filter Include="玩家信息\游戏逻辑\登录系统">
       <UniqueIdentifier>{498363ca-7180-475c-a485-fece46b95818}</UniqueIdentifier>
     </Filter>
+    <Filter Include="工具接口">
+      <UniqueIdentifier>{d15d9a3a-a64f-4841-941a-14a94345cbbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,9 +69,6 @@
     </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
       <Filter>网络处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\Util.cpp">
-      <Filter>数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
       <Filter>玩家信息\玩家中心</Filter>
@@ -112,6 +112,9 @@
     <ClCompile Include="..\Logic\MoveSys.cpp">
       <Filter>玩家信息\游戏逻辑\移动系统</Filter>
     </ClCompile>
+    <ClCompile Include="..\kernel\Util.cpp">
+      <Filter>工具接口</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
@@ -137,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="..\kernel\TCPClient.h">
       <Filter>网络处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Util.h">
-      <Filter>数据库</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerCenter.h">
       <Filter>玩家信息\玩家中心</Filter>
@@ -191,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="..\Player\AttrsCmd.h">
       <Filter>玩家信息\消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Util.h">
+      <Filter>工具接口</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ class ConfigMgr
 {
 public:
 	ConfigMgr();
-	~ConfigMgr();
+	virtual~ConfigMgr();
 
 public:
 	void CoutLog(const char* log);

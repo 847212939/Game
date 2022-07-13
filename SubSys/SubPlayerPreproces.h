@@ -3,7 +3,7 @@
 class SubPlayerPreproces : public PlayerPreproces
 {
 public:
-	~SubPlayerPreproces();
+	virtual~SubPlayerPreproces();
 	SubPlayerPreproces(TCPClient* pTCPClient);
 
 public:
