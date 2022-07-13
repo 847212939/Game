@@ -202,6 +202,7 @@ void IDGen::Init(int serverType, int serverID)
 	m_serverType = serverType;
 	m_serverID = serverID;
 }
+
 uint64_t IDGen::GenerateUID()
 {
 	time_t curSecond = time(NULL);
