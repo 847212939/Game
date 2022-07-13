@@ -36,11 +36,11 @@ public:
 	std::list<std::pair<FILE*, std::string>>& GetLogMap();
 	// 日志打印
 	void Fflush(char* logBuf);
-	void Init();
+	void Init(bool& run);
 
 private:
 	// 日志处理线程
-	void HandlerLogThread();
+	void HandlerLogThread(bool& run);
 	int GetLogHour(const std::string& str);
 
 private:

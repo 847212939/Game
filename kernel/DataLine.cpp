@@ -112,3 +112,8 @@ bool CDataLine::CleanData()
 
 	return true;
 }
+
+ConditionVariable& CDataLine::GetConditionVariable()
+{
+	return m_cond;
+}

@@ -111,3 +111,12 @@ SubPlayerPreproces* TCPClient::GetSubPlayerPreproces()
 {
 	return m_SubPlayerPreproces;
 }
+
+void TCPClient::NotifyAll()
+{
+	GetConditionVariable().NotifyAll();
+	GetRecvDataLine()->GetConditionVariable().NotifyAll();
+	GetSendDataLine()->GetConditionVariable().NotifyAll();
+	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
+	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+}

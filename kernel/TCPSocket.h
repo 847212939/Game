@@ -44,8 +44,10 @@ public:
 	std::vector<std::thread*>& GetSockeThreadVec();
 	// 获取线程运行状态
 	bool GetRuninged();
+	void SetRuninged(bool run);
 	// 获取服务器类型
 	ServiceType GetServerType();
+	ConditionVariable& GetConditionVariable();
 
 private:
 	// 设置tcp属性

@@ -1137,7 +1137,17 @@ bool CTCPSocketManage::GetRuninged()
 	return m_running;
 }
 
+void CTCPSocketManage::SetRuninged(bool run)
+{
+	m_running = run;
+}
+
 ServiceType CTCPSocketManage::GetServerType()
 {
 	return m_iServiceType;
+}
+
+ConditionVariable& CTCPSocketManage::GetConditionVariable()
+{
+	return m_ConditionVariable;
 }

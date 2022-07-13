@@ -296,13 +296,13 @@ void CGameLogManage::Fflush(char* logBuf)
 }
 
 // 日志处理线程
-void CGameLogManage::HandlerLogThread()
+void CGameLogManage::HandlerLogThread(bool& run)
 {
 	char* logBuf = new char[LogBufLen];
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	int tm = baseCfgMgr.GetLogPrintTm();
 
-	while (true)
+	while (run)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(tm));
 		if (!m_logMap.empty())
@@ -313,7 +313,7 @@ void CGameLogManage::HandlerLogThread()
 	COUT_LOG(LOG_CINFO, "log thread end...");
 }
 
-void CGameLogManage::Init()
+void CGameLogManage::Init(bool& run)
 {
-	m_threadVec.push_back(new std::thread(&CGameLogManage::HandlerLogThread, this));
+	m_threadVec.push_back(new std::thread(&CGameLogManage::HandlerLogThread, this, std::ref(run)));
 }

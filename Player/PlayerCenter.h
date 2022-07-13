@@ -21,6 +21,7 @@ public:
 	const SubScene* getScene();
 	SubPlayer* GetSubPlayer(unsigned int index);
 	const OnLinePlayerSet* GetSocketSet();
+	ConditionVariable& GetConditionVariable();
 
 private:
 	void HandlerPlayerThread();

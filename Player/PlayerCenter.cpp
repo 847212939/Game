@@ -250,3 +250,8 @@ const SubScene* PlayerCenter::getScene()
 {
 	return m_pScene;
 }
+
+ConditionVariable& PlayerCenter::GetConditionVariable()
+{
+	return m_cond;
+}

@@ -33,6 +33,7 @@ public:
 	virtual unsigned int GetData(void** pDataBuffer);
 	//获取队列大小
 	size_t GetDataCount() { return m_dataListSize; };
+	ConditionVariable& GetConditionVariable();
 
 private:
 	std::atomic<unsigned int>	m_dataListSize;

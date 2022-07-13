@@ -9,6 +9,7 @@ public:
 
 public:
 	bool InitTCPClient();
+	void NotifyAll();
 
 public:
 	SubPlayerPreproces* GetSubPlayerPreproces();
