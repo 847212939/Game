@@ -226,10 +226,11 @@ void Util::Exit(bool& run, TCPClient& clien)
 
 		if (str == "exit")
 		{
-			run = false;
 			break;
 		}
 	}
+
+	run = false;
 
 	clien.SetRuninged(run);
 
