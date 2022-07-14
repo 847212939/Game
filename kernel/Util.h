@@ -93,7 +93,7 @@ public:
 
 public:
 	// ³ÌĞòÍË³ö
-	static void Exit(bool& run);
+	static void Exit(bool& run, TCPClient& clien);
 
 private:
 	static std::random_device	m_rd;

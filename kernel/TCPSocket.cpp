@@ -1151,3 +1151,8 @@ ConditionVariable& CTCPSocketManage::GetConditionVariable()
 {
 	return m_ConditionVariable;
 }
+
+event_base* CTCPSocketManage::GetEventBase()
+{
+	return m_listenerBase;
+}

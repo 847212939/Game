@@ -31,8 +31,11 @@ TCPClient::~TCPClient()
 	while (!threadVec.empty())
 	{
 		std::vector<std::thread*>::reverse_iterator it = threadVec.rbegin();
-		(*it)->join();
-		SafeDelete(*it);
+		if (*it)
+		{
+			(*it)->join();
+			SafeDelete(*it);
+		}
 	}
 	if (m_SubPlayerPreproces)
 	{
@@ -115,8 +118,30 @@ SubPlayerPreproces* TCPClient::GetSubPlayerPreproces()
 void TCPClient::NotifyAll()
 {
 	GetConditionVariable().NotifyAll();
-	GetRecvDataLine()->GetConditionVariable().NotifyAll();
-	GetSendDataLine()->GetConditionVariable().NotifyAll();
-	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
-	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+
+	CDataLine* RecvDataLine = GetRecvDataLine();
+	if (RecvDataLine)
+	{
+		std::string str = "exit";
+		RecvDataLine->AddData((void*)str.c_str(), (unsigned int)str.size(), 0);
+		RecvDataLine->GetConditionVariable().NotifyAll();
+	}
+
+	CDataLine* SendDataLine = GetSendDataLine();
+	if (SendDataLine)
+	{
+		std::string str = "exit";
+		SendDataLine->AddData((void*)str.c_str(), (unsigned int)str.size(), 0);
+		SendDataLine->GetConditionVariable().NotifyAll();
+	}
+	
+	if (m_SubPlayerPreproces)
+	{
+		RegisterCreat(m_SubPlayerPreproces, "heart");
+		m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
+
+		std::string id = "", pw = "";
+		m_SubPlayerPreproces->CreatePlayer(0, nullptr, id, pw);
+		m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+	}
 }

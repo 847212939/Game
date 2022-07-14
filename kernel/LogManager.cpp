@@ -83,8 +83,11 @@ CGameLogManage::~CGameLogManage()
 	while (!m_threadVec.empty())
 	{
 		std::vector<std::thread*>::reverse_iterator it = m_threadVec.rbegin();
-		(*it)->join();
-		SafeDelete(*it);
+		if (*it)
+		{
+			(*it)->join();
+			SafeDelete(*it);
+		}
 	}
 }
 

@@ -24,7 +24,8 @@ public:
 	// 加载多条数据库
 	bool LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	// create table
-	void CreateTable(std::string name);
+	void CreateTableS(std::string name);
+	void CreateTableI(std::string name);
 	void CreateTableSql(const char* sql);
 	// insert mysql
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");

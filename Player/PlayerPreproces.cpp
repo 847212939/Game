@@ -219,7 +219,16 @@ char PlayerPreproces::createpptable[CreateTableLen] = "CREATE TABLE IF NOT EXIST
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
-void PlayerPreproces::CreateTable(std::string name)
+void PlayerPreproces::CreateTableS(std::string name)
+{
+	char sql[CreateTableLen] = "";
+
+	sprintf_s(sql, CreateTableLen, createptable, name.c_str());
+
+	CreateTableSql(sql);
+}
+
+void PlayerPreproces::CreateTableI(std::string name)
 {
 	char sql[CreateTableLen] = "";
 

@@ -48,6 +48,7 @@ public:
 	// 获取服务器类型
 	ServiceType GetServerType();
 	ConditionVariable& GetConditionVariable();
+	event_base* GetEventBase();
 
 private:
 	// 设置tcp属性

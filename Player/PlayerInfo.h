@@ -24,7 +24,7 @@ struct LoadPlayerKey
 	std::string				id;
 	std::string				pw;
 
-	const bool& GetConnect();
+	bool GetConnect();
 	const unsigned int& GetIndex();
 	const TCPSocketInfo* GetSocketInfo();
 	const uint64_t& getUserId();
@@ -77,5 +77,15 @@ if (!pobj)\
 }\
 else\
 {\
-	pobj->CreateTable(name);\
+	pobj->CreateTableI(name);\
+}
+
+#define RegisterCreatS(pobj, name)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éÐ´·¨");\
+}\
+else\
+{\
+	pobj->CreateTableS(name);\
 }

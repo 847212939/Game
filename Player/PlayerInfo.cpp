@@ -15,8 +15,13 @@ PlayerInfo::~PlayerInfo()
 
 }
 
-const bool& LoadPlayerKey::GetConnect()
+bool LoadPlayerKey::GetConnect()
 {
+	if (!pSockInfo)
+	{
+		return false;
+	}
+
 	return pSockInfo->isConnect;
 }
 

@@ -216,7 +216,7 @@ uint64_t IDGen::GenerateUID()
 }
 
 // ³ÌÐòÍË³ö
-void Util::Exit(bool& run)
+void Util::Exit(bool& run, TCPClient& clien)
 {
 	std::string str;
 
@@ -224,10 +224,20 @@ void Util::Exit(bool& run)
 	{
 		std::cin >> str;
 
-		if (str == "nishishabi")
+		if (str == "exit")
 		{
 			run = false;
-			return;
+			break;
 		}
 	}
+
+	clien.SetRuninged(run);
+
+	clien.NotifyAll();
+
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	int tm = baseCfgMgr.GetLogPrintTm();
+
+	std::this_thread::sleep_for(std::chrono::seconds(tm + 10));
+	exit(0);
 }

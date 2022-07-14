@@ -15,7 +15,7 @@ SubPlayerPreproces::~SubPlayerPreproces()
 void SubPlayerPreproces::Register()
 {
 	RegisterCreat(this, "move");
-	RegisterCreat(this, "useraccount");
+	RegisterCreatS(this, "useraccount");
 }
 
 LoginSys& SubPlayerPreproces::GetLoginSys()
