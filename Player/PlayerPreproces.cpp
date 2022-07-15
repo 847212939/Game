@@ -61,11 +61,13 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
 		return;
 	}
-	while (m_pTCPClient->GetRuninged())
+	bool& run = m_pTCPClient->GetRuninged();
+
+	while (run)
 	{
 		//进入挂起状态
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [this] { if (this->m_sqlList.size() > 0) { return true; } return false; });
+		m_cond.Wait(uniqLock, [this, &run] { if (this->m_sqlList.size() > 0 || !run) { return true; } return false; });
 		
 		if (this->m_sqlList.size() <= 0)
 		{

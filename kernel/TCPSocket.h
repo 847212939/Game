@@ -43,8 +43,7 @@ public:
 	// 获取线程句柄队列
 	std::vector<std::thread*>& GetSockeThreadVec();
 	// 获取线程运行状态
-	bool GetRuninged();
-	void SetRuninged(bool run);
+	bool& GetRuninged();
 	// 获取服务器类型
 	ServiceType GetServerType();
 	ConditionVariable& GetConditionVariable();

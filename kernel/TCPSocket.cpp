@@ -159,7 +159,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	while (pThis->m_running)
 	{
 		//获取数据
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead);
+		unsigned int bytes = pDataLine->GetData(&pDataLineHead, pThis->m_running);
 		if (bytes == 0 || pDataLineHead == nullptr)
 		{
 			continue;
@@ -304,11 +304,26 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 
 	evconnlistener_free(listener);
 	event_base_free(pThis->m_listenerBase);
+
+	
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		threadVev[i].join();
-		event_base_free(pThis->m_workBaseVec[i].base);
-		event_free(pThis->m_workBaseVec[i].event);
+
+		WorkThreadInfo& workInfo = pThis->m_workBaseVec[i];
+
+		closesocket(workInfo.read_fd);
+		closesocket(workInfo.write_fd);
+
+		if (workInfo.base)
+		{
+			event_base_free(workInfo.base);
+		}
+		if (workInfo.event)
+		{
+			// 不知道为什么退出时发生崩溃
+			//event_free(workInfo.event);
+		}
 	}
 
 	COUT_LOG(LOG_CINFO, "accept thread end...");
@@ -1132,14 +1147,9 @@ std::vector<std::thread*>& CTCPSocketManage::GetSockeThreadVec()
 	return m_socketThread;
 }
 
-bool CTCPSocketManage::GetRuninged()
+bool& CTCPSocketManage::GetRuninged()
 {
 	return m_running;
-}
-
-void CTCPSocketManage::SetRuninged(bool run)
-{
-	m_running = run;
 }
 
 ServiceType CTCPSocketManage::GetServerType()

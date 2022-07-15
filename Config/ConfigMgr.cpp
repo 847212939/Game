@@ -42,3 +42,13 @@ void ConfigMgr::CoutLog(const char* log)
 {
 	COUT_LOG(LOG_CINFO, log);
 }
+
+void ConfigMgr::ReadMaxSocketCntCfg(int cnt)
+{
+	m_CBaseCfgMgr.ReadMaxSocketCntCfg(cnt);
+}
+
+void ConfigMgr::ReadExitCfg(std::string exit)
+{
+	m_CBaseCfgMgr.ReadExitCfg(exit);
+}

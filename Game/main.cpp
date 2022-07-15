@@ -27,5 +27,7 @@ int main()
 
 	LogMgr()->Init(run);
 
+	Util::Exit(run, clien);
+
 	return 0;
 }

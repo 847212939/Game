@@ -220,25 +220,19 @@ void Util::Exit(bool& run, TCPClient& clien)
 {
 	std::string str;
 
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+
 	while (run)
 	{
 		std::cin >> str;
 
-		if (str == "exit")
+		if (str == baseCfgMgr.GetExit())
 		{
+			run = false;
 			break;
 		}
 	}
 
-	run = false;
-
-	clien.SetRuninged(run);
-
+	clien.Stop();
 	clien.NotifyAll();
-
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	int tm = baseCfgMgr.GetLogPrintTm();
-
-	std::this_thread::sleep_for(std::chrono::seconds(tm + 10));
-	exit(0);
 }

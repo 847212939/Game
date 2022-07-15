@@ -19,11 +19,18 @@ function ReadBaseCfg()
         ConfigMgr:ReadLogPrintTmCfg(BaseCfg.LogPrintfTime or 0)
     end
 
+    if BaseCfg then
+        ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
+    end
+
+    if BaseCfg then
+        ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
+    end
+
     local LogicCfg = LogicCfg:new()
     if BaseCfg then
         LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
         LogicCfg.port = BaseCfg.LogicCfg.port or 0
-        LogicCfg.maxSocketCnt = BaseCfg.LogicCfg.maxSocketCnt or 0
         ConfigMgr:ReadLogicCfg(LogicCfg)
     end
     LogicCfg:delete()

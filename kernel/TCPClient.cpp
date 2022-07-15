@@ -9,8 +9,9 @@ bool TCPClient::InitTCPClient()
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
+	int maxSocketCnt = baseCfgMgr.GetMaxSocketCnt();
 
-	if (!Init(logicCfg.maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
+	if (!Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
 	{
 		return false;
 	}
@@ -30,12 +31,14 @@ TCPClient::~TCPClient()
 	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
 	while (!threadVec.empty())
 	{
-		std::vector<std::thread*>::reverse_iterator it = threadVec.rbegin();
+		std::vector<std::thread*>::iterator it = threadVec.begin();
 		if (*it)
 		{
 			(*it)->join();
 			SafeDelete(*it);
 		}
+
+		threadVec.erase(it);
 	}
 	if (m_SubPlayerPreproces)
 	{
@@ -66,10 +69,12 @@ void TCPClient::HandlerRecvDataListThread()
 	//数据缓存
 	void* pDataLineHead = NULL;
 
-	while (GetRuninged())
+	bool& run = GetRuninged();
+
+	while (run)
 	{
 		//获取数据
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead);
+		unsigned int bytes = pDataLine->GetData(&pDataLineHead, run);
 		if (bytes == 0 || pDataLineHead == NULL)
 		{
 			continue;
@@ -120,28 +125,13 @@ void TCPClient::NotifyAll()
 	GetConditionVariable().NotifyAll();
 
 	CDataLine* RecvDataLine = GetRecvDataLine();
-	if (RecvDataLine)
-	{
-		std::string str = "exit";
-		RecvDataLine->AddData((void*)str.c_str(), (unsigned int)str.size(), 0);
-		RecvDataLine->GetConditionVariable().NotifyAll();
-	}
-
 	CDataLine* SendDataLine = GetSendDataLine();
-	if (SendDataLine)
-	{
-		std::string str = "exit";
-		SendDataLine->AddData((void*)str.c_str(), (unsigned int)str.size(), 0);
-		SendDataLine->GetConditionVariable().NotifyAll();
-	}
-	
-	if (m_SubPlayerPreproces)
-	{
-		RegisterCreat(m_SubPlayerPreproces, "heart");
-		m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
 
-		std::string id = "", pw = "";
-		m_SubPlayerPreproces->CreatePlayer(0, nullptr, id, pw);
+	if (RecvDataLine && SendDataLine && m_SubPlayerPreproces)
+	{
+		RecvDataLine->GetConditionVariable().NotifyAll();
+		SendDataLine->GetConditionVariable().NotifyAll();
+		m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
 		m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
 	}
 }

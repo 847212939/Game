@@ -56,13 +56,13 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, unsigned in
 	return pListItem->stDataHead.uSize;		//返回大小
 }
 
-unsigned int CDataLine::GetData(void** pDataBuffer)
+unsigned int CDataLine::GetData(void** pDataBuffer, bool& run)
 {
 	*pDataBuffer = nullptr;
 
 	//进入挂起状态
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [this] { if (this->m_dataListSize > 0) { return true; } return false; });
+	m_cond.Wait(uniqLock, [this, &run] { if (this->m_dataListSize > 0 || !run) { return true; } return false; });
 
 	//如果队列是空的，直接返回
 	if (m_dataListSize <= 0)

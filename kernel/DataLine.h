@@ -30,7 +30,7 @@ public:
 	//加入消息队列
 	virtual unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
 	//提取消息数据
-	virtual unsigned int GetData(void** pDataBuffer);
+	virtual unsigned int GetData(void** pDataBuffer, bool& run);
 	//获取队列大小
 	size_t GetDataCount() { return m_dataListSize; };
 	ConditionVariable& GetConditionVariable();

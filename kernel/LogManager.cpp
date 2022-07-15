@@ -82,12 +82,14 @@ CGameLogManage::~CGameLogManage()
 	//Release();
 	while (!m_threadVec.empty())
 	{
-		std::vector<std::thread*>::reverse_iterator it = m_threadVec.rbegin();
+		std::vector<std::thread*>::iterator it = m_threadVec.begin();
 		if (*it)
 		{
 			(*it)->join();
 			SafeDelete(*it);
 		}
+
+		m_threadVec.erase(it);
 	}
 }
 
@@ -308,6 +310,7 @@ void CGameLogManage::HandlerLogThread(bool& run)
 	while (run)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(tm));
+
 		if (!m_logMap.empty())
 		{
 			Fflush(logBuf);

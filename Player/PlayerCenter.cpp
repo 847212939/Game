@@ -32,10 +32,10 @@ void PlayerCenter::Init()
 	}
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
+	int maxSocketCnt = baseCfgMgr.GetMaxSocketCnt();
 
 	// 初始化分配内存
-	unsigned int playerSize = logicCfg.maxSocketCnt * 2;
+	unsigned int playerSize = maxSocketCnt * 2;
 	m_pPlayerVec.resize((size_t)playerSize);
 
 	// 玩家全部初始化为空
@@ -141,11 +141,13 @@ void PlayerCenter::HandlerPlayerThread()
 		return;
 	}
 
-	while (pTCPClient->GetRuninged())
+	bool& run = pTCPClient->GetRuninged();
+
+	while (run)
 	{
 		//进入挂起状态
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [this] { if (this->m_LoadPlayerList.size() > 0) { return true; } return false; });
+		m_cond.Wait(uniqLock, [this, &run] { if (this->m_LoadPlayerList.size() > 0 || !run) { return true; } return false; });
 
 		if (this->m_LoadPlayerList.size() <= 0)
 		{
