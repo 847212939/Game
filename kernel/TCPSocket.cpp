@@ -304,7 +304,6 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 
 	evconnlistener_free(listener);
 	event_base_free(pThis->m_listenerBase);
-
 	
 	for (int i = 0; i < workBaseCount; i++)
 	{
@@ -441,7 +440,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		return;
 	}
 
-	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE |*/ BEV_OPT_THREADSAFE);
+	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
 		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
