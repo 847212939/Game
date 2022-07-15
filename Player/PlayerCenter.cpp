@@ -156,7 +156,7 @@ void PlayerCenter::HandlerPlayerThread()
 		}
 
 		LoadPlayerList loadPlayerList;
-		std::swap(loadPlayerList, m_LoadPlayerList);
+		loadPlayerList.swap(m_LoadPlayerList);
 
 		uniqLock.unlock();
 

@@ -252,7 +252,7 @@ void CGameLogManage::Fflush(char* logBuf)
 	std::list<std::pair<FILE*, std::string>> logMap;
 
 	m_mutex.lock();
-	std::swap(logMap, m_logMap);
+	logMap.swap(m_logMap);
 	m_mutex.unlock();
 
 	int min1 = 0;

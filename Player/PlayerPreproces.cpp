@@ -76,7 +76,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 		}
 
 		SqlList sqlList;
-		std::swap(sqlList, m_sqlList);
+		sqlList.swap(m_sqlList);
 
 		uniqLock.unlock();
 
