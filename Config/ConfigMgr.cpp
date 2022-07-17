@@ -52,3 +52,8 @@ void ConfigMgr::ReadExitCfg(std::string exit)
 {
 	m_CBaseCfgMgr.ReadExitCfg(exit);
 }
+
+void ConfigMgr::ReadTimerCntCfg(int cnt)
+{
+	m_CBaseCfgMgr.ReadTimerCntCfg(cnt);
+}

@@ -6,6 +6,9 @@ BaseCfg =
     --线程池的数量
     ThreadCnt = 3,
 
+    --定时器的个数
+    TimerCnt = 1,
+
     --日志打印时间秒
     LogPrintfTime = 5,
 

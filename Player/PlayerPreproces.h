@@ -40,6 +40,7 @@ public:
 public:
 	SubScene& GetSubScene();
 	TCPClient* GetTCPClient();
+	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetCMysqlHelper();
 	ConditionVariable& GetConditionVariable();
 
@@ -74,4 +75,6 @@ private:
 	SubScene          m_SubScene;			// 玩家场景
 	CMysqlHelper      m_CMysqlHelper;		// 数据库
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
+	CServerTimer*	  m_pServerTimer;		// 定时器
+	CDataLine*		  m_TimerDataLine;		// 定时器队列
 };

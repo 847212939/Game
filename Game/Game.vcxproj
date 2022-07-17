@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Config\BaseCfgMgr.cpp" />
     <ClCompile Include="..\Config\ConfigMgr.cpp" />
     <ClCompile Include="..\Config\LuaCfgMgr.cpp" />
     <ClCompile Include="..\kernel\DataLine.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="..\Player\PlayerInfo.cpp" />
     <ClCompile Include="..\Player\PlayerPreproces.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
+    <ClCompile Include="..\Player\ServerTimer.cpp" />
     <ClCompile Include="..\SubSys\SubPlayer.cpp" />
     <ClCompile Include="..\SubSys\SubPlayerCenter.cpp" />
     <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\Player\PlayerInfo.h" />
     <ClInclude Include="..\Player\PlayerPreproces.h" />
     <ClInclude Include="..\Player\Scene.h" />
+    <ClInclude Include="..\Player\ServerTimer.h" />
     <ClInclude Include="..\SubSys\SubPlayer.h" />
     <ClInclude Include="..\SubSys\SubPlayerCenter.h" />
     <ClInclude Include="..\SubSys\SubPlayerPreproces.h" />

@@ -28,7 +28,9 @@
 #include <event2/util.h>
 #include <event2/event.h>
 #include <event2/thread.h>
+#include <event2/event_struct.h>
 #include <mysql.h>
+#include <time.h>
 
 // lua
 extern "C"
@@ -63,6 +65,7 @@ extern "C"
 
 #include "../Player/Scene.h"				// 场景
 #include "../SubSys/SubScene.h"				// 场景
+#include "../Player/ServerTimer.h"			// 定时器
 
 #include "../Logic/LoginSys.h"				// 登录
 #include "../Player/PlayerPreproces.h"		// 信息在注册

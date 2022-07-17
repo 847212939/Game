@@ -2,7 +2,8 @@
 #include "../Game/stdafx.h"
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
-	m_pTCPClient(pTCPClient)
+	m_pTCPClient(pTCPClient),
+	m_TimerDataLine(new CDataLine)
 {
 }
 
@@ -14,6 +15,20 @@ PlayerPreproces::~PlayerPreproces()
 void PlayerPreproces::Init()
 {
 	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
+
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	int timerCnt = baseCfgMgr.GetTimerCnt();
+	if (timerCnt <= 0)
+	{
+		timerCnt = 4;
+	}
+
+	m_pServerTimer = new CServerTimer[timerCnt];
+	for (int i = 0; i < timerCnt; i++)
+	{
+		m_pServerTimer[i].SetTCPClient(m_pTCPClient);
+		m_pServerTimer[i].Start(m_TimerDataLine);
+	}
 
 	InitDB();
 	RunThread();
@@ -175,6 +190,11 @@ TCPClient* PlayerPreproces::GetTCPClient()
 CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 {
 	return m_CMysqlHelper;
+}
+
+CServerTimer* PlayerPreproces::GetCServerTimer()
+{
+	return m_pServerTimer;
 }
 
 // »ñÈ¡³¡¾°

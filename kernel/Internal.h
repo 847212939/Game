@@ -40,7 +40,27 @@ const int					SOCKET_RECV_BUF_SIZE = MAX_TEMP_SENDBUF_SIZE * 8;	// TCP接收缓冲区
 const unsigned int			CHECK_HEAETBEAT_SECS = 15;							// 心跳定时器时间(s)
 const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
+enum SERVERTIMER_TYPE
+{
+	SERVERTIMER_TYPE_PERISIST = 0,		// 持久定时器
+	SERVERTIMER_TYPE_SINGLE,			// 一次性定时器
+};
+
+struct ServerTimerInfo
+{
+	unsigned int elapse;	// 定时器间隔（单位毫秒）
+	long long starttime;	// 起始时间（单位毫秒）
+	BYTE timertype;			// 定时器类型 SERVERTIMER_TYPE
+	ServerTimerInfo()
+	{
+		elapse = 10;
+		starttime = 0;
+		timertype = SERVERTIMER_TYPE_PERISIST;
+	}
+};
+
 #pragma pack(1)
+
 //数据队列信息头
 struct DataLineHead
 {
@@ -48,6 +68,18 @@ struct DataLineHead
 	unsigned int uDataKind;		//数据类型
 	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }
 };
+
+//定时器消息结构定义
+struct ServerTimerLine
+{
+	DataLineHead						LineHead;					//队列头
+	UINT								uTimerID;					//定时器 ID
+	ServerTimerLine()
+	{
+		memset(this, 0, sizeof(ServerTimerLine));
+	}
+};
+
 
 //网络数据包结构头
 struct NetMessageHead

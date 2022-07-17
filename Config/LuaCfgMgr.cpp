@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Fri Jul 15 21:27:24 2022.
+** Generated automatically by tolua++-1.0.92 on Mon Jul 18 01:10:06 2022.
 */
 
 #ifndef __cplusplus
@@ -394,6 +394,39 @@ static int tolua_Config_ConfigMgr_ReadExitCfg00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ReadExitCfg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ReadTimerCntCfg of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadTimerCntCfg00
+static int tolua_Config_ConfigMgr_ReadTimerCntCfg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+  int cnt = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadTimerCntCfg'", NULL);
+#endif
+  {
+   self->ReadTimerCntCfg(cnt);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ReadTimerCntCfg'.",&tolua_err);
  return 0;
 #endif
 }
@@ -806,6 +839,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ReadLogPrintTmCfg",tolua_Config_ConfigMgr_ReadLogPrintTmCfg00);
    tolua_function(tolua_S,"ReadMaxSocketCntCfg",tolua_Config_ConfigMgr_ReadMaxSocketCntCfg00);
    tolua_function(tolua_S,"ReadExitCfg",tolua_Config_ConfigMgr_ReadExitCfg00);
+   tolua_function(tolua_S,"ReadTimerCntCfg",tolua_Config_ConfigMgr_ReadTimerCntCfg00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",tolua_collect_LogicCfg);

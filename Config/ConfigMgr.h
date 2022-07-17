@@ -20,6 +20,7 @@ public:
 	void ReadLogPrintTmCfg(int tm);
 	void ReadMaxSocketCntCfg(int cnt);
 	void ReadExitCfg(std::string exit);
+	void ReadTimerCntCfg(int cnt);
 
 private:
 	CBaseCfgMgr m_CBaseCfgMgr;

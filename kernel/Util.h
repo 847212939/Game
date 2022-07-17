@@ -95,6 +95,9 @@ public:
 	// ³ÌĞòÍË³ö
 	static void Exit(bool& run, TCPClient& clien);
 
+public:
+	static long long GetSysMilliseconds();
+
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;

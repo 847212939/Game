@@ -126,12 +126,37 @@ void TCPClient::NotifyAll()
 
 	CDataLine* RecvDataLine = GetRecvDataLine();
 	CDataLine* SendDataLine = GetSendDataLine();
-
-	if (RecvDataLine && SendDataLine && m_SubPlayerPreproces)
+	if (!RecvDataLine)
 	{
-		RecvDataLine->GetConditionVariable().NotifyAll();
-		SendDataLine->GetConditionVariable().NotifyAll();
-		m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
-		m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+		COUT_LOG(LOG_CERROR, "RecvDataLine = null");
+		return;
+	}
+	if (!SendDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "SendDataLine = null");
+		return;
+	}
+	if (!m_SubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "SubPlayerPreproces = null");
+		return;
+	}
+	CServerTimer* pCServerTimer = m_SubPlayerPreproces->GetCServerTimer();
+	if (!pCServerTimer)
+	{
+		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
+		return;
+	}
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	int timerCnt = baseCfgMgr.GetTimerCnt();
+
+	RecvDataLine->GetConditionVariable().NotifyAll();
+	SendDataLine->GetConditionVariable().NotifyAll();
+	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
+	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+
+	for (int i = 0; i < timerCnt; i++)
+	{
+		pCServerTimer[i].SetTimerRun(false);
 	}
 }

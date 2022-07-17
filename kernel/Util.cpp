@@ -1,3 +1,4 @@
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
 Util* Util::Instance()
@@ -6,13 +7,13 @@ Util* Util::Instance()
 	return &g_mgr;
 }
 
-// »ñÈ¡Ëæ»úÊı
+// è·å–éšæœºæ•°
 unsigned int Util::GetRandNum()
 {
 	return m_mt();
 }
 
-// »ñÈ¡[A,B)Ëæ»úÊı,min<= Ëæ»úÊı < iMax
+// è·å–[A,B)éšæœºæ•°,min<= éšæœºæ•° < iMax
 int Util::GetRandRange(int iMin, int iMax)
 {
 	if (iMin >= iMax)
@@ -131,7 +132,7 @@ CIstringstream& CIstringstream::operator >> (std::string& outStr)
 		++cnt;
 		index1 = index2 + 1;
 	}
-	// ´¦Àí¿Õ¸ñ
+	// å¤„ç†ç©ºæ ¼
 	for (char& c : outStr)
 	{
 		++len;
@@ -172,7 +173,7 @@ CIstringstream& CIstringstream::operator >> (char* pBuf)
 		++cnt;
 		index1 = index2 + 1;
 	}
-	// ´¦Àí¿Õ¸ñ
+	// å¤„ç†ç©ºæ ¼
 	for (char& c : outStr)
 	{
 		++len;
@@ -213,7 +214,7 @@ CIstringstream& CIstringstream::operator >> (unsigned char* pBuf)
 		++cnt;
 		index1 = index2 + 1;
 	}
-	// ´¦Àí¿Õ¸ñ
+	// å¤„ç†ç©ºæ ¼
 	for (char& c : outStr)
 	{
 		++len;
@@ -232,6 +233,13 @@ CIstringstream& CIstringstream::operator >> (unsigned char* pBuf)
 	return *this;
 }
 
-// ·½·¨Àà
+// æ–¹æ³•ç±»
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
+
+long long Util::GetSysMilliseconds()
+{
+	auto time_now = std::chrono::system_clock::now();
+	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
+	return duration_in_ms.count();
+}
