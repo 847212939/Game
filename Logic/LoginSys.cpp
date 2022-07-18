@@ -19,7 +19,7 @@ void LoginSys::Register()
 void LoginSys::TimerCallback()
 {
 	COUT_LOG(LOG_CERROR, "LoginSys::TimerCallback()");
-	UnRegisterTimer(m_pSubPlayerPreproces, TimerCmd::TimerCmd_Test);
+	//UnRegisterTimer(m_pSubPlayerPreproces, TimerCmd::TimerCmd_Test);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
