@@ -196,6 +196,8 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	unsigned int size = pMsg->uHandleSize;
 	const std::vector<TCPSocketInfo>& socketInfoVec = GetSocketVector();
 
+	COUT_LOG(LOG_CINFO, "index = %d, size = %d", index, (int)socketInfoVec.size());
+
 	if (index >= 0 && index < socketInfoVec.size())
 	{
 		const TCPSocketInfo& tcpInfo = socketInfoVec[index];

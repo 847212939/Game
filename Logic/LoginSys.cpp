@@ -18,8 +18,8 @@ void LoginSys::Register()
 
 void LoginSys::TimerCallback()
 {
-	COUT_LOG(LOG_CERROR, "LoginSys::TimerCallback()");
-	//UnRegisterTimer(m_pSubPlayerPreproces, TimerCmd::TimerCmd_Test);
+	COUT_LOG(LOG_CINFO, "定时器回调函数");
+	UnRegisterTimer(m_pSubPlayerPreproces, TimerCmd::TimerCmd_Test);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
