@@ -45,6 +45,10 @@ public:
 	ConditionVariable& GetConditionVariable();
 
 public:
+	bool SetTimer(UINT uTimerID, UINT uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST);
+	bool KillTimer(UINT uTimerID);
+
+public:
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 

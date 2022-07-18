@@ -40,6 +40,8 @@ const int					SOCKET_RECV_BUF_SIZE = MAX_TEMP_SENDBUF_SIZE * 8;	// TCP接收缓冲区
 const unsigned int			CHECK_HEAETBEAT_SECS = 15;							// 心跳定时器时间(s)
 const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
+#define MAX_TIMER_THRED_NUMS	4		// 定时器最大线程数量
+
 enum SERVERTIMER_TYPE
 {
 	SERVERTIMER_TYPE_PERISIST = 0,		// 持久定时器

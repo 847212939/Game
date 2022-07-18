@@ -3,7 +3,8 @@
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_TimerDataLine(new CDataLine)
+	m_TimerDataLine(new CDataLine),
+	m_pServerTimer(nullptr)
 {
 }
 
@@ -18,10 +19,6 @@ void PlayerPreproces::Init()
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	int timerCnt = baseCfgMgr.GetTimerCnt();
-	if (timerCnt <= 0)
-	{
-		timerCnt = 4;
-	}
 
 	m_pServerTimer = new CServerTimer[timerCnt];
 	for (int i = 0; i < timerCnt; i++)
@@ -229,6 +226,54 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	it->second(pPlayerInfo);
 	return true;
 }
+
+
+//设定定时器
+bool PlayerPreproces::SetTimer(UINT uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+{
+	if (!m_pServerTimer)
+	{
+		COUT_LOG(LOG_CERROR, "no timer run");
+		return false;
+	}
+
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	int timerCnt = baseCfgMgr.GetTimerCnt();
+
+	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	{
+		COUT_LOG(LOG_CERROR, "timer error");
+		return false;
+	}
+
+	m_pServerTimer[uTimerID % timerCnt].SetTimer(uTimerID, uElapse, timerType);
+
+	return true;
+}
+
+//清除定时器
+bool PlayerPreproces::KillTimer(UINT uTimerID)
+{
+	if (!m_pServerTimer)
+	{
+		COUT_LOG(LOG_CERROR, "no timer run");
+		return false;
+	}
+
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	int timerCnt = baseCfgMgr.GetTimerCnt();
+
+	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	{
+		COUT_LOG(LOG_CERROR, "timer error");
+		return false;
+	}
+
+	m_pServerTimer[uTimerID % timerCnt].KillTimer(uTimerID);
+
+	return true;
+}
+
 
 char PlayerPreproces::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
