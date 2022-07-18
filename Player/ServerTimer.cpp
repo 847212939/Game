@@ -8,7 +8,6 @@ struct TimerParam
 
 CServerTimer::CServerTimer() : 
 	m_bRun(false), 
-	m_pDataLine(nullptr), 
 	m_timeOnce(100),
 	m_TCPClient(nullptr)
 {
@@ -19,16 +18,11 @@ CServerTimer::~CServerTimer()
 	m_timerMap.clear();
 }
 
-bool CServerTimer::Start(CDataLine* pDataLine, int timeonce/* = 100*/)
+bool CServerTimer::Start(int timeonce/* = 100*/)
 {
 	if (!m_TCPClient)
 	{
 		COUT_LOG(LOG_CERROR, "m_TCPClient == NULL");
-		return false;
-	}
-	if (!pDataLine)
-	{
-		COUT_LOG(LOG_CERROR, "pDataLine == NULL");
 		return false;
 	}
 	if (timeonce != 100 && timeonce != 1000)
@@ -37,7 +31,6 @@ bool CServerTimer::Start(CDataLine* pDataLine, int timeonce/* = 100*/)
 		return false;
 	}
 
-	m_pDataLine = pDataLine;
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
@@ -47,7 +40,7 @@ bool CServerTimer::Start(CDataLine* pDataLine, int timeonce/* = 100*/)
 	return true;
 }
 
-void* CServerTimer::ThreadCheckTimer()
+void CServerTimer::ThreadCheckTimer()
 {
 	struct event timeout;
 	struct event_base* base;
@@ -70,35 +63,45 @@ void* CServerTimer::ThreadCheckTimer()
 	event_base_dispatch(base);
 
 	event_base_free(base);
-
-	return nullptr;
 }
 
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 {
 	struct TimerParam* param = (struct TimerParam*)arg;
-
 	if (param == NULL)
 	{
 		COUT_LOG(LOG_CERROR, "TimeoutCB 参数为空");
 		return;
 	}
-
 	CServerTimer* pCServerTimer = param->pCServerTimer;
 	if (!pCServerTimer)
 	{
 		COUT_LOG(LOG_CERROR, "pCServerTimer 参数为空");
 		return;
 	}
-
 	struct event_base* base = param->base;
 	if (!base)
 	{
 		COUT_LOG(LOG_CERROR, "base 参数为空");
 		return;
 	}
-
-	// 线程终止运行
+	if (!pCServerTimer->m_TCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_TCPClient == NULL");
+		return;
+	}
+	SubPlayerPreproces* pSubPlayerPreproces = pCServerTimer->m_TCPClient->GetSubPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == NULL");
+		return;
+	}
+	TimerData* pTimerData = pCServerTimer->m_TCPClient->GetSubPlayerPreproces()->GetTimerData();
+	if (!pTimerData)
+	{
+		COUT_LOG(LOG_CERROR, "pDataLine == NULL");
+		return;
+	}
 	if (!pCServerTimer->m_bRun)
 	{
 		event_base_loopbreak(base);
@@ -114,9 +117,10 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	{
 		if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
 		{
-			ServerTimerLine WindowTimer;
-			WindowTimer.uTimerID = iter->first;
-			pCServerTimer->m_pDataLine->AddData(&WindowTimer.LineHead, sizeof(WindowTimer), HD_TIMER_MESSAGE);
+			pTimerData->cond.GetMutex().lock();
+			pTimerData->TimerList.push_back(iter->first);
+			pTimerData->cond.GetMutex().unlock();
+			pTimerData->cond.NotifyOne();
 
 			if (iter->second.timertype == SERVERTIMER_TYPE_SINGLE)
 			{

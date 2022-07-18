@@ -3,8 +3,8 @@
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_TimerDataLine(new CDataLine),
-	m_pServerTimer(nullptr)
+	m_TimerData(new TimerData),
+	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()])
 {
 }
 
@@ -15,20 +15,30 @@ PlayerPreproces::~PlayerPreproces()
 
 void PlayerPreproces::Init()
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	if (!InitDB())
+	{
+		COUT_LOG(LOG_CERROR, "Failed to initialize database");
+		return;
+	}
+
 	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	int timerCnt = baseCfgMgr.GetTimerCnt();
 
-	m_pServerTimer = new CServerTimer[timerCnt];
 	for (int i = 0; i < timerCnt; i++)
 	{
 		m_pServerTimer[i].SetTCPClient(m_pTCPClient);
-		m_pServerTimer[i].Start(m_TimerDataLine);
+		m_pServerTimer[i].Start();
 	}
 
-	InitDB();
 	RunThread();
+
 	m_SubScene.Init();
 }
 
@@ -53,21 +63,76 @@ bool PlayerPreproces::InitDB()
 	return true;
 }
 
-bool PlayerPreproces::RunThread()
+void PlayerPreproces::RunThread()
 {
 	if (!m_pTCPClient)
 	{
 		COUT_LOG(LOG_CERROR, "TCP Client init fail");
 	}
 
+	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerTimerThread, this));
 	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
+}
 
-	return true;
+void PlayerPreproces::HandlerTimerThread()
+{
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "initialization not complete");
+		return;
+	}
+	if (!m_pTCPClient->GetRuninged())
+	{
+		COUT_LOG(LOG_CERROR, "initialization not complete");
+		return;
+	}
+	bool& run = m_pTCPClient->GetRuninged();
+	if (!m_TimerData)
+	{
+		COUT_LOG(LOG_CERROR, "Timer initialization failed");
+		return;
+	}
+
+	TimerData* pTimerData = m_TimerData;
+
+	while (run)
+	{
+		std::unique_lock<std::mutex> uniqLock(m_TimerData->cond.GetMutex());
+		m_cond.Wait(uniqLock, [&pTimerData, &run] { if (pTimerData->TimerList.size() > 0 || !run) { return true; } return false; });
+
+		if (pTimerData->TimerList.size() <= 0)
+		{
+			uniqLock.unlock();
+			continue;
+		}
+
+		TimerList timerList;
+		timerList.swap(pTimerData->TimerList);
+		uniqLock.unlock();
+
+		while (!timerList.empty())
+		{
+			UINT uTimerID = timerList.front();
+			timerList.pop_front();
+			
+			if (uTimerID <= (unsigned int)TimerCmd::TimerCmd_Begin && uTimerID >= (unsigned int)TimerCmd::TimerCmd_End)
+			{
+				continue;
+			}
+
+			CallBackFun((TimerCmd)uTimerID);
+		}
+	}
 }
 
 // 数据库执行
 void PlayerPreproces::HandlerExecuteSqlThread()
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "initialization not complete");
+		return;
+	}
 	if (!m_pTCPClient->GetRuninged())
 	{
 		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
@@ -77,11 +142,10 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 
 	while (run)
 	{
-		//进入挂起状态
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
 		m_cond.Wait(uniqLock, [this, &run] { if (this->m_sqlList.size() > 0 || !run) { return true; } return false; });
 		
-		if (this->m_sqlList.size() <= 0)
+		if (m_sqlList.size() <= 0)
 		{
 			uniqLock.unlock();
 			continue;
@@ -183,6 +247,11 @@ TCPClient* PlayerPreproces::GetTCPClient()
 	return nullptr;
 }
 
+TimerData* PlayerPreproces::GetTimerData()
+{
+	return m_TimerData;
+}
+
 // 获取数据库
 CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 {
@@ -200,7 +269,6 @@ SubScene& PlayerPreproces::GetSubScene()
 	return m_SubScene;
 }
 
-// 加入回调函数
 void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
@@ -213,7 +281,6 @@ void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-// 回调函数
 bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
@@ -227,9 +294,33 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
+bool PlayerPreproces::CallBackFun(TimerCmd cmd)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		return false;
+	}
+
+	it->second();
+	return true;
+}
+
+void PlayerPreproces::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		m_TimerFunMap.insert(std::make_pair(cmd, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+}
 
 //设定定时器
-bool PlayerPreproces::SetTimer(UINT uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+bool PlayerPreproces::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
 	{
@@ -246,13 +337,13 @@ bool PlayerPreproces::SetTimer(UINT uTimerID, UINT uElapse, BYTE timerType/* = S
 		return false;
 	}
 
-	m_pServerTimer[uTimerID % timerCnt].SetTimer(uTimerID, uElapse, timerType);
+	m_pServerTimer[(int)uTimerID % timerCnt].SetTimer((unsigned int)uTimerID, uElapse, timerType);
 
 	return true;
 }
 
 //清除定时器
-bool PlayerPreproces::KillTimer(UINT uTimerID)
+bool PlayerPreproces::KillTimer(TimerCmd uTimerID)
 {
 	if (!m_pServerTimer)
 	{
@@ -269,7 +360,7 @@ bool PlayerPreproces::KillTimer(UINT uTimerID)
 		return false;
 	}
 
-	m_pServerTimer[uTimerID % timerCnt].KillTimer(uTimerID);
+	m_pServerTimer[(int)uTimerID % timerCnt].KillTimer((unsigned int)uTimerID);
 
 	return true;
 }

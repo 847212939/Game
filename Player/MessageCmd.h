@@ -12,6 +12,16 @@ enum class MsgCmd
 	MsgCmd_PlayerCenter                = 5, // 玩家中心消息
 	MsgCmd_RefreshProperties           = 6, // 属性刷新
 	MsgCmd_Move                        = 7,	// 移动
+	MsgCmd_Timer                       = 8,	// 定时器
 
 	MsgCmd_End                              // 消息结束                      
+};
+
+// 定时器消息
+enum class TimerCmd
+{
+	TimerCmd_Begin                     = 0, // 消息开始
+	TimerCmd_Test                      = 1, // 测试定时器
+
+	TimerCmd_End                            // 消息结束                
 };

@@ -41,6 +41,7 @@ const unsigned int			CHECK_HEAETBEAT_SECS = 15;							// 心跳定时器时间(s)
 const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
 #define MAX_TIMER_THRED_NUMS	4		// 定时器最大线程数量
+#define MIN_TIMER_THRED_NUMS	1		// 定时器最小线程数量
 
 enum SERVERTIMER_TYPE
 {
@@ -74,14 +75,13 @@ struct DataLineHead
 //定时器消息结构定义
 struct ServerTimerLine
 {
-	DataLineHead						LineHead;					//队列头
+	UINT								uMainID;					//定时器 ID
 	UINT								uTimerID;					//定时器 ID
 	ServerTimerLine()
 	{
 		memset(this, 0, sizeof(ServerTimerLine));
 	}
 };
-
 
 //网络数据包结构头
 struct NetMessageHead

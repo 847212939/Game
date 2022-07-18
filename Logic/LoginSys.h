@@ -15,6 +15,7 @@ public:
 
 public:
 	bool LoginIn(std::string& id, std::string& passwaed, uint64_t& userId);
+	void TimerCallback();
 
 private:
 	void Register();

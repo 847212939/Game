@@ -8,7 +8,7 @@ public:
 	~CServerTimer();
 
 public:
-	bool Start(CDataLine* pDataLine, int timeonce = 100);
+	bool Start(int timeonce = 100);
 	bool Stop();
 	bool SetTimer(unsigned int uTimerID, unsigned int uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST); //uElapse是毫秒单位，大于100ms
 	bool KillTimer(unsigned int uTimerID);
@@ -19,14 +19,13 @@ public:
 	void SetTCPClient(TCPClient* pTCPClient);
 
 private:
-	void* ThreadCheckTimer();
+	void ThreadCheckTimer();
 	static void TimeoutCB(evutil_socket_t fd, short event, void* arg);
 
 private:
 	int					m_timeOnce;
 	volatile bool		m_bRun;
 	TCPClient*			m_TCPClient;
-	CDataLine*			m_pDataLine;
 	ConditionVariable	m_cond;	
 	ServerTimerInfomap  m_timerMap;
 };

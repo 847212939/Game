@@ -4,9 +4,6 @@
 class PlayerPreproces
 {
 public:
-	typedef std::list<std::string> SqlList;										// 数据库语句list<sql>	
-
-public:
 	PlayerPreproces(TCPClient* pTCPClient);
 	virtual ~PlayerPreproces();
 
@@ -21,51 +18,46 @@ public:
 	// 加载一条数据库
 	std::string LoadOneSql(std::string userId, std::string sqlName, std::string dataStr = "data");
 	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
-	// 加载多条数据库
 	bool LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
-	// create table
 	void CreateTableS(std::string name);
 	void CreateTableI(std::string name);
 	void CreateTableSql(const char* sql);
-	// insert mysql
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
-	// delete mysql
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
-	// replace mysql
 	void SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
-	// update mysql
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
 public:
 	SubScene& GetSubScene();
 	TCPClient* GetTCPClient();
+	TimerData* GetTimerData();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetCMysqlHelper();
 	ConditionVariable& GetConditionVariable();
 
 public:
-	bool SetTimer(UINT uTimerID, UINT uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST);
-	bool KillTimer(UINT uTimerID);
+	// 定时器
+	bool SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST);
+	bool KillTimer(TimerCmd uTimerID);
 
 public:
-	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
+	bool CallBackFun(TimerCmd cmd);
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun);
+	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 
 public:
 	// 创建角色
 	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 
 private:
-	// 初始化DB
 	bool InitDB();
-	// 线程启动
-	bool RunThread();
+	void RunThread();
 
 private:
-	// 数据库执行
+	void HandlerTimerThread();
 	void HandlerExecuteSqlThread();
-	// 分发消息
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -79,6 +71,7 @@ private:
 	SubScene          m_SubScene;			// 玩家场景
 	CMysqlHelper      m_CMysqlHelper;		// 数据库
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
+	TimerData*		  m_TimerData;			// 定时器队列
 	CServerTimer*	  m_pServerTimer;		// 定时器
-	CDataLine*		  m_TimerDataLine;		// 定时器队列
+	TimerFunMap		  m_TimerFunMap;		// 回调函数
 };

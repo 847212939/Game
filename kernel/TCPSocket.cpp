@@ -11,7 +11,6 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
-//////////////////////////////////////////////////////////////////////
 CTCPSocketManage::CTCPSocketManage()
 	:m_listenerBase(NULL),
 	m_running(false),

@@ -33,12 +33,24 @@ struct LoadPlayerKey
 	~LoadPlayerKey() {}
 };
 
+typedef std::list<UINT>												TimerList;		// 定时器
 typedef std::map<int, int>											AttrsMap;		// 属性
 typedef std::set<unsigned int>										OnLinePlayerSet;// 在线玩家
+typedef std::list<std::string>										SqlList;		// 数据库语句list<sql>	
 typedef std::map<std::string, std::string>							SqlKeyDataMap;	// 数据库查询结果
 typedef std::vector<std::function<void()>>							AttrsFunMap;	// 消息回调函数
+typedef std::map< TimerCmd, std::function<void()>>					TimerFunMap;	// 消息回调函数
 typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>			NetFunMap;		// 消息回调函数
 typedef std::map<std::string, std::function<void(std::string&&)>>	MysqlFunMap;	// 消息回调函数
+
+struct TimerData
+{
+	TimerList			TimerList;
+	ConditionVariable	cond;
+
+	TimerData() {}
+	~TimerData() {}
+};
 
 #define RegisterAttrs(pobj, obj, name)\
 if (!pobj)\
@@ -88,4 +100,15 @@ if (!pobj)\
 else\
 {\
 	pobj->CreateTableS(name);\
+}
+
+#define RegisterTimer(pobj, obj, name, cmd, uElapse, timerType)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+}\
+else\
+{\
+	pobj->SetTimer(cmd, uElapse, timerType);\
+	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, obj)));\
 }
