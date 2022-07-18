@@ -36,6 +36,7 @@ struct LoadPlayerKey
 typedef std::list<UINT>												TimerList;		// 定时器
 typedef std::map<int, int>											AttrsMap;		// 属性
 typedef std::set<unsigned int>										OnLinePlayerSet;// 在线玩家
+typedef std::list<std::string>										SqlList;		// 数据库语句list<sql>	
 typedef std::map<std::string, std::string>							SqlKeyDataMap;	// 数据库查询结果
 typedef std::vector<std::function<void()>>							AttrsFunMap;	// 消息回调函数
 typedef std::map< TimerCmd, std::function<void()>>					TimerFunMap;	// 消息回调函数

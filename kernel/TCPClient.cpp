@@ -4,7 +4,6 @@ TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
 {
 	RegisterType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
 	RegisterType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
-	RegisterType(this, TCPClient::MysqlCallback, HD_MYSQL_MESSAGE);
 }
 
 bool TCPClient::InitTCPClient()
@@ -157,20 +156,6 @@ bool TCPClient::CallBackFun(int cmd, void* pDataLineHead)
 
 	it->second(pDataLineHead);
 	return true;
-}
-
-void TCPClient::MysqlCallback(void* pDataLineHead)
-{
-	const char* sql = (const char*)pDataLineHead;
-
-	try
-	{
-		m_SubPlayerPreproces->GetCMysqlHelper().execute(sql);
-	}
-	catch (MysqlHelper_Exception& excep)
-	{
-		COUT_LOG(LOG_CERROR, "Failed to execute database : %s", excep.errorInfo.c_str());
-	}
 }
 
 void TCPClient::TimerCallback(void* pDataLineHead)

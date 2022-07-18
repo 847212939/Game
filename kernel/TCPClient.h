@@ -15,7 +15,6 @@ public:
 	SubPlayerPreproces* GetSubPlayerPreproces();
 
 private:
-	void MysqlCallback(void* pDataLineHead);
 	void TimerCallback(void* pDataLineHead);
 	void SocketCallback(void* pDataLineHead);
 	bool CallBackFun(int cmd, void* pDataLineHead);

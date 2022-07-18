@@ -9,6 +9,7 @@ public:
 
 public:
 	void Init();
+	void HandlerExecuteSqlThread();
 	void HandlerMessage(PlayerInfo* pPlayerInfo);
 
 public:
@@ -56,10 +57,13 @@ public:
 	static char createpptable[CreateTableLen];
 
 private:
+	SqlList           m_sqlList;			// 数据库语链表
 	TCPClient*        m_pTCPClient;			// 网络客户端
 	SubScene          m_SubScene;			// 玩家场景
-	CMysqlHelper      m_CMysqlHelper;		// 数据库
+	CMysqlHelper      m_CMysqlHelperSave;	// 数据库保存专用
+	CMysqlHelper      m_CMysqlHelperLoad;		// 数据库加载专用
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
 	CServerTimer*	  m_pServerTimer;		// 定时器
 	TimerFunMap		  m_TimerFunMap;		// 回调函数
+	ConditionVariable m_cond;				// 条件变量数据库用
 };

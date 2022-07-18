@@ -6,7 +6,6 @@
 #define HD_ASYN_THREAD_RESULT			3							//异步线程结果处理
 #define HD_TIMER_MESSAGE				4							//定时器消息处理
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
-#define HD_MYSQL_MESSAGE				6							//数据库消息处理
 
 #define CreateTableLen					512
 #define LogBufLen						10 * 1024
