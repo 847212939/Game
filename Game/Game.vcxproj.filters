@@ -32,9 +32,6 @@
     <Filter Include="网络处理">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\玩家中心">
-      <UniqueIdentifier>{4f0e6534-da46-4cd1-9b28-58d2efd0c9cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家信息\游戏逻辑">
       <UniqueIdentifier>{d235db6a-65b4-4da0-a53d-d39667202cb1}</UniqueIdentifier>
     </Filter>
@@ -50,8 +47,11 @@
     <Filter Include="工具接口">
       <UniqueIdentifier>{84260705-a460-4f29-9ae8-789d442bed07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息\定时器">
-      <UniqueIdentifier>{35bc2f82-5bf8-4bf4-8c70-6c375452a1bc}</UniqueIdentifier>
+    <Filter Include="定时器">
+      <UniqueIdentifier>{00798cc1-3e0b-4ac3-915b-86c487fe189d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心">
+      <UniqueIdentifier>{4b5ebd0b-9564-4365-b6ab-c6479df673ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +73,6 @@
     <ClCompile Include="..\kernel\TCPClient.cpp">
       <Filter>网络处理</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClCompile>
     <ClCompile Include="..\Config\ConfigMgr.cpp">
       <Filter>配置管理</Filter>
     </ClCompile>
@@ -84,18 +81,6 @@
     </ClCompile>
     <ClCompile Include="..\Lua\LuaMgr.cpp">
       <Filter>脚本处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPreproces.cpp">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerInfo.cpp">
-      <Filter>玩家信息\玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayer.cpp">
       <Filter>玩家信息\消息处理</Filter>
@@ -118,11 +103,26 @@
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>工具接口</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\ServerTimer.cpp">
-      <Filter>玩家信息\定时器</Filter>
-    </ClCompile>
     <ClCompile Include="..\Config\BaseCfgMgr.cpp">
       <Filter>配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\ServerTimer.cpp">
+      <Filter>定时器</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Player.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerCenter.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerInfo.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPreproces.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Scene.cpp">
+      <Filter>玩家中心</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +150,6 @@
     <ClInclude Include="..\kernel\TCPClient.h">
       <Filter>网络处理</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -164,18 +161,6 @@
     </ClInclude>
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPreproces.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家信息\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>玩家信息\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayer.h">
       <Filter>玩家信息\消息处理</Filter>
@@ -205,7 +190,22 @@
       <Filter>工具接口</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\ServerTimer.h">
-      <Filter>玩家信息\定时器</Filter>
+      <Filter>定时器</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Player.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenter.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerInfo.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPreproces.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Scene.h">
+      <Filter>玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
