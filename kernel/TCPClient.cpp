@@ -2,8 +2,9 @@
 
 TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
 {
-	RegisterType(this, TCPClient::TimerCallback, HD_SOCKET_READ);
+	RegisterType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
 	RegisterType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
+	RegisterType(this, TCPClient::MysqlCallback, HD_MYSQL_MESSAGE);
 }
 
 bool TCPClient::InitTCPClient()
@@ -21,7 +22,9 @@ bool TCPClient::InitTCPClient()
 		return false;
 	}
 
-	Run();
+	m_SubPlayerPreproces->Init();
+
+	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
 	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
 	return true;
@@ -45,12 +48,6 @@ TCPClient::~TCPClient()
 	{
 		SafeDelete(m_SubPlayerPreproces);
 	}
-}
-
-void TCPClient::Run()
-{
-	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
-	m_SubPlayerPreproces->Init();
 }
 
 void TCPClient::HandlerRecvDataListThread()
@@ -80,6 +77,11 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 		
 		CallBackFun(uDataKind, pDataLineHead);
+
+		if (pDataLineHead)
+		{
+			SafeDeleteArray(pDataLineHead);
+		}
 	}
 
 	COUT_LOG(LOG_CINFO, "recv data thread end...");
@@ -124,7 +126,6 @@ void TCPClient::NotifyAll()
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
 	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
@@ -158,6 +159,20 @@ bool TCPClient::CallBackFun(int cmd, void* pDataLineHead)
 	return true;
 }
 
+void TCPClient::MysqlCallback(void* pDataLineHead)
+{
+	const char* sql = (const char*)pDataLineHead;
+
+	try
+	{
+		m_SubPlayerPreproces->GetCMysqlHelper().execute(sql);
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "Failed to execute database : %s", excep.errorInfo.c_str());
+	}
+}
+
 void TCPClient::TimerCallback(void* pDataLineHead)
 {
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
@@ -168,11 +183,6 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	else
 	{
 		COUT_LOG(LOG_CERROR, "Timer message error");
-	}
-
-	if (pDataLineHead)
-	{
-		SafeDeleteArray(pDataLineHead);
 	}
 }
 
@@ -199,12 +209,6 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	else
 	{
 		COUT_LOG(LOG_CERROR, "Failed to process data£¬index=%d Out of range", index);
-	}
-
-	// ÊÍ·ÅÄÚ´æ
-	if (pDataLineHead)
-	{
-		SafeDeleteArray(pDataLineHead);
 	}
 }
 

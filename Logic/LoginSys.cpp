@@ -14,7 +14,7 @@ LoginSys::~LoginSys()
 void LoginSys::Register()
 {
 	RegisterNetwk(m_pSubPlayerPreproces, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
-	RegisterTimer(m_pSubPlayerPreproces, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 100, SERVERTIMER_TYPE_PERISIST);
+	RegisterTimer(m_pSubPlayerPreproces, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 100, SERVERTIMER_TYPE_SINGLE);
 }
 
 void LoginSys::TimerCallback()

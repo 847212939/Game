@@ -36,8 +36,6 @@ void PlayerPreproces::Init()
 		m_pServerTimer[i].Start();
 	}
 
-	RunThread();
-
 	m_SubScene.Init();
 }
 
@@ -60,65 +58,6 @@ bool PlayerPreproces::InitDB()
 	}
 
 	return true;
-}
-
-void PlayerPreproces::RunThread()
-{
-	if (!m_pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "TCP Client init fail");
-	}
-
-	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
-}
-
-// 数据库执行
-void PlayerPreproces::HandlerExecuteSqlThread()
-{
-	if (!m_pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "initialization not complete");
-		return;
-	}
-	if (!m_pTCPClient->GetRuninged())
-	{
-		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
-		return;
-	}
-	bool& run = m_pTCPClient->GetRuninged();
-
-	while (run)
-	{
-		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [this, &run] { if (this->m_sqlList.size() > 0 || !run) { return true; } return false; });
-		
-		if (m_sqlList.size() <= 0)
-		{
-			uniqLock.unlock();
-			continue;
-		}
-
-		SqlList sqlList;
-		sqlList.swap(m_sqlList);
-
-		uniqLock.unlock();
-
-		while (!sqlList.empty())
-		{
-			std::string sql = sqlList.front();
-			sqlList.pop_front();
-
-			try
-			{
-				m_CMysqlHelper.execute(sql);
-			}
-			catch (MysqlHelper_Exception& excep)
-			{
-				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
-			}
-		}
-	}
-	COUT_LOG(LOG_CINFO, "save mysql thread end...");
 }
 
 // 处理消息
@@ -175,12 +114,6 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
 	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
-}
-
-// 获取通知条件变量
-ConditionVariable& PlayerPreproces::GetConditionVariable()
-{
-	return m_cond;
 }
 
 // 获取网络句柄
@@ -307,7 +240,6 @@ bool PlayerPreproces::KillTimer(TimerCmd uTimerID)
 	return true;
 }
 
-
 char PlayerPreproces::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
 "`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
@@ -323,7 +255,7 @@ void PlayerPreproces::CreateTableS(std::string name)
 {
 	char sql[CreateTableLen] = "";
 
-	sprintf_s(sql, CreateTableLen, createptable, name.c_str());
+	int len = sprintf_s(sql, CreateTableLen, createptable, name.c_str());
 
 	CreateTableSql(sql);
 }
@@ -332,7 +264,7 @@ void PlayerPreproces::CreateTableI(std::string name)
 {
 	char sql[CreateTableLen] = "";
 
-	sprintf_s(sql, CreateTableLen, createpptable, name.c_str());
+	int len = sprintf_s(sql, CreateTableLen, createpptable, name.c_str());
 
 	CreateTableSql(sql);
 }
@@ -340,16 +272,36 @@ void PlayerPreproces::CreateTableI(std::string name)
 // create table
 void PlayerPreproces::CreateTableSql(const char* sql)
 {
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sql);
-	m_cond.GetMutex().unlock();
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
 
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sql, CreateTableLen, HD_MYSQL_MESSAGE);
 }
 
 // insert mysql
 void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
+
 	std::ostringstream os;
 	os << userId;
 
@@ -360,16 +312,24 @@ void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::s
 
 	std::string sSql = m_CMysqlHelper.buildInsertSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sSql.c_str(), (unsigned int)sSql.size(), HD_MYSQL_MESSAGE);
 }
 
 // update mysql
 void PlayerPreproces::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
+
 	std::ostringstream os;
 	os << userId;
 
@@ -380,16 +340,24 @@ void PlayerPreproces::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::s
 
 	std::string sSql = m_CMysqlHelper.buildUpdateSQL(sqlName, mpColumns, sCondition);
 
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sSql.c_str(), (unsigned int)sSql.size(), HD_MYSQL_MESSAGE);
 }
 
 // Replace mysql
 void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
+
 	std::ostringstream os;
 	os << userId;
 
@@ -400,15 +368,23 @@ void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::
 
 	std::string sSql = m_CMysqlHelper.buildReplaceSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sSql.c_str(), (unsigned int)sSql.size(), HD_MYSQL_MESSAGE);
 }
 
 void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName, std::string dataName)
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
+
 	CMysqlHelper::RECORD_DATA mpColumns;
 
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, userId)));
@@ -416,24 +392,28 @@ void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string userId, st
 
 	std::string sSql = m_CMysqlHelper.buildReplaceSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sSql.c_str(), (unsigned int)sSql.size(), HD_MYSQL_MESSAGE);
 }
 
 // delete mysql
 void PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
+	if (!m_pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
+		return;
+	}
+	CDataLine* pCDataLine = m_pTCPClient->GetRecvDataLine();
+	if (!pCDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "pCDataLine = null");
+		return;
+	}
+
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
 
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sSql.str());
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
+	pCDataLine->AddData((void*)sSql.str().c_str(), (unsigned int)sSql.str().size(), HD_MYSQL_MESSAGE);
 }
 
 std::string PlayerPreproces::LoadOneSql(std::string userId, std::string sqlName, std::string dataStr /*= "data"*/)

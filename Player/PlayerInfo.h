@@ -36,13 +36,13 @@ struct LoadPlayerKey
 typedef std::list<UINT>												TimerList;		// 定时器
 typedef std::map<int, int>											AttrsMap;		// 属性
 typedef std::set<unsigned int>										OnLinePlayerSet;// 在线玩家
-typedef std::list<std::string>										SqlList;		// 数据库语句list<sql>	
 typedef std::map<std::string, std::string>							SqlKeyDataMap;	// 数据库查询结果
 typedef std::vector<std::function<void()>>							AttrsFunMap;	// 消息回调函数
 typedef std::map< TimerCmd, std::function<void()>>					TimerFunMap;	// 消息回调函数
 typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>			NetFunMap;		// 消息回调函数
 typedef std::map<std::string, std::function<void(std::string&&)>>	MysqlFunMap;	// 消息回调函数
 
+// 注册游戏进入回调
 #define RegisterAttrs(pobj, obj, name)\
 if (!pobj)\
 {\
@@ -53,6 +53,7 @@ else\
 	pobj->AddAttrsCallback(std::move(std::bind(&name, obj)));\
 }
 
+// 注册网络协议
 #define RegisterNetwk(pobj, obj, name, cmd)\
 if (!pobj)\
 {\
@@ -63,6 +64,7 @@ else\
 	pobj->AddNetCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));\
 }
 
+// 注册数据库回调
 #define RegisterMysql(pobj, obj, name, sql)\
 if (!pobj)\
 {\
@@ -73,6 +75,7 @@ else\
 	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, obj, std::placeholders::_1)));\
 }
 
+// 注册创建数据库
 #define RegisterCreat(pobj, name)\
 if (!pobj)\
 {\
@@ -93,6 +96,7 @@ else\
 	pobj->CreateTableS(name);\
 }
 
+// 注册定时器
 #define RegisterTimer(pobj, obj, name, cmd, uElapse, timerType)\
 if (!pobj)\
 {\

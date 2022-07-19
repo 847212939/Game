@@ -6,6 +6,7 @@
 #define HD_ASYN_THREAD_RESULT			3							//异步线程结果处理
 #define HD_TIMER_MESSAGE				4							//定时器消息处理
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
+#define HD_MYSQL_MESSAGE				6							//数据库消息处理
 
 #define CreateTableLen					512
 #define LogBufLen						10 * 1024
@@ -75,8 +76,8 @@ struct DataLineHead
 //定时器消息结构定义
 struct ServerTimerLine
 {
-	UINT								uMainID;					//定时器 ID
-	UINT								uTimerID;					//定时器 ID
+	UINT uMainID;					//定时器 ID
+	UINT uTimerID;					//定时器 ID
 	ServerTimerLine()
 	{
 		memset(this, 0, sizeof(ServerTimerLine));

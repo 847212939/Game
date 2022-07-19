@@ -30,7 +30,6 @@ public:
 	TCPClient* GetTCPClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetCMysqlHelper();
-	ConditionVariable& GetConditionVariable();
 
 public:
 	// 定时器
@@ -49,8 +48,6 @@ public:
 
 private:
 	bool InitDB();
-	void RunThread();
-	void HandlerExecuteSqlThread();
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -58,8 +55,6 @@ public:
 	static char createpptable[CreateTableLen];
 
 private:
-	ConditionVariable m_cond;				// 条件变量数据库用
-	SqlList           m_sqlList;			// 数据库语链表
 	TCPClient*        m_pTCPClient;			// 网络客户端
 	SubScene          m_SubScene;			// 玩家场景
 	CMysqlHelper      m_CMysqlHelper;		// 数据库
