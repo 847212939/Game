@@ -17,9 +17,6 @@
     <Filter Include="数据处理">
       <UniqueIdentifier>{2f53d39d-f0ef-41ce-a90f-e75f2fe99a0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家信息">
-      <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
@@ -29,21 +26,6 @@
     <Filter Include="脚本处理">
       <UniqueIdentifier>{5a12022b-f872-4d00-91e1-dd6c658650ee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络处理">
-      <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\游戏逻辑">
-      <UniqueIdentifier>{d235db6a-65b4-4da0-a53d-d39667202cb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\消息处理">
-      <UniqueIdentifier>{a5a576d7-8998-49f2-8506-27b6c048380a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\游戏逻辑\移动系统">
-      <UniqueIdentifier>{1fd789c8-3e84-4fce-b475-37e1238a96a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家信息\游戏逻辑\登录系统">
-      <UniqueIdentifier>{498363ca-7180-475c-a485-fece46b95818}</UniqueIdentifier>
-    </Filter>
     <Filter Include="工具接口">
       <UniqueIdentifier>{84260705-a460-4f29-9ae8-789d442bed07}</UniqueIdentifier>
     </Filter>
@@ -52,6 +34,21 @@
     </Filter>
     <Filter Include="玩家中心">
       <UniqueIdentifier>{4b5ebd0b-9564-4365-b6ab-c6479df673ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家消息">
+      <UniqueIdentifier>{78b7d584-712c-4d5a-b870-5de98bc8c8df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑">
+      <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\登录系统">
+      <UniqueIdentifier>{498363ca-7180-475c-a485-fece46b95818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\移动系统">
+      <UniqueIdentifier>{1fd789c8-3e84-4fce-b475-37e1238a96a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏网络">
+      <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,13 +62,13 @@
       <Filter>数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPSocket.cpp">
-      <Filter>网络处理</Filter>
+      <Filter>游戏网络</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\DataLine.cpp">
       <Filter>数据处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
-      <Filter>网络处理</Filter>
+      <Filter>游戏网络</Filter>
     </ClCompile>
     <ClCompile Include="..\Config\ConfigMgr.cpp">
       <Filter>配置管理</Filter>
@@ -82,23 +79,11 @@
     <ClCompile Include="..\Lua\LuaMgr.cpp">
       <Filter>脚本处理</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayer.cpp">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\SubScene.cpp">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClCompile>
     <ClCompile Include="..\Logic\LoginSys.cpp">
-      <Filter>玩家信息\游戏逻辑\登录系统</Filter>
+      <Filter>游戏逻辑\登录系统</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\MoveSys.cpp">
-      <Filter>玩家信息\游戏逻辑\移动系统</Filter>
+      <Filter>游戏逻辑\移动系统</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>工具接口</Filter>
@@ -124,6 +109,18 @@
     <ClCompile Include="..\Player\Scene.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayer.cpp">
+      <Filter>玩家消息</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
+      <Filter>玩家消息</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
+      <Filter>玩家消息</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SubSys\SubScene.cpp">
+      <Filter>玩家消息</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
@@ -145,10 +142,10 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPSocket.h">
-      <Filter>网络处理</Filter>
+      <Filter>游戏网络</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPClient.h">
-      <Filter>网络处理</Filter>
+      <Filter>游戏网络</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
@@ -162,29 +159,11 @@
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayer.h">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayerPreproces.h">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\SubScene.h">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayerCenter.h">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClInclude>
     <ClInclude Include="..\Logic\LoginSys.h">
-      <Filter>玩家信息\游戏逻辑\登录系统</Filter>
+      <Filter>游戏逻辑\登录系统</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\MoveSys.h">
-      <Filter>玩家信息\游戏逻辑\移动系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>玩家信息\消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>玩家信息\消息处理</Filter>
+      <Filter>游戏逻辑\移动系统</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Util.h">
       <Filter>工具接口</Filter>
@@ -206,6 +185,24 @@
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\AttrsCmd.h">
+      <Filter>玩家消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>玩家消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayer.h">
+      <Filter>玩家消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayerCenter.h">
+      <Filter>玩家消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubPlayerPreproces.h">
+      <Filter>玩家消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SubSys\SubScene.h">
+      <Filter>玩家消息</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
