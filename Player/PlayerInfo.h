@@ -109,6 +109,7 @@ else\
 	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, obj)));\
 }
 
+// 反注册定时器
 #define UnRegisterTimer(pobj, cmd)\
 if (!pobj)\
 {\
@@ -118,4 +119,15 @@ else\
 {\
 	pobj->KillTimer(cmd);\
 	pobj->DelTimerCallback(cmd);\
+}
+
+// 添加属性
+#define AddAttributes(pobj, attrs)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
+}\
+else\
+{\
+	pobj->AdditionAttributes(attrs);\
 }

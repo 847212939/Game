@@ -476,22 +476,22 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 		return;
 	}
 
-	SqlList& list = m_sqlList;
+	SqlList& mysqlList = m_sqlList;
 	bool& run = m_pTCPClient->GetRuninged();
 
 	while (run)
 	{
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [&list, &run] { if (list.size() > 0 || !run) { return true; } return false; });
+		m_cond.Wait(uniqLock, [&mysqlList, &run] { if (mysqlList.size() > 0 || !run) { return true; } return false; });
 
-		if (list.size() <= 0)
+		if (mysqlList.size() <= 0)
 		{
 			uniqLock.unlock();
 			continue;
 		}
 
 		SqlList sqlList;
-		sqlList.swap(list);
+		sqlList.swap(mysqlList);
 
 		uniqLock.unlock();
 
@@ -506,7 +506,12 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 			}
 			catch (MysqlHelper_Exception& excep)
 			{
+				m_cond.GetMutex().lock();
+				mysqlList.push_front(sql);
+				m_cond.GetMutex().unlock();
+
 				COUT_LOG(LOG_CERROR, "Ö´ÐÐÊý¾Ý¿âÊ§°Ü:%s", excep.errorInfo.c_str());
+				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 		}
 	}

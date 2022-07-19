@@ -171,7 +171,7 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::str
 	m_SubPlayerPreproces->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
 }
 
-void Player::AddAttributes(AttrsMap& attrs)
+void Player::AdditionAttributes(AttrsMap& attrs)
 {
 	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{

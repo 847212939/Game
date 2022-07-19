@@ -30,6 +30,7 @@ public:
 	void ExitGame();
 
 public:
+	// 数据库加载是否完成
 	void SetLoad(bool load);
 
 public:
@@ -42,7 +43,8 @@ public:
 	void NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
-	void AddAttributes(AttrsMap& attrs);
+	// 属性
+	void AdditionAttributes(AttrsMap& attrs);
 	void RefreshProperties();
 
 public:

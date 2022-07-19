@@ -38,19 +38,13 @@ void MoveSys::MysqlCallback(std::string&& data)
 
 void MoveSys::EnterGameCallback()
 {
-	if (!m_pSubPlayer)
-	{
-		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
-		return;
-	}
-
 	AttrsMap attrs;
 	for (int i = 1; i < 10; i++)
 	{
 		attrs[i] += i;
 	}
 
-	m_pSubPlayer->AddAttributes(attrs);
+	AddAttributes(m_pSubPlayer, attrs);
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
