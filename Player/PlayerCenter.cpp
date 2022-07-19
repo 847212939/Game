@@ -140,23 +140,23 @@ void PlayerCenter::HandlerPlayerThread()
 		COUT_LOG(LOG_CERROR, "PlayerCenter::HandlerPlayerThread 初始化未完成");
 		return;
 	}
-
+	LoadPlayerList& playerList = m_LoadPlayerList;
 	bool& run = pTCPClient->GetRuninged();
 
 	while (run)
 	{
 		//进入挂起状态
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [this, &run] { if (this->m_LoadPlayerList.size() > 0 || !run) { return true; } return false; });
+		m_cond.Wait(uniqLock, [&playerList, &run] { if (playerList.size() > 0 || !run) { return true; } return false; });
 
-		if (this->m_LoadPlayerList.size() <= 0)
+		if (playerList.size() <= 0)
 		{
 			uniqLock.unlock();
 			continue;
 		}
 
 		LoadPlayerList loadPlayerList;
-		loadPlayerList.swap(m_LoadPlayerList);
+		loadPlayerList.swap(playerList);
 
 		uniqLock.unlock();
 

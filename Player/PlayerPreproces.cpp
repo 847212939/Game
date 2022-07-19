@@ -475,21 +475,23 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
 		return;
 	}
+
+	SqlList& list = m_sqlList;
 	bool& run = m_pTCPClient->GetRuninged();
 
 	while (run)
 	{
 		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [this, &run] { if (this->m_sqlList.size() > 0 || !run) { return true; } return false; });
+		m_cond.Wait(uniqLock, [&list, &run] { if (list.size() > 0 || !run) { return true; } return false; });
 
-		if (m_sqlList.size() <= 0)
+		if (list.size() <= 0)
 		{
 			uniqLock.unlock();
 			continue;
 		}
 
 		SqlList sqlList;
-		sqlList.swap(m_sqlList);
+		sqlList.swap(list);
 
 		uniqLock.unlock();
 
@@ -504,11 +506,6 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 			}
 			catch (MysqlHelper_Exception& excep)
 			{
-				m_cond.GetMutex().lock();
-				m_sqlList.push_back(sql);
-				m_cond.GetMutex().unlock();
-
-				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
 			}
 		}
