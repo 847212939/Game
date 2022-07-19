@@ -107,3 +107,14 @@ else\
 	pobj->SetTimer(cmd, uElapse, timerType);\
 	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, obj)));\
 }
+
+#define UnRegisterTimer(pobj, cmd)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éÐ´·¨"); \
+}\
+else\
+{\
+	pobj->KillTimer(cmd);\
+	pobj->DelTimerCallback(cmd);\
+}

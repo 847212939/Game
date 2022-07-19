@@ -182,6 +182,17 @@ bool PlayerPreproces::CallBackFun(TimerCmd cmd)
 	return true;
 }
 
+void PlayerPreproces::DelTimerCallback(TimerCmd cmd)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		return;
+	}
+
+	m_TimerFunMap.erase(it);
+}
+
 void PlayerPreproces::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 {
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
@@ -239,17 +250,6 @@ bool PlayerPreproces::KillTimer(TimerCmd uTimerID)
 
 	return true;
 }
-
-char PlayerPreproces::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
-"`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
-char PlayerPreproces::createpptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` bigint(20) NOT NULL,"
-"`data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
 void PlayerPreproces::CreateTableS(std::string name)
 {

@@ -38,6 +38,7 @@ public:
 
 public:
 	bool CallBackFun(TimerCmd cmd);
+	void DelTimerCallback(TimerCmd cmd);
 	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 	void AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
