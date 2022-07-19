@@ -125,6 +125,7 @@ void TCPClient::NotifyAll()
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
+	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
 	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)

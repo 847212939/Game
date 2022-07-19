@@ -8,7 +8,7 @@
 #define HD_PLATFORM_SOCKET_READ			5							//中心服读取事件处理
 
 #define CreateTableLen					512
-#define LogBufLen						10 * 1024
+#define LogBufLen						20 * 1024
 // 服务器类型
 enum class ServiceType
 {

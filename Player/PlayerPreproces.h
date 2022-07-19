@@ -31,6 +31,7 @@ public:
 	TCPClient* GetTCPClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetCMysqlHelper();
+	ConditionVariable& GetConditionVariable();
 
 public:
 	// ¶¨Ê±Æ÷

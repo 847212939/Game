@@ -146,6 +146,11 @@ CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
 	return m_CMysqlHelperSave;
 }
 
+ConditionVariable& PlayerPreproces::GetConditionVariable()
+{
+	return m_cond;
+}
+
 CServerTimer* PlayerPreproces::GetCServerTimer()
 {
 	return m_pServerTimer;
