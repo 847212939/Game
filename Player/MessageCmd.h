@@ -12,8 +12,7 @@ enum class MsgCmd
 	MsgCmd_PlayerCenter                = 5, // 玩家中心消息
 	MsgCmd_RefreshProperties           = 6, // 属性刷新
 	MsgCmd_Move                        = 7,	// 移动
-	MsgCmd_Mysql                       = 8,	// 数据库
-	MsgCmd_Timer                       = 9,	// 定时器
+	MsgCmd_Timer                       = 8,	// 定时器
 
 	MsgCmd_End                              // 消息结束                      
 };

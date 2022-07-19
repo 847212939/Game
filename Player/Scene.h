@@ -18,6 +18,6 @@ public:
 	SubPlayerPreproces* GetPlayerPreproces();
 
 private:
-	SubPlayerPreproces*		m_SubPlayerPreproces;		// 玩家预处理
 	SubPlayerCenter			m_SubPlayerCenter;			// 玩家中心
+	SubPlayerPreproces*		m_SubPlayerPreproces;		// 玩家预处理
 };
