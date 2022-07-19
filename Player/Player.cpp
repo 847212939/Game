@@ -49,6 +49,11 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 	return m_pTcpSockInfo;
 }
 
+SubPlayerPreproces* Player::GetSubPlayerPreproces()
+{
+	return m_SubPlayerPreproces;
+}
+
 void Player::AddAttrsCallback(std::function<void()>&& fun)
 {
 	m_AttrsFunMap.push_back(fun);
@@ -63,7 +68,7 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
 void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun)
@@ -75,7 +80,7 @@ void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %s", name.c_str());
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code table = %s", name.c_str());
 }
 
 void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)

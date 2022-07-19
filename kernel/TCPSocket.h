@@ -96,20 +96,20 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKET recv[2]);
 
 private:
-	event_base*                 m_listenerBase;
-	std::vector<WorkThreadInfo> m_workBaseVec;
-	ConditionVariable           m_ConditionVariable;
-	CDataLine*                  m_pSendDataLine;	//发送队列
-	CDataLine*                  m_pRecvDataLine;	//接受对列
-	std::vector<TCPSocketInfo>  m_socketInfoVec;
-	std::set<unsigned int>      m_heartBeatSocketSet;
 	bool                        m_running;
 	char                        m_bindIP[48];
 	unsigned short              m_port;
-	SocketType                  m_socketType;
 	unsigned int                m_uMaxSocketSize; // libevent 单线程默认的32000
 	unsigned int                m_uCurSocketSize;
 	unsigned int                m_uCurSocketIndex;
+	CDataLine*					m_pRecvDataLine;	//接受对列
+	CDataLine*					m_pSendDataLine;	//发送队列
+	event_base*					m_listenerBase;
+	SocketType                  m_socketType;
 	ServiceType                 m_iServiceType;
+	ConditionVariable           m_ConditionVariable;
+	std::set<unsigned int>      m_heartBeatSocketSet;
 	std::vector<std::thread*>   m_socketThread;
+	std::vector<TCPSocketInfo>  m_socketInfoVec;
+	std::vector<WorkThreadInfo> m_workBaseVec;
 };

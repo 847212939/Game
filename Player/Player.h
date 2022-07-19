@@ -12,6 +12,7 @@ public:
 	int GetIndex();
 	uint64_t GetUserId() const;
 	const TCPSocketInfo* GetTCPSocketInfo();
+	SubPlayerPreproces* GetSubPlayerPreproces();
 
 public:
 	// 消息处理
@@ -56,10 +57,10 @@ private:
 	bool					m_load;					// 玩家是否初始化完成
 	unsigned int			m_index;				// 玩家索引
 	uint64_t				m_userId;				// 玩家id
-	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
 	AttrsMap				m_AttrsMap;				// 属性集合
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
+	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
 	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 };

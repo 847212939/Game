@@ -1,7 +1,6 @@
 #include "../Game/stdafx.h"
 
-MoveSys::MoveSys(SubPlayer* pSubPlayer) :
-	m_pSubPlayer(pSubPlayer)
+MoveSys::MoveSys(SubPlayer* pSubPlayer) : m_pSubPlayer(pSubPlayer)
 {
 	Register();
 }

@@ -11,7 +11,6 @@ SubPlayerPreproces::~SubPlayerPreproces()
 {
 }
 
-// 创建数据库
 void SubPlayerPreproces::Register()
 {
 	RegisterCreat(this, "move");
