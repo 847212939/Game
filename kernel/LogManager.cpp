@@ -234,12 +234,12 @@ int CGameLogManage::GetLogHour(const std::string& str)
 	size_t index1 = str.find(" ");
 	if (index1 == std::string::npos)
 	{
-		return 0;
+		return -1;
 	}
 	size_t index2 = str.find(":");
 	if (index2 == std::string::npos)
 	{
-		return 0;
+		return -1;
 	}
 
 	std::string outStr = str.substr(index1, index2 - index1);
@@ -255,14 +255,14 @@ void CGameLogManage::Fflush(char* logBuf)
 	logMap.swap(m_logMap);
 	m_mutex.unlock();
 
-	int min1 = 0;
+	int min1 = -1;
 	size_t len = 0;
 	FILE* pFile = nullptr;
 
 	for (std::list<std::pair<FILE*, std::string>>::const_iterator it = logMap.begin(); it != logMap.end(); ++it)
 	{
 		int min2 = GetLogHour(it->second);
-		if (min2 <= 0)
+		if (min2 < 0)
 		{
 			continue;
 		}
