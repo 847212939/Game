@@ -8,23 +8,11 @@
     <Filter Include="数据库">
       <UniqueIdentifier>{4822518c-3dc1-44da-b82a-2ae2461ec0db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="条件变量">
-      <UniqueIdentifier>{cad4fc2f-597c-4a1c-ae40-70f926e515be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{1edb1712-493a-4adc-acb6-60e16a441898}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="数据处理">
-      <UniqueIdentifier>{2f53d39d-f0ef-41ce-a90f-e75f2fe99a0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="配置管理">
       <UniqueIdentifier>{b1444f34-4e80-48bd-a401-b5e7a582519a}</UniqueIdentifier>
     </Filter>
     <Filter Include="日志打印">
       <UniqueIdentifier>{bedad37b-81ca-4224-b7ec-1193f6004080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="脚本处理">
-      <UniqueIdentifier>{5a12022b-f872-4d00-91e1-dd6c658650ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="工具接口">
       <UniqueIdentifier>{84260705-a460-4f29-9ae8-789d442bed07}</UniqueIdentifier>
@@ -64,9 +52,6 @@
     <ClCompile Include="..\kernel\TCPSocket.cpp">
       <Filter>游戏网络</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\DataLine.cpp">
-      <Filter>数据处理</Filter>
-    </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
       <Filter>游戏网络</Filter>
     </ClCompile>
@@ -75,9 +60,6 @@
     </ClCompile>
     <ClCompile Include="..\Config\LuaCfgMgr.cpp">
       <Filter>配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Lua\LuaMgr.cpp">
-      <Filter>脚本处理</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\LoginSys.cpp">
       <Filter>游戏逻辑\登录系统</Filter>
@@ -121,6 +103,12 @@
     <ClCompile Include="..\SubSys\SubScene.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
+    <ClCompile Include="..\kernel\DataLine.cpp">
+      <Filter>游戏网络</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lua\LuaMgr.cpp">
+      <Filter>配置管理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\LogManager.h">
@@ -128,18 +116,6 @@
     </ClInclude>
     <ClInclude Include="..\kernel\MysqlHelper.h">
       <Filter>数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\ConditionVariable.h">
-      <Filter>条件变量</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\DataLine.h">
-      <Filter>数据处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Internal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Log.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPSocket.h">
       <Filter>游戏网络</Filter>
@@ -152,9 +128,6 @@
     </ClInclude>
     <ClInclude Include="..\Config\ConfigMgr.h">
       <Filter>配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Lua\LuaMgr.h">
-      <Filter>脚本处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Config\BaseCfgMgr.h">
       <Filter>配置管理</Filter>
@@ -203,6 +176,21 @@
     </ClInclude>
     <ClInclude Include="..\SubSys\SubScene.h">
       <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\DataLine.h">
+      <Filter>游戏网络</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Log.h">
+      <Filter>日志打印</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Internal.h">
+      <Filter>游戏网络</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\ConditionVariable.h">
+      <Filter>游戏网络</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Lua\LuaMgr.h">
+      <Filter>配置管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
