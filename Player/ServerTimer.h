@@ -20,6 +20,7 @@ public:
 
 private:
 	void ThreadCheckTimer();
+	void HandlerTimerThread();
 	static void TimeoutCB(evutil_socket_t fd, short event, void* arg);
 
 private:

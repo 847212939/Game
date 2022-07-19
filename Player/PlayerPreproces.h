@@ -9,9 +9,6 @@ public:
 
 public:
 	void Init();
-
-public:
-	// 处理消息
 	void HandlerMessage(PlayerInfo* pPlayerInfo);
 
 public:
@@ -54,9 +51,6 @@ public:
 private:
 	bool InitDB();
 	void RunThread();
-
-private:
-	void HandlerTimerThread();
 	void HandlerExecuteSqlThread();
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 

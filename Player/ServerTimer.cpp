@@ -36,6 +36,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 
 	// ¿ª±ÙÏß³Ì
 	m_TCPClient->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	m_TCPClient->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::HandlerTimerThread, this));
 
 	return true;
 }
@@ -205,4 +206,60 @@ void CServerTimer::SetTCPClient(TCPClient* pTCPClient)
 void CServerTimer::SetTimerRun(bool run)
 {
 	m_bRun = run;
+}
+
+void CServerTimer::HandlerTimerThread()
+{
+	if (!m_TCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "initialization not complete");
+		return;
+	}
+	if (!m_TCPClient->GetRuninged())
+	{
+		COUT_LOG(LOG_CERROR, "initialization not complete");
+		return;
+	}
+	SubPlayerPreproces* pSubPlayerPreproces = m_TCPClient->GetSubPlayerPreproces();
+	if (!pSubPlayerPreproces)
+	{
+		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == NULL");
+		return;
+	}
+	TimerData* pTimerData = m_TCPClient->GetSubPlayerPreproces()->GetTimerData();
+	if (!pTimerData)
+	{
+		COUT_LOG(LOG_CERROR, "pDataLine == NULL");
+		return;
+	}
+	bool& run = m_TCPClient->GetRuninged();
+	
+	while (run)
+	{
+		std::unique_lock<std::mutex> uniqLock(pTimerData->cond.GetMutex());
+		m_cond.Wait(uniqLock, [&pTimerData, &run] { if (pTimerData->TimerList.size() > 0 || !run) { return true; } return false; });
+
+		if (pTimerData->TimerList.size() <= 0)
+		{
+			uniqLock.unlock();
+			continue;
+		}
+
+		TimerList timerList;
+		timerList.swap(pTimerData->TimerList);
+		uniqLock.unlock();
+
+		while (!timerList.empty())
+		{
+			UINT uTimerID = timerList.front();
+			timerList.pop_front();
+
+			if (uTimerID <= (unsigned int)TimerCmd::TimerCmd_Begin && uTimerID >= (unsigned int)TimerCmd::TimerCmd_End)
+			{
+				continue;
+			}
+
+			pSubPlayerPreproces->CallBackFun((TimerCmd)uTimerID);
+		}
+	}
 }

@@ -70,59 +70,7 @@ void PlayerPreproces::RunThread()
 		COUT_LOG(LOG_CERROR, "TCP Client init fail");
 	}
 
-	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerTimerThread, this));
 	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
-}
-
-void PlayerPreproces::HandlerTimerThread()
-{
-	if (!m_pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "initialization not complete");
-		return;
-	}
-	if (!m_pTCPClient->GetRuninged())
-	{
-		COUT_LOG(LOG_CERROR, "initialization not complete");
-		return;
-	}
-	bool& run = m_pTCPClient->GetRuninged();
-	if (!m_TimerData)
-	{
-		COUT_LOG(LOG_CERROR, "Timer initialization failed");
-		return;
-	}
-
-	TimerData* pTimerData = m_TimerData;
-
-	while (run)
-	{
-		std::unique_lock<std::mutex> uniqLock(m_TimerData->cond.GetMutex());
-		m_cond.Wait(uniqLock, [&pTimerData, &run] { if (pTimerData->TimerList.size() > 0 || !run) { return true; } return false; });
-
-		if (pTimerData->TimerList.size() <= 0)
-		{
-			uniqLock.unlock();
-			continue;
-		}
-
-		TimerList timerList;
-		timerList.swap(pTimerData->TimerList);
-		uniqLock.unlock();
-
-		while (!timerList.empty())
-		{
-			UINT uTimerID = timerList.front();
-			timerList.pop_front();
-			
-			if (uTimerID <= (unsigned int)TimerCmd::TimerCmd_Begin && uTimerID >= (unsigned int)TimerCmd::TimerCmd_End)
-			{
-				continue;
-			}
-
-			CallBackFun((TimerCmd)uTimerID);
-		}
-	}
 }
 
 // Êý¾Ý¿âÖ´ÐÐ
