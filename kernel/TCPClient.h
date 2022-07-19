@@ -15,9 +15,16 @@ public:
 	SubPlayerPreproces* GetSubPlayerPreproces();
 
 private:
+	void TimerCallback(void* pDataLineHead);
+	void SocketCallback(void* pDataLineHead);
+	bool CallBackFun(int cmd, void* pDataLineHead);
+	void AddTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun);
+
+private:
 	void Run();
 	void HandlerRecvDataListThread();
 
 private:
+	TypeFunMap			m_TypeFunMap;
 	SubPlayerPreproces* m_SubPlayerPreproces;
 };

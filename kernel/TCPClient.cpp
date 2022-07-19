@@ -2,7 +2,8 @@
 
 TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
 {
-	
+	RegisterType(this, TCPClient::TimerCallback, HD_SOCKET_READ);
+	RegisterType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
 }
 
 bool TCPClient::InitTCPClient()
@@ -66,48 +67,19 @@ void TCPClient::HandlerRecvDataListThread()
 		return;
 	}
 
-	//数据缓存
 	void* pDataLineHead = NULL;
-
 	bool& run = GetRuninged();
 
 	while (run)
 	{
-		//获取数据
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead, run);
-		if (bytes == 0 || pDataLineHead == NULL)
+		unsigned int uDataKind = 0;
+		unsigned int bytes = pDataLine->GetData(&pDataLineHead, run, uDataKind);
+		if (bytes == 0 || pDataLineHead == NULL || uDataKind <= 0)
 		{
 			continue;
 		}
-
-		//处理数据
-		SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
-		void* pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
-
-		unsigned int index = pMsg->uIndex;
-		unsigned int size = pMsg->uHandleSize;
-		const std::vector<TCPSocketInfo>& socketInfoVec = GetSocketVector();
-
-		if (index >= 0 && index < socketInfoVec.size())
-		{
-			const TCPSocketInfo& tcpInfo = socketInfoVec[index];
-			PlayerInfo Info;
-			Info.m_pMsg = pMsg;
-			Info.m_pData = pData;
-			Info.m_pTcpSockInfo = &tcpInfo;
-			Info.m_uSrverType = GetServerType();
-			m_SubPlayerPreproces->HandlerMessage(&Info);
-		}
-		else
-		{
-			COUT_LOG(LOG_CERROR, "处理数据失败，index=%d 超出范围", index);
-		}
-
-		// 释放内存
-		if (pDataLineHead)
-		{
-			SafeDeleteArray(pDataLineHead);
-		}
+		
+		CallBackFun(uDataKind, pDataLineHead);
 	}
 
 	COUT_LOG(LOG_CINFO, "recv data thread end...");
@@ -160,3 +132,79 @@ void TCPClient::NotifyAll()
 		pCServerTimer[i].SetTimerRun(false);
 	}
 }
+
+void TCPClient::AddTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun)
+{
+	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
+	if (it == m_TypeFunMap.end())
+	{
+		m_TypeFunMap.insert(std::make_pair(cmd, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+}
+
+bool TCPClient::CallBackFun(int cmd, void* pDataLineHead)
+{
+	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
+	if (it == m_TypeFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		return false;
+	}
+
+	it->second(pDataLineHead);
+	return true;
+}
+
+void TCPClient::TimerCallback(void* pDataLineHead)
+{
+	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
+	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
+	{
+		m_SubPlayerPreproces->CallBackFun((TimerCmd)WindowTimer->uTimerID);
+	}
+	else
+	{
+		COUT_LOG(LOG_CERROR, "Timer message error");
+	}
+
+	if (pDataLineHead)
+	{
+		SafeDeleteArray(pDataLineHead);
+	}
+}
+
+void TCPClient::SocketCallback(void* pDataLineHead)
+{
+	//处理数据
+	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
+	void* pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
+
+	unsigned int index = pMsg->uIndex;
+	unsigned int size = pMsg->uHandleSize;
+	const std::vector<TCPSocketInfo>& socketInfoVec = GetSocketVector();
+
+	if (index >= 0 && index < socketInfoVec.size())
+	{
+		const TCPSocketInfo& tcpInfo = socketInfoVec[index];
+		PlayerInfo Info;
+		Info.m_pMsg = pMsg;
+		Info.m_pData = pData;
+		Info.m_pTcpSockInfo = &tcpInfo;
+		Info.m_uSrverType = GetServerType();
+		m_SubPlayerPreproces->HandlerMessage(&Info);
+	}
+	else
+	{
+		COUT_LOG(LOG_CERROR, "Failed to process data，index=%d Out of range", index);
+	}
+
+	// 释放内存
+	if (pDataLineHead)
+	{
+		SafeDeleteArray(pDataLineHead);
+	}
+}
+

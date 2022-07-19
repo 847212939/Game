@@ -3,7 +3,6 @@
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_TimerData(new TimerData),
 	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()])
 {
 }
@@ -193,11 +192,6 @@ TCPClient* PlayerPreproces::GetTCPClient()
 	}
 
 	return nullptr;
-}
-
-TimerData* PlayerPreproces::GetTimerData()
-{
-	return m_TimerData;
 }
 
 // 获取数据库

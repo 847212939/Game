@@ -36,3 +36,7 @@ else if (ERRTYPE == LOG_CINFO) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LO
 //ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))
+
+typedef std::map<int, std::function<void(void* pDataLineHead)>>		TypeFunMap;
+
+#define RegisterType(obj, name, cmd) obj->AddTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));

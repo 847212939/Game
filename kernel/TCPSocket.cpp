@@ -157,8 +157,9 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 
 	while (pThis->m_running)
 	{
+		unsigned int uDataKind = 0;
 		//获取数据
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead, pThis->m_running);
+		unsigned int bytes = pDataLine->GetData(&pDataLineHead, pThis->m_running, uDataKind);
 		if (bytes == 0 || pDataLineHead == nullptr)
 		{
 			continue;

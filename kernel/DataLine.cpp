@@ -56,7 +56,7 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, unsigned in
 	return pListItem->stDataHead.uSize;		//返回大小
 }
 
-unsigned int CDataLine::GetData(void** pDataBuffer, bool& run)
+unsigned int CDataLine::GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind)
 {
 	*pDataBuffer = nullptr;
 
@@ -79,6 +79,7 @@ unsigned int CDataLine::GetData(void** pDataBuffer, bool& run)
 
 	uniqLock.unlock();
 
+	uDataKind = pListItem->stDataHead.uDataKind;
 	unsigned int uDataSize = pListItem->stDataHead.uSize;
 
 	//投递数据，外部一定要释放内存，否则内存泄漏

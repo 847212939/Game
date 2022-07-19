@@ -43,15 +43,6 @@ typedef std::map< TimerCmd, std::function<void()>>					TimerFunMap;	// ÏûÏ¢»Øµ÷º
 typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>			NetFunMap;		// ÏûÏ¢»Øµ÷º¯Êı
 typedef std::map<std::string, std::function<void(std::string&&)>>	MysqlFunMap;	// ÏûÏ¢»Øµ÷º¯Êı
 
-struct TimerData
-{
-	TimerList			TimerList;
-	ConditionVariable	cond;
-
-	TimerData() {}
-	~TimerData() {}
-};
-
 #define RegisterAttrs(pobj, obj, name)\
 if (!pobj)\
 {\
