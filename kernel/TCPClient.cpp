@@ -6,7 +6,7 @@ TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
 	RegisterType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
 }
 
-bool TCPClient::InitTCPClient()
+bool TCPClient::InitTCPClient(ServiceType serverType)
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
@@ -16,7 +16,7 @@ bool TCPClient::InitTCPClient()
 	{
 		return false;
 	}
-	if (!Start(ServiceType::SERVICE_TYPE_LOGIC))
+	if (!Start(serverType))
 	{
 		return false;
 	}

@@ -8,7 +8,7 @@ public:
 	virtual ~TCPClient();
 
 public:
-	bool InitTCPClient();
+	bool InitTCPClient(ServiceType serverType);
 	void NotifyAll();
 
 public:

@@ -32,12 +32,6 @@
     <Filter Include="定时器">
       <UniqueIdentifier>{00798cc1-3e0b-4ac3-915b-86c487fe189d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心">
-      <UniqueIdentifier>{4b5ebd0b-9564-4365-b6ab-c6479df673ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家消息">
-      <UniqueIdentifier>{78b7d584-712c-4d5a-b870-5de98bc8c8df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="游戏逻辑">
       <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
     </Filter>
@@ -49,6 +43,12 @@
     </Filter>
     <Filter Include="游戏网络">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家信息">
+      <UniqueIdentifier>{4b5ebd0b-9564-4365-b6ab-c6479df673ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心">
+      <UniqueIdentifier>{78b7d584-712c-4d5a-b870-5de98bc8c8df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,31 +95,31 @@
       <Filter>定时器</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerInfo.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerPreproces.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayer.cpp">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubScene.cpp">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,37 +172,37 @@
       <Filter>定时器</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerPreproces.h">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayer.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayerCenter.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayerPreproces.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubScene.h">
-      <Filter>玩家消息</Filter>
+      <Filter>玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

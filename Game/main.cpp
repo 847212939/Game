@@ -3,8 +3,9 @@
 int main()
 {
 	bool run = true;
+	ServiceType type = ServiceType::SERVICE_TYPE_GAMECENTER;
 
-	LogMgr()->SetLogFileType(ServiceType::SERVICE_TYPE_LOGIC);
+	LogMgr()->SetLogFileType(type);
 
 	if (!LuaMgr()->InitCfgMgr())
 	{
@@ -15,11 +16,11 @@ int main()
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 
 	IDGen& idGen = Util::Instance()->GetIDGen();
-	idGen.Init((int)ServiceType::SERVICE_TYPE_LOGIC, baseCfgMgr.GetServerId());
+	idGen.Init((int)type, baseCfgMgr.GetServerId());
 
 	TCPClient clien;
 
-	if (!clien.InitTCPClient())
+	if (!clien.InitTCPClient(type))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
