@@ -192,10 +192,9 @@ void PlayerCenter::HandlerPlayerThread()
 
 			pSubPlayer->LoadMysql();
 			pSubPlayer->EnterGame();
-			pSubPlayer->SetLoad(true);
 			pSubPlayer->RefreshProperties();
 			pSubPlayer->EnterScene();
-			pTCPClient->SendData(loadPKey.GetIndex(), NULL, 0, MsgCmd::MsgCmd_Login, 1, 0, loadPKey.GetSocketInfo()->bev);
+			pSubPlayer->SetLoad(true);
 		}
 	}
 
