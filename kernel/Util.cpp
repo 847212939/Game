@@ -84,7 +84,6 @@ void Util::Exit(bool& run, TCPClient& clien)
 
 COstringstream::COstringstream()
 {
-	m_os << std::hex;
 }
 
 COstringstream::~COstringstream()
@@ -109,7 +108,6 @@ CIstringstream::~CIstringstream()
 
 CIstringstream::CIstringstream(std::string str) : m_is(str), m_cnt(0)
 {
-	m_is >> std::hex;
 }
 
 CIstringstream& CIstringstream::operator >> (std::string& outStr)
