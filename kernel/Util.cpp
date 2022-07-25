@@ -74,7 +74,6 @@ void Util::Exit(bool& run, TCPClient& clien)
 		if (str == baseCfgMgr.GetExit())
 		{
 			run = false;
-			break;
 		}
 	}
 
