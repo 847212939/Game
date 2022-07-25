@@ -206,6 +206,7 @@
     <ClInclude Include="..\Player\PlayerPreproces.h" />
     <ClInclude Include="..\Player\Scene.h" />
     <ClInclude Include="..\Player\ServerTimer.h" />
+    <ClInclude Include="..\Player\TimerCmd.h" />
     <ClInclude Include="..\SubSys\SubPlayer.h" />
     <ClInclude Include="..\SubSys\SubPlayerCenter.h" />
     <ClInclude Include="..\SubSys\SubPlayerPreproces.h" />

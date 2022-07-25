@@ -192,6 +192,9 @@
     <ClInclude Include="..\Lua\LuaMgr.h">
       <Filter>配置管理</Filter>
     </ClInclude>
+    <ClInclude Include="..\Player\TimerCmd.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\Config.pkg">
