@@ -7,8 +7,8 @@ const unsigned int MAX_DATALINE_LEN = 320000;
 Struct		:ListItemData
 Memo		:链表项数据结构
 Parameter	:
-	stDataHead	:数据包头
-	pData		:每个链表项数据的指针，使用用new方式申请的内存，注意，在出队列时，要显式的delete 该内存
+stDataHead	:数据包头
+pData		:每个链表项数据的指针，使用用new方式申请的内存，注意，在出队列时，要显式的delete 该内存
 */
 struct ListItemData
 {
