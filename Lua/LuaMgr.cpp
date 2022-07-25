@@ -1,9 +1,31 @@
 #include "../Game/stdafx.h"
 
+CLuaMgr::CLuaMgr() : m_pLua(nullptr), m_ConfigMgr(nullptr)
+{
+
+}
+
+CLuaMgr::~CLuaMgr()
+{
+    if (m_pLua)
+    {
+        lua_close(m_pLua);
+    }
+    if (m_ConfigMgr)
+    {
+        delete m_ConfigMgr;
+    }
+}
+
 CLuaMgr* CLuaMgr::Instance()
 {
     static CLuaMgr g_mgr;
     return &g_mgr;
+}
+
+ConfigMgr* CLuaMgr::GetConfigMgr()
+{
+    return m_ConfigMgr;
 }
 
 bool CLuaMgr::InitCfgMgr()
@@ -51,21 +73,4 @@ bool CLuaMgr::InitCfgMgr()
     }
 
     return true;
-}
-
-CLuaMgr::CLuaMgr() : m_pLua(nullptr), m_ConfigMgr(nullptr)
-{
-    
-}
-
-CLuaMgr::~CLuaMgr()
-{
-    if (m_pLua)
-    {
-        lua_close(m_pLua);
-    }
-    if (m_ConfigMgr)
-    {
-        delete m_ConfigMgr;
-    }
 }

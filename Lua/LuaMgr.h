@@ -4,17 +4,16 @@ class CLuaMgr
 {
 public:
 	static CLuaMgr* Instance();
-	bool InitCfgMgr();
 
-	ConfigMgr* GetConfigMgr()
-	{
-		return m_ConfigMgr;
-	}
+public:
+	bool InitCfgMgr();
+    ConfigMgr* GetConfigMgr();
 
 private:
 	CLuaMgr();
 	virtual ~CLuaMgr();
 
+private:
 	lua_State* m_pLua;		// vm
 	ConfigMgr* m_ConfigMgr;	// ≈‰÷√π‹¿Ì¿‡
 };
