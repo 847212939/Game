@@ -17,17 +17,17 @@ public:
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 
 public:
-	bool& GetRuninged();
 	event_base* GetEventBase();
-	bool IsConnected(int index);
 	ServiceType GetServerType();
 	CDataLine* GetRecvDataLine();
 	CDataLine* GetSendDataLine();
+	ConditionVariable& GetConditionVariable();
+	std::vector<std::thread*>& GetSockeThreadVec();
+	bool& GetRuninged();
+	bool IsConnected(int index);
 	unsigned int GetCurSocketSize();
 	const char* GetSocketIP(int index);
-	ConditionVariable& GetConditionVariable();
 	const std::set<unsigned int>* GetSocketSet();
-	std::vector<std::thread*>& GetSockeThreadVec();
 	const TCPSocketInfo* GetTCPSocketInfo(int index);
 	void GetSocketSet(std::vector<unsigned int>& vec);
 	const std::vector<TCPSocketInfo>& GetSocketVector();
