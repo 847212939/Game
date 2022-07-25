@@ -219,6 +219,10 @@ void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 // »ñÈ¡Íæ¼Ò
 SubPlayer* PlayerCenter::GetSubPlayer(unsigned int index)
 {
+	if (index >= m_pPlayerVec.size() || index < 0)
+	{
+		return nullptr;
+	}
 	return m_pPlayerVec[index];
 }
 
