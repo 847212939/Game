@@ -7,8 +7,6 @@ function ReadBaseCfg()
 
     local BaseCfg = require "BaseCfg"
 
-    local LogicCfg = LogicCfg:new()
-    local DbCfg = DbCfg:new()
 
     if BaseCfg then
         ConfigMgr:ReadKeyCfg(BaseCfg.Skey or 0)
@@ -19,20 +17,21 @@ function ReadBaseCfg()
         ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
         ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
 
+        local LogicCfg = LogicCfg:new()
         LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
         LogicCfg.port = BaseCfg.LogicCfg.port or 0
         ConfigMgr:ReadLogicCfg(LogicCfg)
+        LogicCfg:delete()
 
+        local DbCfg = DbCfg:new()
         DbCfg.ip = BaseCfg.DbCfg.ip or 0
         DbCfg.user = BaseCfg.DbCfg.user or 0
         DbCfg.passwd = BaseCfg.DbCfg.passwd or 0
         DbCfg.database = BaseCfg.DbCfg.database or 0
         DbCfg.port = BaseCfg.DbCfg.port or 0
         ConfigMgr:ReadDbCfg(DbCfg)
+        DbCfg:delete()
     end
-
-    LogicCfg:delete()
-    DbCfg:delete()
 
     ConfigMgr:CoutLog("Load configuration BaseCfg end")
 end
