@@ -13,7 +13,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	m_PlayerCenterClient.SetSubScene(dynamic_cast<SceneClient*>(this));
+	m_PlayerCenterClient.SetSceneClient(dynamic_cast<SceneClient*>(this));
 	m_PlayerCenterClient.Init();
 }
 

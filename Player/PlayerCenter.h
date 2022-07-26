@@ -13,7 +13,7 @@ public:
 	void Init();
 
 public:
-	void SetSubScene(SceneClient* pSubScene);
+	void SetSceneClient(SceneClient* sceneClient);
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
 	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 

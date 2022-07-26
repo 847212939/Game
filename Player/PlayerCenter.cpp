@@ -215,9 +215,9 @@ void PlayerCenter::HandlerPlayerThread()
 	COUT_LOG(LOG_CINFO, "playerClient create thread end...");
 }
 
-void PlayerCenter::SetSubScene(SceneClient* pSubScene)
+void PlayerCenter::SetSceneClient(SceneClient* sceneClient)
 {
-	m_SceneClient = pSubScene;
+	m_SceneClient = sceneClient;
 }
 
 // ´´½¨½ÇÉ«
