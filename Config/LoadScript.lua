@@ -7,7 +7,6 @@ function ReadBaseCfg()
 
     local BaseCfg = require "BaseCfg"
 
-
     if BaseCfg then
         ConfigMgr:ReadKeyCfg(BaseCfg.Skey or 0)
         ConfigMgr:ReadTimerCntCfg(BaseCfg.TimerCnt or 0)
