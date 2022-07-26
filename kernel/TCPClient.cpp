@@ -206,7 +206,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	PlayerClient* playerClient = m_PlayerPrepClient->GetSceneClient().GetPlayerCenterClient().GetPlayerClient(pSocketClose->uIndex);
 	if (!playerClient)
 	{
-		COUT_LOG(LOG_CINFO, "TCP close playerClient is null");
+		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
 		return;
 	}
 
