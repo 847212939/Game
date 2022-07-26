@@ -25,6 +25,7 @@ public:
 
 private:
 	void HandlerPlayerThread();
+	void CloseSocketEvent(unsigned int index);
 
 private:
 	ConditionVariable				m_cond;

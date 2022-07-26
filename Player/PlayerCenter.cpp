@@ -1,3 +1,4 @@
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "../Game/stdafx.h"
 
 PlayerCenter::PlayerCenter() : 
@@ -112,14 +113,27 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
+void PlayerCenter::CloseSocketEvent(unsigned int index)
+{
+	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
+	if (!playerPrepClient)
+	{
+		COUT_LOG(LOG_CERROR, "playerPrepClient = null index = %d", index);
+		return;
+	}
+	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
+	if (!pTCPClient)
+	{
+		COUT_LOG(LOG_CERROR, "pTCPClient = null index = %d", index);
+		return;
+	}
+
+	pTCPClient->RemoveTCPSocketStatus(index);
+}
+
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	if (!m_SceneClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err m_SceneClient = null");
-		return;
-	}
 	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
 	if (!playerPrepClient)
 	{
@@ -164,16 +178,19 @@ void PlayerCenter::HandlerPlayerThread()
 			 
 			if (!loadPKey.GetConnect())
 			{
+				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
 			}
 			uint64_t userId = 0;
 			LoginSys& loginSys = playerPrepClient->GetLoginSys();
 			if (!loginSys.LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
+				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
 			}
 			if (userId == 0)
 			{
+				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
 			}
 			PlayerClient* playerClient = GetPlayerClient(loadPKey.GetIndex());

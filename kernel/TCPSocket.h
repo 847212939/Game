@@ -15,6 +15,7 @@ public:
 public:
 	bool CloseSocket(int index);
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 
 public:
 	event_base* GetEventBase();
@@ -41,7 +42,6 @@ private:
 private:
 	int GetSocketIndex();
 	bool RecvData(bufferevent* bev, int index);
-	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
