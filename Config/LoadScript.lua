@@ -34,7 +34,6 @@ function ReadBaseCfg()
             ConfigMgr:ReadDbCfg(DbCfg)
             DbCfg:delete()
         end
-
     end
 
     ConfigMgr:CoutLog("Load configuration BaseCfg end")
