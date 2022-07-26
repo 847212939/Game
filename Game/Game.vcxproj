@@ -216,6 +216,7 @@
   <ItemGroup>
     <None Include="..\Config\Config.pkg" />
     <None Include="..\Config\LoadScript.lua" />
+    <None Include="..\Data\Config\BaseCfg.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

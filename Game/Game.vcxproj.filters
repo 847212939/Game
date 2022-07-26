@@ -38,6 +38,12 @@
     <Filter Include="玩家中心">
       <UniqueIdentifier>{78b7d584-712c-4d5a-b870-5de98bc8c8df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="配置管理\配置读取">
+      <UniqueIdentifier>{fa539d2b-833b-4a26-915a-0305813455d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理\配置文件">
+      <UniqueIdentifier>{28d3548c-b4a4-4eb7-882f-42ca9fe52c44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,12 +61,6 @@
     <ClCompile Include="..\kernel\TCPClient.cpp">
       <Filter>游戏网络</Filter>
     </ClCompile>
-    <ClCompile Include="..\Config\ConfigMgr.cpp">
-      <Filter>配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Config\LuaCfgMgr.cpp">
-      <Filter>配置管理</Filter>
-    </ClCompile>
     <ClCompile Include="..\Logic\LoginSys.cpp">
       <Filter>游戏逻辑\登录系统</Filter>
     </ClCompile>
@@ -69,9 +69,6 @@
     </ClCompile>
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>工具接口</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Config\BaseCfgMgr.cpp">
-      <Filter>配置管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\ServerTimer.cpp">
       <Filter>定时器</Filter>
@@ -106,8 +103,17 @@
     <ClCompile Include="..\kernel\DataLine.cpp">
       <Filter>游戏网络</Filter>
     </ClCompile>
+    <ClCompile Include="..\Config\BaseCfgMgr.cpp">
+      <Filter>配置管理\配置读取</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Config\ConfigMgr.cpp">
+      <Filter>配置管理\配置读取</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Config\LuaCfgMgr.cpp">
+      <Filter>配置管理\配置读取</Filter>
+    </ClCompile>
     <ClCompile Include="..\Lua\LuaMgr.cpp">
-      <Filter>配置管理</Filter>
+      <Filter>配置管理\配置读取</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,12 +131,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Config\ConfigMgr.h">
-      <Filter>配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Config\BaseCfgMgr.h">
-      <Filter>配置管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\LoginSys.h">
       <Filter>游戏逻辑\登录系统</Filter>
@@ -189,19 +189,28 @@
     <ClInclude Include="..\kernel\ConditionVariable.h">
       <Filter>游戏网络</Filter>
     </ClInclude>
-    <ClInclude Include="..\Lua\LuaMgr.h">
-      <Filter>配置管理</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\TimerCmd.h">
       <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Config\BaseCfgMgr.h">
+      <Filter>配置管理\配置读取</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Config\ConfigMgr.h">
+      <Filter>配置管理\配置读取</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Lua\LuaMgr.h">
+      <Filter>配置管理\配置读取</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\Config.pkg">
-      <Filter>配置管理</Filter>
+      <Filter>配置管理\配置读取</Filter>
     </None>
     <None Include="..\Config\LoadScript.lua">
-      <Filter>配置管理</Filter>
+      <Filter>配置管理\配置读取</Filter>
+    </None>
+    <None Include="..\Data\Config\BaseCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
     </None>
   </ItemGroup>
 </Project>

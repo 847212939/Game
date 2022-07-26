@@ -7,44 +7,22 @@ function ReadBaseCfg()
 
     local BaseCfg = require "BaseCfg"
 
+    local LogicCfg = LogicCfg:new()
+    local DbCfg = DbCfg:new()
+
     if BaseCfg then
         ConfigMgr:ReadKeyCfg(BaseCfg.Skey or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadTimerCntCfg(BaseCfg.TimerCnt or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadServerIDCfg(BaseCfg.serverID or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadThreadCntCfg(BaseCfg.ThreadCnt or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadLogPrintTmCfg(BaseCfg.LogPrintfTime or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
-    end
-
-    if BaseCfg then
         ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
-    end
 
-    local LogicCfg = LogicCfg:new()
-    if BaseCfg then
         LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
         LogicCfg.port = BaseCfg.LogicCfg.port or 0
         ConfigMgr:ReadLogicCfg(LogicCfg)
-    end
-    LogicCfg:delete()
 
-    local DbCfg = DbCfg:new()
-    if BaseCfg then
         DbCfg.ip = BaseCfg.DbCfg.ip or 0
         DbCfg.user = BaseCfg.DbCfg.user or 0
         DbCfg.passwd = BaseCfg.DbCfg.passwd or 0
@@ -52,6 +30,8 @@ function ReadBaseCfg()
         DbCfg.port = BaseCfg.DbCfg.port or 0
         ConfigMgr:ReadDbCfg(DbCfg)
     end
+
+    LogicCfg:delete()
     DbCfg:delete()
 
     ConfigMgr:CoutLog("Load configuration BaseCfg end")
