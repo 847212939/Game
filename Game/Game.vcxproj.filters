@@ -44,6 +44,9 @@
     <Filter Include="配置管理\配置文件">
       <UniqueIdentifier>{28d3548c-b4a4-4eb7-882f-42ca9fe52c44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="配置管理\配置脚本">
+      <UniqueIdentifier>{0f2fb613-0f5f-4510-bcf4-d819209e535e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,14 +206,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Config\Config.pkg">
-      <Filter>配置管理\配置读取</Filter>
-    </None>
-    <None Include="..\Config\LoadScript.lua">
-      <Filter>配置管理\配置读取</Filter>
-    </None>
     <None Include="..\Data\Config\BaseCfg.lua">
       <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="..\Config\Config.pkg">
+      <Filter>配置管理\配置脚本</Filter>
+    </None>
+    <None Include="..\Config\LoadScript.lua">
+      <Filter>配置管理\配置脚本</Filter>
     </None>
   </ItemGroup>
 </Project>
