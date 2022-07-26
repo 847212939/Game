@@ -16,20 +16,25 @@ function ReadBaseCfg()
         ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
         ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
 
-        local LogicCfg = LogicCfg:new()
-        LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
-        LogicCfg.port = BaseCfg.LogicCfg.port or 0
-        ConfigMgr:ReadLogicCfg(LogicCfg)
-        LogicCfg:delete()
+        if BaseCfg.LogicCfg then
+            local LogicCfg = LogicCfg:new()
+            LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
+            LogicCfg.port = BaseCfg.LogicCfg.port or 0
+            ConfigMgr:ReadLogicCfg(LogicCfg)
+            LogicCfg:delete()
+        end
 
-        local DbCfg = DbCfg:new()
-        DbCfg.ip = BaseCfg.DbCfg.ip or 0
-        DbCfg.user = BaseCfg.DbCfg.user or 0
-        DbCfg.passwd = BaseCfg.DbCfg.passwd or 0
-        DbCfg.database = BaseCfg.DbCfg.database or 0
-        DbCfg.port = BaseCfg.DbCfg.port or 0
-        ConfigMgr:ReadDbCfg(DbCfg)
-        DbCfg:delete()
+        if BaseCfg.DbCfg then
+            local DbCfg = DbCfg:new()
+            DbCfg.ip = BaseCfg.DbCfg.ip or 0
+            DbCfg.user = BaseCfg.DbCfg.user or 0
+            DbCfg.passwd = BaseCfg.DbCfg.passwd or 0
+            DbCfg.database = BaseCfg.DbCfg.database or 0
+            DbCfg.port = BaseCfg.DbCfg.port or 0
+            ConfigMgr:ReadDbCfg(DbCfg)
+            DbCfg:delete()
+        end
+
     end
 
     ConfigMgr:CoutLog("Load configuration BaseCfg end")
