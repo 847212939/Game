@@ -42,7 +42,7 @@ typedef std::vector<std::function<void()>>							AttrsFunMap;	// 消息回调函数
 typedef std::map<TimerCmd, std::function<void()>>					TimerFunMap;	// 消息回调函数
 typedef std::vector<std::function<void(SocketCloseLine*)>>			ExitFunMap;		// 消息回调函数
 typedef std::map<MsgCmd, std::function<void(PlayerInfo*)>>			NetFunMap;		// 消息回调函数
-typedef std::map<std::string, std::function<void(std::string&&)>>	MysqlFunMap;	// 消息回调函数
+typedef std::map<std::string, std::function<void(std::string&)>>	MysqlFunMap;	// 消息回调函数
 
 // 注册游戏进入回调
 #define RegisterAttrs(pobj, obj, name)\

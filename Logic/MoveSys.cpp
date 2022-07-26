@@ -12,7 +12,7 @@ MoveSys::~MoveSys()
 {
 }
 
-void MoveSys::MysqlCallback(std::string&& data)
+void MoveSys::MysqlCallback(std::string& data)
 {
 	if (!m_PlayerClient)
 	{

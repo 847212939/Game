@@ -73,7 +73,7 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun)
+void Player::AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun)
 {
 	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(name);
 	if (it == m_MysqlCBFunMap.end())
@@ -109,7 +109,11 @@ void Player::MysqlCallBackFun()
 {
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		it->second(LoadOneSql(it->first));
+		std::string str;
+
+		LoadOneSql(it->first, str);
+
+		it->second(str);
 	}
 }
 
@@ -123,14 +127,14 @@ void Player::AttrsCallBackFun()
 
 // 数据库操作
 // 加载一条数据库
-std::string Player::LoadOneSql(std::string sqlName, std::string dataStr)
+void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
 {
 	if (!m_PlayerPrepClient)
 	{
 		COUT_LOG(LOG_CERROR, "Player preproces is null userid = %lld", m_userId);
-		return "";
+		return;
 	}
-	return m_PlayerPrepClient->LoadOneSql(sqlName, m_userId, dataStr);
+	return m_PlayerPrepClient->LoadOneSql(sqlName, m_userId, outStr, dataStr);
 }
 
 // insert mysql

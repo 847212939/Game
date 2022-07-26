@@ -14,7 +14,7 @@ public:
 
 private:
 	void EnterGameCallback();
-	void MysqlCallback(std::string&& data);
+	void MysqlCallback(std::string& data);
 	void NetworkCallback(PlayerInfo* playerInfo);
 	void ExitCallback(SocketCloseLine* socketCloseLine);
 

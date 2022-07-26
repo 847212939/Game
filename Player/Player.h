@@ -31,7 +31,7 @@ public:
 	void AddAttrsCallback(std::function<void()>&& fun);
 	void AddExitCallback(std::function<void(SocketCloseLine*)>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
-	void AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun);
+	void AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun);
 	void AttrsCallBackFun();
 	void MysqlCallBackFun();
 	void ExitCallBackFun(SocketCloseLine* pSocketClose);
@@ -44,7 +44,7 @@ public:
 
 public:
 	// Êý¾Ý¿â²Ù×÷
-	std::string LoadOneSql(std::string sqlName, std::string dataStr = "data");
+	void LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr = "data");
 	void SaveInsertSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	void SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");

@@ -397,7 +397,7 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 	m_cond.NotifyOne();
 }
 
-std::string PlayerPrep::LoadOneSql(std::string userId, std::string sqlName, std::string dataStr /*= "data"*/)
+void PlayerPrep::LoadOneSql(std::string userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where userid=%s", sqlName.c_str(), userId.c_str());
@@ -410,26 +410,26 @@ std::string PlayerPrep::LoadOneSql(std::string userId, std::string sqlName, std:
 	catch (MysqlHelper_Exception& excep)
 	{
 		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
-		return "";
+		return;
 	}
 
 	if (data.size() <= 0)
 	{
-		return "";
+		return;
 	}
 
 	SqlKeyDataMap& dataMap = data[0];
 	SqlKeyDataMap::iterator it = dataMap.find(dataStr);
 	if (it == dataMap.end())
 	{
-		return "";
+		return;
 	}
 
-	return it->second;
+	outStr = it->second;
 }
 
 // 加载一条数据库
-std::string PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr)
+void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& outStr, std::string dataStr)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where userid=%lld", sqlName.c_str(), userId);
@@ -442,21 +442,21 @@ std::string PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::st
 	catch (MysqlHelper_Exception& excep)
 	{
 		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
-		return "";
+		return;
 	}
 	if (queryData.size() <= 0)
 	{
-		return "";
+		return;
 	}
 
 	SqlKeyDataMap& dataMap = queryData[0];
 	SqlKeyDataMap::iterator it = dataMap.find(dataStr);
 	if (it == dataMap.end())
 	{
-		return "";
+		return;
 	}
 
-	return it->second;
+	outStr = it->second;
 }
 
 // 加载多条数据库

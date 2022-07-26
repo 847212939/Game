@@ -80,7 +80,9 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 	}
 
 	// Êý¾Ý¿â²éÑ¯
-	std::string data = m_PlayerPrepClient->LoadOneSql(id, "useraccount");
+	std::string data;
+	m_PlayerPrepClient->LoadOneSql(id, "useraccount", data);
+
 	if (data.empty())
 	{
 		userId = Util::Instance()->CreateUserId();

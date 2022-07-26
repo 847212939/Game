@@ -14,8 +14,8 @@ public:
 
 public:
 	// 加载一条数据库
-	std::string LoadOneSql(std::string userId, std::string sqlName, std::string dataStr = "data");
-	std::string LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr = "data");
+	void LoadOneSql(std::string userId, std::string sqlName, std::string& outStr, std::string dataStr = "data");
+	void LoadOneSql(std::string sqlName, uint64_t userId, std::string& outStr, std::string dataStr = "data");
 	bool LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr = "data");
 	void CreateTableS(std::string name);
 	void CreateTableI(std::string name);
