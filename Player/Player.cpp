@@ -107,9 +107,11 @@ void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 
 void Player::MysqlCallBackFun()
 {
+	std::string str;
+
 	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		std::string str;
+		str.clear();
 
 		LoadOneSql(it->first, str);
 
