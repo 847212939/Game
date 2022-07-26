@@ -309,7 +309,7 @@ void PlayerPrep::CreateTableSql(const char* sql)
 }
 
 // insert mysql
-void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
 	os << userId;
@@ -329,7 +329,7 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 }
 
 // update mysql
-void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
 	os << userId;
@@ -349,7 +349,7 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 }
 
 // Replace mysql
-void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName, std::string dataName)
 {
 	std::ostringstream os;
 	os << userId;
@@ -368,7 +368,7 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 	m_cond.NotifyOne();
 }
 
-void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName, std::string dataName)
 {
 	CMysqlHelper::RECORD_DATA mpColumns;
 
@@ -397,7 +397,7 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 	m_cond.NotifyOne();
 }
 
-void PlayerPrep::LoadOneSql(std::string userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
+void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where userid=%s", sqlName.c_str(), userId.c_str());
