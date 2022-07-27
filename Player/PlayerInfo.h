@@ -4,16 +4,16 @@
 class PlayerInfo
 {
 public:
-	PlayerInfo();
-	virtual~PlayerInfo();
+	PlayerInfo() : m_pMsg(nullptr), m_pData(nullptr), m_uSrverType(ServiceType::SERVICE_TYPE_LOGIC), m_userId(0), m_pTcpSockInfo(nullptr){}
+	virtual~PlayerInfo() {}
 
 public:
 	
-	SocketReadLine* m_pMsg;					// SOCKET读取通知结构定义
-	void*			m_pData;				// 玩家发送过来的数据
-	ServiceType		m_uSrverType;			// 服务器类型
-	uint64_t		m_userId;				// 玩家id
-	const TCPSocketInfo* m_pTcpSockInfo;	// 玩家TCP的网络信息
+	SocketReadLine*			m_pMsg;					// SOCKET读取通知结构定义
+	void*					m_pData;				// 玩家发送过来的数据
+	ServiceType				m_uSrverType;			// 服务器类型
+	uint64_t				m_userId;				// 玩家id
+	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 };
 
 struct LoadPlayerKey
@@ -24,10 +24,10 @@ struct LoadPlayerKey
 	std::string				id;
 	std::string				pw;
 
-	bool GetConnect();
-	const unsigned int& GetIndex();
-	const TCPSocketInfo* GetSocketInfo();
-	const uint64_t& getUserId();
+	bool GetConnect() { if (!pSockInfo) { return false; } return pSockInfo->isConnect; }
+	const unsigned int& GetIndex() { return index; }
+	const TCPSocketInfo* GetSocketInfo() { return pSockInfo; }
+	const uint64_t& getUserId() { return userId; }
 
 	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, std::string& sId, std::string& sPw) : index(nIndex), pSockInfo(sockInfo), userId(0), id(sId), pw(sPw) {}
 	~LoadPlayerKey() {}

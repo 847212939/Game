@@ -100,9 +100,6 @@
     <ClCompile Include="..\Player\PlayerCenter.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\PlayerInfo.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
     <ClCompile Include="..\Player\PlayerPrep.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
@@ -186,14 +183,14 @@
     <ClInclude Include="..\Player\PlayerCenter.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
     <ClInclude Include="..\Player\PlayerPrep.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerInfo.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

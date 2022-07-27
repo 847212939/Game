@@ -1,6 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
+char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
+"`data` varchar(2048) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
+char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` bigint(20) NOT NULL,"
+"`data` varchar(2048) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
+
 PlayerPrep::PlayerPrep(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
 	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()]),

@@ -173,7 +173,6 @@
     <ClCompile Include="..\Lua\LuaMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
-    <ClCompile Include="..\Player\PlayerInfo.cpp" />
     <ClCompile Include="..\Player\PlayerPrep.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\ServerTimer.cpp" />
