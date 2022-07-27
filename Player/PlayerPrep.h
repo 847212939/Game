@@ -30,7 +30,8 @@ public:
 	SceneClient& GetSceneClient();
 	TCPClient* GetTCPClient();
 	CServerTimer* GetCServerTimer();
-	CMysqlHelper& GetCMysqlHelper();
+	CMysqlHelper& GetSaveCMysqlHelper();
+	CMysqlHelper& GetLoadCMysqlHelper();
 	ConditionVariable& GetConditionVariable();
 
 public:

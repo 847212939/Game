@@ -152,9 +152,14 @@ TCPClient* PlayerPrep::GetTCPClient()
 }
 
 // 获取数据库
-CMysqlHelper& PlayerPrep::GetCMysqlHelper()
+CMysqlHelper& PlayerPrep::GetSaveCMysqlHelper()
 {
 	return m_CMysqlHelperSave;
+}
+
+CMysqlHelper& PlayerPrep::GetLoadCMysqlHelper()
+{
+	return m_CMysqlHelperLoad;
 }
 
 ConditionVariable& PlayerPrep::GetConditionVariable()
