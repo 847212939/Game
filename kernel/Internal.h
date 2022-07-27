@@ -24,7 +24,7 @@ const unsigned int			CHECK_HEAETBEAT_SECS = 15;							// 心跳定时器时间(s)
 const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
 // 消息队列最大长度
-const unsigned int MAX_DATALINE_LEN = 320000;
+const unsigned int			MAX_DATALINE_LEN = 320000;
 
 // 服务器类型
 enum class ServiceType
