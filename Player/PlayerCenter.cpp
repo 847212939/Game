@@ -175,15 +175,19 @@ void PlayerCenter::HandlerPlayerThread()
 		{
 			LoadPlayerKey loadPKey = loadPlayerList.front();
 			loadPlayerList.pop_front();
-			 
+			uint64_t userId = 0;
+
+			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_pPlayerVec.size())
+			{
+				CloseSocketEvent(loadPKey.GetIndex());
+				continue;
+			}
 			if (!loadPKey.GetConnect())
 			{
 				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
 			}
-			uint64_t userId = 0;
-			LoginSys& loginSys = playerPrepClient->GetLoginSys();
-			if (!loginSys.LoginIn(loadPKey.id, loadPKey.pw, userId))
+			if (!playerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
 				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
