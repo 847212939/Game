@@ -55,8 +55,8 @@ private:
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
-	static char createptable[CreateTableLen];
-	static char createpptable[CreateTableLen];
+	static char createptable[CREATE_TABLE_LEN];
+	static char createpptable[CREATE_TABLE_LEN];
 
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用

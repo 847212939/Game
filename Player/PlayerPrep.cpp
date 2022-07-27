@@ -287,18 +287,18 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 
 void PlayerPrep::CreateTableS(std::string name)
 {
-	char sql[CreateTableLen] = "";
+	char sql[CREATE_TABLE_LEN] = "";
 
-	int len = sprintf_s(sql, CreateTableLen, createptable, name.c_str());
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str());
 
 	CreateTableSql(sql);
 }
 
 void PlayerPrep::CreateTableI(std::string name)
 {
-	char sql[CreateTableLen] = "";
+	char sql[CREATE_TABLE_LEN] = "";
 
-	int len = sprintf_s(sql, CreateTableLen, createpptable, name.c_str());
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str());
 
 	CreateTableSql(sql);
 }

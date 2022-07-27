@@ -45,7 +45,7 @@ extern "C"
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器
 #include "../kernel/Internal.h"				// 网络
-#include "../kernel/Log.h"					// 日志
+#include "../kernel/hybridity.h"			// 杂合
 #include "../kernel/MysqlHelper.h"			// 数据库
 #include "../kernel/ConditionVariable.h"	// 条件变量
 #include "../kernel/DataLine.h"				// 数据处理

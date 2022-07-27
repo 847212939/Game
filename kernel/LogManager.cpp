@@ -272,7 +272,7 @@ void CGameLogManage::Fflush(char* logBuf)
 			continue;
 		}
 
-		if (len + it->second.size() >= LogBufLen || min1 != min2)
+		if (len + it->second.size() >= LOG_BUF_LEN || min1 != min2)
 		{
 			if (pFile)
 			{
@@ -289,7 +289,7 @@ void CGameLogManage::Fflush(char* logBuf)
 		pFile = it->first;
 	}
 
-	if (len < LogBufLen)
+	if (len < LOG_BUF_LEN)
 	{
 		if (pFile)
 		{
@@ -303,7 +303,7 @@ void CGameLogManage::Fflush(char* logBuf)
 // 日志处理线程
 void CGameLogManage::HandlerLogThread(bool& run)
 {
-	char* logBuf = new char[LogBufLen];
+	char* logBuf = new char[LOG_BUF_LEN];
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	int tm = baseCfgMgr.GetLogPrintTm();
 
