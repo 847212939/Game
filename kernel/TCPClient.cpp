@@ -203,7 +203,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = m_PlayerPrepClient->GetSceneClient().GetPlayerCenterClient().GetPlayerClient(pSocketClose->uIndex);
+	PlayerClient* playerClient = m_PlayerPrepClient->GetSceneClient().GetPlayerCenterClient().GetPlayerClientByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);

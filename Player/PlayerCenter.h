@@ -14,14 +14,16 @@ public:
 
 public:
 	void SetSceneClient(SceneClient* sceneClient);
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
+	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 
 public:
 	void GetSocketSet(std::vector<UINT>& socketVec);
-	const SceneClient* GetSceneClient();
+
+	SceneClient* GetSceneClient();
 	ConditionVariable& GetConditionVariable();
-	PlayerClient* GetPlayerClient(unsigned int index);
+	PlayerClient* GetPlayerClientByUserid(uint64_t userId);
+	PlayerClient* GetPlayerClientByIndex(unsigned int index);
 
 private:
 	void HandlerPlayerThread();

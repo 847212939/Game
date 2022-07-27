@@ -10,7 +10,7 @@ public:
 	void Init();
 
 public:
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
+	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 	void SetPlayerPrepClient(PlayerPrepClient* playerPrepClient);
 
 public:

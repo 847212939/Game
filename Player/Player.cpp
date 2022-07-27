@@ -29,7 +29,7 @@ bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, 
 	return pTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 
-void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
+void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	NetCallBackFun(cmd, playerInfo);
 }

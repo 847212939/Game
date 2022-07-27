@@ -18,7 +18,7 @@ void Scene::Init()
 }
 
 // 分发消息
-void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
+void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (MsgCmd::MsgCmd_Scene == cmd)
 	{
@@ -37,7 +37,7 @@ void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		m_PlayerCenterClient.DispatchMessage(cmd, playerInfo);
+		m_PlayerCenterClient.MessageDispatch(cmd, playerInfo);
 	}
 }
 

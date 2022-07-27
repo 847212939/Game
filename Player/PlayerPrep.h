@@ -9,7 +9,6 @@ public:
 
 public:
 	void Init();
-	void HandlerExecuteSqlThread();
 	void HandlerMessage(PlayerInfo* playerInfo);
 
 public:
@@ -52,7 +51,8 @@ public:
 
 private:
 	bool InitDB();
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
+	void HandlerExecuteSqlThread();
+	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
 	static char createptable[CreateTableLen];

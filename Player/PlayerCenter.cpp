@@ -49,7 +49,7 @@ void PlayerCenter::Init()
 }
 
 // 分发消息
-void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
+void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!m_SceneClient)
 	{
@@ -82,7 +82,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
 		return;
 	}
-	PlayerClient* playerClient = GetPlayerClient(playerInfo->m_pMsg->uIndex);
+	PlayerClient* playerClient = GetPlayerClientByIndex(playerInfo->m_pMsg->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->m_pMsg->uIndex);
@@ -109,7 +109,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		playerClient->DispatchMessage(cmd, playerInfo);
+		playerClient->MessageDispatch(cmd, playerInfo);
 	}
 }
 
@@ -197,7 +197,7 @@ void PlayerCenter::HandlerPlayerThread()
 				CloseSocketEvent(loadPKey.GetIndex());
 				continue;
 			}
-			PlayerClient* playerClient = GetPlayerClient(loadPKey.GetIndex());
+			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
 			if (playerClient)
 			{
 				new(playerClient) PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, playerPrepClient);
@@ -235,13 +235,30 @@ void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 }
 
 // 获取玩家
-PlayerClient* PlayerCenter::GetPlayerClient(unsigned int index)
+PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 {
 	if (index >= m_pPlayerVec.size() || index < 0)
 	{
 		return nullptr;
 	}
 	return m_pPlayerVec[index];
+}
+
+PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
+{
+	for (auto* playerClient : m_pPlayerVec)
+	{
+		if (!playerClient)
+		{
+			continue;
+		}
+		if (playerClient->GetUserId() == userId)
+		{
+			return playerClient;
+		}
+	}
+
+	return nullptr;
 }
 
 // 获取在线玩家
@@ -269,7 +286,7 @@ void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
 }
 
 // 获取场景
-const SceneClient* PlayerCenter::GetSceneClient()
+SceneClient* PlayerCenter::GetSceneClient()
 {
 	return m_SceneClient;
 }

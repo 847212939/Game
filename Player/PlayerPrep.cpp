@@ -105,12 +105,12 @@ void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
 	}
 	else if (playerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
-		DispatchMessage((MsgCmd)uMainID, playerInfo);
+		MessageDispatch((MsgCmd)uMainID, playerInfo);
 	}
 }
 
 // 分发消息
-void PlayerPrep::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
+void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	// 处理登录协议等.. 玩家没有创建
 	if (MsgCmd::MsgCmd_PlayerPreproces == cmd)
@@ -130,7 +130,7 @@ void PlayerPrep::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		m_SceneClient.DispatchMessage(cmd, playerInfo);
+		m_SceneClient.MessageDispatch(cmd, playerInfo);
 	}
 }
 
