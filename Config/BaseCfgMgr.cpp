@@ -46,6 +46,11 @@ void CBaseCfgMgr::ReadExitCfg(std::string exit)
 	m_Exit = exit; 
 }
 
+void CBaseCfgMgr::ReadKeyCfg(std::string key)
+{
+	m_Key = key;
+}
+
 void CBaseCfgMgr::ReadDbCfg(DbCfg* config) 
 { 
 	m_DbCfg = *config; 
@@ -94,4 +99,9 @@ const DbCfg& CBaseCfgMgr::GetDbCfg()
 const LogicCfg& CBaseCfgMgr::GetLogicCfg() 
 { 
 	return m_LogicCfg; 
+}
+
+std::string CBaseCfgMgr::GetKey()
+{
+	return m_Key;
 }

@@ -33,6 +33,7 @@ public:
 	void ReadThreadCntCfg(int cnt);
 	void ReadLogPrintTmCfg(int tm);
 	void ReadMaxSocketCntCfg(int cnt);
+	void ReadKeyCfg(std::string key);
 	void ReadExitCfg(std::string exit);
 
 	void ReadDbCfg(DbCfg* config);
@@ -47,6 +48,7 @@ public:
 	std::string GetExit();
 	const DbCfg& GetDbCfg();
 	const LogicCfg& GetLogicCfg();
+	std::string GetKey();
 
 private:
 	int			m_logPrintTm;
@@ -58,4 +60,5 @@ private:
 	LogicCfg	m_LogicCfg;
 	DbCfg		m_DbCfg;
 	std::string m_Exit;
+	std::string m_Key;
 };

@@ -57,3 +57,8 @@ void ConfigMgr::ReadTimerCntCfg(int cnt)
 {
 	m_CBaseCfgMgr.ReadTimerCntCfg(cnt);
 }
+
+void ConfigMgr::ReadKeyCfg(std::string key)
+{
+	m_CBaseCfgMgr.ReadKeyCfg(key);
+}

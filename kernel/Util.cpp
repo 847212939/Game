@@ -240,3 +240,27 @@ long long Util::GetSysMilliseconds()
 	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
 	return duration_in_ms.count();
 }
+
+uint8_t* Util::Encrypt(uint8_t* content, int length)
+{
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	std::string sKey = baseCfgMgr.GetKey();
+
+	for (size_t i = 0; i < length; i++)
+	{
+		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+	}
+	return content;
+}
+
+uint8_t* Util::Decrypt(uint8_t* content, int length)
+{
+	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
+	std::string sKey = baseCfgMgr.GetKey();
+
+	for (size_t i = 0; i < length; i++)
+	{
+		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+	}
+	return content;
+}

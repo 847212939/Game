@@ -15,8 +15,11 @@ BaseCfg =
     --程序退出
     Exit = "exit",
 
-    -- 最大链接数量 libevent 单线程默认的32000
-    maxSocketCnt = 8192,   
+    --最大链接数量 单线程默认的32000
+    maxSocketCnt = 8192,
+    
+    --对称加密
+    Skey = "nishishabima",
 
     LogicCfg =
     {

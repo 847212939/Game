@@ -86,17 +86,17 @@ public:
 	static unsigned int GetRandNum();
 	static int GetRandRange(int iMin, int iMax);
 
+	static void Exit(bool& run, TCPClient& clien);
+	static long long GetSysMilliseconds();
+
+	// 对称加密
+	static uint8_t* Encrypt(uint8_t* content, int length);
+	static uint8_t* Decrypt(uint8_t* content, int length);
+
 public:
 	// 唯一ID
 	IDGen& GetIDGen();
 	uint64_t CreateUserId();
-
-public:
-	// 程序退出
-	static void Exit(bool& run, TCPClient& clien);
-
-public:
-	static long long GetSysMilliseconds();
 
 private:
 	static std::random_device	m_rd;

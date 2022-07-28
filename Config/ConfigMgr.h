@@ -21,6 +21,7 @@ public:
 	void ReadMaxSocketCntCfg(int cnt);
 	void ReadExitCfg(std::string exit);
 	void ReadTimerCntCfg(int cnt);
+	void ReadKeyCfg(std::string key);
 
 private:
 	CBaseCfgMgr m_CBaseCfgMgr;
