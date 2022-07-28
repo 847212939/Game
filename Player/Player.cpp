@@ -7,6 +7,8 @@ Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const 
 	m_index(index),
 	m_load(false)
 {
+	m_AttrsMap.clear();
+	m_ExitFunMap.clear();
 	m_NetCBFunMap.clear();
 	m_AttrsFunMap.clear();
 	m_MysqlCBFunMap.clear();

@@ -20,21 +20,14 @@ public:
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
-	// 上线处理
+	// 上下线处理
 	void LoadMysql();
 	void EnterGame();
 	bool EnterScene();
-
-public:
-	// 下线处理
 	void ExitGame(SocketCloseLine* pSocketClose);
-
-public:
-	// 数据库加载是否完成
 	void SetLoad(bool load);
 
 public:
-	// 回调函数
 	void AddAttrsCallback(std::function<void()>&& fun);
 	void AddExitCallback(std::function<void(SocketCloseLine*)>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
