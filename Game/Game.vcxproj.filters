@@ -200,5 +200,8 @@
     <None Include="..\Config\Config.pkg">
       <Filter>配置管理</Filter>
     </None>
+    <None Include="..\Config\LoadScript.lua">
+      <Filter>配置管理</Filter>
+    </None>
   </ItemGroup>
 </Project>
