@@ -2,19 +2,14 @@
 
 MoveSys::MoveSys(SubPlayer* pSubPlayer) : m_pSubPlayer(pSubPlayer)
 {
-	Register();
-}
-
-MoveSys::~MoveSys()
-{
-}
-
-void MoveSys::Register()
-{
 	RegisterLgout(m_pSubPlayer, this, MoveSys::ExitCallback);
 	RegisterAttrs(m_pSubPlayer, this, MoveSys::EnterGameCallback);
 	RegisterMysql(m_pSubPlayer, this, MoveSys::MysqlCallback, "move");
 	RegisterNetwk(m_pSubPlayer, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
+}
+
+MoveSys::~MoveSys()
+{
 }
 
 void MoveSys::MysqlCallback(std::string&& data)
