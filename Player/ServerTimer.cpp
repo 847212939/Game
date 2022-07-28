@@ -22,7 +22,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 {
 	if (!m_TCPClient)
 	{
-		COUT_LOG(LOG_CERROR, "m_TCPClient == NULL");
+		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
 		return false;
 	}
 	if (timeonce != 100 && timeonce != 1000)
@@ -67,7 +67,7 @@ void CServerTimer::ThreadCheckTimer()
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 {
 	struct TimerParam* param = (struct TimerParam*)arg;
-	if (param == NULL)
+	if (param == nullptr)
 	{
 		COUT_LOG(LOG_CERROR, "TimeoutCB ²ÎÊýÎª¿Õ");
 		return;
@@ -86,19 +86,19 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	}
 	if (!pCServerTimer->m_TCPClient)
 	{
-		COUT_LOG(LOG_CERROR, "m_TCPClient == NULL");
+		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
 		return;
 	}
 	SubPlayerPreproces* pSubPlayerPreproces = pCServerTimer->m_TCPClient->GetSubPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
-		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == NULL");
+		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == nullptr");
 		return;
 	}
 	CDataLine* pCDataLine = pCServerTimer->m_TCPClient->GetRecvDataLine();
 	if (!pCDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "pDataLine == NULL");
+		COUT_LOG(LOG_CERROR, "pDataLine == nullptr");
 		return;
 	}
 	if (!pCServerTimer->m_bRun)

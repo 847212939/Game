@@ -12,7 +12,7 @@ struct RecvThreadParam
 };
 
 CTCPSocketManage::CTCPSocketManage()
-	:m_listenerBase(NULL),
+	:m_listenerBase(nullptr),
 	m_running(false),
 	m_bindIP(""),
 	m_socketType(SocketType::SOCKET_TYPE_TCP),
@@ -38,7 +38,7 @@ CTCPSocketManage::~CTCPSocketManage()
 	WSACleanup();
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = NULL*/, SocketType socketType /* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = nullptr*/, SocketType socketType /* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
@@ -118,7 +118,7 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	m_uCurSocketIndex = 0;
 
 	// 创建发送队列
-	if (m_pSendDataLine == NULL)
+	if (m_pSendDataLine == nullptr)
 	{
 		m_pSendDataLine = new CDataLine;
 	}
@@ -153,7 +153,7 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	}
 
 	//数据缓存
-	void* pDataLineHead = NULL;
+	void* pDataLineHead = nullptr;
 
 	while (pThis->m_running)
 	{
@@ -284,7 +284,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 			return;
 		}
 
-		if (event_add(workInfo.event, NULL) < 0)
+		if (event_add(workInfo.event, nullptr) < 0)
 		{
 			COUT_LOG(LOG_CERROR, "TCP event_add ERROR");
 			return;
@@ -337,7 +337,7 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 	// 获取连接信息
 	struct sockaddr_in* addrClient = (struct sockaddr_in*)sa;
 	PlatformSocketInfo tcpInfo;
-	tcpInfo.acceptMsgTime = time(NULL);
+	tcpInfo.acceptMsgTime = time(nullptr);
 	strcpy(tcpInfo.ip, inet_ntoa(addrClient->sin_addr));
 	tcpInfo.port = ntohs(addrClient->sin_port);
 	tcpInfo.acceptFd = fd;	//服务器accept返回套接字用来和客户端通信
@@ -409,7 +409,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	if (realAllSize < sizeof(PlatformSocketInfo) || realAllSize % sizeof(PlatformSocketInfo) != 0)
 	{
 		COUT_LOG(LOG_CERROR, "#### ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld  ######", realAllSize, sizeof(PlatformSocketInfo));
-		event_add(pThis->m_workBaseVec[threadIndex].event, NULL);
+		event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 		return;
 	}
 
@@ -422,13 +422,13 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 		pThis->AddTCPSocketInfo(threadIndex, pTCPSocketInfo);
 	}
 
-	event_add(pThis->m_workBaseVec[threadIndex].event, NULL);
+	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 }
 
 void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
-	struct bufferevent* bev = NULL;
+	struct bufferevent* bev = nullptr;
 	SOCKET fd = pTCPSocketInfo->acceptFd;
 
 	// 分配索引算法
@@ -457,7 +457,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	pRecvThreadParam->index = index;
 
 	// 添加事件，并设置好回调函数
-	bufferevent_setcb(bev, ReadCB, NULL, EventCB, (void*)pRecvThreadParam);
+	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
 		COUT_LOG(LOG_CERROR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
@@ -473,7 +473,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
 		tvRead.tv_usec = 0;
-		bufferevent_set_timeouts(bev, &tvRead, NULL);
+		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
 
 	// 保存信息
@@ -506,7 +506,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
 	// 发送连接成功消息
-	SendData(index, NULL, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
+	SendData(index, nullptr, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
 
 	COUT_LOG(LOG_INFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
@@ -523,9 +523,9 @@ void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 {
-	if (bev == NULL)
+	if (bev == nullptr)
 	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == NULL");
+		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
 		return false;
 	}
 
@@ -577,10 +577,10 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 			return false;
 		}
 
-		void* pData = NULL;
+		void* pData = nullptr;
 		if (realSize > 0)
 		{
-			// 没数据就为NULL
+			// 没数据就为nullptr
 			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
 		}
 
@@ -699,7 +699,7 @@ const char* CTCPSocketManage::GetSocketIP(int index)
 {
 	if (index < 0 || index >= m_socketInfoVec.size())
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	return m_socketInfoVec[index].ip;
@@ -709,7 +709,7 @@ const TCPSocketInfo* CTCPSocketManage::GetTCPSocketInfo(int index)
 {
 	if (index < 0 || index >= m_socketInfoVec.size())
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	return &m_socketInfoVec[index];
@@ -773,7 +773,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	// 释放参数内存
 	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
-	bufferevent_getcb(tcpInfo.bev, NULL, NULL, NULL, (void**)&pRecvThreadParam);
+	bufferevent_getcb(tcpInfo.bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
 	if (pRecvThreadParam)
 	{
 		SafeDelete(pRecvThreadParam);
@@ -962,7 +962,7 @@ int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]
 		return -1;
 	}
 	SOCKET client, server;
-	struct addrinfo addr, * result = NULL;
+	struct addrinfo addr, * result = nullptr;
 	const char* address;
 	int opt = 1;
 

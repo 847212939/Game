@@ -51,7 +51,7 @@ void IDGen::Init(int serverType, int serverID)
 
 uint64_t IDGen::GenerateUID()
 {
-	time_t curSecond = time(NULL);
+	time_t curSecond = time(nullptr);
 	if (curSecond != m_lastSecond)
 	{
 		m_lastSecond = curSecond;

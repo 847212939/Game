@@ -10,7 +10,7 @@ public:
 	bool Stop();
 	bool UnInit();
 	bool Start(ServiceType serverType);
-	bool Init(int maxCount, int port, const char* ip = NULL, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	bool Init(int maxCount, int port, const char* ip = nullptr, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 
 public:
 	bool CloseSocket(int index);

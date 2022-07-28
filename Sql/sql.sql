@@ -22,8 +22,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `useraccount`;
 CREATE TABLE `useraccount` (
-  `userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `userid` varchar(255) COLLATE utf8_unicode_ci NOT nullptr,
+  `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT nullptr,
   PRIMARY KEY (`userid`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 SET FOREIGN_KEY_CHECKS=1;
@@ -33,8 +33,8 @@ SET FOREIGN_KEY_CHECKS=1;
 -- ----------------------------
 DROP TABLE IF EXISTS `move`;
 CREATE TABLE `move` (
-  `userid` bigint(20) NOT NULL,
-  `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `userid` bigint(20) NOT nullptr,
+  `data` varchar(1024) COLLATE utf8_unicode_ci DEFAULT nullptr,
   PRIMARY KEY (`userid`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 

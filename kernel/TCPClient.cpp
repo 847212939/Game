@@ -54,7 +54,7 @@ void TCPClient::HandlerRecvDataListThread()
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == NULL");
+		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == nullptr");
 		return;
 	}
 	if (!GetRuninged())
@@ -63,14 +63,14 @@ void TCPClient::HandlerRecvDataListThread()
 		return;
 	}
 
-	void* pDataLineHead = NULL;
+	void* pDataLineHead = nullptr;
 	bool& run = GetRuninged();
 
 	while (run)
 	{
 		unsigned int uDataKind = 0;
 		unsigned int bytes = pDataLine->GetData(&pDataLineHead, run, uDataKind);
-		if (bytes == 0 || pDataLineHead == NULL || uDataKind <= 0)
+		if (bytes == 0 || pDataLineHead == nullptr || uDataKind <= 0)
 		{
 			continue;
 		}

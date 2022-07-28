@@ -122,7 +122,7 @@ static int tolua_Config_ConfigMgr_delete00(lua_State* tolua_S)
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", nullptr);
 #endif
   Mtolua_delete(self);
  }
@@ -153,7 +153,7 @@ static int tolua_Config_ConfigMgr_CoutLog00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   const char* log = ((const char*)  tolua_tostring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CoutLog'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CoutLog'", nullptr);
 #endif
   {
    self->CoutLog(log);
@@ -186,7 +186,7 @@ static int tolua_Config_ConfigMgr_ReadLogicCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   LogicCfg* config = ((LogicCfg*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadLogicCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadLogicCfg'", nullptr);
 #endif
   {
    self->ReadLogicCfg(config);
@@ -219,7 +219,7 @@ static int tolua_Config_ConfigMgr_ReadDbCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   DbCfg* config = ((DbCfg*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadDbCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadDbCfg'", nullptr);
 #endif
   {
    self->ReadDbCfg(config);
@@ -252,7 +252,7 @@ static int tolua_Config_ConfigMgr_ReadThreadCntCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   int cnt = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadThreadCntCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadThreadCntCfg'", nullptr);
 #endif
   {
    self->ReadThreadCntCfg(cnt);
@@ -285,7 +285,7 @@ static int tolua_Config_ConfigMgr_ReadServerIDCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   int id = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadServerIDCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadServerIDCfg'", nullptr);
 #endif
   {
    self->ReadServerIDCfg(id);
@@ -318,7 +318,7 @@ static int tolua_Config_ConfigMgr_ReadLogPrintTmCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   int tm = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadLogPrintTmCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadLogPrintTmCfg'", nullptr);
 #endif
   {
    self->ReadLogPrintTmCfg(tm);
@@ -351,7 +351,7 @@ static int tolua_Config_ConfigMgr_ReadMaxSocketCntCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   int cnt = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadMaxSocketCntCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadMaxSocketCntCfg'", nullptr);
 #endif
   {
    self->ReadMaxSocketCntCfg(cnt);
@@ -384,7 +384,7 @@ static int tolua_Config_ConfigMgr_ReadExitCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   std::string exit = ((std::string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadExitCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadExitCfg'", nullptr);
 #endif
   {
    self->ReadExitCfg(exit);
@@ -417,7 +417,7 @@ static int tolua_Config_ConfigMgr_ReadTimerCntCfg00(lua_State* tolua_S)
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
   int cnt = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadTimerCntCfg'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadTimerCntCfg'", nullptr);
 #endif
   {
    self->ReadTimerCntCfg(cnt);
@@ -438,7 +438,7 @@ static int tolua_get_LogicCfg_ip(lua_State* tolua_S)
 {
   LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",nullptr);
 #endif
   tolua_pushcppstring(tolua_S,(const char*)self->ip);
  return 1;
@@ -452,7 +452,7 @@ static int tolua_set_LogicCfg_ip(lua_State* tolua_S)
   LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",nullptr);
   if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -468,7 +468,7 @@ static int tolua_get_LogicCfg_port(lua_State* tolua_S)
 {
   LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",nullptr);
 #endif
   tolua_pushnumber(tolua_S,(lua_Number)self->port);
  return 1;
@@ -482,7 +482,7 @@ static int tolua_set_LogicCfg_port(lua_State* tolua_S)
   LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",nullptr);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -565,7 +565,7 @@ static int tolua_Config_LogicCfg_delete00(lua_State* tolua_S)
  {
   LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", nullptr);
 #endif
   Mtolua_delete(self);
  }
@@ -584,7 +584,7 @@ static int tolua_get_DbCfg_ip(lua_State* tolua_S)
 {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",nullptr);
 #endif
   tolua_pushcppstring(tolua_S,(const char*)self->ip);
  return 1;
@@ -598,7 +598,7 @@ static int tolua_set_DbCfg_ip(lua_State* tolua_S)
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",nullptr);
   if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -614,7 +614,7 @@ static int tolua_get_DbCfg_user(lua_State* tolua_S)
 {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",nullptr);
 #endif
   tolua_pushcppstring(tolua_S,(const char*)self->user);
  return 1;
@@ -628,7 +628,7 @@ static int tolua_set_DbCfg_user(lua_State* tolua_S)
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",nullptr);
   if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -644,7 +644,7 @@ static int tolua_get_DbCfg_passwd(lua_State* tolua_S)
 {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",nullptr);
 #endif
   tolua_pushcppstring(tolua_S,(const char*)self->passwd);
  return 1;
@@ -658,7 +658,7 @@ static int tolua_set_DbCfg_passwd(lua_State* tolua_S)
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",nullptr);
   if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -674,7 +674,7 @@ static int tolua_get_DbCfg_database(lua_State* tolua_S)
 {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",nullptr);
 #endif
   tolua_pushcppstring(tolua_S,(const char*)self->database);
  return 1;
@@ -688,7 +688,7 @@ static int tolua_set_DbCfg_database(lua_State* tolua_S)
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",nullptr);
   if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -704,7 +704,7 @@ static int tolua_get_DbCfg_port(lua_State* tolua_S)
 {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",nullptr);
 #endif
   tolua_pushnumber(tolua_S,(lua_Number)self->port);
  return 1;
@@ -718,7 +718,7 @@ static int tolua_set_DbCfg_port(lua_State* tolua_S)
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",nullptr);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
@@ -801,7 +801,7 @@ static int tolua_Config_DbCfg_delete00(lua_State* tolua_S)
  {
   DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", nullptr);
 #endif
   Mtolua_delete(self);
  }
@@ -819,12 +819,12 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
 {
  tolua_open(tolua_S);
  tolua_reg_types(tolua_S);
- tolua_module(tolua_S,NULL,0);
- tolua_beginmodule(tolua_S,NULL);
+ tolua_module(tolua_S,nullptr,0);
+ tolua_beginmodule(tolua_S,nullptr);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"ConfigMgr","ConfigMgr","",tolua_collect_ConfigMgr);
   #else
-  tolua_cclass(tolua_S,"ConfigMgr","ConfigMgr","",NULL);
+  tolua_cclass(tolua_S,"ConfigMgr","ConfigMgr","",nullptr);
   #endif
   tolua_beginmodule(tolua_S,"ConfigMgr");
    tolua_function(tolua_S,"new",tolua_Config_ConfigMgr_new00);
@@ -844,7 +844,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",tolua_collect_LogicCfg);
   #else
-  tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",NULL);
+  tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",nullptr);
   #endif
   tolua_beginmodule(tolua_S,"LogicCfg");
    tolua_variable(tolua_S,"ip",tolua_get_LogicCfg_ip,tolua_set_LogicCfg_ip);
@@ -857,7 +857,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"DbCfg","DbCfg","",tolua_collect_DbCfg);
   #else
-  tolua_cclass(tolua_S,"DbCfg","DbCfg","",NULL);
+  tolua_cclass(tolua_S,"DbCfg","DbCfg","",nullptr);
   #endif
   tolua_beginmodule(tolua_S,"DbCfg");
    tolua_variable(tolua_S,"ip",tolua_get_DbCfg_ip,tolua_set_DbCfg_ip);

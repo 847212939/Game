@@ -107,7 +107,7 @@ void CGameLogManage::Release()
 		if (fp)
 		{
 			fclose(fp);
-			fp = NULL;
+			fp = nullptr;
 		}
 	}
 
@@ -194,7 +194,7 @@ FILE* CGameLogManage::GetLogFileFp(std::string&& strFile)
 {
 	if (strFile == "")
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	auto iter = m_filesFpMap.find(strFile);
@@ -203,7 +203,7 @@ FILE* CGameLogManage::GetLogFileFp(std::string&& strFile)
 		return iter->second;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // 设置进程日志目录

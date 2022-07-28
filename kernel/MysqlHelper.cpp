@@ -2,7 +2,7 @@
 
 CMysqlHelper::CMysqlHelper() : m_bConnected(false)
 {
-	m_pstMql = mysql_init(NULL);
+	m_pstMql = mysql_init(nullptr);
 }
 
 CMysqlHelper::CMysqlHelper(const std::string& sHost, const std::string& sUser, const std::string& sPasswd, const std::string& sDatabase, const std::string& sCharSet, int port, int iFlag)
@@ -10,7 +10,7 @@ CMysqlHelper::CMysqlHelper(const std::string& sHost, const std::string& sUser, c
 {
 	init(sHost, sUser, sPasswd, sDatabase, sCharSet, port, iFlag);
 
-	m_pstMql = mysql_init(NULL);
+	m_pstMql = mysql_init(nullptr);
 }
 
 CMysqlHelper::CMysqlHelper(const DBConf& tcDBConf)
@@ -18,15 +18,15 @@ CMysqlHelper::CMysqlHelper(const DBConf& tcDBConf)
 {
 	m_dbConf = tcDBConf;
 
-	m_pstMql = mysql_init(NULL);
+	m_pstMql = mysql_init(nullptr);
 }
 
 CMysqlHelper::~CMysqlHelper()
 {
-	if (m_pstMql != NULL)
+	if (m_pstMql != nullptr)
 	{
 		mysql_close(m_pstMql);
-		m_pstMql = NULL;
+		m_pstMql = nullptr;
 	}
 }
 
@@ -50,9 +50,9 @@ void CMysqlHelper::connect()
 {
 	disconnect();
 
-	if (m_pstMql == NULL)
+	if (m_pstMql == nullptr)
 	{
-		m_pstMql = mysql_init(NULL);
+		m_pstMql = mysql_init(nullptr);
 	}
 
 	//建立连接后, 自动调用设置字符集语句
@@ -64,7 +64,7 @@ void CMysqlHelper::connect()
 		}
 	}
 
-	if (mysql_real_connect(m_pstMql, m_dbConf.host.c_str(), m_dbConf.user.c_str(), m_dbConf.password.c_str(), m_dbConf.database.c_str(), m_dbConf.port, NULL, m_dbConf.flag) == NULL)
+	if (mysql_real_connect(m_pstMql, m_dbConf.host.c_str(), m_dbConf.user.c_str(), m_dbConf.password.c_str(), m_dbConf.database.c_str(), m_dbConf.port, nullptr, m_dbConf.flag) == nullptr)
 	{
 		throw MysqlHelper_Exception("[CMysqlHelper::connect]: mysql_real_connect: " + std::string(mysql_error(m_pstMql)));
 	}
@@ -74,10 +74,10 @@ void CMysqlHelper::connect()
 
 void CMysqlHelper::disconnect()
 {
-	if (m_pstMql != NULL)
+	if (m_pstMql != nullptr)
 	{
 		mysql_close(m_pstMql);
-		m_pstMql = mysql_init(NULL);
+		m_pstMql = mysql_init(nullptr);
 	}
 
 	m_bConnected = false;
@@ -316,7 +316,7 @@ bool CMysqlHelper::queryRecord(const std::string& sSql, MysqlData& data, bool bC
 
 	MYSQL_RES* pstRes = mysql_store_result(m_pstMql);
 
-	if (pstRes == NULL)
+	if (pstRes == nullptr)
 	{
 		throw MysqlHelper_Exception("[CMysqlHelper::queryRecord]: mysql_store_result: " + sSql + " : " + std::string(mysql_error(m_pstMql)));
 	}
@@ -331,7 +331,7 @@ bool CMysqlHelper::queryRecord(const std::string& sSql, MysqlData& data, bool bC
 	std::map<std::string, std::string> mpRow;
 	MYSQL_ROW stRow;
 
-	while ((stRow = mysql_fetch_row(pstRes)) != (MYSQL_ROW)NULL)
+	while ((stRow = mysql_fetch_row(pstRes)) != (MYSQL_ROW)nullptr)
 	{
 		mpRow.clear();
 		unsigned long* lengths = mysql_fetch_lengths(pstRes);
@@ -397,11 +397,11 @@ void CMysqlHelper::sqlExec(const char* sql, bool bSetGBK/* = false*/)
 		throw MysqlHelper_Exception("[CMysqlHelper::execute]: mysql_query: [ " + std::string(sql) + " ] :" + std::string(mysql_error(m_pstMql)));
 	}
 
-	MYSQL_RES* pRes = NULL;
+	MYSQL_RES* pRes = nullptr;
 	do
 	{
 		pRes = mysql_use_result(m_pstMql);
-		if (pRes == NULL)
+		if (pRes == nullptr)
 		{
 			return;
 		}
