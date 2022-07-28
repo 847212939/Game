@@ -147,7 +147,7 @@ void TCPClient::AddNetTypeCallback(int cmd, std::function<void(void* pDataLineHe
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-bool TCPClient::CallBackFun(int cmd, void* pDataLineHead)
+bool TCPClient::CallBackFun(unsigned int cmd, void* pDataLineHead)
 {
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())

@@ -37,7 +37,7 @@ else if (ERRTYPE == LOG_CINFO) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LO
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))
 
-typedef std::map<int, std::function<void(void* pDataLineHead)>>		TypeFunMap;
+typedef std::map<unsigned int, std::function<void(void* pDataLineHead)>>		TypeFunMap;
 
 // 注册客户端服务器消息回调
 #define RegisterNetType(obj, name, cmd) obj->AddNetTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));
