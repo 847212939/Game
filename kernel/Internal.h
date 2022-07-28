@@ -155,4 +155,19 @@ struct SocketReadLine
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
 
+//SOCKET关闭通知结构定义
+struct SocketCloseLine
+{
+	DataLineHead						LineHead;					//队列头
+	UINT								uIndex;						//SOCKT 索引
+	ULONG								uAccessIP;					//SOCKET IP
+	UINT								uConnectTime;				//连接时间
+	BYTE								socketType;					//socket类型 enum SocketType
+
+	SocketCloseLine()
+	{
+		memset(this, 0, sizeof(SocketCloseLine));
+	}
+};
+
 #pragma pack()

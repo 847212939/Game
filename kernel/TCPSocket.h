@@ -23,14 +23,17 @@ public:
 	CDataLine* GetSendDataLine();
 	ConditionVariable& GetConditionVariable();
 	std::vector<std::thread*>& GetSockeThreadVec();
+
 	bool& GetRuninged();
 	bool IsConnected(int index);
-	unsigned int GetCurSocketSize();
-	const char* GetSocketIP(int index);
+	void GetSocketSet(std::vector<unsigned int>& vec);
+
 	const std::set<unsigned int>* GetSocketSet();
 	const TCPSocketInfo* GetTCPSocketInfo(int index);
-	void GetSocketSet(std::vector<unsigned int>& vec);
 	const std::vector<TCPSocketInfo>& GetSocketVector();
+
+	const char* GetSocketIP(int index);
+	unsigned int GetCurSocketSize();
 
 private:
 	static void SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize);
@@ -42,6 +45,7 @@ private:
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
+	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
 	static void ThreadAcceptThread(void* pThreadData);

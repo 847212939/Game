@@ -39,4 +39,5 @@ else if (ERRTYPE == LOG_CINFO) { CLog::Write(LogMgr()->GetErrorLog().c_str(), LO
 
 typedef std::map<int, std::function<void(void* pDataLineHead)>>		TypeFunMap;
 
-#define RegisterType(obj, name, cmd) obj->AddTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));
+// 注册客户端服务器消息回调
+#define RegisterNetType(obj, name, cmd) obj->AddNetTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));

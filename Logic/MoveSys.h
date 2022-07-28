@@ -17,6 +17,7 @@ private:
 	void EnterGameCallback();
 	void MysqlCallback(std::string&& data);
 	void NetworkCallback(PlayerInfo* pPlayerInfo);
+	void ExitCallback(SocketCloseLine* pPlayerInfo);
 
 private:
 	bool MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo);

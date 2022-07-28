@@ -2,8 +2,9 @@
 
 TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
 {
-	RegisterType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
-	RegisterType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
+	RegisterNetType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
+	RegisterNetType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
+	RegisterNetType(this, TCPClient::CloseSocketCallback, HD_SOCKET_CLOSE);
 }
 
 bool TCPClient::InitTCPClient(ServiceType serverType)
@@ -134,7 +135,7 @@ void TCPClient::NotifyAll()
 	}
 }
 
-void TCPClient::AddTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun)
+void TCPClient::AddNetTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun)
 {
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
@@ -196,5 +197,20 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	{
 		COUT_LOG(LOG_CERROR, "Failed to process data，index=%d Out of range", index);
 	}
+}
+
+void TCPClient::CloseSocketCallback(void* pDataLineHead)
+{
+	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
+
+	SubPlayer* pSubPlayer = m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
+	if (!pSubPlayer)
+	{
+		COUT_LOG(LOG_CINFO, "TCP close pSubPlayer is null");
+		return;
+	}
+
+	// 玩家下线处理
+	pSubPlayer->ExitGame(pSocketClose);
 }
 

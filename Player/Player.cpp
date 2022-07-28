@@ -54,6 +54,11 @@ SubPlayerPreproces* Player::GetSubPlayerPreproces()
 	return m_SubPlayerPreproces;
 }
 
+void Player::AddExitCallback(std::function<void(SocketCloseLine*)>&& fun)
+{
+	m_ExitFunMap.push_back(fun);
+}
+
 void Player::AddAttrsCallback(std::function<void()>&& fun)
 {
 	m_AttrsFunMap.push_back(fun);
@@ -81,6 +86,14 @@ void Player::AddMysqlCallback(std::string name, std::function<void(std::string&&
 	}
 
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code table = %s", name.c_str());
+}
+
+void Player::ExitCallBackFun(SocketCloseLine* pSocketClose)
+{
+	for (auto& fun : m_ExitFunMap)
+	{
+		fun(pSocketClose);
+	}
 }
 
 void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
@@ -214,9 +227,11 @@ void Player::EnterGame()
 }
 
 // Íæ¼ÒÍË³ö
-void Player::ExitGame()
+void Player::ExitGame(SocketCloseLine* pSocketClose)
 {
 	m_load = false;
+
+	ExitCallBackFun(pSocketClose);
 }
 
 void Player::SetLoad(bool load)

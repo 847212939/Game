@@ -11,6 +11,7 @@ MoveSys::~MoveSys()
 
 void MoveSys::Register()
 {
+	RegisterLgout(m_pSubPlayer, this, MoveSys::ExitCallback);
 	RegisterAttrs(m_pSubPlayer, this, MoveSys::EnterGameCallback);
 	RegisterMysql(m_pSubPlayer, this, MoveSys::MysqlCallback, "move");
 	RegisterNetwk(m_pSubPlayer, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
@@ -85,6 +86,11 @@ void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 	}
 
 	return;
+}
+
+void MoveSys::ExitCallback(SocketCloseLine* pPlayerInfo)
+{
+	COUT_LOG(LOG_CINFO, "Íæ¼ÒÍË³ö");
 }
 
 bool MoveSys::MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo)

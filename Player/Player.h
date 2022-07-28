@@ -27,7 +27,7 @@ public:
 
 public:
 	// 下线处理
-	void ExitGame();
+	void ExitGame(SocketCloseLine* pSocketClose);
 
 public:
 	// 数据库加载是否完成
@@ -36,10 +36,12 @@ public:
 public:
 	// 回调函数
 	void AddAttrsCallback(std::function<void()>&& fun);
+	void AddExitCallback(std::function<void(SocketCloseLine*)>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	void AddMysqlCallback(std::string name, std::function<void(std::string&&)>&& fun);
 	void AttrsCallBackFun();
 	void MysqlCallBackFun();
+	void ExitCallBackFun(SocketCloseLine* pSocketClose);
 	void NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
 
 public:
@@ -61,6 +63,7 @@ private:
 	uint64_t				m_userId;				// 玩家id
 	AttrsMap				m_AttrsMap;				// 属性集合
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
+	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
 	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
