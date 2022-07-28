@@ -3,7 +3,8 @@
 
 PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()])
+	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()]),
+	m_SqlPre("")
 {
 }
 
@@ -511,11 +512,16 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 			}
 			catch (MysqlHelper_Exception& excep)
 			{
+				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+				if (m_SqlPre == sql)
+				{
+					continue;
+				}
 				m_cond.GetMutex().lock();
 				mysqlList.push_front(sql);
 				m_cond.GetMutex().unlock();
 
-				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+				m_SqlPre = sql;
 				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 		}

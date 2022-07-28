@@ -59,6 +59,7 @@ public:
 
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用
+	std::string		  m_SqlPre;				// 上一条sql语句
 	SqlList           m_sqlList;			// 数据库语链表
 	TCPClient*        m_pTCPClient;			// 网络客户端
 	SubScene          m_SubScene;			// 玩家场景
