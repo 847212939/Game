@@ -212,5 +212,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 
 	// 玩家下线处理
 	pSubPlayer->ExitGame(pSocketClose);
+
+	SafeDelete(pSubPlayer);
 }
 
