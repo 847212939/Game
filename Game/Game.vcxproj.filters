@@ -73,16 +73,7 @@
     <ClCompile Include="..\kernel\DataLine.cpp">
       <Filter>网络架构</Filter>
     </ClCompile>
-    <ClCompile Include="..\Config\BaseCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
     <ClCompile Include="..\Lua\LuaMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Config\ConfigMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Config\LuaCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\ServerTimer.cpp">
@@ -105,6 +96,15 @@
     </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
       <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lua\BaseCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lua\ConfigMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lua\LuaCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,13 +159,7 @@
     <ClInclude Include="..\kernel\hybridity.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\Config\BaseCfgMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
     <ClInclude Include="..\Lua\LuaMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Config\ConfigMgr.h">
       <Filter>配置管理\配置管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\ServerTimer.h">
@@ -189,15 +183,18 @@
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
+    <ClInclude Include="..\Lua\BaseCfgMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
-    <None Include="..\Config\Config.pkg">
+    <None Include="..\Lua\Config.pkg">
       <Filter>配置管理\配置脚本</Filter>
     </None>
-    <None Include="..\Config\LoadScript.lua">
+    <None Include="..\Lua\LoadScript.lua">
       <Filter>配置管理\配置脚本</Filter>
     </None>
   </ItemGroup>

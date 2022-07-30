@@ -70,6 +70,6 @@ extern "C"
 #include "../Player/PlayerPrep.h"			// 信息在注册
 #include "../SubSys/PlayerPrepClient.h"		// 逻辑处理类
 
-#include "../Config/BaseCfgMgr.h"			// 网络配置
-#include "../Config/ConfigMgr.h"			// 配置管理
+#include "../Lua/BaseCfgMgr.h"				// 网络配置
+#include "../Lua/ConfigMgr.h"				// 配置管理
 #include "../Lua/LuaMgr.h"					// lua虚拟机创建

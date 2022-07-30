@@ -159,9 +159,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Config\BaseCfgMgr.cpp" />
-    <ClCompile Include="..\Config\ConfigMgr.cpp" />
-    <ClCompile Include="..\Config\LuaCfgMgr.cpp" />
     <ClCompile Include="..\kernel\DataLine.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
@@ -170,6 +167,9 @@
     <ClCompile Include="..\kernel\Util.cpp" />
     <ClCompile Include="..\Logic\LoginSys.cpp" />
     <ClCompile Include="..\Logic\MoveSys.cpp" />
+    <ClCompile Include="..\Lua\BaseCfgMgr.cpp" />
+    <ClCompile Include="..\Lua\ConfigMgr.cpp" />
+    <ClCompile Include="..\Lua\LuaCfgMgr.cpp" />
     <ClCompile Include="..\Lua\LuaMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
@@ -183,8 +183,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Config\BaseCfgMgr.h" />
-    <ClInclude Include="..\Config\ConfigMgr.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\hybridity.h" />
@@ -196,6 +194,7 @@
     <ClInclude Include="..\kernel\Util.h" />
     <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Logic\MoveSys.h" />
+    <ClInclude Include="..\Lua\BaseCfgMgr.h" />
     <ClInclude Include="..\Lua\LuaMgr.h" />
     <ClInclude Include="..\Player\AttrsCmd.h" />
     <ClInclude Include="..\Player\MessageCmd.h" />
@@ -212,9 +211,9 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Config\Config.pkg" />
-    <None Include="..\Config\LoadScript.lua" />
     <None Include="..\Data\Config\BaseCfg.lua" />
+    <None Include="..\Lua\Config.pkg" />
+    <None Include="..\Lua\LoadScript.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
