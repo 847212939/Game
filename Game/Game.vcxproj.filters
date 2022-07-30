@@ -58,18 +58,6 @@
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>工具接口</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\PlayerClient.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\PlayerCenterClient.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\PlayerPrepClient.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SubSys\SceneClient.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
     <ClCompile Include="..\kernel\DataLine.cpp">
       <Filter>网络架构</Filter>
     </ClCompile>
@@ -106,6 +94,18 @@
     <ClCompile Include="..\Lua\LuaCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
+    <ClCompile Include="..\Player\PlayerCenterClient.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerClient.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPrepClient.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\SceneClient.cpp">
+      <Filter>玩家中心</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
@@ -125,18 +125,6 @@
     </ClInclude>
     <ClInclude Include="..\kernel\Util.h">
       <Filter>工具接口</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\PlayerClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\PlayerCenterClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\PlayerPrepClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SubSys\SceneClient.h">
-      <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\DataLine.h">
       <Filter>网络架构</Filter>
@@ -185,6 +173,18 @@
     </ClInclude>
     <ClInclude Include="..\Lua\BaseCfgMgr.h">
       <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenterClient.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerClient.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPrepClient.h">
+      <Filter>玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\SceneClient.h">
+      <Filter>玩家中心</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

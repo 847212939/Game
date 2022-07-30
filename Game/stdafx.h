@@ -57,18 +57,18 @@ extern "C"
 
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
-#include "../SubSys/PlayerClient.h"			// 逻辑处理类
+#include "../Player/PlayerClient.h"			// 逻辑处理类
 
 #include "../Player/PlayerCenter.h"			// 玩家管理
-#include "../SubSys/PlayerCenterClient.h"	// 玩家管理
+#include "../Player/PlayerCenterClient.h"	// 玩家管理
 
 #include "../Player/Scene.h"				// 场景
-#include "../SubSys/SceneClient.h"			// 场景
+#include "../Player/SceneClient.h"			// 场景
 #include "../Player/ServerTimer.h"			// 定时器
 
 #include "../Logic/LoginSys.h"				// 登录
 #include "../Player/PlayerPrep.h"			// 信息在注册
-#include "../SubSys/PlayerPrepClient.h"		// 逻辑处理类
+#include "../Player/PlayerPrepClient.h"		// 逻辑处理类
 
 #include "../Lua/BaseCfgMgr.h"				// 网络配置
 #include "../Lua/ConfigMgr.h"				// 配置管理

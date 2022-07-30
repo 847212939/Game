@@ -173,13 +173,13 @@
     <ClCompile Include="..\Lua\LuaMgr.cpp" />
     <ClCompile Include="..\Player\Player.cpp" />
     <ClCompile Include="..\Player\PlayerCenter.cpp" />
+    <ClCompile Include="..\Player\PlayerCenterClient.cpp" />
+    <ClCompile Include="..\Player\PlayerClient.cpp" />
     <ClCompile Include="..\Player\PlayerPrep.cpp" />
+    <ClCompile Include="..\Player\PlayerPrepClient.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
+    <ClCompile Include="..\Player\SceneClient.cpp" />
     <ClCompile Include="..\Player\ServerTimer.cpp" />
-    <ClCompile Include="..\SubSys\PlayerClient.cpp" />
-    <ClCompile Include="..\SubSys\PlayerCenterClient.cpp" />
-    <ClCompile Include="..\SubSys\PlayerPrepClient.cpp" />
-    <ClCompile Include="..\SubSys\SceneClient.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,14 +200,14 @@
     <ClInclude Include="..\Player\MessageCmd.h" />
     <ClInclude Include="..\Player\Player.h" />
     <ClInclude Include="..\Player\PlayerCenter.h" />
+    <ClInclude Include="..\Player\PlayerCenterClient.h" />
+    <ClInclude Include="..\Player\PlayerClient.h" />
     <ClInclude Include="..\Player\PlayerPrep.h" />
+    <ClInclude Include="..\Player\PlayerPrepClient.h" />
     <ClInclude Include="..\Player\Scene.h" />
+    <ClInclude Include="..\Player\SceneClient.h" />
     <ClInclude Include="..\Player\ServerTimer.h" />
     <ClInclude Include="..\Player\TimerCmd.h" />
-    <ClInclude Include="..\SubSys\PlayerClient.h" />
-    <ClInclude Include="..\SubSys\PlayerCenterClient.h" />
-    <ClInclude Include="..\SubSys\PlayerPrepClient.h" />
-    <ClInclude Include="..\SubSys\SceneClient.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
