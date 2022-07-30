@@ -64,6 +64,17 @@ enum SERVERTIMER_TYPE
 	SERVERTIMER_TYPE_SINGLE     = 1,											// 一次性定时器
 };
 
+/**
+* @brief 定义字段类型，
+* DB_INT:数字类型
+* DB_STR:字符串类型
+*/
+enum class FT
+{
+	DB_INT,
+	DB_STR,
+};
+
 #pragma pack(1)
 
 //数据队列信息头
@@ -232,4 +243,8 @@ using NetFunMap = std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using ExitFunMap = std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap = std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap = std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
+using LoadPlayerList = std::list<LoadPlayerKey>;
+using ServerTimerInfomap = std::unordered_map<unsigned int, ServerTimerInfo>;
+using RecordDataMap = std::map<std::string, std::pair<FT, std::string>>;
+
 const std::array<const char*, LOG_END> levelNames = { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };

@@ -37,10 +37,10 @@ void PlayerCenter::Init()
 
 	// 初始化分配内存
 	unsigned int playerSize = maxSocketCnt * 2;
-	m_pPlayerVec.resize((size_t)playerSize);
+	m_PlayerClientVec.resize((size_t)playerSize);
 
 	// 玩家全部初始化为空
-	for (auto* playerClient : m_pPlayerVec)
+	for (auto* playerClient : m_PlayerClientVec)
 	{
 		playerClient = nullptr;
 	}
@@ -113,24 +113,6 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
-void PlayerCenter::CloseSocketEvent(unsigned int index)
-{
-	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerPrepClient = null index = %d", index);
-		return;
-	}
-	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
-	if (!pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "pTCPClient = null index = %d", index);
-		return;
-	}
-
-	pTCPClient->RemoveTCPSocketStatus(index);
-}
-
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
@@ -177,24 +159,24 @@ void PlayerCenter::HandlerPlayerThread()
 			loadPlayerList.pop_front();
 			uint64_t userId = 0;
 
-			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_pPlayerVec.size())
+			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_PlayerClientVec.size())
 			{
-				CloseSocketEvent(loadPKey.GetIndex());
+				pTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (!loadPKey.GetConnect())
 			{
-				CloseSocketEvent(loadPKey.GetIndex());
+				pTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (!playerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
-				CloseSocketEvent(loadPKey.GetIndex());
+				pTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (userId == 0)
 			{
-				CloseSocketEvent(loadPKey.GetIndex());
+				pTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
@@ -206,7 +188,7 @@ void PlayerCenter::HandlerPlayerThread()
 			{
 				playerClient = new PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, playerPrepClient);
 			}
-			m_pPlayerVec[loadPKey.GetIndex()] = playerClient;
+			m_PlayerClientVec[loadPKey.GetIndex()] = playerClient;
 
 			playerClient->LoadMysql();
 			playerClient->EnterGame();
@@ -237,16 +219,16 @@ void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockIn
 // 获取玩家
 PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 {
-	if (index >= m_pPlayerVec.size() || index < 0)
+	if (index >= m_PlayerClientVec.size() || index < 0)
 	{
 		return nullptr;
 	}
-	return m_pPlayerVec[index];
+	return m_PlayerClientVec[index];
 }
 
 PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 {
-	for (auto* playerClient : m_pPlayerVec)
+	for (auto* playerClient : m_PlayerClientVec)
 	{
 		if (!playerClient)
 		{

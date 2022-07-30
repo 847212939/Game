@@ -330,10 +330,10 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 	std::ostringstream os;
 	os << userId;
 
-	CMysqlHelper::RECORD_DATA mpColumns;
+	RecordDataMap mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
 
@@ -350,10 +350,10 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 	std::ostringstream os;
 	os << userId;
 
-	CMysqlHelper::RECORD_DATA mpColumns;
+	RecordDataMap mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
 
@@ -370,10 +370,10 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 	std::ostringstream os;
 	os << userId;
 
-	CMysqlHelper::RECORD_DATA mpColumns;
+	RecordDataMap mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_INT, os.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
@@ -386,10 +386,10 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 
 void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName, std::string dataName)
 {
-	CMysqlHelper::RECORD_DATA mpColumns;
+	RecordDataMap mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(CMysqlHelper::FT::DB_STR, userId)));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(CMysqlHelper::FT::DB_STR, data)));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_STR, userId)));
+	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 

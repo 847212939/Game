@@ -4,8 +4,6 @@ class SceneClient;
 class PlayerCenter
 {
 public:
-	typedef std::list<LoadPlayerKey> LoadPlayerList;
-public:
 	PlayerCenter();
 	virtual ~PlayerCenter();
 
@@ -27,11 +25,10 @@ public:
 
 private:
 	void HandlerPlayerThread();
-	void CloseSocketEvent(unsigned int index);
 
 private:
 	ConditionVariable				m_cond;
 	SceneClient*					m_SceneClient;
 	LoadPlayerList					m_LoadPlayerList;
-	std::vector<PlayerClient*>		m_pPlayerVec;
+	std::vector<PlayerClient*>		m_PlayerClientVec;
 };

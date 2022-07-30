@@ -2,7 +2,6 @@
 
 class CServerTimer
 {
-	typedef std::unordered_map<unsigned int, ServerTimerInfo> ServerTimerInfomap;
 public:
 	CServerTimer();
 	~CServerTimer();
