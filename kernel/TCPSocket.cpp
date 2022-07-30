@@ -508,7 +508,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	// 发送连接成功消息
 	SendData(index, nullptr, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
 
-	COUT_LOG(LOG_INFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
