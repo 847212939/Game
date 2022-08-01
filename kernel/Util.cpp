@@ -71,7 +71,7 @@ uint64_t IDGen::GenerateUID()
 	return ((uint64_t)m_serverType << 59) + ((uint64_t)m_serverID << 52) + ((uint64_t)curSecond << 20) + ((uint64_t)m_addID++);
 }
 
-void Util::Exit(bool& run, TCPClient& clien)
+void Util::Exit(bool& run, TCPClient* clien)
 {
 	std::string str;
 
@@ -86,8 +86,8 @@ void Util::Exit(bool& run, TCPClient& clien)
 		}
 	}
 
-	clien.Stop();
-	clien.NotifyAll();
+	clien->Stop();
+	clien->NotifyAll();
 }
 
 Cos::Cos()
@@ -272,7 +272,7 @@ uint8_t* Util::Decrypt(uint8_t* content, int length)
 	return content;
 }
 
-TCPClient& Util::GetTCPClient()
+TCPClient* Util::GetTCPClient()
 {
-	return *m_TCPClient;
+	return m_TCPClient;
 }

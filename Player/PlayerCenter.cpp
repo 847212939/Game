@@ -25,7 +25,7 @@ void PlayerCenter::Init()
 		playerClient = nullptr;
 	}
 	
-	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	DTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
@@ -85,13 +85,13 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	if (!DTCPClient.GetRuninged())
+	if (!DTCPClient->GetRuninged())
 	{
 		COUT_LOG(LOG_CERROR, "PlayerCenter::HandlerPlayerThread 初始化未完成");
 		return;
 	}
 	LoadPlayerList& playerList = m_LoadPlayerList;
-	bool& run = DTCPClient.GetRuninged();
+	bool& run = DTCPClient->GetRuninged();
 
 	while (run)
 	{
@@ -118,22 +118,22 @@ void PlayerCenter::HandlerPlayerThread()
 
 			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_PlayerClientVec.size())
 			{
-				DTCPClient.CloseSocket(loadPKey.GetIndex());
+				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (!loadPKey.GetConnect())
 			{
-				DTCPClient.CloseSocket(loadPKey.GetIndex());
+				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (!DPlayerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
-				DTCPClient.CloseSocket(loadPKey.GetIndex());
+				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (userId == 0)
 			{
-				DTCPClient.CloseSocket(loadPKey.GetIndex());
+				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
@@ -198,7 +198,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 // 获取在线玩家
 void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
 {
-	DTCPClient.GetSocketSet(socketVec);
+	DTCPClient->GetSocketSet(socketVec);
 }
 
 ConditionVariable& PlayerCenter::GetConditionVariable()

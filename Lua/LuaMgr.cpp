@@ -17,15 +17,15 @@ CLuaMgr::~CLuaMgr()
     }
 }
 
-CLuaMgr& CLuaMgr::Instance()
+CLuaMgr* CLuaMgr::Instance()
 {
     static CLuaMgr g_mgr;
-    return g_mgr;
+    return &g_mgr;
 }
 
-ConfigMgr& CLuaMgr::GetConfigMgr()
+ConfigMgr* CLuaMgr::GetConfigMgr()
 {
-    return *m_ConfigMgr;
+    return m_ConfigMgr;
 }
 
 bool CLuaMgr::InitCfgMgr()

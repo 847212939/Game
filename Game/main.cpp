@@ -5,9 +5,9 @@ int main()
 	bool run = true;
 	ServiceType type = ServiceType::SERVICE_TYPE_GAMECENTER;
 
-	LogMgr.SetLogFileType(type);
+	LogMgr->SetLogFileType(type);
 
-	if (!LuaMgr.InitCfgMgr())
+	if (!LuaMgr->InitCfgMgr())
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
@@ -16,13 +16,13 @@ int main()
 	IDGen& idGen = DUtil.GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 
-	if (!DTCPClient.InitTCPClient(type))
+	if (!DTCPClient->InitTCPClient(type))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
 
-	LogMgr.Init(run);
+	LogMgr->Init(run);
 
 	Util::Exit(run, DTCPClient);
 

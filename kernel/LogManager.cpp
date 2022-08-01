@@ -50,9 +50,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 	sprintf(buf + strlen(buf), " {%s:%d}\n", pFuncName, line);
 
-	std::string strPath = LogMgr.GetLogPath() + pLogfile;
+	std::string strPath = LogMgr->GetLogPath() + pLogfile;
 
-	FILE* fp = LogMgr.GetLogFileFp(std::move(pLogfile));
+	FILE* fp = LogMgr->GetLogFileFp(std::move(pLogfile));
 	if (!fp)
 	{
 		fp = fopen(strPath.c_str(), "a+");
@@ -60,11 +60,11 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		{
 			return;
 		}
-		LogMgr.AddLogFileFp(pLogfile, fp);
+		LogMgr->AddLogFileFp(pLogfile, fp);
 	}
 
-	std::list<std::pair<FILE*, std::string>>& logMap = LogMgr.GetLogMap();
-	std::lock_guard<std::mutex> guard(LogMgr.GetMutex());
+	std::list<std::pair<FILE*, std::string>>& logMap = LogMgr->GetLogMap();
+	std::lock_guard<std::mutex> guard(LogMgr->GetMutex());
 	logMap.push_back(std::make_pair(fp, buf));
 }
 
@@ -95,10 +95,10 @@ CGameLogManage::~CGameLogManage()
 	}
 }
 
-CGameLogManage& CGameLogManage::Instance()
+CGameLogManage* CGameLogManage::Instance()
 {
 	static CGameLogManage g_mgr;
-	return g_mgr;
+	return &g_mgr;
 }
 
 void CGameLogManage::Release()

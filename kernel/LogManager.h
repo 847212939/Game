@@ -14,7 +14,7 @@ private:
 	virtual ~CGameLogManage();
 
 public:
-	static CGameLogManage& Instance();
+	static CGameLogManage* Instance();
 
 public:
 	void Release();

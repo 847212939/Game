@@ -26,7 +26,7 @@ public:
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
 public:
-	SceneClient& GetSceneClient();
+	SceneClient* GetSceneClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetSaveCMysqlHelper();
 	CMysqlHelper& GetLoadCMysqlHelper();

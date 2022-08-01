@@ -15,7 +15,7 @@ public:
 	static unsigned int GetRandNum();
 	static int GetRandRange(int iMin, int iMax);
 
-	static void Exit(bool& run, TCPClient& clien);
+	static void Exit(bool& run, TCPClient* clien);
 	static long long GetSysMilliseconds();
 
 	// ∂‘≥∆º”√‹
@@ -27,7 +27,7 @@ public:
 	// Œ®“ªID
 	IDGen& GetIDGen();
 	uint64_t CreateUserId();
-	TCPClient& GetTCPClient();
+	TCPClient* GetTCPClient();
 
 private:
 	static std::random_device	m_rd;

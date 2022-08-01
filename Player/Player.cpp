@@ -14,7 +14,7 @@ Player::~Player()
 
 bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
 {
-	return DTCPClient.SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+	return DTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)

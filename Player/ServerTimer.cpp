@@ -26,7 +26,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	DTCPClient->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 
 	return true;
 }
@@ -76,7 +76,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		COUT_LOG(LOG_CERROR, "base ²ÎÊýÎª¿Õ");
 		return;
 	}
-	CDataLine* pCDataLine = DTCPClient.GetRecvDataLine();
+	CDataLine* pCDataLine = DTCPClient->GetRecvDataLine();
 	if (!pCDataLine)
 	{
 		COUT_LOG(LOG_CERROR, "pDataLine == nullptr");

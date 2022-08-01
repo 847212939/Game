@@ -29,7 +29,7 @@ void PlayerPrep::Init()
 		return;
 	}
 
-	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
+	DTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
 	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
@@ -136,7 +136,7 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 // 创建角色
 void PlayerPrep::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
-	m_SceneClient.GetPlayerCenterClient().CreatePlayer(index, pSockInfo, id, pw);
+	DPlayerCenterClient->CreatePlayer(index, pSockInfo, id, pw);
 }
 
 // 获取数据库
@@ -161,9 +161,9 @@ CServerTimer* PlayerPrep::GetCServerTimer()
 }
 
 // 获取场景
-SceneClient& PlayerPrep::GetSceneClient()
+SceneClient* PlayerPrep::GetSceneClient()
 {
-	return m_SceneClient;
+	return &m_SceneClient;
 }
 
 void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
@@ -473,7 +473,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 void PlayerPrep::HandlerExecuteSqlThread()
 {
 	SqlList& mysqlList = m_sqlList;
-	bool& run = DTCPClient.GetRuninged();
+	bool& run = DTCPClient->GetRuninged();
 
 	while (run)
 	{

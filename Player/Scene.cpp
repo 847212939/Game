@@ -40,7 +40,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 }
 
 // 获取玩家中心
-PlayerCenterClient& Scene::GetPlayerCenterClient()
+PlayerCenterClient* Scene::GetPlayerCenterClient()
 { 
-	return m_PlayerCenterClient; 
+	return &m_PlayerCenterClient; 
 }

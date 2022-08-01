@@ -3,13 +3,13 @@
 #define DUtil				Util::Instance()
 #define LuaMgr				CLuaMgr::Instance()
 #define LogMgr				CGameLogManage::Instance()
-#define CfgMgr				LuaMgr.GetConfigMgr()
-#define BaseCfgMgr			CfgMgr.GetCBaseCfgMgr()
+#define CfgMgr				LuaMgr->GetConfigMgr()
+#define BaseCfgMgr			CfgMgr->GetCBaseCfgMgr()
 
 #define DTCPClient			DUtil.GetTCPClient()
-#define DPlayerPrepClient	DTCPClient.GetPlayerPrepClient()
+#define DPlayerPrepClient	DTCPClient->GetPlayerPrepClient()
 #define DSceneClient		DPlayerPrepClient->GetSceneClient()
-#define DPlayerCenterClient DSceneClient.GetPlayerCenterClient()
+#define DPlayerCenterClient DSceneClient->GetPlayerCenterClient()
 
 // 判断大小函数
 #define Min_(x,y) ((x)>(y)?(y):(x))
@@ -30,7 +30,7 @@
 	}\
 	catch (...)\
 	{\
-		CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+		CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 	}\
 	pData = nullptr;\
 } 
@@ -46,7 +46,7 @@
 		}\
 		catch (...)\
 		{\
-			CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+			CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 		}\
 	}\
 }
@@ -62,7 +62,7 @@
 		}\
 		catch(...)\
 		{\
-			CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+			CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 		}\
 		pData = nullptr;\
 	}\
@@ -72,38 +72,38 @@
 #define COUT_LOG(ERRTYPE, ...)\
 if (ERRTYPE == LOG_ERROR)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else if (ERRTYPE == LOG_INFO)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else if (ERRTYPE == LOG_WARN)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_WARN, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_WARN, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else if (ERRTYPE == LOG_CERROR)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else if (ERRTYPE == LOG_CINFO)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else if (ERRTYPE == LOG_ERROR_SYS)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_ERROR_SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_ERROR_SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
 }
 
 // 注册游戏进入回调
 #define RegisterAttrs(pobj, obj, name)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -114,7 +114,7 @@ else\
 #define RegisterNetwk(pobj, obj, name, cmd)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -125,7 +125,7 @@ else\
 #define RegisterMysql(pobj, obj, name, sql)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -136,7 +136,7 @@ else\
 #define RegisterCreat(pobj, name)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -146,7 +146,7 @@ else\
 #define RegisterCreatS(pobj, name)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -157,7 +157,7 @@ else\
 #define RegisterTimer(pobj, obj, name, cmd, uElapse, timerType)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
 }\
 else\
 {\
@@ -169,7 +169,7 @@ else\
 #define UnRegisterTimer(pobj, cmd)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
 }\
 else\
 {\
@@ -181,7 +181,7 @@ else\
 #define AddAttributes(pobj, attrs)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
 }\
 else\
 {\
@@ -192,7 +192,7 @@ else\
 #define RegisterLgout(pobj, obj, name)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr.GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
