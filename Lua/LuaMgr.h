@@ -3,11 +3,11 @@
 class CLuaMgr
 {
 public:
-	static CLuaMgr* Instance();
+	static CLuaMgr& Instance();
 
 public:
 	bool InitCfgMgr();
-    ConfigMgr* GetConfigMgr();
+    ConfigMgr& GetConfigMgr();
 
 private:
 	CLuaMgr();

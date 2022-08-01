@@ -79,7 +79,7 @@ void Util::Exit(bool& run, TCPClient& clien)
 	{
 		std::cin >> str;
 
-		if (str == BaseCfgMgr().GetExit())
+		if (str == BaseCfgMgr.GetExit())
 		{
 			run = false;
 			break;
@@ -252,7 +252,7 @@ long long Util::GetSysMilliseconds()
 
 uint8_t* Util::Encrypt(uint8_t* content, int length)
 {
-	std::string sKey = BaseCfgMgr().GetKey();
+	std::string sKey = BaseCfgMgr.GetKey();
 
 	for (size_t i = 0; i < length; i++)
 	{
@@ -263,7 +263,7 @@ uint8_t* Util::Encrypt(uint8_t* content, int length)
 
 uint8_t* Util::Decrypt(uint8_t* content, int length)
 {
-	std::string sKey = BaseCfgMgr().GetKey();
+	std::string sKey = BaseCfgMgr.GetKey();
 
 	for (size_t i = 0; i < length; i++)
 	{

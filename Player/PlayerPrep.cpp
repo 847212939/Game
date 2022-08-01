@@ -14,7 +14,7 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 
 PlayerPrep::PlayerPrep(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
-	m_pServerTimer(new CServerTimer[BaseCfgMgr().GetTimerCnt()]),
+	m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]),
 	m_SqlPre("")
 {
 }
@@ -40,7 +40,7 @@ void PlayerPrep::Init()
 	m_SceneClient.SetPlayerPrepClient(dynamic_cast<PlayerPrepClient*>(this));
 	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
-	int timerCnt = BaseCfgMgr().GetTimerCnt();
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -54,7 +54,7 @@ void PlayerPrep::Init()
 // 启动数据库
 bool PlayerPrep::InitDB()
 {
-	const DbCfg& dbCfg = BaseCfgMgr().GetDbCfg();
+	const DbCfg& dbCfg = BaseCfgMgr.GetDbCfg();
 
 	// 链接数据库
 	m_CMysqlHelperSave.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);
@@ -257,7 +257,7 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/* = SE
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr().GetTimerCnt();
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
@@ -279,7 +279,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr().GetTimerCnt();
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
