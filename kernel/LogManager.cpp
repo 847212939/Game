@@ -48,7 +48,7 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	}
 #endif // __DEBUG__
 
-	sprintf(buf + strlen(buf), " {%s %s %d}\n", pFile, pFuncName, line);
+	sprintf(buf + strlen(buf), " {%s %d}\n", pFuncName, line);
 
 	std::string strPath = LogMgr.GetLogPath() + pLogfile;
 
