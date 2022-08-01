@@ -82,35 +82,35 @@ void Util::Exit(bool& run, TCPClient& clien)
 	clien.NotifyAll();
 }
 
-COstringstream::COstringstream()
+Cos::Cos()
 {
 }
 
-COstringstream::~COstringstream()
+Cos::~Cos()
 {
 
 }
 
-COstringstream::operator std::string()
-{
-	return m_os.str();
-}
-
-std::string COstringstream::str()
+Cos::operator std::string()
 {
 	return m_os.str();
 }
 
-CIstringstream::~CIstringstream()
+std::string Cos::str()
+{
+	return m_os.str();
+}
+
+Cis::~Cis()
 {
 
 }
 
-CIstringstream::CIstringstream(std::string str) : m_is(str), m_cnt(0)
+Cis::Cis(std::string str) : m_is(str), m_cnt(0)
 {
 }
 
-CIstringstream& CIstringstream::operator >> (std::string& outStr)
+Cis& Cis::operator >> (std::string& outStr)
 {
 	std::string str = m_is.str();
 	size_t index1 = 0, index2 = 0, cnt = 0, len = 0, block = -1;
@@ -149,7 +149,7 @@ CIstringstream& CIstringstream::operator >> (std::string& outStr)
 	return *this;
 }
 
-CIstringstream& CIstringstream::operator >> (char* pBuf)
+Cis& Cis::operator >> (char* pBuf)
 {
 	std::string outStr;
 	std::string str = m_is.str();
@@ -190,7 +190,7 @@ CIstringstream& CIstringstream::operator >> (char* pBuf)
 	return *this;
 }
 
-CIstringstream& CIstringstream::operator >> (unsigned char* pBuf)
+Cis& Cis::operator >> (unsigned char* pBuf)
 {
 	std::string outStr;
 	std::string str = m_is.str();

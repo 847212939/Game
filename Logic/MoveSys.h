@@ -19,7 +19,7 @@ private:
 	void ExitCallback(SocketCloseLine* socketCloseLine);
 
 private:
-	bool MoveCoo(CIstringstream& is, PlayerInfo* playerInfo);
+	bool MoveCoo(Cis& is, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_PlayerClient;

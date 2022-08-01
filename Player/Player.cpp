@@ -202,7 +202,7 @@ void Player::AdditionAttributes(AttrsMap& attrs)
 
 void Player::RefreshProperties()
 {
-	COstringstream os;
+	Cos os;
 	os << (int)m_AttrsMap.size();
 	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{

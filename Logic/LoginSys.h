@@ -21,7 +21,7 @@ private:
 	void NetworkCallback(PlayerInfo* playerInfo);
 
 private:
-	bool LoginIn(CIstringstream& is, PlayerInfo* playerInfo);
+	bool LoginIn(Cis& is, PlayerInfo* playerInfo);
 
 private:
 	PlayerPrepClient* m_PlayerPrepClient;

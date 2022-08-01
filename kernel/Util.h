@@ -1,14 +1,14 @@
 #pragma once
 
-class COstringstream
+class Cos
 {
 public:
-	COstringstream();
-	virtual ~COstringstream();
+	Cos();
+	virtual ~Cos();
 
 public:
 	template<class T>
-	COstringstream& operator << (T t);
+	Cos& operator << (T t);
 
 	operator std::string();
 	std::string str();
@@ -17,20 +17,20 @@ private:
 	std::ostringstream m_os;
 };
 
-class CIstringstream
+class Cis
 {
 public:
-	virtual ~CIstringstream();
-	CIstringstream(std::string str);
+	virtual ~Cis();
+	Cis(std::string str);
 
 public:
 	template<class T>
-	CIstringstream& operator >> (T& t);
+	Cis& operator >> (T& t);
 
 	// 输出字符串
-	CIstringstream& operator >> (std::string& outStr);
-	CIstringstream& operator >> (char* pBuf);
-	CIstringstream& operator >> (unsigned char* pBuf);
+	Cis& operator >> (std::string& outStr);
+	Cis& operator >> (char* pBuf);
+	Cis& operator >> (unsigned char* pBuf);
 
 private:
 	// 记录输出几次的数量
@@ -39,14 +39,14 @@ private:
 };
 
 template<class T>
-COstringstream& COstringstream::operator << (T t)
+Cos& Cos::operator << (T t)
 {
 	m_os << t << "\n";
 	return *this;
 }
 
 template<class T>
-CIstringstream& CIstringstream::operator >> (T& t)
+Cis& Cis::operator >> (T& t)
 {
 	m_is >> t;
 	++m_cnt;

@@ -41,7 +41,7 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 	}
 
 	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)playerInfo->m_pMsg->netMessageHead.uIdentification;
-	CIstringstream is((char*)playerInfo->m_pData);
+	Cis is((char*)playerInfo->m_pData);
 
 	switch (uIdentification)
 	{
@@ -55,7 +55,7 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 	}
 }
 
-bool LoginSys::LoginIn(CIstringstream& is, PlayerInfo* playerInfo)
+bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 {
 	std::string id, pw;
 	is >> id >> pw;
@@ -82,7 +82,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 	{
 		userId = Util::Instance()->CreateUserId();
 
-		COstringstream os;
+		Cos os;
 		os << passwaed << userId;
 
 		m_PlayerPrepClient->SaveReplaceSQL("useraccount", id, os);
@@ -92,7 +92,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 	else
 	{
 		std::string pw;
-		CIstringstream is(data);
+		Cis is(data);
 		is >> pw >> userId;
 		
 		if (pw != passwaed)
