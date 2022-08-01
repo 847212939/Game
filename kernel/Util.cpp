@@ -7,6 +7,16 @@ Util* Util::Instance()
 	return &g_mgr;
 }
 
+Util::Util() : m_IDGen(new IDGen)
+{
+
+}
+
+Util::~Util() 
+{
+
+}
+
 // 获取随机数
 unsigned int Util::GetRandNum()
 {
@@ -26,12 +36,12 @@ int Util::GetRandRange(int iMin, int iMax)
 
 IDGen& Util::GetIDGen()
 {
-	return m_IDGen;
+	return *m_IDGen;
 }
 
 uint64_t Util::CreateUserId()
 {
-	return m_IDGen.GenerateUID();
+	return m_IDGen->GenerateUID();
 }
 
 IDGen::IDGen() :

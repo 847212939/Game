@@ -1,5 +1,38 @@
 #pragma once
 
+class IDGen;
+class Util
+{
+public:
+	static Util* Instance();
+
+private:
+	Util();
+	virtual~Util();
+
+public:
+	// 获取随机数
+	static unsigned int GetRandNum();
+	static int GetRandRange(int iMin, int iMax);
+
+	static void Exit(bool& run, TCPClient& clien);
+	static long long GetSysMilliseconds();
+
+	// 对称加密
+	static uint8_t* Encrypt(uint8_t* content, int length);
+	static uint8_t* Decrypt(uint8_t* content, int length);
+
+public:
+	// 唯一ID
+	IDGen& GetIDGen();
+	uint64_t CreateUserId();
+
+private:
+	static std::random_device	m_rd;
+	static std::mt19937			m_mt;
+	IDGen*						m_IDGen;
+};
+
 class Cos
 {
 public:
@@ -68,36 +101,4 @@ private:
 	int	        m_serverID;
 	time_t      m_lastSecond;
 	uint64_t   m_addID;
-};
-
-class Util
-{
-public:
-	static Util* Instance();
-
-private:
-	Util(){}
-	virtual~Util(){}
-
-public:
-	// 获取随机数
-	static unsigned int GetRandNum();
-	static int GetRandRange(int iMin, int iMax);
-
-	static void Exit(bool& run, TCPClient& clien);
-	static long long GetSysMilliseconds();
-
-	// 对称加密
-	static uint8_t* Encrypt(uint8_t* content, int length);
-	static uint8_t* Decrypt(uint8_t* content, int length);
-
-public:
-	// 唯一ID
-	IDGen& GetIDGen();
-	uint64_t CreateUserId();
-
-private:
-	static std::random_device	m_rd;
-	static std::mt19937			m_mt;
-	IDGen						m_IDGen;
 };
