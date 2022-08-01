@@ -1,6 +1,5 @@
 #pragma once
 
-// 字符串输入流.
 class COstringstream
 {
 public:
@@ -18,7 +17,6 @@ private:
 	std::ostringstream m_os;
 };
 
-// 字符串输出流.
 class CIstringstream
 {
 public:
