@@ -44,7 +44,6 @@ void PlayerPrep::Init()
 
 	for (int i = 0; i < timerCnt; i++)
 	{
-		m_pServerTimer[i].SetTCPClient(m_pTCPClient);
 		m_pServerTimer[i].Start();
 	}
 

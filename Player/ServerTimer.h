@@ -15,7 +15,6 @@ public:
 
 public:
 	void SetTimerRun(bool run);
-	void SetTCPClient(TCPClient* pTCPClient);
 
 private:
 	void ThreadCheckTimer();
@@ -24,7 +23,6 @@ private:
 private:
 	int					m_timeOnce;
 	volatile bool		m_bRun;
-	TCPClient*			m_TCPClient;
 	ConditionVariable	m_cond;	
 	ServerTimerInfomap  m_timerMap;
 };

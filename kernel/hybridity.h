@@ -6,6 +6,7 @@
 #define LogMgr CGameLogManage::Instance()
 #define CfgMgr LuaMgr.GetConfigMgr()
 #define BaseCfgMgr CfgMgr.GetCBaseCfgMgr()
+#define DPlayerPrepClient DTCPClient.GetPlayerPrepClient()
 
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))

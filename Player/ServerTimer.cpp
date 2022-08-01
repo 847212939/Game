@@ -6,10 +6,7 @@ struct TimerParam
 	struct event_base* base;
 };
 
-CServerTimer::CServerTimer() : 
-	m_bRun(false), 
-	m_timeOnce(100),
-	m_TCPClient(nullptr)
+CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100)
 {
 }
 
@@ -20,11 +17,6 @@ CServerTimer::~CServerTimer()
 
 bool CServerTimer::Start(int timeonce/* = 100*/)
 {
-	if (!m_TCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
-		return false;
-	}
 	if (timeonce != 100 && timeonce != 1000)
 	{
 		COUT_LOG(LOG_CERROR, "timeonce=%d 不满足要求", timeonce);
@@ -34,7 +26,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	m_TCPClient->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 
 	return true;
 }
@@ -84,18 +76,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		COUT_LOG(LOG_CERROR, "base 参数为空");
 		return;
 	}
-	if (!pCServerTimer->m_TCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
-		return;
-	}
-	PlayerPrepClient* playerPrepClient = pCServerTimer->m_TCPClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerPrepClient == nullptr");
-		return;
-	}
-	CDataLine* pCDataLine = pCServerTimer->m_TCPClient->GetRecvDataLine();
+	CDataLine* pCDataLine = DTCPClient.GetRecvDataLine();
 	if (!pCDataLine)
 	{
 		COUT_LOG(LOG_CERROR, "pDataLine == nullptr");
@@ -193,11 +174,6 @@ bool CServerTimer::ExistsTimer(unsigned int uTimerID)
 	}
 
 	return true;
-}
-
-void CServerTimer::SetTCPClient(TCPClient* pTCPClient)
-{
-	m_TCPClient = pTCPClient;
 }
 
 void CServerTimer::SetTimerRun(bool run)

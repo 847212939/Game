@@ -12,7 +12,7 @@ public:
 	void NotifyAll();
 
 public:
-	PlayerPrepClient* GetPlayerPrepClient();
+	PlayerPrepClient& GetPlayerPrepClient();
 
 private:
 	void TimerCallback(void* pDataLineHead);
