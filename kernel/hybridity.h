@@ -82,6 +82,14 @@ else if (ERRTYPE == LOG_CERROR)\
 else if (ERRTYPE == LOG_CINFO)\
 {\
 	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+}\
+else if (ERRTYPE == LOG_ERROR_SYS)\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_ERROR_SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+}\
+else\
+{\
+	CLog::Write(LogMgr()->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
 }
 
 // 注册游戏进入回调

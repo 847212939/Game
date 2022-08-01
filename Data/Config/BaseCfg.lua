@@ -7,7 +7,7 @@ BaseCfg =
     ThreadCnt = 3,
 
     --定时器的个数
-    TimerCnt = 1,
+    TimerCnt = 2,
 
     --日志打印时间秒
     LogPrintfTime = 5,

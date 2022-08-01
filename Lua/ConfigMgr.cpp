@@ -38,9 +38,9 @@ void ConfigMgr::ReadLogPrintTmCfg(int tm)
 	m_CBaseCfgMgr.ReadLogPrintTmCfg(tm);
 }
 
-void ConfigMgr::CoutLog(const char* log)
+void ConfigMgr::CoutLog(int level, const char* log)
 {
-	COUT_LOG(LOG_CINFO, log);
+	COUT_LOG(level, log);
 }
 
 void ConfigMgr::ReadMaxSocketCntCfg(int cnt)

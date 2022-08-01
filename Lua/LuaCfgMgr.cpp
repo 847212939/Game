@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Thu Jul 28 14:34:44 2022.
+** Generated automatically by tolua++-1.0.92 on Mon Aug  1 15:25:41 2022.
 */
 
 #ifndef __cplusplus
@@ -143,20 +143,22 @@ static int tolua_Config_ConfigMgr_CoutLog00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  const char* log = ((const char*)  tolua_tostring(tolua_S,2,0));
+  int level = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* log = ((const char*)  tolua_tostring(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CoutLog'", NULL);
 #endif
   {
-   self->CoutLog(log);
+   self->CoutLog(level,log);
   }
  }
  return 0;
@@ -854,6 +856,13 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
  tolua_reg_types(tolua_S);
  tolua_module(tolua_S,NULL,0);
  tolua_beginmodule(tolua_S,NULL);
+  tolua_constant(tolua_S,"LOG_INFO",LOG_INFO);
+  tolua_constant(tolua_S,"LOG_WARN",LOG_WARN);
+  tolua_constant(tolua_S,"LOG_ERROR",LOG_ERROR);
+  tolua_constant(tolua_S,"LOG_CINFO",LOG_CINFO);
+  tolua_constant(tolua_S,"LOG_CERROR",LOG_CERROR);
+  tolua_constant(tolua_S,"LOG_ERROR_SYS",LOG_ERROR_SYS);
+  tolua_constant(tolua_S,"LOG_END",LOG_END);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"ConfigMgr","ConfigMgr","",tolua_collect_ConfigMgr);
   #else

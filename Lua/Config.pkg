@@ -1,5 +1,16 @@
 $#include "../Game/stdafx.h"
 
+enum LogLevel
+{
+	LOG_INFO = 0,							//info
+	LOG_WARN,								//warnning
+	LOG_ERROR,								//error
+	LOG_CINFO,								//info Console tip
+	LOG_CERROR,								//error Console
+	LOG_ERROR_SYS,							//error system
+	LOG_END,
+};
+
 class ConfigMgr
 { 
 public:
@@ -7,7 +18,7 @@ public:
 	~ConfigMgr();
 
 public:
-	void CoutLog(const char* log);
+	void CoutLog(int level, const char* log);
 
 public:
 	void ReadLogicCfg(LogicCfg* config);

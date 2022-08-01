@@ -3,7 +3,7 @@ ConfigMgrFnTable = {}
 package.path = ";;../Data/Config/?.lua"
 
 function ReadBaseCfg()
-    ConfigMgr:CoutLog("Load configuration BaseCfg begin")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration BaseCfg begin")
 
     local BaseCfg = require "BaseCfg"
 
@@ -36,13 +36,13 @@ function ReadBaseCfg()
         end
     end
 
-    ConfigMgr:CoutLog("Load configuration BaseCfg end")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration BaseCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadBaseCfg)
 
 function ReadTestCfg()
-    ConfigMgr:CoutLog("Load configuration TestCfg begin")
-    ConfigMgr:CoutLog("Load configuration TestCfg end")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration TestCfg begin")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration TestCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadTestCfg)
 
@@ -55,12 +55,12 @@ function GetLength(t)
 end
 
 function LoadConfig()
-    ConfigMgr:CoutLog("Load configuration begin")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration begin")
 
 	for i = 1, GetLength(ConfigMgrFnTable) do
 		ConfigMgrFnTable[i]()
 	end
 
-    ConfigMgr:CoutLog("Load configuration end")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration end")
     return ConfigMgr
 end

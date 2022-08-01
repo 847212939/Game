@@ -9,7 +9,8 @@ public:
 	virtual~ConfigMgr();
 
 public:
-	void CoutLog(const char* log);
+	// »’÷æ¥Ú”°
+	void CoutLog(int level, const char* log);
 
 public:
 	CBaseCfgMgr& GetCBaseCfgMgr();
