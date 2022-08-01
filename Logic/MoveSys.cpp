@@ -71,7 +71,7 @@ void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
 
 	switch (uAssistantID)
 	{
-	case MoveSysMsgCmd::CS_Move:
+	case MoveSysMsgCmd::cs_move:
 	{
 		MoveCoo(is, playerInfo);
 		break;

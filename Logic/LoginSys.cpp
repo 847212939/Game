@@ -3,17 +3,12 @@
 LoginSys::LoginSys(PlayerPrepClient* playerPrepClient) : 
 	m_PlayerPrepClient(playerPrepClient)
 {
-	Register();
+	RegisterNetwk(m_PlayerPrepClient, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
+	RegisterTimer(m_PlayerPrepClient, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 1000, SERVERTIMER_TYPE_PERISIST);
 }
 
 LoginSys::~LoginSys()
 {
-}
-
-void LoginSys::Register()
-{
-	RegisterNetwk(m_PlayerPrepClient, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
-	RegisterTimer(m_PlayerPrepClient, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 1000, SERVERTIMER_TYPE_PERISIST);
 }
 
 void LoginSys::TimerCallback()
@@ -50,7 +45,7 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 
 	switch (uIdentification)
 	{
-	case LoginSysMsgCmd::CS_Login:
+	case LoginSysMsgCmd::cs_login:
 	{
 		LoginIn(is, playerInfo);
 		break;

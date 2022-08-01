@@ -6,7 +6,7 @@ class LoginSys
 public:
 	enum class LoginSysMsgCmd
 	{
-		CS_Login = 1,  // µÇÂ¼
+		cs_login = 1,  // µÇÂ¼
 	};
 
 public:
@@ -18,7 +18,6 @@ public:
 	void TimerCallback();
 
 private:
-	void Register();
 	void NetworkCallback(PlayerInfo* playerInfo);
 
 private:

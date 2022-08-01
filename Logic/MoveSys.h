@@ -6,7 +6,7 @@ class MoveSys
 public:
 	enum class MoveSysMsgCmd
 	{
-		CS_Move = 1,  // ÒÆ¶¯
+		cs_move = 1,  // ÒÆ¶¯
 	};
 public:
 	MoveSys(PlayerClient* playerClient);
