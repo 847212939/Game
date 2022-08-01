@@ -1,7 +1,5 @@
 #pragma once
 
-// tolua++.exe -o LuaCfgMgr.cpp Config.pkg
-
 class ConfigMgr
 {
 public:
@@ -26,4 +24,7 @@ public:
 
 private:
 	CBaseCfgMgr m_CBaseCfgMgr;
+	
 };
+
+// tolua++.exe -o LuaCfgMgr.cpp Config.pkg
