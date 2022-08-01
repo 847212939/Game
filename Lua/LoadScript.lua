@@ -55,12 +55,14 @@ function GetLength(t)
 end
 
 function LoadConfig()
+    local cnt = GetLength(ConfigMgrFnTable)
     ConfigMgr:CoutLog(LOG_CINFO, "Load configuration begin")
 
-	for i = 1, GetLength(ConfigMgrFnTable) do
+	for i = 1, cnt do
 		ConfigMgrFnTable[i]()
 	end
 
     ConfigMgr:CoutLog(LOG_CINFO, "Load configuration end")
+    ConfigMgr:CoutLog(LOG_CINFO, "load configurations cnt = " .. tostring(cnt))
     return ConfigMgr
 end
