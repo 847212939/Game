@@ -1,14 +1,14 @@
 #pragma once
 
-#define DUtil Util::Instance()
-#define LuaMgr CLuaMgr::Instance()
-#define LogMgr CGameLogManage::Instance()
-#define CfgMgr LuaMgr.GetConfigMgr()
-#define BaseCfgMgr CfgMgr.GetCBaseCfgMgr()
+#define DUtil				Util::Instance()
+#define LuaMgr				CLuaMgr::Instance()
+#define LogMgr				CGameLogManage::Instance()
+#define CfgMgr				LuaMgr.GetConfigMgr()
+#define BaseCfgMgr			CfgMgr.GetCBaseCfgMgr()
 
-#define DTCPClient DUtil.GetTCPClient()
-#define DPlayerPrepClient DTCPClient.GetPlayerPrepClient()
-#define DSceneClient DPlayerPrepClient->GetSceneClient()
+#define DTCPClient			DUtil.GetTCPClient()
+#define DPlayerPrepClient	DTCPClient.GetPlayerPrepClient()
+#define DSceneClient		DPlayerPrepClient->GetSceneClient()
 #define DPlayerCenterClient DSceneClient.GetPlayerCenterClient()
 
 // ÅĞ¶Ï´óĞ¡º¯Êı
