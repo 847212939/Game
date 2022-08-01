@@ -195,6 +195,7 @@
     <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Logic\MoveSys.h" />
     <ClInclude Include="..\Lua\BaseCfgMgr.h" />
+    <ClInclude Include="..\Lua\ConfigMgr.h" />
     <ClInclude Include="..\Lua\LuaMgr.h" />
     <ClInclude Include="..\Player\AttrsCmd.h" />
     <ClInclude Include="..\Player\MessageCmd.h" />

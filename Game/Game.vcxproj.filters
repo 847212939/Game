@@ -186,6 +186,9 @@
     <ClInclude Include="..\Player\SceneClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
+    <ClInclude Include="..\Lua\ConfigMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">
