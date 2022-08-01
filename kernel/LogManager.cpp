@@ -306,8 +306,7 @@ void CGameLogManage::Fflush(char* logBuf)
 void CGameLogManage::HandlerLogThread(bool& run)
 {
 	char* logBuf = new char[LOG_BUF_LEN];
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	int tm = baseCfgMgr.GetLogPrintTm();
+	int tm = BaseCfgMgr().GetLogPrintTm();
 
 	while (run)
 	{

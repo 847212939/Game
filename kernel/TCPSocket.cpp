@@ -240,9 +240,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	evconnlistener_set_error_cb(listener, AcceptErrorCB);
 
 	// 获取接收线程池数量
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-
-	int workBaseCount = baseCfgMgr.GetThreadCnt();
+	int workBaseCount = BaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
 		workBaseCount = 8;

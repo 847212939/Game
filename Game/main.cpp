@@ -13,10 +13,8 @@ int main()
 		return -1;
 	}
 
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-
 	IDGen& idGen = Util::Instance()->GetIDGen();
-	idGen.Init((int)type, baseCfgMgr.GetServerId());
+	idGen.Init((int)type, BaseCfgMgr().GetServerId());
 
 	TCPClient clien;
 

@@ -1,8 +1,9 @@
 #pragma once
 
+#define LuaMgr() CLuaMgr::Instance()
 #define LogMgr() CGameLogManage::Instance()
 #define CfgMgr() CLuaMgr::Instance()->GetConfigMgr()
-#define LuaMgr() CLuaMgr::Instance()
+#define BaseCfgMgr() CLuaMgr::Instance()->GetConfigMgr()->GetCBaseCfgMgr()
 
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))

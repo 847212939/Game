@@ -32,8 +32,7 @@ void PlayerCenter::Init()
 		return;
 	}
 
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	int maxSocketCnt = baseCfgMgr.GetMaxSocketCnt();
+	int maxSocketCnt = BaseCfgMgr().GetMaxSocketCnt();
 
 	// 初始化分配内存
 	unsigned int playerSize = maxSocketCnt * 2;

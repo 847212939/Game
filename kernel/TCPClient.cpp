@@ -9,9 +9,8 @@ TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient(this))
 
 bool TCPClient::InitTCPClient(ServiceType serverType)
 {
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	const LogicCfg& logicCfg = baseCfgMgr.GetLogicCfg();
-	int maxSocketCnt = baseCfgMgr.GetMaxSocketCnt();
+	const LogicCfg& logicCfg = BaseCfgMgr().GetLogicCfg();
+	int maxSocketCnt = BaseCfgMgr().GetMaxSocketCnt();
 
 	if (!Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
 	{
@@ -121,8 +120,7 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
 		return;
 	}
-	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
-	int timerCnt = baseCfgMgr.GetTimerCnt();
+	int timerCnt = BaseCfgMgr().GetTimerCnt();
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
