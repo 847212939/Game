@@ -80,7 +80,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 
 	if (data.empty())
 	{
-		userId = Util::Instance()->CreateUserId();
+		userId = DUtil.CreateUserId();
 
 		Cos os;
 		os << passwaed << userId;

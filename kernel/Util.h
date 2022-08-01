@@ -4,7 +4,7 @@ class IDGen;
 class Util
 {
 public:
-	static Util* Instance();
+	static Util& Instance();
 
 private:
 	Util();
@@ -22,15 +22,18 @@ public:
 	static uint8_t* Encrypt(uint8_t* content, int length);
 	static uint8_t* Decrypt(uint8_t* content, int length);
 
+
 public:
 	// ΨһID
 	IDGen& GetIDGen();
 	uint64_t CreateUserId();
+	TCPClient& GetTCPClient();
 
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
 	IDGen*						m_IDGen;
+	TCPClient*					m_TCPClient;
 };
 
 class Cos

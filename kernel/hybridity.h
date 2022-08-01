@@ -1,5 +1,7 @@
 #pragma once
 
+#define DUtil Util::Instance()
+#define DTCPClient DUtil.GetTCPClient()
 #define LuaMgr CLuaMgr::Instance()
 #define LogMgr CGameLogManage::Instance()
 #define CfgMgr LuaMgr.GetConfigMgr()

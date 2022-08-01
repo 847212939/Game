@@ -13,12 +13,10 @@ int main()
 		return -1;
 	}
 
-	IDGen& idGen = Util::Instance()->GetIDGen();
+	IDGen& idGen = DUtil.GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 
-	TCPClient clien;
-
-	if (!clien.InitTCPClient(type))
+	if (!DTCPClient.InitTCPClient(type))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
@@ -26,7 +24,7 @@ int main()
 
 	LogMgr.Init(run);
 
-	Util::Exit(run, clien);
+	Util::Exit(run, DTCPClient);
 
 	return 0;
 }

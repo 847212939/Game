@@ -1,13 +1,13 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-Util* Util::Instance()
+Util& Util::Instance()
 {
 	static Util g_mgr;
-	return &g_mgr;
+	return g_mgr;
 }
 
-Util::Util() : m_IDGen(new IDGen)
+Util::Util() : m_IDGen(new IDGen), m_TCPClient(new TCPClient)
 {
 
 }
@@ -270,4 +270,9 @@ uint8_t* Util::Decrypt(uint8_t* content, int length)
 		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
 	}
 	return content;
+}
+
+TCPClient& Util::GetTCPClient()
+{
+	return *m_TCPClient;
 }
