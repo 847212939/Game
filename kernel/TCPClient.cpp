@@ -88,9 +88,9 @@ void TCPClient::HandlerRecvDataListThread()
 	return;
 }
 
-PlayerPrepClient& TCPClient::GetPlayerPrepClient()
+PlayerPrepClient* TCPClient::GetPlayerPrepClient()
 {
-	return *m_PlayerPrepClient;
+	return m_PlayerPrepClient;
 }
 
 void TCPClient::NotifyAll()

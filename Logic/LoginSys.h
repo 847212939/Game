@@ -10,7 +10,7 @@ public:
 	};
 
 public:
-	LoginSys(PlayerPrepClient* playerPrepClient);
+	LoginSys(PlayerPrepClient* ppc);
 	virtual~LoginSys();
 
 public:
@@ -22,7 +22,4 @@ private:
 
 private:
 	bool LoginIn(Cis& is, PlayerInfo* playerInfo);
-
-private:
-	PlayerPrepClient* m_PlayerPrepClient;
 };

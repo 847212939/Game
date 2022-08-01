@@ -31,7 +31,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		DPlayerPrepClient.CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{

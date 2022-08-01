@@ -1,10 +1,9 @@
 #include "../Game/stdafx.h"
 
-LoginSys::LoginSys(PlayerPrepClient* playerPrepClient) : 
-	m_PlayerPrepClient(playerPrepClient)
+LoginSys::LoginSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(m_PlayerPrepClient, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
-	RegisterTimer(m_PlayerPrepClient, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 1000, SERVERTIMER_TYPE_PERISIST);
+	RegisterNetwk(ppc, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
+	RegisterTimer(ppc, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 1000, SERVERTIMER_TYPE_PERISIST);
 }
 
 LoginSys::~LoginSys()
@@ -14,16 +13,11 @@ LoginSys::~LoginSys()
 void LoginSys::TimerCallback()
 {
 	COUT_LOG(LOG_CINFO, "定时器回调函数");
-	UnRegisterTimer(m_PlayerPrepClient, TimerCmd::TimerCmd_Test);
+	UnRegisterTimer(DPlayerPrepClient, TimerCmd::TimerCmd_Test);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "Player preproces is null");
-		return;
-	}
 	if (!playerInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Player Info is null");
@@ -60,7 +54,7 @@ bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 	std::string id, pw;
 	is >> id >> pw;
 
-	m_PlayerPrepClient->CreatePlayer(playerInfo->m_pMsg->uIndex, playerInfo->m_pTcpSockInfo, id, pw);
+	DPlayerPrepClient->CreatePlayer(playerInfo->m_pMsg->uIndex, playerInfo->m_pTcpSockInfo, id, pw);
 
 	return true;
 }
@@ -76,7 +70,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 
 	// 数据库查询
 	std::string data;
-	m_PlayerPrepClient->LoadOneSql(id, "useraccount", data);
+	DPlayerPrepClient->LoadOneSql(id, "useraccount", data);
 
 	if (data.empty())
 	{
@@ -85,7 +79,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 		Cos os;
 		os << passwaed << userId;
 
-		m_PlayerPrepClient->SaveReplaceSQL("useraccount", id, os);
+		DPlayerPrepClient->SaveReplaceSQL("useraccount", id, os);
 
 		return true;
 	}
