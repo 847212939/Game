@@ -34,6 +34,7 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	vsprintf(buf + strlen(buf), pBuf, args);
 	va_end(args);
 
+#ifdef __DEBUG__
 	// 输出到控制台
 	if (level == LOG_CINFO)
 	{
@@ -42,9 +43,10 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 	else if (level == LOG_CERROR)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-		std::cout << buf << std::endl;
+		std::cout << buf << pFuncName << line << std::endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	}
+#endif // __DEBUG__
 
 	sprintf(buf + strlen(buf), " {%s %s %d}\n", pFile, pFuncName, line);
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#define __DEBUG__
+
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <iomanip>
