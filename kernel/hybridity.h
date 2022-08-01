@@ -7,6 +7,8 @@
 #define CfgMgr LuaMgr.GetConfigMgr()
 #define BaseCfgMgr CfgMgr.GetCBaseCfgMgr()
 #define DPlayerPrepClient DTCPClient.GetPlayerPrepClient()
+#define DSceneClient DPlayerPrepClient.GetSceneClient()
+#define DPlayerCenterClient DSceneClient.GetPlayerCenterClient()
 
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))

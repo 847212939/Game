@@ -12,10 +12,7 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
-PlayerPrep::PlayerPrep(TCPClient* pTCPClient) :
-	m_pTCPClient(pTCPClient),
-	m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]),
-	m_SqlPre("")
+PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]), m_SqlPre("")
 {
 }
 
@@ -26,19 +23,13 @@ PlayerPrep::~PlayerPrep()
 
 void PlayerPrep::Init()
 {
-	if (!m_pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "m_pTCPClient = null");
-		return;
-	}
 	if (!InitDB())
 	{
 		COUT_LOG(LOG_CERROR, "Failed to initialize database");
 		return;
 	}
 
-	m_SceneClient.SetPlayerPrepClient(dynamic_cast<PlayerPrepClient*>(this));
-	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
+	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
 	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
@@ -146,17 +137,6 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 void PlayerPrep::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
 	m_SceneClient.GetPlayerCenterClient().CreatePlayer(index, pSockInfo, id, pw);
-}
-
-// 获取网络句柄
-TCPClient* PlayerPrep::GetTCPClient()
-{
-	if (m_pTCPClient)
-	{
-		return m_pTCPClient;
-	}
-
-	return nullptr;
 }
 
 // 获取数据库
@@ -492,19 +472,8 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 // 数据库执行
 void PlayerPrep::HandlerExecuteSqlThread()
 {
-	if (!m_pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "initialization not complete");
-		return;
-	}
-	if (!m_pTCPClient->GetRuninged())
-	{
-		COUT_LOG(LOG_CERROR, "PlayerPrep::HandlerExecuteSqlThread 初始化未完成");
-		return;
-	}
-
 	SqlList& mysqlList = m_sqlList;
-	bool& run = m_pTCPClient->GetRuninged();
+	bool& run = DTCPClient.GetRuninged();
 
 	while (run)
 	{

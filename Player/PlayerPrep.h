@@ -4,7 +4,7 @@
 class PlayerPrep
 {
 public:
-	PlayerPrep(TCPClient* pTCPClient);
+	PlayerPrep();
 	virtual ~PlayerPrep();
 
 public:
@@ -27,7 +27,6 @@ public:
 	
 public:
 	SceneClient& GetSceneClient();
-	TCPClient* GetTCPClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetSaveCMysqlHelper();
 	CMysqlHelper& GetLoadCMysqlHelper();
@@ -62,7 +61,6 @@ private:
 	ConditionVariable m_cond;				// 条件变量数据库用
 	std::string		  m_SqlPre;				// 上一条sql语句
 	SqlList           m_sqlList;			// 数据库语链表
-	TCPClient*        m_pTCPClient;			// 网络客户端
 	SceneClient       m_SceneClient;		// 玩家场景
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
 	CServerTimer*	  m_pServerTimer;		// 定时器

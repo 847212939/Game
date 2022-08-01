@@ -1,9 +1,8 @@
 #include "../Game/stdafx.h"
 
-Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId, PlayerPrepClient* pp) :
+Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId) :
 	m_pTcpSockInfo(pSockInfo),
 	m_userId(userId),
-	m_PlayerPrepClient(pp),
 	m_index(index),
 	m_load(false)
 {
@@ -15,18 +14,7 @@ Player::~Player()
 
 bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null index = %d, userid = %lld", index, m_userId);
-		return false;
-	}
-	TCPClient* pTCPClient = m_PlayerPrepClient->GetTCPClient();
-	if (!pTCPClient)
-	{
-		COUT_LOG(LOG_CINFO, "TCP Clien is null index = %d, userid = %lld", index, m_userId);
-		return false;
-	}
-	return pTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+	return DTCPClient.SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
@@ -44,11 +32,6 @@ uint64_t Player::GetUserId() const
 const TCPSocketInfo* Player::GetTCPSocketInfo()
 {
 	return m_pTcpSockInfo;
-}
-
-PlayerPrepClient* Player::GetPlayerPrepClient()
-{
-	return m_PlayerPrepClient;
 }
 
 void Player::AddExitCallback(std::function<void(SocketCloseLine*)>&& fun)
@@ -131,60 +114,31 @@ void Player::AttrsCallBackFun()
 // 加载一条数据库
 void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-	return m_PlayerPrepClient->LoadOneSql(sqlName, m_userId, outStr, dataStr);
+	DPlayerPrepClient.LoadOneSql(sqlName, m_userId, outStr, dataStr);
 }
 
 // insert mysql
 void Player::SaveInsertSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-
-	m_PlayerPrepClient->SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
+	DPlayerPrepClient.SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // delete mysql
 void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-
-	m_PlayerPrepClient->SaveDeleteSQL(sqlName, sCondition);
+	DPlayerPrepClient.SaveDeleteSQL(sqlName, sCondition);
 }
 
 // replace mysql
 void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-
-	m_PlayerPrepClient->SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
+	DPlayerPrepClient.SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // update mysql
 void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {
-	if (!m_PlayerPrepClient)
-	{
-		COUT_LOG(LOG_CINFO, "Player preproces is null userid = %lld", m_userId);
-		return;
-	}
-
-	m_PlayerPrepClient->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
+	DPlayerPrepClient.SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
 }
 
 void Player::AdditionAttributes(AttrsMap& attrs)

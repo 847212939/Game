@@ -1,7 +1,6 @@
 #include "../Game/stdafx.h"
 
-Scene::Scene() :
-	m_PlayerPrepClient(nullptr)
+Scene::Scene()
 {
 	
 }
@@ -13,7 +12,6 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	m_PlayerCenterClient.SetSceneClient(dynamic_cast<SceneClient*>(this));
 	m_PlayerCenterClient.Init();
 }
 
@@ -33,7 +31,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		m_PlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPlayerPrepClient.CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
@@ -41,19 +39,8 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
-void Scene::SetPlayerPrepClient(PlayerPrepClient* playerPrepClient)
-{
-	m_PlayerPrepClient = playerPrepClient;
-}
-
 // 获取玩家中心
 PlayerCenterClient& Scene::GetPlayerCenterClient()
 { 
 	return m_PlayerCenterClient; 
-}
-
-// 获取玩家预处理
-PlayerPrepClient* Scene::GetPlayerPrepClient()
-{ 
-	return m_PlayerPrepClient;
 }

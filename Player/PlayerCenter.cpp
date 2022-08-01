@@ -1,8 +1,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-PlayerCenter::PlayerCenter() : 
-	m_SceneClient(nullptr)
+PlayerCenter::PlayerCenter()
 {
 	
 }
@@ -14,24 +13,6 @@ PlayerCenter::~PlayerCenter()
 
 void PlayerCenter::Init()
 {
-	if (!m_SceneClient)
-	{
-		COUT_LOG(LOG_CERROR, "Init scene = null");
-		return;
-	}
-	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "Init sub player preproces = null");
-		return;
-	}
-	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
-	if (!pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "Init tcp client = null");
-		return;
-	}
-
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
 	// 初始化分配内存
@@ -44,23 +25,12 @@ void PlayerCenter::Init()
 		playerClient = nullptr;
 	}
 	
-	pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	DTCPClient.GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
 void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
-	if (!m_SceneClient)
-	{
-		COUT_LOG(LOG_CERROR, "Dispatch message scent = null cmd = %d", cmd);
-		return;
-	}
-	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "Dispatch message player preproces = null cmd = %d", cmd);
-		return;
-	}
 	if (!playerInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient info = null cmd = %d", cmd);
@@ -104,7 +74,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	if (MsgCmd::MsgCmd_PlayerCenter == cmd)
 	{
-		playerPrepClient->CallBackFun((MsgCmd)playerInfo->m_pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPlayerPrepClient.CallBackFun((MsgCmd)playerInfo->m_pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
@@ -115,25 +85,13 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err playerPrepClient = null");
-		return;
-	}
-	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
-	if (!pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err pTCPClient = null");
-		return;
-	}
-	if (!pTCPClient->GetRuninged())
+	if (!DTCPClient.GetRuninged())
 	{
 		COUT_LOG(LOG_CERROR, "PlayerCenter::HandlerPlayerThread 初始化未完成");
 		return;
 	}
 	LoadPlayerList& playerList = m_LoadPlayerList;
-	bool& run = pTCPClient->GetRuninged();
+	bool& run = DTCPClient.GetRuninged();
 
 	while (run)
 	{
@@ -160,32 +118,32 @@ void PlayerCenter::HandlerPlayerThread()
 
 			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_PlayerClientVec.size())
 			{
-				pTCPClient->CloseSocket(loadPKey.GetIndex());
+				DTCPClient.CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (!loadPKey.GetConnect())
 			{
-				pTCPClient->CloseSocket(loadPKey.GetIndex());
+				DTCPClient.CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
-			if (!playerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
+			if (!DPlayerPrepClient.GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 			{
-				pTCPClient->CloseSocket(loadPKey.GetIndex());
+				DTCPClient.CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			if (userId == 0)
 			{
-				pTCPClient->CloseSocket(loadPKey.GetIndex());
+				DTCPClient.CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
 			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
 			if (playerClient)
 			{
-				new(playerClient) PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, playerPrepClient);
+				new(playerClient) PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId);
 			}
 			else
 			{
-				playerClient = new PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId, playerPrepClient);
+				playerClient = new PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId);
 			}
 			m_PlayerClientVec[loadPKey.GetIndex()] = playerClient;
 
@@ -198,11 +156,6 @@ void PlayerCenter::HandlerPlayerThread()
 	}
 
 	COUT_LOG(LOG_CINFO, "playerClient create thread end...");
-}
-
-void PlayerCenter::SetSceneClient(SceneClient* sceneClient)
-{
-	m_SceneClient = sceneClient;
 }
 
 // 创建角色
@@ -245,31 +198,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 // 获取在线玩家
 void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
 {
-	if (!m_SceneClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err m_SceneClient = null");
-		return;
-	}
-	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
-	if (!playerPrepClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err playerPrepClient = null");
-		return;
-	}
-	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
-	if (!pTCPClient)
-	{
-		COUT_LOG(LOG_CERROR, "playerClient create thread err pTCPClient = null");
-		return;
-	}
-
-	pTCPClient->GetSocketSet(socketVec);
-}
-
-// 获取场景
-SceneClient* PlayerCenter::GetSceneClient()
-{
-	return m_SceneClient;
+	DTCPClient.GetSocketSet(socketVec);
 }
 
 ConditionVariable& PlayerCenter::GetConditionVariable()

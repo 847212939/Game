@@ -3,8 +3,8 @@
 class PlayerPrepClient : public PlayerPrep
 {
 public:
+	PlayerPrepClient();
 	virtual~PlayerPrepClient();
-	PlayerPrepClient(TCPClient* pTCPClient);
 
 public:
 	LoginSys& GetLoginSys();

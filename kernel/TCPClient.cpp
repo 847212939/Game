@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient(this))
+TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
 {
 	RegisterNetType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
 	RegisterNetType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
