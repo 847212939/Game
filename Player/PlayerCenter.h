@@ -1,6 +1,5 @@
 #pragma once
 
-class SceneClient;
 class PlayerCenter
 {
 public:
