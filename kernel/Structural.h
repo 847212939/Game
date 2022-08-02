@@ -82,6 +82,7 @@ struct DataLineHead
 {
 	unsigned int uSize;															//数据大小
 	unsigned int uDataKind;														//数据类型
+
 	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }	
 };
 
@@ -101,6 +102,7 @@ struct NetMessageHead
 	unsigned int uHandleCode;													//数据包处理代码
 	unsigned int uIdentification;												//身份标识（不同的协议里面有不同的含义）
 	unsigned int uMessageSize;													//数据包大小
+
 	NetMessageHead() { memset(this, 0, sizeof(NetMessageHead)); }
 };
 
@@ -111,6 +113,7 @@ struct WorkThreadInfo
 	struct event*		event;													//read_fd的读事件
 	SOCKET				read_fd;
 	SOCKET				write_fd;
+
 	WorkThreadInfo() { memset(this, 0, sizeof(WorkThreadInfo)); }
 };
 
@@ -125,6 +128,7 @@ struct TCPSocketInfo
 	bufferevent*	bev;
 	std::mutex*		lock;
 	bool			bHandleAccptMsg;											//是否处理了握手消息，websocket使用
+
 	TCPSocketInfo() { memset(this, 0, sizeof(TCPSocketInfo)); }
 };
 
@@ -135,6 +139,7 @@ struct PlatformSocketInfo
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
 	SOCKET			acceptFd;													//自己的socket
+
 	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
 
@@ -143,7 +148,8 @@ struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;										//队列头
 	int						socketIndex;										//socket索引或者文件描述符
-	void*					pBufferevent;										//bufferevent		
+	void*					pBufferevent;										//bufferevent	
+
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
 
@@ -157,6 +163,7 @@ struct SocketReadLine
 	unsigned long int					uAccessIP;								//SOCKET IP
 	void*								pBufferevent;							//bufferevent
 	SocketType							socketType;								//socket类型 enum SocketType
+
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
 
@@ -168,6 +175,7 @@ struct SocketCloseLine
 	ULONG								uAccessIP;								//SOCKET IP
 	UINT								uConnectTime;							//连接时间
 	BYTE								socketType;								//socket类型 enum SocketType
+
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };
 
@@ -184,6 +192,7 @@ struct ListItemData
 {
 	DataLineHead		stDataHead;
 	unsigned char*		pData;
+
 	ListItemData() : pData(nullptr) {}
 };
 
@@ -191,14 +200,10 @@ struct ListItemData
 struct ServerTimerInfo
 {
 	unsigned int	elapse;														// 定时器间隔（单位毫秒）
-	long long		starttime;														// 起始时间（单位毫秒）
-	BYTE			timertype;																// 定时器类型 SERVERTIMER_TYPE
-	ServerTimerInfo()
-	{
-		elapse = 10;
-		starttime = 0;
-		timertype = SERVERTIMER_TYPE_PERISIST;
-	}
+	long long		starttime;													// 起始时间（单位毫秒）
+	BYTE			timertype;													// 定时器类型 SERVERTIMER_TYPE
+
+	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
 };
 
 // 玩家信息
@@ -221,17 +226,27 @@ struct LoadPlayerKey
 	std::string				id;
 	std::string				pw;
 
-	const unsigned int& GetIndex() { return index; }
-	const uint64_t& getUserId() { return userId; }
-
 	LoadPlayerKey(int nIndex, std::string& sId, std::string& sPw) : index(nIndex), userId(0), id(sId), pw(sPw) {}
 	~LoadPlayerKey() {}
 };
 
+//接收线程参数
+class CTCPSocketManage;
+struct RecvThreadParam
+{
+	CTCPSocketManage*		pThis;
+	int						index;
+
+	RecvThreadParam() :pThis(nullptr), index(0) {}
+};
+
+class PlayerClient;
 using TimerList				= std::list<UINT>;
 using AttrsMap				= std::map<int, int>;
 using OnLinePlayerSet		= std::set<unsigned int>;
 using SqlList				= std::list<std::string>;
+using LoadPlayerList		= std::list<LoadPlayerKey>;
+using PlayerClientVec		= std::vector<PlayerClient*>;
 using SqlKeyDataMap			= std::map<std::string, std::string>;
 using AttrsFunMap			= std::vector<std::function<void()>>;
 using TimerFunMap			= std::map<TimerCmd, std::function<void()>>;
@@ -239,7 +254,6 @@ using NetFunMap				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap			= std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
-using LoadPlayerList		= std::list<LoadPlayerKey>;
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 

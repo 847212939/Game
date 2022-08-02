@@ -290,12 +290,6 @@ public:
 	*/
 	std::string buildUpdateSQL(const std::string& sTableName, const RecordDataMap& mpColumns, const std::string& sCondition);
 	/**
-	* @brief 获取最后执行的SQL语句.
-	*
-	* @return SQL语句
-	*/
-	std::string getLastSQL() { return m_sLastSql; }
-	/**
 	* @brief 获取查询影响数
 	* @return int
 	*/
@@ -314,6 +308,4 @@ private:
 	DBConf m_dbConf;
 	// 是否已经连接
 	bool m_bConnected;
-	// 最后执行的sql
-	std::string m_sLastSql;
 };

@@ -51,6 +51,8 @@ private:
 	bool InitDB();
 	void HandlerExecuteSqlThread();
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
+	void HandleEexcuteMysql(SqlList& sqlList, std::string& sql);
+	bool SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run);
 
 public:
 	static char createptable[CREATE_TABLE_LEN];

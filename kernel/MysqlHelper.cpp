@@ -252,8 +252,6 @@ void CMysqlHelper::execute(const std::string& sSql)
 		connect();
 	}
 
-	m_sLastSql = sSql;
-
 	int iRet = mysql_real_query(m_pstMql, sSql.c_str(), static_cast<unsigned long>(sSql.length()));
 	if (iRet != 0)
 	{
@@ -292,8 +290,6 @@ bool CMysqlHelper::queryRecord(const std::string& sSql, MysqlData& data, bool bC
 			mysql_free_result(pRes);
 		} while (!mysql_next_result(m_pstMql));
 	}
-
-	m_sLastSql = sSql;
 
 	int iRet = mysql_real_query(m_pstMql, sSql.c_str(), static_cast<unsigned long>(sSql.length()));
 	if (iRet != 0)
@@ -375,8 +371,6 @@ void CMysqlHelper::sqlExec(const char* sql, bool bSetGBK/* = false*/)
 			mysql_free_result(pRes);
 		} while (!mysql_next_result(m_pstMql));
 	}
-
-	m_sLastSql = sql;
 
 	int iRet = mysql_real_query(m_pstMql, sql, static_cast<unsigned long>(strlen(sql)));
 	if (iRet != 0)

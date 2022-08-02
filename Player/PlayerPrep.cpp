@@ -460,51 +460,64 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 	return true;
 }
 
-// 数据库执行
+bool PlayerPrep::SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run)
+{
+	RSqlList.clear();
+
+	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
+	m_cond.Wait(uniqLock, [&LSqlList, &run] { if (LSqlList.size() > 0 || !run) { return true; } return false; });
+
+	if (LSqlList.size() <= 0)
+	{
+		uniqLock.unlock();
+		return false;
+	}
+
+	RSqlList.swap(LSqlList);
+
+	uniqLock.unlock();
+
+	return true;
+}
+
+void PlayerPrep::HandleEexcuteMysql(SqlList& sqlList, std::string& sql)
+{
+	try
+	{
+		m_CMysqlHelperSave.execute(sql);
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+		if (m_SqlPre == sql)
+		{
+			return;
+		}
+		m_cond.GetMutex().lock();
+		sqlList.push_front(sql);
+		m_cond.GetMutex().unlock();
+
+		m_SqlPre = sql;
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+}
+
 void PlayerPrep::HandlerExecuteSqlThread()
 {
+	SqlList sqlList;
 	SqlList& mysqlList = m_sqlList;
 	bool& run = DTCPClient->GetRuninged();
 
 	while (run)
 	{
-		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [&mysqlList, &run] { if (mysqlList.size() > 0 || !run) { return true; } return false; });
-
-		if (mysqlList.size() <= 0)
+		if (!SwapMysqlList(mysqlList, sqlList, run))
 		{
-			uniqLock.unlock();
 			continue;
 		}
-
-		SqlList sqlList;
-		sqlList.swap(mysqlList);
-
-		uniqLock.unlock();
-
 		while (!sqlList.empty())
 		{
-			std::string sql = sqlList.front();
+			HandleEexcuteMysql(mysqlList, sqlList.front());
 			sqlList.pop_front();
-
-			try
-			{
-				m_CMysqlHelperSave.execute(sql);
-			}
-			catch (MysqlHelper_Exception& excep)
-			{
-				COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
-				if (m_SqlPre == sql)
-				{
-					continue;
-				}
-				m_cond.GetMutex().lock();
-				mysqlList.push_front(sql);
-				m_cond.GetMutex().unlock();
-
-				m_SqlPre = sql;
-				std::this_thread::sleep_for(std::chrono::milliseconds(50));
-			}
 		}
 	}
 	COUT_LOG(LOG_CINFO, "save mysql thread end...");

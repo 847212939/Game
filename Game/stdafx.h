@@ -47,7 +47,7 @@ extern "C"
 #include "../Player/MessageCmd.h"			// 玩家消息定义
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器
-#include "../kernel/Internal.h"				// 网络
+#include "../kernel/Structural.h"			// 结构
 #include "../Player/Attribute.h"			// 属性
 #include "../kernel/MysqlHelper.h"			// 数据库
 #include "../kernel/ConditionVariable.h"	// 条件变量

@@ -78,79 +78,95 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
-// 玩家创建和数据库的加载
+bool PlayerCenter::SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlayerList& RloadPlayerList, bool& run)
+{
+	RloadPlayerList.clear();
+
+	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
+	m_cond.Wait(uniqLock, [&LloadPlayerList, &run] { if (LloadPlayerList.size() > 0 || !run) { return true; } return false; });
+
+	if (LloadPlayerList.size() <= 0)
+	{
+		uniqLock.unlock();
+		return false;
+	}
+
+	RloadPlayerList.swap(LloadPlayerList);
+
+	uniqLock.unlock();
+
+	return true;
+}
+
+void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
+{
+	uint64_t userId = 0;
+
+	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(loadPKey.index);
+	if (!pInfo)
+	{
+		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loadPKey.index);
+		return;
+	}
+	if (loadPKey.index < 0 || loadPKey.index >= m_PlayerClientVec.size())
+	{
+		DTCPClient->CloseSocket(loadPKey.index);
+		return;
+	}
+	if (!pInfo->isConnect)
+	{
+		DTCPClient->CloseSocket(loadPKey.index);
+		return;
+	}
+	if (!DPlayerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
+	{
+		DTCPClient->CloseSocket(loadPKey.index);
+		return;
+	}
+	if (userId == 0)
+	{
+		DTCPClient->CloseSocket(loadPKey.index);
+		return;
+	}
+	PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.index);
+	if (playerClient)
+	{
+		new(playerClient) PlayerClient(loadPKey.index, userId);
+	}
+	else
+	{
+		playerClient = new PlayerClient(loadPKey.index, userId);
+	}
+	m_PlayerClientVec[loadPKey.index] = playerClient;
+
+	playerClient->LoadMysql();
+	playerClient->EnterGame();
+	playerClient->RefreshProperties();
+	playerClient->EnterScene();
+	playerClient->SetLoad(true);
+
+	return;
+}
+
 void PlayerCenter::HandlerPlayerThread()
 {
-	LoadPlayerList& playerList = m_LoadPlayerList;
 	bool& run = DTCPClient->GetRuninged();
+
+	LoadPlayerList loadPlayerList;
+	LoadPlayerList& playerList = m_LoadPlayerList;
 
 	while (run)
 	{
-		//进入挂起状态
-		std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-		m_cond.Wait(uniqLock, [&playerList, &run] { if (playerList.size() > 0 || !run) { return true; } return false; });
-
-		if (playerList.size() <= 0)
+		if (!SwapLoadPlayerList(playerList, loadPlayerList, run))
 		{
-			uniqLock.unlock();
 			continue;
 		}
-
-		LoadPlayerList loadPlayerList;
-		loadPlayerList.swap(playerList);
-
-		uniqLock.unlock();
-
 		while (!loadPlayerList.empty())
 		{
-			LoadPlayerKey loadPKey = loadPlayerList.front();
+			HandleLoadPlayer(loadPlayerList.front());
 			loadPlayerList.pop_front();
-			uint64_t userId = 0;
-			const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(loadPKey.GetIndex());
-			if (!pInfo)
-			{
-				COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loadPKey.GetIndex());
-				continue;
-			}
-			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_PlayerClientVec.size())
-			{
-				DTCPClient->CloseSocket(loadPKey.GetIndex());
-				continue;
-			}
-			if (!pInfo->isConnect)
-			{
-				DTCPClient->CloseSocket(loadPKey.GetIndex());
-				continue;
-			}
-			if (!DPlayerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
-			{
-				DTCPClient->CloseSocket(loadPKey.GetIndex());
-				continue;
-			}
-			if (userId == 0)
-			{
-				DTCPClient->CloseSocket(loadPKey.GetIndex());
-				continue;
-			}
-			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
-			if (playerClient)
-			{
-				new(playerClient) PlayerClient(loadPKey.GetIndex(), userId);
-			}
-			else
-			{
-				playerClient = new PlayerClient(loadPKey.GetIndex(), userId);
-			}
-			m_PlayerClientVec[loadPKey.GetIndex()] = playerClient;
-
-			playerClient->LoadMysql();
-			playerClient->EnterGame();
-			playerClient->RefreshProperties();
-			playerClient->EnterScene();
-			playerClient->SetLoad(true);
 		}
 	}
-
 	COUT_LOG(LOG_CINFO, "playerClient create thread end...");
 }
 

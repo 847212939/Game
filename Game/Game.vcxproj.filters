@@ -38,6 +38,12 @@
     <Filter Include="网络架构">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家中心\基类">
+      <UniqueIdentifier>{3b7f2dd8-9513-4c00-830e-dbd53f7d0325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生">
+      <UniqueIdentifier>{9730ed31-a78a-4f26-ab83-91568cd16a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -73,18 +79,6 @@
     <ClCompile Include="..\kernel\LogManager.cpp">
       <Filter>网络架构</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPrep.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家中心</Filter>
-    </ClCompile>
     <ClCompile Include="..\Lua\BaseCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
@@ -94,17 +88,29 @@
     <ClCompile Include="..\Lua\LuaCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
+    <ClCompile Include="..\Player\Player.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerCenter.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPrep.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Scene.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
     <ClCompile Include="..\Player\PlayerCenterClient.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家中心\派生</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerClient.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家中心\派生</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerPrepClient.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家中心\派生</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\SceneClient.cpp">
-      <Filter>玩家中心</Filter>
+      <Filter>玩家中心\派生</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +138,7 @@
     <ClInclude Include="..\kernel\ConditionVariable.h">
       <Filter>网络架构</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\Internal.h">
+    <ClInclude Include="..\kernel\Structural.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\AttrsCmd.h">
@@ -159,35 +165,35 @@
     <ClInclude Include="..\kernel\LogManager.h">
       <Filter>网络架构</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrep.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
     <ClInclude Include="..\Lua\BaseCfgMgr.h">
       <Filter>配置管理\配置管理</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenterClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrepClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\SceneClient.h">
-      <Filter>玩家中心</Filter>
-    </ClInclude>
     <ClInclude Include="..\Lua\ConfigMgr.h">
       <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Player.h">
+      <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenter.h">
+      <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPrep.h">
+      <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Scene.h">
+      <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenterClient.h">
+      <Filter>玩家中心\派生</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerClient.h">
+      <Filter>玩家中心\派生</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPrepClient.h">
+      <Filter>玩家中心\派生</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\SceneClient.h">
+      <Filter>玩家中心\派生</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

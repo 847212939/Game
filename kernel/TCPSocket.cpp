@@ -2,15 +2,6 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-//接收线程参数
-struct RecvThreadParam
-{
-	CTCPSocketManage* pThis;
-	int index;
-
-	RecvThreadParam() :pThis(nullptr), index(0) {}
-};
-
 CTCPSocketManage::CTCPSocketManage()
 	:m_listenerBase(nullptr),
 	m_running(false),

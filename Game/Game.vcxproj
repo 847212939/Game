@@ -186,7 +186,7 @@
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\Macro.h" />
-    <ClInclude Include="..\kernel\Internal.h" />
+    <ClInclude Include="..\kernel\Structural.h" />
     <ClInclude Include="..\kernel\LogManager.h" />
     <ClInclude Include="..\kernel\MysqlHelper.h" />
     <ClInclude Include="..\kernel\TCPClient.h" />

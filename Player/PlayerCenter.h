@@ -22,9 +22,11 @@ public:
 
 private:
 	void HandlerPlayerThread();
+	void HandleLoadPlayer(LoadPlayerKey& loadPKey);
+	bool SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlayerList& RloadPlayerList, bool& run);
 
 private:
 	ConditionVariable				m_cond;
 	LoadPlayerList					m_LoadPlayerList;
-	std::vector<PlayerClient*>		m_PlayerClientVec;
+	PlayerClientVec					m_PlayerClientVec;
 };
