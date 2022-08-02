@@ -29,12 +29,12 @@ const unsigned int			MAX_DATALINE_LEN = 320000;
 // 日志等级
 enum LogLevel
 {
-	LOG_INFO = 0,							//info
-	LOG_WARN,								//warnning
-	LOG_ERROR,								//error
-	LOG_CINFO,								//info Console tip
-	LOG_CERROR,								//error Console
-	LOG_ERROR_SYS,							//error system
+	LOG_INFO = 0,																//info
+	LOG_WARN,																	//warnning
+	LOG_ERROR,																	//error
+	LOG_CINFO,																	//info Console tip
+	LOG_CERROR,																	//error Console
+	LOG_ERROR_SYS,																//error system
 	LOG_END,
 };
 
