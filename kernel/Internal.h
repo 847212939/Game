@@ -228,19 +228,19 @@ struct LoadPlayerKey
 	~LoadPlayerKey() {}
 };
 
-using TimerList = std::list<UINT>;
-using AttrsMap = std::map<int, int>;
-using OnLinePlayerSet = std::set<unsigned int>;
-using SqlList = std::list<std::string>;
-using SqlKeyDataMap = std::map<std::string, std::string>;
-using AttrsFunMap = std::vector<std::function<void()>>;
-using TimerFunMap = std::map<TimerCmd, std::function<void()>>;
-using NetFunMap = std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
-using ExitFunMap = std::vector<std::function<void(SocketCloseLine*)>>;
-using MysqlFunMap = std::map<std::string, std::function<void(std::string&)>>;
-using TypeFunMap = std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
-using LoadPlayerList = std::list<LoadPlayerKey>;
-using ServerTimerInfomap = std::unordered_map<unsigned int, ServerTimerInfo>;
-using RecordDataMap = std::map<std::string, std::pair<FT, std::string>>;
+using TimerList				= std::list<UINT>;
+using AttrsMap				= std::map<int, int>;
+using OnLinePlayerSet		= std::set<unsigned int>;
+using SqlList				= std::list<std::string>;
+using SqlKeyDataMap			= std::map<std::string, std::string>;
+using AttrsFunMap			= std::vector<std::function<void()>>;
+using TimerFunMap			= std::map<TimerCmd, std::function<void()>>;
+using NetFunMap				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
+using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
+using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
+using TypeFunMap			= std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
+using LoadPlayerList		= std::list<LoadPlayerKey>;
+using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
+using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 
 const std::array<const char*, LOG_END> levelNames = { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };
