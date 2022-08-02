@@ -144,7 +144,7 @@
     <ClInclude Include="..\Player\TimerCmd.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\hybridity.h">
+    <ClInclude Include="..\kernel\Macro.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\Lua\LuaMgr.h">
