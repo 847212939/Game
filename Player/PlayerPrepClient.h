@@ -7,8 +7,10 @@ public:
 	virtual~PlayerPrepClient();
 
 public:
+	SceneClient* GetSceneClient();
 	LoginSys& GetLoginSys();
 
 private:
-	LoginSys m_LoginSys;
+	SceneClient		m_SceneClient;
+	LoginSys		m_LoginSys;
 };

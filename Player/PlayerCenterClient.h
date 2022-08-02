@@ -3,6 +3,6 @@
 class PlayerCenterClient : public PlayerCenter
 {
 public:
-	PlayerCenterClient();
+	PlayerCenterClient(PlayerPrepClient* ppc);
 	virtual~PlayerCenterClient();
 };

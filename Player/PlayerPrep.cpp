@@ -12,7 +12,9 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
-PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]), m_SqlPre("")
+PlayerPrep::PlayerPrep() : 
+	m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]), 
+	m_SqlPre("")
 {
 }
 
@@ -38,7 +40,7 @@ void PlayerPrep::Init()
 		m_pServerTimer[i].Start();
 	}
 
-	m_SceneClient.Init();
+	DSceneClient->Init();
 }
 
 // 启动数据库
@@ -124,7 +126,7 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		m_SceneClient.MessageDispatch(cmd, playerInfo);
+		DSceneClient->MessageDispatch(cmd, playerInfo);
 	}
 }
 
@@ -153,12 +155,6 @@ ConditionVariable& PlayerPrep::GetConditionVariable()
 CServerTimer* PlayerPrep::GetCServerTimer()
 {
 	return m_pServerTimer;
-}
-
-// 获取场景
-SceneClient* PlayerPrep::GetSceneClient()
-{
-	return &m_SceneClient;
 }
 
 void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)

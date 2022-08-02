@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-PlayerCenterClient::PlayerCenterClient() : 
+PlayerCenterClient::PlayerCenterClient(PlayerPrepClient* ppc) :
 	PlayerCenter()
 {
 }

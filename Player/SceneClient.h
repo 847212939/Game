@@ -3,9 +3,12 @@
 class SceneClient : public Scene
 {
 public:
-	SceneClient();
+	SceneClient(PlayerPrepClient* ppc);
 	virtual~SceneClient();
 
-private:
+public:
+	PlayerCenterClient* GetPlayerCenterClient();
 
+private:
+	PlayerCenterClient	m_PlayerCenterClient;
 };

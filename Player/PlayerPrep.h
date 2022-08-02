@@ -26,7 +26,6 @@ public:
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
 public:
-	SceneClient* GetSceneClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetSaveCMysqlHelper();
 	CMysqlHelper& GetLoadCMysqlHelper();
@@ -61,7 +60,6 @@ private:
 	ConditionVariable m_cond;				// 条件变量数据库用
 	std::string		  m_SqlPre;				// 上一条sql语句
 	SqlList           m_sqlList;			// 数据库语链表
-	SceneClient       m_SceneClient;		// 玩家场景
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
 	CServerTimer*	  m_pServerTimer;		// 定时器
 	TimerFunMap		  m_TimerFunMap;		// 回调函数

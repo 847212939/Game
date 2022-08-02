@@ -12,7 +12,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	m_PlayerCenterClient.Init();
+	DPlayerCenterClient->Init();
 }
 
 // 分发消息
@@ -35,12 +35,6 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		m_PlayerCenterClient.MessageDispatch(cmd, playerInfo);
+		DPlayerCenterClient->MessageDispatch(cmd, playerInfo);
 	}
-}
-
-// 获取玩家中心
-PlayerCenterClient* Scene::GetPlayerCenterClient()
-{ 
-	return &m_PlayerCenterClient; 
 }
