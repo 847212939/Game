@@ -203,6 +203,6 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 
 	playerClient->ExitGame(pSocketClose);
 
-	//SafeDelete(playerClient);
+	SafeDelete(playerClient);
 }
 
