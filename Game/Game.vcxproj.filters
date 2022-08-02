@@ -189,9 +189,6 @@
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerInfo.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">

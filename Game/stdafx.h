@@ -45,6 +45,7 @@ extern "C"
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器
 #include "../kernel/Internal.h"				// 网络
+#include "../Player/Attribute.h"			// 属性
 #include "../kernel/hybridity.h"			// 杂合
 #include "../kernel/MysqlHelper.h"			// 数据库
 #include "../kernel/ConditionVariable.h"	// 条件变量
@@ -53,9 +54,6 @@ extern "C"
 #include "../kernel/TCPClient.h"			// 网络客户端
 #include "../kernel/Util.h"					// 工具类
 #include "../kernel/LogManager.h"			// 日志管理类
-
-#include "../Player/Attribute.h"			// 属性
-#include "../Player/PlayerInfo.h"			// 玩家信息
 
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家

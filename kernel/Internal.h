@@ -26,6 +26,18 @@ const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 // 消息队列最大长度
 const unsigned int			MAX_DATALINE_LEN = 320000;
 
+// 日志等级
+enum LogLevel
+{
+	LOG_INFO = 0,							//info
+	LOG_WARN,								//warnning
+	LOG_ERROR,								//error
+	LOG_CINFO,								//info Console tip
+	LOG_CERROR,								//error Console
+	LOG_ERROR_SYS,							//error system
+	LOG_END,
+};
+
 // 服务器类型
 enum class ServiceType
 {
@@ -45,6 +57,7 @@ enum class SocketType
 	SOCKET_TYPE_WEBSOCKET       = 1,											//websocket
 };
 
+// 定时器类型
 enum SERVERTIMER_TYPE
 {
 	SERVERTIMER_TYPE_PERISIST   = 0,											// 持久定时器
@@ -163,6 +176,7 @@ struct ListItemData
 	ListItemData() : pData(nullptr) {}
 };
 
+// 定时器结构
 struct ServerTimerInfo
 {
 	unsigned int elapse;														// 定时器间隔（单位毫秒）
@@ -175,3 +189,47 @@ struct ServerTimerInfo
 		timertype = SERVERTIMER_TYPE_PERISIST;
 	}
 };
+
+// 玩家信息
+struct PlayerInfo
+{
+	SocketReadLine* m_pMsg;					// SOCKET读取通知结构定义
+	void* m_pData;				// 玩家发送过来的数据
+	ServiceType				m_uSrverType;			// 服务器类型
+	uint64_t				m_userId;				// 玩家id
+	const TCPSocketInfo* m_pTcpSockInfo;			// 玩家TCP的网络信息
+
+	PlayerInfo() : m_pMsg(nullptr), m_pData(nullptr), m_uSrverType(ServiceType::SERVICE_TYPE_LOGIC), m_userId(0), m_pTcpSockInfo(nullptr) {}
+	~PlayerInfo() {}
+};
+
+// 加载玩家键
+struct LoadPlayerKey
+{
+	unsigned int			index;
+	uint64_t				userId;
+	const TCPSocketInfo*	pSockInfo;
+	std::string				id;
+	std::string				pw;
+
+	bool GetConnect() { if (!pSockInfo) { return false; } return pSockInfo->isConnect; }
+	const unsigned int& GetIndex() { return index; }
+	const TCPSocketInfo* GetSocketInfo() { return pSockInfo; }
+	const uint64_t& getUserId() { return userId; }
+
+	LoadPlayerKey(int nIndex, const TCPSocketInfo* sockInfo, std::string& sId, std::string& sPw) : index(nIndex), pSockInfo(sockInfo), userId(0), id(sId), pw(sPw) {}
+	~LoadPlayerKey() {}
+};
+
+using TimerList = std::list<UINT>;
+using AttrsMap = std::map<int, int>;
+using OnLinePlayerSet = std::set<unsigned int>;
+using SqlList = std::list<std::string>;
+using SqlKeyDataMap = std::map<std::string, std::string>;
+using AttrsFunMap = std::vector<std::function<void()>>;
+using TimerFunMap = std::map<TimerCmd, std::function<void()>>;
+using NetFunMap = std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
+using ExitFunMap = std::vector<std::function<void(SocketCloseLine*)>>;
+using MysqlFunMap = std::map<std::string, std::function<void(std::string&)>>;
+using TypeFunMap = std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
+const std::array<const char*, LOG_END> levelNames = { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };
