@@ -465,8 +465,14 @@ bool PlayerPrep::SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run)
 	RSqlList.clear();
 
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [&LSqlList, &run] { if (LSqlList.size() > 0 || !run) { return true; } return false; });
-
+	m_cond.Wait(uniqLock, [&LSqlList, &run] 
+	{ 
+		if (LSqlList.size() > 0 || !run) 
+		{ 
+			return true; 
+		} 
+		return false; 
+	});
 	if (LSqlList.size() <= 0)
 	{
 		uniqLock.unlock();

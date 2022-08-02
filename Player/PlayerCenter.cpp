@@ -83,8 +83,14 @@ bool PlayerCenter::SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlaye
 	RloadPlayerList.clear();
 
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [&LloadPlayerList, &run] { if (LloadPlayerList.size() > 0 || !run) { return true; } return false; });
-
+	m_cond.Wait(uniqLock, [&LloadPlayerList, &run] 
+	{ 
+		if (LloadPlayerList.size() > 0 || !run) 
+		{ 
+			return true; 
+		} 
+		return false; 
+	});
 	if (LloadPlayerList.size() <= 0)
 	{
 		uniqLock.unlock();
