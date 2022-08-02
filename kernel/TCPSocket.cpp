@@ -104,19 +104,11 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	}
 
 	m_running = true;
-	m_iServiceType = serverType;
 	m_uCurSocketSize = 0;
 	m_uCurSocketIndex = 0;
+	m_iServiceType = serverType;
 
-	// 创建发送队列
-	if (m_pSendDataLine == nullptr)
-	{
-		m_pSendDataLine = new CDataLine;
-	}
-
-	// 创建发送线程
 	m_socketThread.push_back(new std::thread(ThreadSendMsgThread, this));
-	// 创建连接线程
 	m_socketThread.push_back(new std::thread(ThreadAcceptThread, this));
 
 	return true;
