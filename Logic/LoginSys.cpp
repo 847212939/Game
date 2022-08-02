@@ -24,8 +24,8 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 		return;
 	}
 	
-	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)playerInfo->m_pMsg->netMessageHead.uIdentification;
-	Cis is((char*)playerInfo->m_pData);
+	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uIdentification;
+	Cis is((char*)playerInfo->pData);
 
 	switch (uIdentification)
 	{
@@ -44,7 +44,7 @@ bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 	std::string id, pw;
 	is >> id >> pw;
 
-	DPlayerPrepClient->CreatePlayer(playerInfo->m_pMsg->uIndex, id, pw);
+	DPlayerPrepClient->CreatePlayer(playerInfo->pMsg->uIndex, id, pw);
 
 	return true;
 }

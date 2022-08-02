@@ -55,14 +55,14 @@ void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "MoveSys Player Info is null");
 		return;
 	}
-	if (!playerInfo->m_pMsg)
+	if (!playerInfo->pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys player info pMsg is null or player info sock info is null");
 		return;
 	}
 
-	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)playerInfo->m_pMsg->netMessageHead.uAssistantID;
-	Cis is((char*)playerInfo->m_pData);
+	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
+	Cis is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{

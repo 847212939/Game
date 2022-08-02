@@ -179,9 +179,9 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	if (index >= 0 && index < socketInfoVec.size())
 	{
 		PlayerInfo Info;
-		Info.m_pMsg = pMsg;
-		Info.m_pData = pData;
-		Info.m_uSrverType = GetServerType();
+		Info.pMsg = pMsg;
+		Info.pData = pData;
+		Info.uSrverType = GetServerType();
 		m_PlayerPrepClient->HandlerMessage(&Info);
 	}
 	else

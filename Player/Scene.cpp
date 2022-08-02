@@ -25,7 +25,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
 			return;
 		}
-		SocketReadLine* pMsg = playerInfo->m_pMsg;
+		SocketReadLine* pMsg = playerInfo->pMsg;
 		if (!pMsg)
 		{
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);

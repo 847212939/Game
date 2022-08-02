@@ -81,23 +81,23 @@ void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "!playerInfo");
 		return;
 	}
-	if (!playerInfo->m_pMsg)
+	if (!playerInfo->pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
-	unsigned int uMainID = playerInfo->m_pMsg->netMessageHead.uMainID;
+	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
 		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
 	// websocket服务器
-	if (playerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
+	if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
 		// 没处理
 	}
-	else if (playerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
+	else if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
 		MessageDispatch((MsgCmd)uMainID, playerInfo);
 	}
@@ -114,7 +114,7 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
 			return;
 		}
-		SocketReadLine* pMsg = playerInfo->m_pMsg;
+		SocketReadLine* pMsg = playerInfo->pMsg;
 		if (!pMsg)
 		{
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);

@@ -36,21 +36,21 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient info = null cmd = %d", cmd);
 		return;
 	}
-	if (!playerInfo->m_pMsg)
+	if (!playerInfo->pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
 		return;
 	}
-	PlayerClient* playerClient = GetPlayerClientByIndex(playerInfo->m_pMsg->uIndex);
+	PlayerClient* playerClient = GetPlayerClientByIndex(playerInfo->pMsg->uIndex);
 	if (!playerClient)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
-	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(playerInfo->m_pMsg->uIndex);
+	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
 		return;
 	}
 	if (!pInfo->isConnect)
@@ -60,17 +60,17 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	if (!playerClient->GetLoad())
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message mysql is unload index = %u", playerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
-	if (playerClient->GetIndex() != playerInfo->m_pMsg->uIndex)
+	if (playerClient->GetIndex() != playerInfo->pMsg->uIndex)
 	{
-		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->m_pMsg->uIndex);
+		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
 		return;
 	}
 	if (MsgCmd::MsgCmd_PlayerCenter == cmd)
 	{
-		DPlayerPrepClient->CallBackFun((MsgCmd)playerInfo->m_pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPlayerPrepClient->CallBackFun((MsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{

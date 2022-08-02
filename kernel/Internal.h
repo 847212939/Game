@@ -182,17 +182,17 @@ pData		:Ã¿¸öÁ´±íÏîÊı¾İµÄÖ¸Õë£¬Ê¹ÓÃÓÃnew·½Ê½ÉêÇëµÄÄÚ´æ£¬×¢Òâ£¬ÔÚ³ö¶ÓÁĞÊ±£¬ÒªÏÔÊ½µ
 */
 struct ListItemData
 {
-	DataLineHead stDataHead;
-	unsigned char* pData;
+	DataLineHead		stDataHead;
+	unsigned char*		pData;
 	ListItemData() : pData(nullptr) {}
 };
 
 // ¶¨Ê±Æ÷½á¹¹
 struct ServerTimerInfo
 {
-	unsigned int elapse;														// ¶¨Ê±Æ÷¼ä¸ô£¨µ¥Î»ºÁÃë£©
-	long long starttime;														// ÆğÊ¼Ê±¼ä£¨µ¥Î»ºÁÃë£©
-	BYTE timertype;																// ¶¨Ê±Æ÷ÀàĞÍ SERVERTIMER_TYPE
+	unsigned int	elapse;														// ¶¨Ê±Æ÷¼ä¸ô£¨µ¥Î»ºÁÃë£©
+	long long		starttime;														// ÆğÊ¼Ê±¼ä£¨µ¥Î»ºÁÃë£©
+	BYTE			timertype;																// ¶¨Ê±Æ÷ÀàĞÍ SERVERTIMER_TYPE
 	ServerTimerInfo()
 	{
 		elapse = 10;
@@ -204,12 +204,12 @@ struct ServerTimerInfo
 // Íæ¼ÒĞÅÏ¢
 struct PlayerInfo
 {
-	SocketReadLine*			m_pMsg;					// SOCKET¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
-	void*					m_pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
-	ServiceType				m_uSrverType;			// ·şÎñÆ÷ÀàĞÍ
-	uint64_t				m_userId;				// Íæ¼Òid
+	SocketReadLine*			pMsg;					// SOCKET¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+	void*					pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
+	ServiceType				uSrverType;			// ·şÎñÆ÷ÀàĞÍ
+	uint64_t				userId;				// Íæ¼Òid
 
-	PlayerInfo() : m_pMsg(nullptr), m_pData(nullptr), m_uSrverType(ServiceType::SERVICE_TYPE_LOGIC), m_userId(0) {}
+	PlayerInfo() : pMsg(nullptr), pData(nullptr), uSrverType(ServiceType::SERVICE_TYPE_LOGIC), userId(0) {}
 	~PlayerInfo() {}
 };
 
