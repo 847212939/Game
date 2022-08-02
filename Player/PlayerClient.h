@@ -7,7 +7,7 @@ public:
 	virtual ~PlayerClient();
 
 public:
-	MoveSys& GetMoveSys() { return m_MoveSys; }
+	MoveSys& GetMoveSys();
 
 private:
 	MoveSys m_MoveSys;
