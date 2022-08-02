@@ -16,7 +16,7 @@ int main()
 	IDGen& idGen = DUtil.GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 
-	if (!DTCPClient->InitTCPClient(type))
+	if (!DTCPClient->Init(type))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;

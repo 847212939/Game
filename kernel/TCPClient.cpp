@@ -7,12 +7,12 @@ TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
 	RegisterNetType(this, TCPClient::CloseSocketCallback, HD_SOCKET_CLOSE);
 }
 
-bool TCPClient::InitTCPClient(ServiceType serverType)
+bool TCPClient::Init(ServiceType serverType)
 {
 	const LogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
-	if (!Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
+	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
 	{
 		return false;
 	}
