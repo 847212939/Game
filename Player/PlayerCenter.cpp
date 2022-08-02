@@ -36,16 +36,6 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient info = null cmd = %d", cmd);
 		return;
 	}
-	if (!playerInfo->m_pTcpSockInfo)
-	{
-		COUT_LOG(LOG_CERROR, "Dispatch message sock info = null cmd = %d", cmd);
-		return;
-	}
-	if (!playerInfo->m_pTcpSockInfo->isConnect)
-	{
-		COUT_LOG(LOG_CINFO, "Dispatch message Link broken cmd = %d", cmd);
-		return;
-	}
 	if (!playerInfo->m_pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
@@ -57,14 +47,20 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->m_pMsg->uIndex);
 		return;
 	}
+	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(playerInfo->m_pMsg->uIndex);
+	if (!pInfo)
+	{
+		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->m_pMsg->uIndex);
+		return;
+	}
+	if (!pInfo->isConnect)
+	{
+		COUT_LOG(LOG_CINFO, "Dispatch message Link broken cmd = %d", cmd);
+		return;
+	}
 	if (!playerClient->GetLoad())
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message mysql is unload index = %u", playerInfo->m_pMsg->uIndex);
-		return;
-	}
-	if (strcmp(playerClient->GetTCPSocketInfo()->ip, playerInfo->m_pTcpSockInfo->ip) != 0)
-	{
-		COUT_LOG(LOG_CERROR, "The local IP address and remote IP address are not equal");
 		return;
 	}
 	if (playerClient->GetIndex() != playerInfo->m_pMsg->uIndex)
@@ -85,11 +81,6 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 // 玩家创建和数据库的加载
 void PlayerCenter::HandlerPlayerThread()
 {
-	if (!DTCPClient->GetRuninged())
-	{
-		COUT_LOG(LOG_CERROR, "PlayerCenter::HandlerPlayerThread 初始化未完成");
-		return;
-	}
 	LoadPlayerList& playerList = m_LoadPlayerList;
 	bool& run = DTCPClient->GetRuninged();
 
@@ -115,13 +106,18 @@ void PlayerCenter::HandlerPlayerThread()
 			LoadPlayerKey loadPKey = loadPlayerList.front();
 			loadPlayerList.pop_front();
 			uint64_t userId = 0;
-
+			const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(loadPKey.GetIndex());
+			if (!pInfo)
+			{
+				COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loadPKey.GetIndex());
+				continue;
+			}
 			if (loadPKey.GetIndex() < 0 || loadPKey.GetIndex() >= m_PlayerClientVec.size())
 			{
 				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
 			}
-			if (!loadPKey.GetConnect())
+			if (!pInfo->isConnect)
 			{
 				DTCPClient->CloseSocket(loadPKey.GetIndex());
 				continue;
@@ -139,11 +135,11 @@ void PlayerCenter::HandlerPlayerThread()
 			PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.GetIndex());
 			if (playerClient)
 			{
-				new(playerClient) PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId);
+				new(playerClient) PlayerClient(loadPKey.GetIndex(), userId);
 			}
 			else
 			{
-				playerClient = new PlayerClient(loadPKey.GetIndex(), loadPKey.GetSocketInfo(), userId);
+				playerClient = new PlayerClient(loadPKey.GetIndex(), userId);
 			}
 			m_PlayerClientVec[loadPKey.GetIndex()] = playerClient;
 
@@ -159,10 +155,10 @@ void PlayerCenter::HandlerPlayerThread()
 }
 
 // 创建角色
-void PlayerCenter::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
+void PlayerCenter::CreatePlayer(unsigned int index, std::string& id, std::string& pw)
 {
 	m_cond.GetMutex().lock();
-	m_LoadPlayerList.push_back(LoadPlayerKey(index, pSockInfo, id, pw));
+	m_LoadPlayerList.push_back(LoadPlayerKey(index, id, pw));
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();

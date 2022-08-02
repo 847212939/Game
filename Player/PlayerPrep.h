@@ -46,7 +46,7 @@ public:
 
 public:
 	// ´´½¨½ÇÉ«
-	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
+	void CreatePlayer(unsigned int index, std::string& id, std::string& pw);
 
 private:
 	bool InitDB();

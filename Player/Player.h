@@ -4,18 +4,17 @@
 class Player
 {
 public:
-	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId);
+	Player(const unsigned int& index, const uint64_t& userId);
 	virtual ~Player();
 
 public:
 	bool GetLoad();
 	int GetIndex();
 	uint64_t GetUserId() const;
-	const TCPSocketInfo* GetTCPSocketInfo();
 
 public:
 	// 消息处理
-	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
@@ -58,5 +57,4 @@ private:
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
-	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 };

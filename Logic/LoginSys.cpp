@@ -23,17 +23,7 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Player Info is null");
 		return;
 	}
-	if (!playerInfo->m_pMsg || !playerInfo->m_pTcpSockInfo)
-	{
-		COUT_LOG(LOG_CERROR, "player info pMsg is null or player info sock info is null");
-		return;
-	}
-	if (!playerInfo->m_pTcpSockInfo->isConnect)
-	{
-		COUT_LOG(LOG_CERROR, "Network link closed");
-		return;
-	}
-
+	
 	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)playerInfo->m_pMsg->netMessageHead.uIdentification;
 	Cis is((char*)playerInfo->m_pData);
 
@@ -54,7 +44,7 @@ bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 	std::string id, pw;
 	is >> id >> pw;
 
-	DPlayerPrepClient->CreatePlayer(playerInfo->m_pMsg->uIndex, playerInfo->m_pTcpSockInfo, id, pw);
+	DPlayerPrepClient->CreatePlayer(playerInfo->m_pMsg->uIndex, id, pw);
 
 	return true;
 }

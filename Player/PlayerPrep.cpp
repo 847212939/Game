@@ -81,14 +81,9 @@ void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "!playerInfo");
 		return;
 	}
-	if (!playerInfo->m_pMsg || !playerInfo->m_pTcpSockInfo)
+	if (!playerInfo->m_pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
-		return;
-	}
-	if (!playerInfo->m_pTcpSockInfo->isConnect)
-	{
-		COUT_LOG(LOG_CERROR, "Network link closed");
 		return;
 	}
 	unsigned int uMainID = playerInfo->m_pMsg->netMessageHead.uMainID;
@@ -134,9 +129,9 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 }
 
 // 创建角色
-void PlayerPrep::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
+void PlayerPrep::CreatePlayer(unsigned int index, std::string& id, std::string& pw)
 {
-	DPlayerCenterClient->CreatePlayer(index, pSockInfo, id, pw);
+	DPlayerCenterClient->CreatePlayer(index, id, pw);
 }
 
 // 获取数据库

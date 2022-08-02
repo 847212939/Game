@@ -3,8 +3,8 @@
 class PlayerClient : public Player
 {
 public:
+	PlayerClient(const unsigned int& index, const uint64_t& userId);
 	virtual ~PlayerClient();
-	PlayerClient(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId);
 
 public:
 	MoveSys& GetMoveSys() { return m_MoveSys; }

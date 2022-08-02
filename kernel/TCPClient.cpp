@@ -178,11 +178,9 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 
 	if (index >= 0 && index < socketInfoVec.size())
 	{
-		const TCPSocketInfo& tcpInfo = socketInfoVec[index];
 		PlayerInfo Info;
 		Info.m_pMsg = pMsg;
 		Info.m_pData = pData;
-		Info.m_pTcpSockInfo = &tcpInfo;
 		Info.m_uSrverType = GetServerType();
 		m_PlayerPrepClient->HandlerMessage(&Info);
 	}

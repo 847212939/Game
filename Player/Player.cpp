@@ -1,7 +1,6 @@
 #include "../Game/stdafx.h"
 
-Player::Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId) :
-	m_pTcpSockInfo(pSockInfo),
+Player::Player(const unsigned int& index, const uint64_t& userId) :
 	m_userId(userId),
 	m_index(index),
 	m_load(false)
@@ -12,9 +11,15 @@ Player::~Player()
 {
 }
 
-bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification)
+bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
-	return DTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(m_index);
+	if (!pInfo)
+	{
+		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_index);
+		return false;
+	}
+	return DTCPClient->SendData(m_index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
@@ -26,12 +31,6 @@ void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 uint64_t Player::GetUserId() const
 {
 	return m_userId;
-}
-
-// 获取玩家信息
-const TCPSocketInfo* Player::GetTCPSocketInfo()
-{
-	return m_pTcpSockInfo;
 }
 
 void Player::AddExitCallback(std::function<void(SocketCloseLine*)>&& fun)
@@ -163,7 +162,7 @@ void Player::RefreshProperties()
 		os << it->first << it->second;
 	}
 
-	SendData(m_index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0, m_pTcpSockInfo->bev);
+	SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
 }
 
 // 加载数据库

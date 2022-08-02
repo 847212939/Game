@@ -55,14 +55,9 @@ void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "MoveSys Player Info is null");
 		return;
 	}
-	if (!playerInfo->m_pMsg || !playerInfo->m_pTcpSockInfo)
+	if (!playerInfo->m_pMsg)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys player info pMsg is null or player info sock info is null");
-		return;
-	}
-	if (!playerInfo->m_pTcpSockInfo->isConnect)
-	{
-		COUT_LOG(LOG_CERROR, "MoveSys Network link closed");
 		return;
 	}
 
