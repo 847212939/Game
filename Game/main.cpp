@@ -24,7 +24,7 @@ int main()
 
 	LogMgr->Init(run);
 
-	Util::Exit(run, DTCPClient);
+	Util::Exit(run);
 
 	return 0;
 }

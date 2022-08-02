@@ -15,7 +15,7 @@ public:
 	static unsigned int GetRandNum();
 	static int GetRandRange(int iMin, int iMax);
 
-	static void Exit(bool& run, TCPClient* clien);
+	static void Exit(bool& run);
 	static long long GetSysMilliseconds();
 
 	// ∂‘≥∆º”√‹

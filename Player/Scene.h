@@ -14,5 +14,5 @@ public:
 	PlayerCenterClient* GetPlayerCenterClient();
 
 private:
-	PlayerCenterClient		m_PlayerCenterClient;	// 玩家中心
+	PlayerCenterClient	m_PlayerCenterClient;	// 玩家中心
 };

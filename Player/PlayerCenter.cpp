@@ -180,8 +180,15 @@ PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 
 PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 {
-	for (auto* playerClient : m_PlayerClientVec)
+	std::vector<UINT> playerClientSet;
+	DTCPClient->GetSocketSet(playerClientSet);
+	for (int index : playerClientSet)
 	{
+		if (index >= m_PlayerClientVec.size() || index < 0)
+		{
+			continue;
+		}
+		PlayerClient* playerClient = m_PlayerClientVec[index];
 		if (!playerClient)
 		{
 			continue;
