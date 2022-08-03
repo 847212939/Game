@@ -12,9 +12,7 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
-PlayerPrep::PlayerPrep() : 
-	m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()]), 
-	m_SqlPre("")
+PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()])
 {
 }
 
@@ -495,16 +493,6 @@ void PlayerPrep::HandleEexcuteMysql(SqlList& sqlList, std::string& sql)
 	catch (MysqlHelper_Exception& excep)
 	{
 		COUT_LOG(LOG_CERROR, "Ö´ÐÐÊý¾Ý¿âÊ§°Ü:%s", excep.errorInfo.c_str());
-		if (m_SqlPre == sql)
-		{
-			return;
-		}
-		m_cond.GetMutex().lock();
-		sqlList.push_front(sql);
-		m_cond.GetMutex().unlock();
-
-		m_SqlPre = sql;
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
 
