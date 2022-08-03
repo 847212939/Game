@@ -83,7 +83,7 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "recv data thread end...");
+	COUT_LOG(LOG_CINFO, "recv data thread end");
 
 	return;
 }
