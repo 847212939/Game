@@ -6,6 +6,10 @@ public:
 	SceneClient(PlayerPrepClient* ppc);
 	virtual~SceneClient();
 
+protected:
+	SceneClient(const SceneClient& my);
+	SceneClient& operator=(const SceneClient& my);
+
 public:
 	PlayerCenterClient* GetPlayerCenterClient();
 

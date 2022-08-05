@@ -27,6 +27,10 @@ public:
 	CBaseCfgMgr();
 	virtual~CBaseCfgMgr();
 
+protected:
+	CBaseCfgMgr(const CBaseCfgMgr& my);
+	CBaseCfgMgr& operator=(const CBaseCfgMgr& my);
+
 public:
 	void ReadServerIDCfg(int id);
 	void ReadTimerCntCfg(int cnt);

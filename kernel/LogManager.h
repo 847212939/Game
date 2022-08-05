@@ -13,6 +13,10 @@ private:
 	CGameLogManage();
 	virtual ~CGameLogManage();
 
+protected:
+	CGameLogManage(const CGameLogManage& my);
+	CGameLogManage& operator=(const CGameLogManage& my);
+
 public:
 	static CGameLogManage* Instance();
 

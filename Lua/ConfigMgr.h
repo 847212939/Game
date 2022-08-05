@@ -6,6 +6,10 @@ public:
 	ConfigMgr();
 	virtual~ConfigMgr();
 
+protected:
+	ConfigMgr(const ConfigMgr& my);
+	ConfigMgr& operator=(const ConfigMgr& my);
+
 public:
 	// »’÷æ¥Ú”°
 	void CoutLog(int level, const char* log);

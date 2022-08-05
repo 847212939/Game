@@ -6,6 +6,10 @@ public:
 	PlayerPrepClient();
 	virtual~PlayerPrepClient();
 
+protected:
+	PlayerPrepClient(const PlayerPrepClient& my);
+	PlayerPrepClient& operator=(const PlayerPrepClient& my);
+
 public:
 	SceneClient* GetSceneClient();
 	LoginSys& GetLoginSys();

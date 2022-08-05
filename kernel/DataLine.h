@@ -7,6 +7,10 @@ public:
 	CDataLine();
 	virtual ~CDataLine();
 
+protected:
+	CDataLine(const CDataLine& my);
+	CDataLine& operator=(const CDataLine& my);
+
 public:
 	//清理所有数据
 	bool CleanData();

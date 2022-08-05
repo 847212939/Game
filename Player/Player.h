@@ -7,6 +7,10 @@ public:
 	Player(const unsigned int& index, const uint64_t& userId);
 	virtual ~Player();
 
+protected:
+	Player(const Player& my);
+	Player& operator=(const Player& my);
+
 public:
 	bool GetLoad();
 	int GetIndex();

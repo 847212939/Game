@@ -6,6 +6,10 @@ public:
 	CServerTimer();
 	~CServerTimer();
 
+protected:
+	CServerTimer(const CServerTimer& my);
+	CServerTimer& operator=(const CServerTimer& my);
+
 public:
 	bool Start(int timeonce = 100);
 	bool Stop();

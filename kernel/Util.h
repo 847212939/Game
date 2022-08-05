@@ -10,6 +10,10 @@ private:
 	Util();
 	virtual~Util();
 
+protected:
+	Util(const Util& my);
+	Util& operator=(const Util& my);
+
 public:
 	// 获取随机数
 	static unsigned int GetRandNum();
@@ -42,6 +46,10 @@ public:
 	Cos();
 	virtual ~Cos();
 
+protected:
+	Cos(const Cos& my);
+	Cos& operator=(const Cos& my);
+
 public:
 	template<class T>
 	Cos& operator << (T t);
@@ -58,6 +66,10 @@ class Cis
 public:
 	virtual ~Cis();
 	Cis(std::string str);
+
+protected:
+	Cis(const Cis& my);
+	Cis& operator=(const Cis& my);
 
 public:
 	template<class T>
@@ -94,6 +106,10 @@ class IDGen
 public:
 	IDGen();
 	virtual ~IDGen(){}
+
+protected:
+	IDGen(const IDGen& my);
+	IDGen& operator=(const IDGen& my);
 
 public:
 	void Init(int serverType, int serverID);

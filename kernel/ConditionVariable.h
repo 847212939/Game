@@ -6,6 +6,10 @@ public:
 	ConditionVariable() {}
 	virtual ~ConditionVariable() {}
 
+protected:
+	ConditionVariable(const ConditionVariable& my);
+	ConditionVariable& operator=(const ConditionVariable& my);
+
 public:
 	/*
 	* @brief »ñµÃ»¥³âËø

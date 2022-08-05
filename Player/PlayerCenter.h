@@ -6,6 +6,10 @@ public:
 	PlayerCenter();
 	virtual ~PlayerCenter();
 
+protected:
+	PlayerCenter(const PlayerCenter& my);
+	PlayerCenter& operator=(const PlayerCenter& my);
+
 public:
 	void Init();
 

@@ -5,6 +5,10 @@ class CLuaMgr
 public:
 	static CLuaMgr* Instance();
 
+protected:
+	CLuaMgr(const CLuaMgr& my);
+	CLuaMgr& operator=(const CLuaMgr& my);
+
 public:
 	bool InitCfgMgr();
     ConfigMgr* GetConfigMgr();

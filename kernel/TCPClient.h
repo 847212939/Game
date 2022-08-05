@@ -7,6 +7,10 @@ public:
 	TCPClient();
 	virtual ~TCPClient();
 
+protected:
+	TCPClient(const TCPClient& my);
+	TCPClient& operator=(const TCPClient& my);
+
 public:
 	bool Init(ServiceType serverType);
 	void NotifyAll();

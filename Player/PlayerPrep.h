@@ -7,6 +7,10 @@ public:
 	PlayerPrep();
 	virtual ~PlayerPrep();
 
+protected:
+	PlayerPrep(const PlayerPrep& my);
+	PlayerPrep& operator=(const PlayerPrep& my);
+
 public:
 	void Init();
 	void HandlerMessage(PlayerInfo* playerInfo);
