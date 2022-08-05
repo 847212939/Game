@@ -13,7 +13,7 @@ CLuaMgr::~CLuaMgr()
     }
     if (m_ConfigMgr)
     {
-        delete m_ConfigMgr;
+        SafeDelete(m_ConfigMgr);
     }
 }
 

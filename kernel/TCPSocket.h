@@ -6,6 +6,10 @@ public:
 	CTCPSocketManage();
 	virtual ~CTCPSocketManage();
 
+protected:
+	CTCPSocketManage(const CTCPSocketManage& my);
+	CTCPSocketManage& operator=(const CTCPSocketManage& my);
+
 public:
 	bool Stop();
 	bool UnInit();

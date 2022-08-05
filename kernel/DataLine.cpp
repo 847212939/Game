@@ -86,7 +86,7 @@ unsigned int CDataLine::GetData(void** pDataBuffer, bool& run, unsigned int& uDa
 	*pDataBuffer = reinterpret_cast<DataLineHead*>(pListItem->pData);
 
 	//删除队列中的数据
-	delete pListItem;
+	SafeDelete(pListItem);
 
 	return uDataSize;
 }
