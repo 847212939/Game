@@ -14,10 +14,10 @@ public:
 	void SetSubPlayerPreproces(SubPlayerPreproces* pSubPlayerPreproces);
 
 public:
-	SubPlayerCenter& GetPlayerCenter();
+	PlayerCenterClient& GetPlayerCenter();
 	SubPlayerPreproces* GetPlayerPreproces();
 
 private:
-	SubPlayerCenter			m_SubPlayerCenter;			// 玩家中心
+	PlayerCenterClient		m_PlayerCenterClient;			// 玩家中心
 	SubPlayerPreproces*		m_SubPlayerPreproces;		// 玩家预处理
 };

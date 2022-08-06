@@ -178,7 +178,7 @@
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\ServerTimer.cpp" />
     <ClCompile Include="..\SubSys\PlayerClient.cpp" />
-    <ClCompile Include="..\SubSys\SubPlayerCenter.cpp" />
+    <ClCompile Include="..\SubSys\PlayerCenterClient.cpp" />
     <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp" />
     <ClCompile Include="..\SubSys\SubScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -208,7 +208,7 @@
     <ClInclude Include="..\Player\ServerTimer.h" />
     <ClInclude Include="..\Player\TimerCmd.h" />
     <ClInclude Include="..\SubSys\PlayerClient.h" />
-    <ClInclude Include="..\SubSys\SubPlayerCenter.h" />
+    <ClInclude Include="..\SubSys\PlayerCenterClient.h" />
     <ClInclude Include="..\SubSys\SubPlayerPreproces.h" />
     <ClInclude Include="..\SubSys\SubScene.h" />
     <ClInclude Include="stdafx.h" />

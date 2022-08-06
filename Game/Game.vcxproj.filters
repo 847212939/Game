@@ -94,7 +94,7 @@
     <ClCompile Include="..\SubSys\PlayerClient.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayerCenter.cpp">
+    <ClCompile Include="..\SubSys\PlayerCenterClient.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
@@ -168,7 +168,7 @@
     <ClInclude Include="..\SubSys\PlayerClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayerCenter.h">
+    <ClInclude Include="..\SubSys\PlayerCenterClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\SubSys\SubPlayerPreproces.h">

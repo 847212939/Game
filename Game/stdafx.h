@@ -62,7 +62,7 @@ extern "C"
 #include "../SubSys/PlayerClient.h"			// 逻辑处理类
 
 #include "../Player/PlayerCenter.h"			// 玩家管理
-#include "../SubSys/SubPlayerCenter.h"		// 玩家管理
+#include "../SubSys/PlayerCenterClient.h"	// 玩家管理
 
 #include "../Player/Scene.h"				// 场景
 #include "../SubSys/SubScene.h"				// 场景

@@ -13,8 +13,8 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	m_SubPlayerCenter.SetSubScene(dynamic_cast<SubScene*>(this));
-	m_SubPlayerCenter.Init();
+	m_PlayerCenterClient.SetSubScene(dynamic_cast<SubScene*>(this));
+	m_PlayerCenterClient.Init();
 }
 
 // 分发消息
@@ -37,7 +37,7 @@ void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 	else
 	{
-		m_SubPlayerCenter.DispatchMessage(cmd, pPlayerInfo);
+		m_PlayerCenterClient.DispatchMessage(cmd, pPlayerInfo);
 	}
 }
 
@@ -47,9 +47,9 @@ void Scene::SetSubPlayerPreproces(SubPlayerPreproces* pSubPlayerPreproces)
 }
 
 // 获取玩家中心
-SubPlayerCenter& Scene::GetPlayerCenter()
+PlayerCenterClient& Scene::GetPlayerCenter()
 { 
-	return m_SubPlayerCenter; 
+	return m_PlayerCenterClient; 
 }
 
 // 获取玩家预处理
