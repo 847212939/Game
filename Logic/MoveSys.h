@@ -1,6 +1,6 @@
 #pragma once
 
-class SubPlayer;
+class PlayerClient;
 class MoveSys
 {
 public:
@@ -9,7 +9,7 @@ public:
 		CS_Move = 1,  // ÒÆ¶¯
 	};
 public:
-	MoveSys(SubPlayer* pSubPlayer);
+	MoveSys(PlayerClient* playerClient);
 	virtual~MoveSys();
 
 private:
@@ -22,5 +22,5 @@ private:
 	bool MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo);
 
 private:
-	SubPlayer* m_pSubPlayer;
+	PlayerClient* m_PlayerClient;
 };

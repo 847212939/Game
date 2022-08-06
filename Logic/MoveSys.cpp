@@ -1,11 +1,11 @@
 #include "../Game/stdafx.h"
 
-MoveSys::MoveSys(SubPlayer* pSubPlayer) : m_pSubPlayer(pSubPlayer)
+MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
-	RegisterLgout(m_pSubPlayer, this, MoveSys::ExitCallback);
-	RegisterAttrs(m_pSubPlayer, this, MoveSys::EnterGameCallback);
-	RegisterMysql(m_pSubPlayer, this, MoveSys::MysqlCallback, "move");
-	RegisterNetwk(m_pSubPlayer, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
+	RegisterLgout(m_PlayerClient, this, MoveSys::ExitCallback);
+	RegisterAttrs(m_PlayerClient, this, MoveSys::EnterGameCallback);
+	RegisterMysql(m_PlayerClient, this, MoveSys::MysqlCallback, "move");
+	RegisterNetwk(m_PlayerClient, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
 }
 
 MoveSys::~MoveSys()
@@ -14,7 +14,7 @@ MoveSys::~MoveSys()
 
 void MoveSys::MysqlCallback(std::string&& data)
 {
-	if (!m_pSubPlayer)
+	if (!m_PlayerClient)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
@@ -40,12 +40,12 @@ void MoveSys::EnterGameCallback()
 		attrs[i] += i;
 	}
 
-	AddAttributes(m_pSubPlayer, attrs);
+	AddAttributes(m_PlayerClient, attrs);
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 {
-	if (!m_pSubPlayer)
+	if (!m_PlayerClient)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
@@ -96,7 +96,7 @@ bool MoveSys::MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo)
 	COstringstream os;
 	os << x << y;
 
-	m_pSubPlayer->SaveReplaceSQL("move", os);
+	m_PlayerClient->SaveReplaceSQL("move", os);
 
 	return true;
 }

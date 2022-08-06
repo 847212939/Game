@@ -203,16 +203,16 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	SubPlayer* pSubPlayer = m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
-	if (!pSubPlayer)
+	PlayerClient* playerClient = m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
+	if (!playerClient)
 	{
-		COUT_LOG(LOG_CINFO, "TCP close pSubPlayer is null");
+		COUT_LOG(LOG_CINFO, "TCP close playerClient is null");
 		return;
 	}
 
 	// 玩家下线处理
-	pSubPlayer->ExitGame(pSocketClose);
+	playerClient->ExitGame(pSocketClose);
 
-	SafeDelete(pSubPlayer);
+	SafeDelete(playerClient);
 }
 

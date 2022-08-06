@@ -21,7 +21,7 @@ public:
 	const SubScene* getScene();
 	const OnLinePlayerSet* GetSocketSet();
 	ConditionVariable& GetConditionVariable();
-	SubPlayer* GetSubPlayer(unsigned int index);
+	PlayerClient* GetSubPlayer(unsigned int index);
 
 private:
 	void HandlerPlayerThread();
@@ -30,5 +30,5 @@ private:
 	SubScene*					m_pScene;
 	LoadPlayerList				m_LoadPlayerList;
 	ConditionVariable			m_cond;
-	std::vector<SubPlayer*>		m_pPlayerVec;
+	std::vector<PlayerClient*>		m_pPlayerVec;
 };

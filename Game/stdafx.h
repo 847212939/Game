@@ -59,7 +59,7 @@ extern "C"
 
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
-#include "../SubSys/SubPlayer.h"			// 逻辑处理类
+#include "../SubSys/PlayerClient.h"			// 逻辑处理类
 
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../SubSys/SubPlayerCenter.h"		// 玩家管理
