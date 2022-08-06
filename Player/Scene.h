@@ -10,12 +10,12 @@ public:
 	void Init();
 
 public:
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
-	void SetSubPlayerPreproces(PlayerPrepClient* pSubPlayerPreproces);
+	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
+	void SetPlayerPrepClient(PlayerPrepClient* playerPrepClient);
 
 public:
-	PlayerCenterClient& GetPlayerCenter();
-	PlayerPrepClient* GetPlayerPreproces();
+	PlayerCenterClient& GetPlayerCenterClient();
+	PlayerPrepClient* GetPlayerPrepClient();
 
 private:
 	PlayerPrepClient*		m_PlayerPrepClient;		// ÕÊº“‘§¥¶¿Ì

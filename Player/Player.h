@@ -12,12 +12,12 @@ public:
 	int GetIndex();
 	uint64_t GetUserId() const;
 	const TCPSocketInfo* GetTCPSocketInfo();
-	PlayerPrepClient* GetSubPlayerPreproces();
+	PlayerPrepClient* GetPlayerPrepClient();
 
 public:
 	// 消息处理
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
 	// 上下线处理
@@ -35,7 +35,7 @@ public:
 	void AttrsCallBackFun();
 	void MysqlCallBackFun();
 	void ExitCallBackFun(SocketCloseLine* pSocketClose);
-	void NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
 	// 属性

@@ -89,7 +89,7 @@ void TCPClient::HandlerRecvDataListThread()
 	return;
 }
 
-PlayerPrepClient* TCPClient::GetSubPlayerPreproces()
+PlayerPrepClient* TCPClient::GetPlayerPrepClient()
 {
 	return m_PlayerPrepClient;
 }
@@ -127,7 +127,7 @@ void TCPClient::NotifyAll()
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
 	m_PlayerPrepClient->GetConditionVariable().NotifyAll();
-	m_PlayerPrepClient->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+	m_PlayerPrepClient->GetSceneClient().GetPlayerCenterClient().GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -203,7 +203,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = m_PlayerPrepClient->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
+	PlayerClient* playerClient = m_PlayerPrepClient->GetSceneClient().GetPlayerCenterClient().GetPlayerClient(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CINFO, "TCP close playerClient is null");

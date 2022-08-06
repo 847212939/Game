@@ -18,42 +18,42 @@ void Scene::Init()
 }
 
 // 分发消息
-void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (MsgCmd::MsgCmd_Scene == cmd)
 	{
-		if (!pPlayerInfo)
+		if (!playerInfo)
 		{
-			COUT_LOG(LOG_CERROR, "pPlayerInfo = null cmd = %d", (int)cmd);
+			COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
 			return;
 		}
-		SocketReadLine* pMsg = pPlayerInfo->m_pMsg;
+		SocketReadLine* pMsg = playerInfo->m_pMsg;
 		if (!pMsg)
 		{
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		m_PlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
+		m_PlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
-		m_PlayerCenterClient.DispatchMessage(cmd, pPlayerInfo);
+		m_PlayerCenterClient.DispatchMessage(cmd, playerInfo);
 	}
 }
 
-void Scene::SetSubPlayerPreproces(PlayerPrepClient* pSubPlayerPreproces)
+void Scene::SetPlayerPrepClient(PlayerPrepClient* playerPrepClient)
 {
-	m_PlayerPrepClient = pSubPlayerPreproces;
+	m_PlayerPrepClient = playerPrepClient;
 }
 
 // 获取玩家中心
-PlayerCenterClient& Scene::GetPlayerCenter()
+PlayerCenterClient& Scene::GetPlayerCenterClient()
 { 
 	return m_PlayerCenterClient; 
 }
 
 // 获取玩家预处理
-PlayerPrepClient* Scene::GetPlayerPreproces()
+PlayerPrepClient* Scene::GetPlayerPrepClient()
 { 
 	return m_PlayerPrepClient;
 }

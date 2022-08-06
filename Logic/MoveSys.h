@@ -15,11 +15,11 @@ public:
 private:
 	void EnterGameCallback();
 	void MysqlCallback(std::string&& data);
-	void NetworkCallback(PlayerInfo* pPlayerInfo);
-	void ExitCallback(SocketCloseLine* pPlayerInfo);
+	void NetworkCallback(PlayerInfo* playerInfo);
+	void ExitCallback(SocketCloseLine* socketCloseLine);
 
 private:
-	bool MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo);
+	bool MoveCoo(CIstringstream& is, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_PlayerClient;

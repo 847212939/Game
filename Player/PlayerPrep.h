@@ -10,7 +10,7 @@ public:
 public:
 	void Init();
 	void HandlerExecuteSqlThread();
-	void HandlerMessage(PlayerInfo* pPlayerInfo);
+	void HandlerMessage(PlayerInfo* playerInfo);
 
 public:
 	// 加载一条数据库
@@ -27,7 +27,7 @@ public:
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	
 public:
-	SceneClient& GetSubScene();
+	SceneClient& GetSceneClient();
 	TCPClient* GetTCPClient();
 	CServerTimer* GetCServerTimer();
 	CMysqlHelper& GetCMysqlHelper();
@@ -41,7 +41,7 @@ public:
 public:
 	bool CallBackFun(TimerCmd cmd);
 	void DelTimerCallback(TimerCmd cmd);
-	bool CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	bool CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo);
 	void AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 
@@ -51,7 +51,7 @@ public:
 
 private:
 	bool InitDB();
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
 	static char createptable[CreateTableLen];

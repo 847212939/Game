@@ -29,9 +29,9 @@ bool Player::SendData(int index, const char* pData, size_t size, MsgCmd mainID, 
 	return pTCPClient->SendData(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 
-void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+void Player::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 {
-	NetCallBackFun(cmd, pPlayerInfo);
+	NetCallBackFun(cmd, playerInfo);
 }
 
 // »ñÈ¡Íæ¼Òid
@@ -46,7 +46,7 @@ const TCPSocketInfo* Player::GetTCPSocketInfo()
 	return m_pTcpSockInfo;
 }
 
-PlayerPrepClient* Player::GetSubPlayerPreproces()
+PlayerPrepClient* Player::GetPlayerPrepClient()
 {
 	return m_PlayerPrepClient;
 }
@@ -93,7 +93,7 @@ void Player::ExitCallBackFun(SocketCloseLine* pSocketClose)
 	}
 }
 
-void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
@@ -102,7 +102,7 @@ void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		return;
 	}
 
-	it->second(pPlayerInfo);
+	it->second(playerInfo);
 }
 
 void Player::MysqlCallBackFun()

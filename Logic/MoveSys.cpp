@@ -43,37 +43,37 @@ void MoveSys::EnterGameCallback()
 	AddAttributes(m_PlayerClient, attrs);
 }
 
-void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
+void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
 	}
-	if (!pPlayerInfo)
+	if (!playerInfo)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys Player Info is null");
 		return;
 	}
-	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
+	if (!playerInfo->m_pMsg || !playerInfo->m_pTcpSockInfo)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys player info pMsg is null or player info sock info is null");
 		return;
 	}
-	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
+	if (!playerInfo->m_pTcpSockInfo->isConnect)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys Network link closed");
 		return;
 	}
 
-	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
-	CIstringstream is((char*)pPlayerInfo->m_pData);
+	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)playerInfo->m_pMsg->netMessageHead.uAssistantID;
+	CIstringstream is((char*)playerInfo->m_pData);
 
 	switch (uAssistantID)
 	{
 	case MoveSysMsgCmd::CS_Move:
 	{
-		MoveCoo(is, pPlayerInfo);
+		MoveCoo(is, playerInfo);
 		break;
 	}
 	default:
@@ -83,12 +83,12 @@ void MoveSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 	return;
 }
 
-void MoveSys::ExitCallback(SocketCloseLine* pPlayerInfo)
+void MoveSys::ExitCallback(SocketCloseLine* socketCloseLine)
 {
 	COUT_LOG(LOG_CINFO, "Íæ¼ÒÍË³ö");
 }
 
-bool MoveSys::MoveCoo(CIstringstream& is, PlayerInfo* pPlayerInfo)
+bool MoveSys::MoveCoo(CIstringstream& is, PlayerInfo* playerInfo)
 {
 	unsigned int x = 0, y = 0;
 	is >> x >> y;

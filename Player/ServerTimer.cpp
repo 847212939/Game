@@ -89,10 +89,10 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
 		return;
 	}
-	PlayerPrepClient* pSubPlayerPreproces = pCServerTimer->m_TCPClient->GetSubPlayerPreproces();
-	if (!pSubPlayerPreproces)
+	PlayerPrepClient* playerPrepClient = pCServerTimer->m_TCPClient->GetPlayerPrepClient();
+	if (!playerPrepClient)
 	{
-		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == nullptr");
+		COUT_LOG(LOG_CERROR, "playerPrepClient == nullptr");
 		return;
 	}
 	CDataLine* pCDataLine = pCServerTimer->m_TCPClient->GetRecvDataLine();

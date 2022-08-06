@@ -10,7 +10,7 @@ public:
 	};
 
 public:
-	LoginSys(PlayerPrepClient* pSubPlayerPreproces);
+	LoginSys(PlayerPrepClient* playerPrepClient);
 	virtual~LoginSys();
 
 public:
@@ -19,11 +19,11 @@ public:
 
 private:
 	void Register();
-	void NetworkCallback(PlayerInfo* pPlayerInfo);
+	void NetworkCallback(PlayerInfo* playerInfo);
 
 private:
-	bool LoginIn(CIstringstream& is, PlayerInfo* pPlayerInfo);
+	bool LoginIn(CIstringstream& is, PlayerInfo* playerInfo);
 
 private:
-	PlayerPrepClient* m_pSubPlayerPreproces;
+	PlayerPrepClient* m_PlayerPrepClient;
 };

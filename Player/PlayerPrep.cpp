@@ -26,7 +26,7 @@ void PlayerPrep::Init()
 		return;
 	}
 
-	m_SceneClient.SetSubPlayerPreproces(dynamic_cast<PlayerPrepClient*>(this));
+	m_SceneClient.SetPlayerPrepClient(dynamic_cast<PlayerPrepClient*>(this));
 	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
@@ -75,69 +75,69 @@ bool PlayerPrep::InitDB()
 }
 
 // 处理消息
-void PlayerPrep::HandlerMessage(PlayerInfo* pPlayerInfo)
+void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
 {
-	if (!pPlayerInfo)
+	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!pPlayerInfo");
+		COUT_LOG(LOG_CERROR, "!playerInfo");
 		return;
 	}
-	if (!pPlayerInfo->m_pMsg || !pPlayerInfo->m_pTcpSockInfo)
+	if (!playerInfo->m_pMsg || !playerInfo->m_pTcpSockInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!pPlayerInfo->pMsg || !pPlayerInfo->pTcpSockInfo");
+		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
-	if (!pPlayerInfo->m_pTcpSockInfo->isConnect)
+	if (!playerInfo->m_pTcpSockInfo->isConnect)
 	{
 		COUT_LOG(LOG_CERROR, "Network link closed");
 		return;
 	}
-	unsigned int uMainID = pPlayerInfo->m_pMsg->netMessageHead.uMainID;
+	unsigned int uMainID = playerInfo->m_pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
 		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
 	// websocket服务器
-	if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
+	if (playerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
 		// 没处理
 	}
-	else if (pPlayerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
+	else if (playerInfo->m_pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{
-		DispatchMessage((MsgCmd)uMainID, pPlayerInfo);
+		DispatchMessage((MsgCmd)uMainID, playerInfo);
 	}
 }
 
 // 分发消息
-void PlayerPrep::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+void PlayerPrep::DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	// 处理登录协议等.. 玩家没有创建
 	if (MsgCmd::MsgCmd_PlayerPreproces == cmd)
 	{
-		if (!pPlayerInfo)
+		if (!playerInfo)
 		{
-			COUT_LOG(LOG_CERROR, "pPlayerInfo = null cmd = %d", (int)cmd);
+			COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
 			return;
 		}
-		SocketReadLine* pMsg = pPlayerInfo->m_pMsg;
+		SocketReadLine* pMsg = playerInfo->m_pMsg;
 		if (!pMsg)
 		{
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
+		CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
-		m_SceneClient.DispatchMessage(cmd, pPlayerInfo);
+		m_SceneClient.DispatchMessage(cmd, playerInfo);
 	}
 }
 
 // 创建角色
 void PlayerPrep::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
-	m_SceneClient.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
+	m_SceneClient.GetPlayerCenterClient().CreatePlayer(index, pSockInfo, id, pw);
 }
 
 // 获取网络句柄
@@ -168,7 +168,7 @@ CServerTimer* PlayerPrep::GetCServerTimer()
 }
 
 // 获取场景
-SceneClient& PlayerPrep::GetSubScene()
+SceneClient& PlayerPrep::GetSceneClient()
 {
 	return m_SceneClient;
 }
@@ -185,7 +185,7 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
@@ -194,7 +194,7 @@ bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		return false;
 	}
 
-	it->second(pPlayerInfo);
+	it->second(playerInfo);
 	return true;
 }
 

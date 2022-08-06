@@ -14,21 +14,21 @@ public:
 
 public:
 	void SetSubScene(SceneClient* pSubScene);
-	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
+	void DispatchMessage(MsgCmd cmd, PlayerInfo* playerInfo);
 	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 
 public:
-	const SceneClient* getScene();
+	const SceneClient* GetSceneClient();
 	const OnLinePlayerSet* GetSocketSet();
 	ConditionVariable& GetConditionVariable();
-	PlayerClient* GetSubPlayer(unsigned int index);
+	PlayerClient* GetPlayerClient(unsigned int index);
 
 private:
 	void HandlerPlayerThread();
 
 private:
 	ConditionVariable				m_cond;
-	SceneClient*					m_pScene;
+	SceneClient*					m_SceneClient;
 	LoadPlayerList					m_LoadPlayerList;
 	std::vector<PlayerClient*>		m_pPlayerVec;
 };
