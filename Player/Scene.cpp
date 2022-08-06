@@ -20,20 +20,24 @@ void Scene::Init()
 // 分发消息
 void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	if (!m_SubPlayerPreproces)
+	if (MsgCmd::MsgCmd_Scene == cmd)
 	{
-		COUT_LOG(LOG_CERROR, "Scene Dispatch message player preproces = null cmd = %d", cmd);
-		return;
+		if (!pPlayerInfo)
+		{
+			COUT_LOG(LOG_CERROR, "pPlayerInfo = null cmd = %d", (int)cmd);
+			return;
+		}
+		SocketReadLine* pMsg = pPlayerInfo->m_pMsg;
+		if (!pMsg)
+		{
+			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+			return;
+		}
+		m_SubPlayerPreproces->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
 	}
-	switch (cmd)
+	else
 	{
-	case MsgCmd::MsgCmd_Scene:
-		// 场景类消息.. 处理场景内各种消息
-		m_SubPlayerPreproces->CallBackFun(cmd, pPlayerInfo);
-		break;
-	default:
 		m_SubPlayerCenter.DispatchMessage(cmd, pPlayerInfo);
-		break;
 	}
 }
 

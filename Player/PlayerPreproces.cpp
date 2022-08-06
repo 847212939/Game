@@ -112,15 +112,25 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 // 分发消息
 void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
-	switch (cmd)
+	// 处理登录协议等.. 玩家没有创建
+	if (MsgCmd::MsgCmd_PlayerPreproces == cmd)
 	{
-	case MsgCmd::MsgCmd_Login:
-		// 处理登录协议等.. 玩家没有创建
-		CallBackFun(cmd, pPlayerInfo);
-		break;
-	default:
+		if (!pPlayerInfo)
+		{
+			COUT_LOG(LOG_CERROR, "pPlayerInfo = null cmd = %d", (int)cmd);
+			return;
+		}
+		SocketReadLine* pMsg = pPlayerInfo->m_pMsg;
+		if (!pMsg)
+		{
+			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+			return;
+		}
+		CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
+	}
+	else
+	{
 		m_SubScene.DispatchMessage(cmd, pPlayerInfo);
-		break;
 	}
 }
 

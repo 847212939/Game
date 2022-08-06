@@ -102,16 +102,13 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", pSubPlayer->GetIndex(), pPlayerInfo->m_pMsg->uIndex);
 		return;
 	}
-
-	switch (cmd)
+	if (MsgCmd::MsgCmd_PlayerCenter == cmd)
 	{
-	case MsgCmd::MsgCmd_PlayerCenter:
-		// 玩家中心处理的消息.. 玩家间的互动
-		pSubPlayerPreproces->CallBackFun(cmd, pPlayerInfo);
-		break;
-	default:
+		pSubPlayerPreproces->CallBackFun((MsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uAssistantID, pPlayerInfo);
+	}
+	else
+	{
 		pSubPlayer->DispatchMessage(cmd, pPlayerInfo);
-		break;
 	}
 }
 
