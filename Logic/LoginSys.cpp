@@ -45,10 +45,10 @@ void LoginSys::NetworkCallback(PlayerInfo* pPlayerInfo)
 		return;
 	}
 
-	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uAssistantID;
+	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)pPlayerInfo->m_pMsg->netMessageHead.uIdentification;
 	CIstringstream is((char*)pPlayerInfo->m_pData);
 
-	switch (uAssistantID)
+	switch (uIdentification)
 	{
 	case LoginSysMsgCmd::CS_Login:
 	{

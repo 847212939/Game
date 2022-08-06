@@ -4,17 +4,12 @@ SubPlayerPreproces::SubPlayerPreproces(TCPClient* pTCPClient) :
 	PlayerPreproces(pTCPClient),
 	m_LoginSys(this)
 {
-	Register();
+	RegisterCreat(this, "move");
+	RegisterCreatS(this, "useraccount");
 }
 
 SubPlayerPreproces::~SubPlayerPreproces()
 {
-}
-
-void SubPlayerPreproces::Register()
-{
-	RegisterCreat(this, "move");
-	RegisterCreatS(this, "useraccount");
 }
 
 LoginSys& SubPlayerPreproces::GetLoginSys()

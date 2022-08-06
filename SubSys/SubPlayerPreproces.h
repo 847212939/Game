@@ -10,8 +10,5 @@ public:
 	LoginSys& GetLoginSys();
 
 private:
-	void Register();
-
-private:
 	LoginSys m_LoginSys;
 };
