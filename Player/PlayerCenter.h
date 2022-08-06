@@ -18,8 +18,8 @@ public:
 	void CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw);
 
 public:
+	void GetSocketSet(std::vector<UINT>& socketVec);
 	const SceneClient* GetSceneClient();
-	const OnLinePlayerSet* GetSocketSet();
 	ConditionVariable& GetConditionVariable();
 	PlayerClient* GetPlayerClient(unsigned int index);
 

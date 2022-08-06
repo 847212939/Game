@@ -28,7 +28,6 @@ public:
 	bool IsConnected(int index);
 	void GetSocketSet(std::vector<unsigned int>& vec);
 
-	const std::set<unsigned int>* GetSocketSet();
 	const TCPSocketInfo* GetTCPSocketInfo(int index);
 	const std::vector<TCPSocketInfo>& GetSocketVector();
 

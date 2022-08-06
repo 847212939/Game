@@ -224,27 +224,27 @@ PlayerClient* PlayerCenter::GetPlayerClient(unsigned int index)
 }
 
 // 获取在线玩家
-const OnLinePlayerSet* PlayerCenter::GetSocketSet()
+void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
 {
 	if (!m_SceneClient)
 	{
 		COUT_LOG(LOG_CERROR, "playerClient create thread err m_SceneClient = null");
-		return nullptr;
+		return;
 	}
 	PlayerPrepClient* playerPrepClient = m_SceneClient->GetPlayerPrepClient();
 	if (!playerPrepClient)
 	{
 		COUT_LOG(LOG_CERROR, "playerClient create thread err playerPrepClient = null");
-		return nullptr;
+		return;
 	}
 	TCPClient* pTCPClient = playerPrepClient->GetTCPClient();
 	if (!pTCPClient)
 	{
 		COUT_LOG(LOG_CERROR, "playerClient create thread err pTCPClient = null");
-		return nullptr;
+		return;
 	}
 
-	return pTCPClient->GetSocketSet();
+	pTCPClient->GetSocketSet(socketVec);
 }
 
 // 获取场景

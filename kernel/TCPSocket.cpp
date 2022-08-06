@@ -684,11 +684,6 @@ bool CTCPSocketManage::IsConnected(int index)
 	return m_socketInfoVec[index].isConnect;
 }
 
-const std::set<unsigned int>* CTCPSocketManage::GetSocketSet()
-{
-	return &m_heartBeatSocketSet;
-}
-
 void CTCPSocketManage::GetSocketSet(std::vector<UINT>& vec)
 {
 	vec.clear();
