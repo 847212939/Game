@@ -26,7 +26,7 @@ void PlayerPreproces::Init()
 		return;
 	}
 
-	m_SubScene.SetSubPlayerPreproces(dynamic_cast<SubPlayerPreproces*>(this));
+	m_SceneClient.SetSubPlayerPreproces(dynamic_cast<PlayerPrepClient*>(this));
 	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
@@ -38,7 +38,7 @@ void PlayerPreproces::Init()
 		m_pServerTimer[i].Start();
 	}
 
-	m_SubScene.Init();
+	m_SceneClient.Init();
 }
 
 // 启动数据库
@@ -130,14 +130,14 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 	else
 	{
-		m_SubScene.DispatchMessage(cmd, pPlayerInfo);
+		m_SceneClient.DispatchMessage(cmd, pPlayerInfo);
 	}
 }
 
 // 创建角色
 void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
-	m_SubScene.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
+	m_SceneClient.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
 }
 
 // 获取网络句柄
@@ -168,9 +168,9 @@ CServerTimer* PlayerPreproces::GetCServerTimer()
 }
 
 // 获取场景
-SubScene& PlayerPreproces::GetSubScene()
+SceneClient& PlayerPreproces::GetSubScene()
 {
-	return m_SubScene;
+	return m_SceneClient;
 }
 
 void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)

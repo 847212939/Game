@@ -97,10 +97,10 @@
     <ClCompile Include="..\SubSys\PlayerCenterClient.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\SubPlayerPreproces.cpp">
+    <ClCompile Include="..\SubSys\PlayerPrepClient.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
-    <ClCompile Include="..\SubSys\SubScene.cpp">
+    <ClCompile Include="..\SubSys\SceneClient.cpp">
       <Filter>玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\DataLine.cpp">
@@ -171,10 +171,10 @@
     <ClInclude Include="..\SubSys\PlayerCenterClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubPlayerPreproces.h">
+    <ClInclude Include="..\SubSys\PlayerPrepClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
-    <ClInclude Include="..\SubSys\SubScene.h">
+    <ClInclude Include="..\SubSys\SceneClient.h">
       <Filter>玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\DataLine.h">

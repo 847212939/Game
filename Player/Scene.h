@@ -11,13 +11,13 @@ public:
 
 public:
 	void DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo);
-	void SetSubPlayerPreproces(SubPlayerPreproces* pSubPlayerPreproces);
+	void SetSubPlayerPreproces(PlayerPrepClient* pSubPlayerPreproces);
 
 public:
 	PlayerCenterClient& GetPlayerCenter();
-	SubPlayerPreproces* GetPlayerPreproces();
+	PlayerPrepClient* GetPlayerPreproces();
 
 private:
 	PlayerCenterClient		m_PlayerCenterClient;			// 玩家中心
-	SubPlayerPreproces*		m_SubPlayerPreproces;		// 玩家预处理
+	PlayerPrepClient*		m_PlayerPrepClient;		// 玩家预处理
 };

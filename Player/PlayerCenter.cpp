@@ -18,7 +18,7 @@ void PlayerCenter::Init()
 		COUT_LOG(LOG_CERROR, "Init scene = null");
 		return;
 	}
-	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	PlayerPrepClient* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "Init sub player preproces = null");
@@ -55,7 +55,7 @@ void PlayerCenter::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message scent = null cmd = %d", cmd);
 		return;
 	}
-	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	PlayerPrepClient* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "Dispatch message player preproces = null cmd = %d", cmd);
@@ -120,7 +120,7 @@ void PlayerCenter::HandlerPlayerThread()
 		COUT_LOG(LOG_CERROR, "playerClient create thread err m_pScene = null");
 		return;
 	}
-	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	PlayerPrepClient* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "playerClient create thread err pSubPlayerPreproces = null");
@@ -198,7 +198,7 @@ void PlayerCenter::HandlerPlayerThread()
 	COUT_LOG(LOG_CINFO, "playerClient create thread end...");
 }
 
-void PlayerCenter::SetSubScene(SubScene* pSubScene)
+void PlayerCenter::SetSubScene(SceneClient* pSubScene)
 {
 	m_pScene = pSubScene;
 }
@@ -231,7 +231,7 @@ const OnLinePlayerSet* PlayerCenter::GetSocketSet()
 		COUT_LOG(LOG_CERROR, "playerClient create thread err m_pScene = null");
 		return nullptr;
 	}
-	SubPlayerPreproces* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
+	PlayerPrepClient* pSubPlayerPreproces = m_pScene->GetPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "playerClient create thread err pSubPlayerPreproces = null");
@@ -248,7 +248,7 @@ const OnLinePlayerSet* PlayerCenter::GetSocketSet()
 }
 
 // ªÒ»°≥°æ∞
-const SubScene* PlayerCenter::getScene()
+const SceneClient* PlayerCenter::getScene()
 {
 	return m_pScene;
 }

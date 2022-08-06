@@ -1,6 +1,6 @@
 #pragma once
 
-class SubPlayerPreproces;
+class PlayerPrepClient;
 class LoginSys
 {
 public:
@@ -10,7 +10,7 @@ public:
 	};
 
 public:
-	LoginSys(SubPlayerPreproces* pSubPlayerPreproces);
+	LoginSys(PlayerPrepClient* pSubPlayerPreproces);
 	virtual~LoginSys();
 
 public:
@@ -25,5 +25,5 @@ private:
 	bool LoginIn(CIstringstream& is, PlayerInfo* pPlayerInfo);
 
 private:
-	SubPlayerPreproces* m_pSubPlayerPreproces;
+	PlayerPrepClient* m_pSubPlayerPreproces;
 };

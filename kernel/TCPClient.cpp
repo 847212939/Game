@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-TCPClient::TCPClient() : m_SubPlayerPreproces(new SubPlayerPreproces(this))
+TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient(this))
 {
 	RegisterNetType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
 	RegisterNetType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
@@ -22,7 +22,7 @@ bool TCPClient::InitTCPClient(ServiceType serverType)
 		return false;
 	}
 
-	m_SubPlayerPreproces->Init();
+	m_PlayerPrepClient->Init();
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -44,9 +44,9 @@ TCPClient::~TCPClient()
 
 		threadVec.erase(it);
 	}
-	if (m_SubPlayerPreproces)
+	if (m_PlayerPrepClient)
 	{
-		SafeDelete(m_SubPlayerPreproces);
+		SafeDelete(m_PlayerPrepClient);
 	}
 }
 
@@ -89,9 +89,9 @@ void TCPClient::HandlerRecvDataListThread()
 	return;
 }
 
-SubPlayerPreproces* TCPClient::GetSubPlayerPreproces()
+PlayerPrepClient* TCPClient::GetSubPlayerPreproces()
 {
-	return m_SubPlayerPreproces;
+	return m_PlayerPrepClient;
 }
 
 void TCPClient::NotifyAll()
@@ -110,12 +110,12 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "SendDataLine = null");
 		return;
 	}
-	if (!m_SubPlayerPreproces)
+	if (!m_PlayerPrepClient)
 	{
-		COUT_LOG(LOG_CERROR, "SubPlayerPreproces = null");
+		COUT_LOG(LOG_CERROR, "PlayerPrepClient = null");
 		return;
 	}
-	CServerTimer* pCServerTimer = m_SubPlayerPreproces->GetCServerTimer();
+	CServerTimer* pCServerTimer = m_PlayerPrepClient->GetCServerTimer();
 	if (!pCServerTimer)
 	{
 		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
@@ -126,8 +126,8 @@ void TCPClient::NotifyAll()
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	m_SubPlayerPreproces->GetConditionVariable().NotifyAll();
-	m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
+	m_PlayerPrepClient->GetConditionVariable().NotifyAll();
+	m_PlayerPrepClient->GetSubScene().GetPlayerCenter().GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -165,7 +165,7 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
 	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
 	{
-		m_SubPlayerPreproces->CallBackFun((TimerCmd)WindowTimer->uTimerID);
+		m_PlayerPrepClient->CallBackFun((TimerCmd)WindowTimer->uTimerID);
 	}
 	else
 	{
@@ -191,7 +191,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		Info.m_pData = pData;
 		Info.m_pTcpSockInfo = &tcpInfo;
 		Info.m_uSrverType = GetServerType();
-		m_SubPlayerPreproces->HandlerMessage(&Info);
+		m_PlayerPrepClient->HandlerMessage(&Info);
 	}
 	else
 	{
@@ -203,7 +203,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = m_SubPlayerPreproces->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
+	PlayerClient* playerClient = m_PlayerPrepClient->GetSubScene().GetPlayerCenter().GetSubPlayer(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CINFO, "TCP close playerClient is null");

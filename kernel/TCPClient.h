@@ -1,6 +1,6 @@
 #pragma once
 
-class SubPlayerPreproces;
+class PlayerPrepClient;
 class TCPClient : public CTCPSocketManage
 {
 public:
@@ -12,7 +12,7 @@ public:
 	void NotifyAll();
 
 public:
-	SubPlayerPreproces* GetSubPlayerPreproces();
+	PlayerPrepClient* GetSubPlayerPreproces();
 
 private:
 	void TimerCallback(void* pDataLineHead);
@@ -26,5 +26,5 @@ private:
 
 private:
 	TypeFunMap			m_TypeFunMap;
-	SubPlayerPreproces* m_SubPlayerPreproces;
+	PlayerPrepClient*	m_PlayerPrepClient;
 };

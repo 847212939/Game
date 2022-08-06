@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-SubPlayerPreproces::SubPlayerPreproces(TCPClient* pTCPClient) :
+PlayerPrepClient::PlayerPrepClient(TCPClient* pTCPClient) :
 	PlayerPreproces(pTCPClient),
 	m_LoginSys(this)
 {
@@ -8,11 +8,11 @@ SubPlayerPreproces::SubPlayerPreproces(TCPClient* pTCPClient) :
 	RegisterCreatS(this, "useraccount");
 }
 
-SubPlayerPreproces::~SubPlayerPreproces()
+PlayerPrepClient::~PlayerPrepClient()
 {
 }
 
-LoginSys& SubPlayerPreproces::GetLoginSys()
+LoginSys& PlayerPrepClient::GetLoginSys()
 {
 	return m_LoginSys;
 }

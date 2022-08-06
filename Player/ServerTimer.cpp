@@ -89,7 +89,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		COUT_LOG(LOG_CERROR, "m_TCPClient == nullptr");
 		return;
 	}
-	SubPlayerPreproces* pSubPlayerPreproces = pCServerTimer->m_TCPClient->GetSubPlayerPreproces();
+	PlayerPrepClient* pSubPlayerPreproces = pCServerTimer->m_TCPClient->GetSubPlayerPreproces();
 	if (!pSubPlayerPreproces)
 	{
 		COUT_LOG(LOG_CERROR, "pSubPlayerPreproces == nullptr");

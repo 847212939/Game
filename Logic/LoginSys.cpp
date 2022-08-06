@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-LoginSys::LoginSys(SubPlayerPreproces* pSubPlayerPreproces) : 
+LoginSys::LoginSys(PlayerPrepClient* pSubPlayerPreproces) : 
 	m_pSubPlayerPreproces(pSubPlayerPreproces)
 {
 	Register();

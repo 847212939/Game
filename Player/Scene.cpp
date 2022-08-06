@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
 Scene::Scene() :
-	m_SubPlayerPreproces(nullptr)
+	m_PlayerPrepClient(nullptr)
 {
 	
 }
@@ -13,7 +13,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	m_PlayerCenterClient.SetSubScene(dynamic_cast<SubScene*>(this));
+	m_PlayerCenterClient.SetSubScene(dynamic_cast<SceneClient*>(this));
 	m_PlayerCenterClient.Init();
 }
 
@@ -33,7 +33,7 @@ void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		m_SubPlayerPreproces->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
+		m_PlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, pPlayerInfo);
 	}
 	else
 	{
@@ -41,9 +41,9 @@ void Scene::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	}
 }
 
-void Scene::SetSubPlayerPreproces(SubPlayerPreproces* pSubPlayerPreproces)
+void Scene::SetSubPlayerPreproces(PlayerPrepClient* pSubPlayerPreproces)
 {
-	m_SubPlayerPreproces = pSubPlayerPreproces;
+	m_PlayerPrepClient = pSubPlayerPreproces;
 }
 
 // 获取玩家中心
@@ -53,7 +53,7 @@ PlayerCenterClient& Scene::GetPlayerCenter()
 }
 
 // 获取玩家预处理
-SubPlayerPreproces* Scene::GetPlayerPreproces()
+PlayerPrepClient* Scene::GetPlayerPreproces()
 { 
-	return m_SubPlayerPreproces;
+	return m_PlayerPrepClient;
 }

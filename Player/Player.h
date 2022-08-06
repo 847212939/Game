@@ -4,7 +4,7 @@
 class Player
 {
 public:
-	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId, SubPlayerPreproces* pp);
+	Player(const unsigned int& index, const TCPSocketInfo* pSockInfo, const uint64_t& userId, PlayerPrepClient* pp);
 	virtual ~Player();
 
 public:
@@ -12,7 +12,7 @@ public:
 	int GetIndex();
 	uint64_t GetUserId() const;
 	const TCPSocketInfo* GetTCPSocketInfo();
-	SubPlayerPreproces* GetSubPlayerPreproces();
+	PlayerPrepClient* GetSubPlayerPreproces();
 
 public:
 	// 消息处理
@@ -59,6 +59,6 @@ private:
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
-	SubPlayerPreproces*		m_SubPlayerPreproces;	// 玩家预处理句柄
+	PlayerPrepClient*		m_PlayerPrepClient;	// 玩家预处理句柄
 	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 };
