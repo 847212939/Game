@@ -85,7 +85,7 @@
     <ClCompile Include="..\Player\PlayerInfo.cpp">
       <Filter>玩家信息</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\PlayerPreproces.cpp">
+    <ClCompile Include="..\Player\PlayerPrep.cpp">
       <Filter>玩家信息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
@@ -153,7 +153,7 @@
     <ClInclude Include="..\Player\PlayerInfo.h">
       <Filter>玩家信息</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player\PlayerPreproces.h">
+    <ClInclude Include="..\Player\PlayerPrep.h">
       <Filter>玩家信息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">

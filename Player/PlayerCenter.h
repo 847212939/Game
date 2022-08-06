@@ -27,8 +27,8 @@ private:
 	void HandlerPlayerThread();
 
 private:
+	ConditionVariable				m_cond;
 	SceneClient*					m_pScene;
 	LoadPlayerList					m_LoadPlayerList;
-	ConditionVariable				m_cond;
 	std::vector<PlayerClient*>		m_pPlayerVec;
 };

@@ -65,11 +65,11 @@ extern "C"
 #include "../SubSys/PlayerCenterClient.h"	// 玩家管理
 
 #include "../Player/Scene.h"				// 场景
-#include "../SubSys/SceneClient.h"				// 场景
+#include "../SubSys/SceneClient.h"			// 场景
 #include "../Player/ServerTimer.h"			// 定时器
 
 #include "../Logic/LoginSys.h"				// 登录
-#include "../Player/PlayerPreproces.h"		// 信息在注册
+#include "../Player/PlayerPrep.h"			// 信息在注册
 #include "../SubSys/PlayerPrepClient.h"		// 逻辑处理类
 
 #include "../Config/BaseCfgMgr.h"			// 网络配置

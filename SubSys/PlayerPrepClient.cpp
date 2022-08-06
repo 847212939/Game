@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
 PlayerPrepClient::PlayerPrepClient(TCPClient* pTCPClient) :
-	PlayerPreproces(pTCPClient),
+	PlayerPrep(pTCPClient),
 	m_LoginSys(this)
 {
 	RegisterCreat(this, "move");

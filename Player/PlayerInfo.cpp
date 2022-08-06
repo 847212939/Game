@@ -25,12 +25,12 @@ bool LoadPlayerKey::GetConnect()
 	return pSockInfo->isConnect;
 }
 
-char PlayerPreproces::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
+char PlayerPrep::createptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
 "`data` varchar(4096) COLLATE utf8_unicode_ci DEFAULT NULL,"
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
-char PlayerPreproces::createpptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
+char PlayerPrep::createpptable[CreateTableLen] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` bigint(20) NOT NULL,"
 "`data` varchar(4096) COLLATE utf8_unicode_ci DEFAULT NULL,"
 "PRIMARY KEY(`userid`) USING BTREE"

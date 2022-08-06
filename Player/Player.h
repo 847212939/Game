@@ -59,6 +59,6 @@ private:
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
-	PlayerPrepClient*		m_PlayerPrepClient;	// 玩家预处理句柄
+	PlayerPrepClient*		m_PlayerPrepClient;		// 玩家预处理句柄
 	const TCPSocketInfo*	m_pTcpSockInfo;			// 玩家TCP的网络信息
 };

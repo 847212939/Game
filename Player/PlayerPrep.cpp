@@ -1,19 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-PlayerPreproces::PlayerPreproces(TCPClient* pTCPClient) :
+PlayerPrep::PlayerPrep(TCPClient* pTCPClient) :
 	m_pTCPClient(pTCPClient),
 	m_pServerTimer(new CServerTimer[CfgMgr()->GetCBaseCfgMgr().GetTimerCnt()]),
 	m_SqlPre("")
 {
 }
 
-PlayerPreproces::~PlayerPreproces()
+PlayerPrep::~PlayerPrep()
 {
 
 }
 
-void PlayerPreproces::Init()
+void PlayerPrep::Init()
 {
 	if (!m_pTCPClient)
 	{
@@ -27,7 +27,7 @@ void PlayerPreproces::Init()
 	}
 
 	m_SceneClient.SetSubPlayerPreproces(dynamic_cast<PlayerPrepClient*>(this));
-	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPreproces::HandlerExecuteSqlThread, this));
+	m_pTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	int timerCnt = baseCfgMgr.GetTimerCnt();
@@ -42,7 +42,7 @@ void PlayerPreproces::Init()
 }
 
 // 启动数据库
-bool PlayerPreproces::InitDB()
+bool PlayerPrep::InitDB()
 {
 	CBaseCfgMgr& baseCfgMgr = CfgMgr()->GetCBaseCfgMgr();
 	const DbCfg& dbCfg = baseCfgMgr.GetDbCfg();
@@ -75,7 +75,7 @@ bool PlayerPreproces::InitDB()
 }
 
 // 处理消息
-void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
+void PlayerPrep::HandlerMessage(PlayerInfo* pPlayerInfo)
 {
 	if (!pPlayerInfo)
 	{
@@ -110,7 +110,7 @@ void PlayerPreproces::HandlerMessage(PlayerInfo* pPlayerInfo)
 }
 
 // 分发消息
-void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+void PlayerPrep::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
 	// 处理登录协议等.. 玩家没有创建
 	if (MsgCmd::MsgCmd_PlayerPreproces == cmd)
@@ -135,13 +135,13 @@ void PlayerPreproces::DispatchMessage(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 }
 
 // 创建角色
-void PlayerPreproces::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
+void PlayerPrep::CreatePlayer(unsigned int index, const TCPSocketInfo* pSockInfo, std::string& id, std::string& pw)
 {
 	m_SceneClient.GetPlayerCenter().CreatePlayer(index, pSockInfo, id, pw);
 }
 
 // 获取网络句柄
-TCPClient* PlayerPreproces::GetTCPClient()
+TCPClient* PlayerPrep::GetTCPClient()
 {
 	if (m_pTCPClient)
 	{
@@ -152,28 +152,28 @@ TCPClient* PlayerPreproces::GetTCPClient()
 }
 
 // 获取数据库
-CMysqlHelper& PlayerPreproces::GetCMysqlHelper()
+CMysqlHelper& PlayerPrep::GetCMysqlHelper()
 {
 	return m_CMysqlHelperSave;
 }
 
-ConditionVariable& PlayerPreproces::GetConditionVariable()
+ConditionVariable& PlayerPrep::GetConditionVariable()
 {
 	return m_cond;
 }
 
-CServerTimer* PlayerPreproces::GetCServerTimer()
+CServerTimer* PlayerPrep::GetCServerTimer()
 {
 	return m_pServerTimer;
 }
 
 // 获取场景
-SceneClient& PlayerPreproces::GetSubScene()
+SceneClient& PlayerPrep::GetSubScene()
 {
 	return m_SceneClient;
 }
 
-void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
+void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
@@ -185,7 +185,7 @@ void PlayerPreproces::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
+bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
@@ -198,7 +198,7 @@ bool PlayerPreproces::CallBackFun(MsgCmd cmd, PlayerInfo* pPlayerInfo)
 	return true;
 }
 
-bool PlayerPreproces::CallBackFun(TimerCmd cmd)
+bool PlayerPrep::CallBackFun(TimerCmd cmd)
 {
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
@@ -211,7 +211,7 @@ bool PlayerPreproces::CallBackFun(TimerCmd cmd)
 	return true;
 }
 
-void PlayerPreproces::DelTimerCallback(TimerCmd cmd)
+void PlayerPrep::DelTimerCallback(TimerCmd cmd)
 {
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
@@ -222,7 +222,7 @@ void PlayerPreproces::DelTimerCallback(TimerCmd cmd)
 	m_TimerFunMap.erase(it);
 }
 
-void PlayerPreproces::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
+void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 {
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
@@ -235,7 +235,7 @@ void PlayerPreproces::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun
 }
 
 //设定定时器
-bool PlayerPreproces::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+bool PlayerPrep::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
 	{
@@ -258,7 +258,7 @@ bool PlayerPreproces::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/*
 }
 
 //清除定时器
-bool PlayerPreproces::KillTimer(TimerCmd uTimerID)
+bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 {
 	if (!m_pServerTimer)
 	{
@@ -280,7 +280,7 @@ bool PlayerPreproces::KillTimer(TimerCmd uTimerID)
 	return true;
 }
 
-void PlayerPreproces::CreateTableS(std::string name)
+void PlayerPrep::CreateTableS(std::string name)
 {
 	char sql[CreateTableLen] = "";
 
@@ -289,7 +289,7 @@ void PlayerPreproces::CreateTableS(std::string name)
 	CreateTableSql(sql);
 }
 
-void PlayerPreproces::CreateTableI(std::string name)
+void PlayerPrep::CreateTableI(std::string name)
 {
 	char sql[CreateTableLen] = "";
 
@@ -299,7 +299,7 @@ void PlayerPreproces::CreateTableI(std::string name)
 }
 
 // create table
-void PlayerPreproces::CreateTableSql(const char* sql)
+void PlayerPrep::CreateTableSql(const char* sql)
 {
 	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sql);
@@ -309,7 +309,7 @@ void PlayerPreproces::CreateTableSql(const char* sql)
 }
 
 // insert mysql
-void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
 	os << userId;
@@ -329,7 +329,7 @@ void PlayerPreproces::SaveInsertSQL(std::string sqlName, uint64_t userId, std::s
 }
 
 // update mysql
-void PlayerPreproces::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
+void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
 	os << userId;
@@ -349,7 +349,7 @@ void PlayerPreproces::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::s
 }
 
 // Replace mysql
-void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string data, std::string keyName, std::string dataName)
 {
 	std::ostringstream os;
 	os << userId;
@@ -368,7 +368,7 @@ void PlayerPreproces::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::
 	m_cond.NotifyOne();
 }
 
-void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string userId, std::string data, std::string keyName, std::string dataName)
 {
 	CMysqlHelper::RECORD_DATA mpColumns;
 
@@ -385,7 +385,7 @@ void PlayerPreproces::SaveReplaceSQL(std::string sqlName, std::string userId, st
 }
 
 // delete mysql
-void PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
+void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
@@ -397,7 +397,7 @@ void PlayerPreproces::SaveDeleteSQL(std::string sqlName, const std::string& sCon
 	m_cond.NotifyOne();
 }
 
-std::string PlayerPreproces::LoadOneSql(std::string userId, std::string sqlName, std::string dataStr /*= "data"*/)
+std::string PlayerPrep::LoadOneSql(std::string userId, std::string sqlName, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where userid=%s", sqlName.c_str(), userId.c_str());
@@ -429,7 +429,7 @@ std::string PlayerPreproces::LoadOneSql(std::string userId, std::string sqlName,
 }
 
 // 加载一条数据库
-std::string PlayerPreproces::LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr)
+std::string PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string dataStr)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where userid=%lld", sqlName.c_str(), userId);
@@ -460,7 +460,7 @@ std::string PlayerPreproces::LoadOneSql(std::string sqlName, uint64_t userId, st
 }
 
 // 加载多条数据库
-bool PlayerPreproces::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr)
+bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s", sqlName.c_str());
@@ -479,7 +479,7 @@ bool PlayerPreproces::LoadMulitySql(std::string sqlName, uint64_t userId, CMysql
 }
 
 // 数据库执行
-void PlayerPreproces::HandlerExecuteSqlThread()
+void PlayerPrep::HandlerExecuteSqlThread()
 {
 	if (!m_pTCPClient)
 	{
@@ -488,7 +488,7 @@ void PlayerPreproces::HandlerExecuteSqlThread()
 	}
 	if (!m_pTCPClient->GetRuninged())
 	{
-		COUT_LOG(LOG_CERROR, "PlayerPreproces::HandlerExecuteSqlThread 初始化未完成");
+		COUT_LOG(LOG_CERROR, "PlayerPrep::HandlerExecuteSqlThread 初始化未完成");
 		return;
 	}
 

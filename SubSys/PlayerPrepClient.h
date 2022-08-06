@@ -1,6 +1,6 @@
 #pragma once
 
-class PlayerPrepClient : public PlayerPreproces
+class PlayerPrepClient : public PlayerPrep
 {
 public:
 	virtual~PlayerPrepClient();

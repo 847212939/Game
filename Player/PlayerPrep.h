@@ -1,11 +1,11 @@
 #pragma once
 
 // ÕÊº“‘§¥¶¿Ì
-class PlayerPreproces
+class PlayerPrep
 {
 public:
-	PlayerPreproces(TCPClient* pTCPClient);
-	virtual ~PlayerPreproces();
+	PlayerPrep(TCPClient* pTCPClient);
+	virtual ~PlayerPrep();
 
 public:
 	void Init();

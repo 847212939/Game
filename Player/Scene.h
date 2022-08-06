@@ -18,6 +18,6 @@ public:
 	PlayerPrepClient* GetPlayerPreproces();
 
 private:
-	PlayerCenterClient		m_PlayerCenterClient;			// 玩家中心
 	PlayerPrepClient*		m_PlayerPrepClient;		// 玩家预处理
+	PlayerCenterClient		m_PlayerCenterClient;	// 玩家中心
 };
