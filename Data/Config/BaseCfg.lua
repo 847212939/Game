@@ -4,7 +4,7 @@ BaseCfg =
     serverID = 1005, 
 
     --线程池的数量
-    ThreadCnt = 3,
+    ThreadCnt = 8,
 
     --定时器的个数
     TimerCnt = 2,
