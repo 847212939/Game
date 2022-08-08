@@ -29,7 +29,7 @@ void PlayerPrep::Init()
 		return;
 	}
 
-	DTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
+	DTCPC->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 
 	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
@@ -500,7 +500,7 @@ void PlayerPrep::HandlerExecuteSqlThread()
 {
 	SqlList sqlList;
 	SqlList& mysqlList = m_sqlList;
-	bool& run = DTCPClient->GetRuninged();
+	bool& run = DTCPC->GetRuninged();
 
 	while (run)
 	{

@@ -6,8 +6,8 @@
 #define CfgMgr				LuaMgr->GetConfigMgr()
 #define BaseCfgMgr			CfgMgr->GetCBaseCfgMgr()
 
-#define DTCPClient			DUtil.GetTCPClient()
-#define DPPC				DTCPClient->GetPlayerPrepClient()
+#define DTCPC				DUtil.GetTCPClient()
+#define DPPC				DTCPC->GetPlayerPrepClient()
 #define DSC					DPPC->GetSceneClient()
 #define DPCC				DSC->GetPlayerCenterClient()
 

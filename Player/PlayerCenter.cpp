@@ -25,7 +25,7 @@ void PlayerCenter::Init()
 		playerClient = nullptr;
 	}
 	
-	DTCPClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	DTCPC->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
@@ -47,7 +47,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
-	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
@@ -108,7 +108,7 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 {
 	uint64_t userId = 0;
 
-	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(loadPKey.index);
+	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(loadPKey.index);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loadPKey.index);
@@ -116,22 +116,22 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 	}
 	if (loadPKey.index < 0 || loadPKey.index >= m_PlayerClientVec.size())
 	{
-		DTCPClient->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loadPKey.index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		DTCPClient->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loadPKey.index);
 		return;
 	}
 	if (!DPPC->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 	{
-		DTCPClient->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loadPKey.index);
 		return;
 	}
 	if (userId == 0)
 	{
-		DTCPClient->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loadPKey.index);
 		return;
 	}
 	PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.index);
@@ -156,7 +156,7 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 
 void PlayerCenter::HandlerPlayerThread()
 {
-	bool& run = DTCPClient->GetRuninged();
+	bool& run = DTCPC->GetRuninged();
 
 	LoadPlayerList loadPlayerList;
 	LoadPlayerList& playerList = m_LoadPlayerList;
@@ -199,7 +199,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 {
 	std::vector<UINT> playerClientSet;
-	DTCPClient->GetSocketSet(playerClientSet);
+	DTCPC->GetSocketSet(playerClientSet);
 	for (int index : playerClientSet)
 	{
 		if (index >= m_PlayerClientVec.size() || index < 0)
@@ -223,7 +223,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 // 获取在线玩家
 void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
 {
-	DTCPClient->GetSocketSet(socketVec);
+	DTCPC->GetSocketSet(socketVec);
 }
 
 ConditionVariable& PlayerCenter::GetConditionVariable()

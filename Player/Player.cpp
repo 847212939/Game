@@ -13,13 +13,13 @@ Player::~Player()
 
 bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
-	const TCPSocketInfo* pInfo = DTCPClient->GetTCPSocketInfo(m_index);
+	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_index);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_index);
 		return false;
 	}
-	return DTCPClient->SendData(m_index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+	return DTCPC->SendData(m_index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)

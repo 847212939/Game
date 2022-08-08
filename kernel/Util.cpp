@@ -86,8 +86,8 @@ void Util::Exit(bool& run)
 		}
 	}
 
-	DTCPClient->Stop();
-	DTCPClient->NotifyAll();
+	DTCPC->Stop();
+	DTCPC->NotifyAll();
 }
 
 Cos::Cos()
