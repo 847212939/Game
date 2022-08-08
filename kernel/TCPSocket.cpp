@@ -2,25 +2,36 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "../Game/stdafx.h"
 
-CTCPSocketManage::CTCPSocketManage()
-	:m_listenerBase(nullptr),
-	m_running(false),
+CTCPSocketManage::CTCPSocketManage():
 	m_bindIP(""),
-	m_socketType(SocketType::SOCKET_TYPE_TCP),
+	m_running(false),
 	m_uMaxSocketSize(0),
 	m_uCurSocketSize(0),
 	m_uCurSocketIndex(0),
+	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
-	m_pSendDataLine(new CDataLine)
+	m_pSendDataLine(new CDataLine),
+	m_eventBaseCfg(event_config_new()),
+	m_socketType(SocketType::SOCKET_TYPE_TCP)
 {
 	WSADATA wsa;
+	SYSTEM_INFO si;
+	GetSystemInfo(&si);
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
 		COUT_LOG(LOG_CERROR, "Init socket dll err");
 	}
+	if (event_config_set_flag(m_eventBaseCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
+	{
+		COUT_LOG(LOG_CERROR, "Init iocp is err");
+	}
 	if (evthread_use_windows_threads() != 0)
 	{
-		COUT_LOG(LOG_CERROR, "evthread_use_windows_threads() is err");
+		COUT_LOG(LOG_CERROR, "Init iocp thread is err");
+	}
+	if (event_config_set_num_cpus_hint(m_eventBaseCfg, si.dwNumberOfProcessors) != 0)
+	{
+		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
 	}
 }
 
@@ -29,19 +40,19 @@ CTCPSocketManage::~CTCPSocketManage()
 	WSACleanup();
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = nullptr*/, SocketType socketType /* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, SocketType socketType)
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
 		COUT_LOG(LOG_CERROR, "invalid params input maxCount=%d port=%d", maxCount, port);
 		return false;
 	}
-
 	m_uMaxSocketSize = maxCount;
 	if (ip && strlen(ip) < sizeof(m_bindIP))
 	{
 		strcpy(m_bindIP, ip);
 	}
+
 	m_port = port;
 	m_socketType = socketType;
 
@@ -51,13 +62,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip/* = nullptr*/
 	// 初始化分配内存
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
-
-	return true;
-}
-
-bool CTCPSocketManage::UnInit()
-{
-	// TODO
 
 	return true;
 }
@@ -108,73 +112,59 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	m_uCurSocketIndex = 0;
 	m_iServiceType = serverType;
 
-	m_socketThread.push_back(new std::thread(ThreadSendMsgThread, this));
-	m_socketThread.push_back(new std::thread(ThreadAcceptThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAcceptThread, this));
 
 	return true;
 }
 
-void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
+void CTCPSocketManage::ThreadSendMsgThread()
 {
-	CTCPSocketManage* pThis = (CTCPSocketManage*)pThreadData;
-	if (!pThis)
-	{
-		COUT_LOG(LOG_CERROR, "thread param is null");
-		return;
-	}
-
-	CDataLine* pDataLine = pThis->GetSendDataLine();
+	void* pDataLineHead = nullptr;
+	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
 		COUT_LOG(LOG_CERROR, "send list is null");
 		return;
 	}
-	if (!pThis->m_running)
+	if (!m_running)
 	{
 		COUT_LOG(LOG_CERROR, "初始化未完成");
 		return;
 	}
-
-	//数据缓存
-	void* pDataLineHead = nullptr;
-
-	while (pThis->m_running)
+	while (m_running)
 	{
 		unsigned int uDataKind = 0;
-		//获取数据
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead, pThis->m_running, uDataKind);
+		unsigned int bytes = pDataLine->GetData(&pDataLineHead, m_running, uDataKind);
 		if (bytes == 0 || pDataLineHead == nullptr)
 		{
 			continue;
 		}
 
-		//处理数据
 		SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pDataLineHead);
 		unsigned int size = pSocketSend->dataLineHead.uSize;
 		int index = pSocketSend->socketIndex;
 		void* pData = static_cast<char*>(pDataLineHead) + sizeof(SendDataLineHead);
 
-		if (index >= 0 && index < pThis->m_socketInfoVec.size())
-		{
-			TCPSocketInfo& tcpInfo = pThis->m_socketInfoVec[index];
-			if (tcpInfo.lock)
-			{
-				std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-				if (tcpInfo.isConnect && tcpInfo.bev)
-				{
-					if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-					{
-						COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
-					}
-				}
-			}
-		}
-		else
+		if (index < 0 || index >= m_socketInfoVec.size())
 		{
 			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
+			continue;
 		}
-
-		// 释放内存
+		TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+		if (!tcpInfo.lock)
+		{
+			continue;
+		}
+		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
+		if (!tcpInfo.isConnect || !tcpInfo.bev)
+		{
+			continue;
+		}
+		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+		{
+			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+		}
 		if (pDataLineHead)
 		{
 			SafeDeleteArray(pDataLineHead);
@@ -186,33 +176,27 @@ void CTCPSocketManage::ThreadSendMsgThread(void* pThreadData)
 	return;
 }
 
-void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
+void CTCPSocketManage::ThreadAcceptThread()
 {
-	CTCPSocketManage* pThis = (CTCPSocketManage*)pThreadData;
-	if (!pThis)
-	{
-		COUT_LOG(LOG_CERROR, "thread param is null");
-		return;
-	}
-
-	// libevent服务器 
-	struct evconnlistener* listener;
 	struct sockaddr_in sin;
+	struct evconnlistener* listener;
 
-	pThis->m_listenerBase = event_base_new();
-	if (!pThis->m_listenerBase)
+	//pThis->m_listenerBase = event_base_new();
+	m_listenerBase = event_base_new_with_config(m_eventBaseCfg);
+	event_config_free(m_eventBaseCfg);
+	if (!m_listenerBase)
 	{
 		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
 		return;
 	}
 
-	// 开始监听
 	memset(&sin, 0, sizeof(sin));
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(pThis->m_port);
-	sin.sin_addr.s_addr = strlen(pThis->m_bindIP) == 0 ? INADDR_ANY : inet_addr(pThis->m_bindIP);
+	sin.sin_port = htons(m_port);
+	sin.sin_addr.s_addr = strlen(m_bindIP) == 0 ? INADDR_ANY : inet_addr(m_bindIP);
 
-	listener = evconnlistener_new_bind(pThis->m_listenerBase, ListenerCB, (void*)pThis, LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE, -1, (struct sockaddr*)&sin, sizeof(sin));
+	listener = evconnlistener_new_bind(m_listenerBase, ListenerCB, (void*)this, 
+		LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE, -1, (struct sockaddr*)&sin, sizeof(sin));
 
 	if (!listener)
 	{
@@ -235,7 +219,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		uniqueParam[i].index = i;
-		uniqueParam[i].pThis = pThis;
+		uniqueParam[i].pThis = this;
 
 		WorkThreadInfo workInfo;
 		SOCKET fd[2];
@@ -271,7 +255,7 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 			return;
 		}
 
-		pThis->m_workBaseVec.push_back(workInfo);
+		m_workBaseVec.push_back(workInfo);
 	}
 
 	std::vector<std::thread> threadVev;
@@ -281,16 +265,16 @@ void CTCPSocketManage::ThreadAcceptThread(void* pThreadData)
 		threadVev.push_back(std::thread(ThreadRSSocketThread, (void*)&uniqueParam[i]));
 	}
 
-	event_base_dispatch(pThis->m_listenerBase);
+	event_base_dispatch(m_listenerBase);
 
 	evconnlistener_free(listener);
-	event_base_free(pThis->m_listenerBase);
+	event_base_free(m_listenerBase);
 	
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		threadVev[i].join();
 
-		WorkThreadInfo& workInfo = pThis->m_workBaseVec[i];
+		WorkThreadInfo& workInfo = m_workBaseVec[i];
 
 		closesocket(workInfo.read_fd);
 		closesocket(workInfo.write_fd);

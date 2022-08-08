@@ -12,7 +12,6 @@ protected:
 
 public:
 	bool Stop();
-	bool UnInit();
 	bool Start(ServiceType serverType);
 	bool Init(int maxCount, int port, const char* ip = nullptr, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 
@@ -51,9 +50,9 @@ private:
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
-	static void ThreadAcceptThread(void* pThreadData);
+	void ThreadAcceptThread();
+	void ThreadSendMsgThread();
 	static void ThreadRSSocketThread(void* pThreadData);
-	static void ThreadSendMsgThread(void* pThreadData);
 
 private:
 	static void ReadCB(struct bufferevent*, void*);
@@ -71,11 +70,12 @@ private:
 	unsigned short              m_port;
 	bool                        m_running;
 	char                        m_bindIP[48];
-	unsigned int                m_uMaxSocketSize; // libevent 单线程默认的32000
+	unsigned int                m_uMaxSocketSize;
 	unsigned int                m_uCurSocketSize;
 	unsigned int                m_uCurSocketIndex;
-	CDataLine*					m_pRecvDataLine;	//接受对列
-	CDataLine*					m_pSendDataLine;	//发送队列
+	CDataLine*					m_pRecvDataLine;
+	CDataLine*					m_pSendDataLine;
+	event_config*				m_eventBaseCfg;
 	event_base*					m_listenerBase;
 	SocketType                  m_socketType;
 	ServiceType                 m_iServiceType;
