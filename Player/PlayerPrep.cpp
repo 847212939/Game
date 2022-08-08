@@ -516,5 +516,5 @@ void PlayerPrep::HandlerExecuteSqlThread()
 			sqlList.pop_front();
 		}
 	}
-	COUT_LOG(LOG_CINFO, "save mysql thread end...");
+	COUT_LOG(LOG_CINFO, "save mysql thread end");
 }

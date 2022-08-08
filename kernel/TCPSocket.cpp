@@ -181,9 +181,10 @@ void CTCPSocketManage::ThreadAcceptThread()
 	struct sockaddr_in sin;
 	struct evconnlistener* listener;
 
-	//pThis->m_listenerBase = event_base_new();
+	//m_listenerBase = event_base_new();
 	m_listenerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
+
 	if (!m_listenerBase)
 	{
 		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
@@ -236,6 +237,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 		SetTcpRcvSndBUF(workInfo.write_fd, socketPairBufSize, socketPairBufSize);
 
 		workInfo.base = event_base_new();
+		//workInfo.base = event_base_new_with_config(m_eventBaseCfg);
 		if (!workInfo.base)
 		{
 			COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
@@ -269,7 +271,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 
 	evconnlistener_free(listener);
 	event_base_free(m_listenerBase);
-	
+
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		threadVev[i].join();
