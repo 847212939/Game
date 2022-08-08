@@ -271,6 +271,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 
 	evconnlistener_free(listener);
 	event_base_free(m_listenerBase);
+	//event_config_free(m_eventBaseCfg);
 
 	for (int i = 0; i < workBaseCount; i++)
 	{
