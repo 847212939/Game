@@ -12,7 +12,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	DPlayerCenterClient->Init();
+	DPCC->Init();
 }
 
 // 分发消息
@@ -31,10 +31,10 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 			return;
 		}
-		DPlayerPrepClient->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPPC->CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
-		DPlayerCenterClient->MessageDispatch(cmd, playerInfo);
+		DPCC->MessageDispatch(cmd, playerInfo);
 	}
 }

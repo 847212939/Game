@@ -70,7 +70,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	if (MsgCmd::MsgCmd_PlayerCenter == cmd)
 	{
-		DPlayerPrepClient->CallBackFun((MsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPPC->CallBackFun((MsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID, playerInfo);
 	}
 	else
 	{
@@ -124,7 +124,7 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 		DTCPClient->CloseSocket(loadPKey.index);
 		return;
 	}
-	if (!DPlayerPrepClient->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
+	if (!DPPC->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
 	{
 		DTCPClient->CloseSocket(loadPKey.index);
 		return;

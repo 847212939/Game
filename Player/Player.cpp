@@ -113,31 +113,31 @@ void Player::AttrsCallBackFun()
 // 加载一条数据库
 void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
 {
-	DPlayerPrepClient->LoadOneSql(sqlName, m_userId, outStr, dataStr);
+	DPPC->LoadOneSql(sqlName, m_userId, outStr, dataStr);
 }
 
 // insert mysql
 void Player::SaveInsertSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	DPlayerPrepClient->SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
+	DPPC->SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // delete mysql
 void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
-	DPlayerPrepClient->SaveDeleteSQL(sqlName, sCondition);
+	DPPC->SaveDeleteSQL(sqlName, sCondition);
 }
 
 // replace mysql
 void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	DPlayerPrepClient->SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
+	DPPC->SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
 }
 
 // update mysql
 void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {
-	DPlayerPrepClient->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
+	DPPC->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
 }
 
 void Player::AdditionAttributes(AttrsMap& attrs)

@@ -109,7 +109,7 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "SendDataLine = null");
 		return;
 	}
-	CServerTimer* pCServerTimer = DPlayerPrepClient->GetCServerTimer();
+	CServerTimer* pCServerTimer = DPPC->GetCServerTimer();
 	if (!pCServerTimer)
 	{
 		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
@@ -119,8 +119,8 @@ void TCPClient::NotifyAll()
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	DPlayerPrepClient->GetConditionVariable().NotifyAll();
-	DPlayerCenterClient->GetConditionVariable().NotifyAll();
+	DPPC->GetConditionVariable().NotifyAll();
+	DPCC->GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -194,7 +194,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = DPlayerCenterClient->GetPlayerClientByIndex(pSocketClose->uIndex);
+	PlayerClient* playerClient = DPCC->GetPlayerClientByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);

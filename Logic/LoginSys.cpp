@@ -13,7 +13,7 @@ LoginSys::~LoginSys()
 void LoginSys::TimerCallback()
 {
 	COUT_LOG(LOG_CINFO, "定时器回调函数");
-	UnRegisterTimer(DPlayerPrepClient, TimerCmd::TimerCmd_Test);
+	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Test);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
@@ -44,7 +44,7 @@ bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 	std::string id, pw;
 	is >> id >> pw;
 
-	DPlayerPrepClient->CreatePlayer(playerInfo->pMsg->uIndex, id, pw);
+	DPPC->CreatePlayer(playerInfo->pMsg->uIndex, id, pw);
 
 	return true;
 }
@@ -60,7 +60,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 
 	// 数据库查询
 	std::string data;
-	DPlayerPrepClient->LoadOneSql(id, "useraccount", data);
+	DPPC->LoadOneSql(id, "useraccount", data);
 
 	if (data.empty())
 	{
@@ -69,7 +69,7 @@ bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
 		Cos os;
 		os << passwaed << userId;
 
-		DPlayerPrepClient->SaveReplaceSQL("useraccount", id, os);
+		DPPC->SaveReplaceSQL("useraccount", id, os);
 
 		return true;
 	}

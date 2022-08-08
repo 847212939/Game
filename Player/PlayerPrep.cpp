@@ -38,7 +38,7 @@ void PlayerPrep::Init()
 		m_pServerTimer[i].Start();
 	}
 
-	DSceneClient->Init();
+	DSC->Init();
 }
 
 // 启动数据库
@@ -124,14 +124,14 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		DSceneClient->MessageDispatch(cmd, playerInfo);
+		DSC->MessageDispatch(cmd, playerInfo);
 	}
 }
 
 // 创建角色
 void PlayerPrep::CreatePlayer(unsigned int index, std::string& id, std::string& pw)
 {
-	DPlayerCenterClient->CreatePlayer(index, id, pw);
+	DPCC->CreatePlayer(index, id, pw);
 }
 
 // 获取数据库

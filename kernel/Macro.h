@@ -7,9 +7,9 @@
 #define BaseCfgMgr			CfgMgr->GetCBaseCfgMgr()
 
 #define DTCPClient			DUtil.GetTCPClient()
-#define DPlayerPrepClient	DTCPClient->GetPlayerPrepClient()
-#define DSceneClient		DPlayerPrepClient->GetSceneClient()
-#define DPlayerCenterClient DSceneClient->GetPlayerCenterClient()
+#define DPPC				DTCPClient->GetPlayerPrepClient()
+#define DSC					DPPC->GetSceneClient()
+#define DPCC				DSC->GetPlayerCenterClient()
 
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))
