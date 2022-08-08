@@ -290,7 +290,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "accept thread end...");
+	COUT_LOG(LOG_CINFO, "accept thread end");
 
 	return;
 }
