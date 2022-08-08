@@ -11,6 +11,8 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 "`data` varchar(2048) COLLATE utf8_unicode_ci DEFAULT NULL,"
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
+char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
+"default charset utf8 COLLATE utf8_unicode_ci";
 
 PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()])
 {
