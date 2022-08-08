@@ -50,11 +50,13 @@ private:
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
+	// 线程入口
 	void ThreadAcceptThread();
 	void ThreadSendMsgThread();
 	static void ThreadRSSocketThread(void* pThreadData);
 
 private:
+	// 静态回调方法
 	static void ReadCB(struct bufferevent*, void*);
 	static void EventCB(struct bufferevent*, short, void*);
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);

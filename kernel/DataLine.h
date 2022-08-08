@@ -1,6 +1,5 @@
 #pragma 
 
-//数据队列类
 class CDataLine
 {
 public:
@@ -12,15 +11,16 @@ protected:
 	CDataLine& operator=(const CDataLine& my);
 
 public:
-	//清理所有数据
+	// 清理所有数据
 	bool CleanData();
-	//加入消息队列
-	virtual unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
-	//提取消息数据
-	virtual unsigned int GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind);
-	//获取队列大小
-	size_t GetDataCount() { return m_dataListSize; };
+	// 获取队列大小
+	size_t GetDataCount();
+	// 获取条件变量
 	ConditionVariable& GetConditionVariable();
+	// 加入消息队列
+	unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
+	// 提取消息数据
+	unsigned int GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind);
 
 private:
 	std::atomic<unsigned int>	m_dataListSize;

@@ -1,17 +1,16 @@
 #pragma once
 
-//处理类型定义
-#define HD_SOCKET_READ					1										// SOCKET 读取事件处理			
-#define HD_SOCKET_CLOSE					2										// SOCKET 关闭事件处理			
-#define HD_ASYN_THREAD_RESULT			3										// 异步线程结果处理
-#define HD_TIMER_MESSAGE				4										// 定时器消息处理
-#define HD_PLATFORM_SOCKET_READ			5										// 中心服读取事件处理
-#define CREATE_TABLE_LEN				512										// 创建数据库语句长度
-#define LOG_BUF_LEN						20 * 1024								// 日志打印缓存
-#define MAX_TIMER_THRED_NUMS			4										// 定时器最大线程数量
-#define MIN_TIMER_THRED_NUMS			1										// 定时器最小线程数量
+const int					HD_SOCKET_READ = 1;									// SOCKET 读取事件处理			
+const int					HD_SOCKET_CLOSE = 2;								// SOCKET 关闭事件处理			
+const int					HD_ASYN_THREAD_RESULT = 3;							// 异步线程结果处理
+const int					HD_TIMER_MESSAGE = 4;								// 定时器消息处理
+const int					HD_PLATFORM_SOCKET_READ = 5;						// 中心服读取事件处理
 
-//通用变量的定义
+const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
+const int					LOG_BUF_LEN = 20 * 1024;							// 日志打印缓存
+const int					MAX_TIMER_THRED_NUMS = 4;							// 定时器最大线程数量
+const int					MIN_TIMER_THRED_NUMS = 1;							// 定时器最小线程数量
+
 const unsigned int			MAX_NUM_IP_ADDR_SIZE = 48;							// 最大数字IP地址长度
 const static int			ERROR_SERVICE_FULL = 15;							// 服务器人数已满
 const int					MAX_POST_CONNECTED_COUNT = 128;						// 连接线程投递到接收线程socket最大数量
@@ -25,6 +24,11 @@ const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
 // 消息队列最大长度
 const unsigned int			MAX_DATALINE_LEN = 320000;
+
+const int					MAX_LOG_BUF_SIZE = 1024;							// log缓冲区大小
+const int					MAX_FILE_NAME_SIZE = 256;							// 最大文件名长度
+const int					MAX_FUNC_NAME_SIZE = 128;							// 最大函数名长度
+const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//日子文件的最大的长度，超过长度会生成新的文件
 
 // 日志等级
 enum LogLevel

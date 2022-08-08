@@ -686,6 +686,7 @@ const TCPSocketInfo* CTCPSocketManage::GetTCPSocketInfo(int index)
 	return &m_socketInfoVec[index];
 }
 
+// ·ÖÅäË÷ÒýËã·¨
 int CTCPSocketManage::GetSocketIndex()
 {
 	std::lock_guard<std::mutex> guard(m_ConditionVariable.GetMutex());
