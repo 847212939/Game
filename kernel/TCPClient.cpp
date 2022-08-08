@@ -182,7 +182,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		Info.pMsg = pMsg;
 		Info.pData = pData;
 		Info.uSrverType = GetServerType();
-		m_PlayerPrepClient->HandlerMessage(&Info);
+		m_PlayerPrepClient->MessageDispatch(&Info);
 	}
 	else
 	{

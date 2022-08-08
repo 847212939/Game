@@ -76,7 +76,7 @@ bool PlayerPrep::InitDB()
 }
 
 // 处理消息
-void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
+void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{

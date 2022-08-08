@@ -13,7 +13,7 @@ protected:
 
 public:
 	void Init();
-	void HandlerMessage(PlayerInfo* playerInfo);
+	void MessageDispatch(PlayerInfo* playerInfo);
 
 public:
 	// 加载一条数据库
