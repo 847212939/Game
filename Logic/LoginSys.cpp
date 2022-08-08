@@ -23,11 +23,10 @@ void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Player Info is null");
 		return;
 	}
-	
-	LoginSysMsgCmd uIdentification = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uIdentification;
+	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
 	Cis is((char*)playerInfo->pData);
 
-	switch (uIdentification)
+	switch (uAssistantID)
 	{
 	case LoginSysMsgCmd::cs_login:
 	{

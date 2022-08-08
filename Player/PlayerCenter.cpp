@@ -68,9 +68,9 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
 		return;
 	}
-	if (MsgCmd::MsgCmd_PlayerCenter == cmd)
+	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification)
 	{
-		DPPC->CallBackFun((MsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID, playerInfo);
+		DPPC->CallBackFun(cmd, playerInfo);
 	}
 	else
 	{

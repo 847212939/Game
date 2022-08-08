@@ -108,21 +108,21 @@ void PlayerPrep::HandlerMessage(PlayerInfo* playerInfo)
 // 分发消息
 void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
-	// 处理登录协议等.. 玩家没有创建
-	if (MsgCmd::MsgCmd_PlayerPreproces == cmd)
+	if (!playerInfo)
 	{
-		if (!playerInfo)
-		{
-			COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
-			return;
-		}
-		SocketReadLine* pMsg = playerInfo->pMsg;
-		if (!pMsg)
-		{
-			COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
-			return;
-		}
-		CallBackFun((MsgCmd)pMsg->netMessageHead.uAssistantID, playerInfo);
+		COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
+		return;
+	}
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	if (!pMsg)
+	{
+		COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+		return;
+	}
+	// 处理登录协议等.. 玩家没有创建
+	if (MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification)
+	{
+		CallBackFun(cmd, playerInfo);
 	}
 	else
 	{
