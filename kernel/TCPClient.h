@@ -27,6 +27,7 @@ private:
 
 private:
 	void HandlerRecvDataListThread();
+	void HandleRecvData(ListItemData* pListItem);
 
 private:
 	TypeFunMap			m_TypeFunMap;

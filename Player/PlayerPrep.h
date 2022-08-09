@@ -55,8 +55,8 @@ public:
 private:
 	bool InitDB();
 	void HandlerExecuteSqlThread();
+	void HandleEexcuteMysql(std::string& sql);
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
-	void HandleEexcuteMysql(SqlList& sqlList, std::string& sql);
 	bool SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run);
 
 public:

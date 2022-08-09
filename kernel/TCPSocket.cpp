@@ -118,64 +118,6 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	return true;
 }
 
-void CTCPSocketManage::ThreadSendMsgThread()
-{
-	void* pDataLineHead = nullptr;
-	CDataLine* pDataLine = GetSendDataLine();
-	if (!pDataLine)
-	{
-		COUT_LOG(LOG_CERROR, "send list is null");
-		return;
-	}
-	if (!m_running)
-	{
-		COUT_LOG(LOG_CERROR, "初始化未完成");
-		return;
-	}
-	while (m_running)
-	{
-		unsigned int uDataKind = 0;
-		unsigned int bytes = pDataLine->GetData(&pDataLineHead, m_running, uDataKind);
-		if (bytes == 0 || pDataLineHead == nullptr)
-		{
-			continue;
-		}
-
-		SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pDataLineHead);
-		unsigned int size = pSocketSend->dataLineHead.uSize;
-		int index = pSocketSend->socketIndex;
-		void* pData = static_cast<char*>(pDataLineHead) + sizeof(SendDataLineHead);
-
-		if (index < 0 || index >= m_socketInfoVec.size())
-		{
-			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
-			continue;
-		}
-		TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-		if (!tcpInfo.lock)
-		{
-			continue;
-		}
-		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (!tcpInfo.isConnect || !tcpInfo.bev)
-		{
-			continue;
-		}
-		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-		{
-			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
-		}
-		if (pDataLineHead)
-		{
-			SafeDeleteArray(pDataLineHead);
-		}
-	}
-
-	COUT_LOG(LOG_CINFO, "send data thread end...");
-
-	return;
-}
-
 void CTCPSocketManage::ThreadAcceptThread()
 {
 	struct sockaddr_in sin;
@@ -1123,3 +1065,127 @@ event_base* CTCPSocketManage::GetEventBase()
 {
 	return m_listenerBase;
 }
+
+void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
+{
+	if (!pListItem)
+	{
+		return;
+	}
+	if (pListItem->stDataHead.uSize == 0 || pListItem->pData == nullptr)
+	{
+		return;
+	}
+	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
+	unsigned int size = pSocketSend->dataLineHead.uSize;
+	int index = pSocketSend->socketIndex;
+	void* pData = pListItem->pData + sizeof(SendDataLineHead);
+
+	if (index < 0 || index >= m_socketInfoVec.size())
+	{
+		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
+		return;
+	}
+	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+	if (!tcpInfo.lock)
+	{
+		return;
+	}
+	std::lock_guard<std::mutex> guard(*tcpInfo.lock);
+	if (!tcpInfo.isConnect || !tcpInfo.bev)
+	{
+		return;
+	}
+	if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+	{
+		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+	}
+	SafeDeleteArray(pListItem->pData);
+	SafeDelete(pListItem);
+}
+
+void CTCPSocketManage::ThreadSendMsgThread()
+{
+	std::list <ListItemData*> dataList;
+	CDataLine* pDataLine = GetSendDataLine();
+	if (!pDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "send list is null");
+		return;
+	}
+	while (m_running)
+	{
+		if (!pDataLine->SwapDataList(dataList, m_running))
+		{
+			continue;
+		}
+		while (!dataList.empty())
+		{
+			HandleSendData(dataList.front());
+			dataList.pop_front();
+		}
+	}
+
+	COUT_LOG(LOG_CINFO, "send data thread end...");
+
+	return;
+}
+
+//
+//void CTCPSocketManage::ThreadSendMsgThread()
+//{
+//	void* pDataLineHead = nullptr;
+//	CDataLine* pDataLine = GetSendDataLine();
+//	if (!pDataLine)
+//	{
+//		COUT_LOG(LOG_CERROR, "send list is null");
+//		return;
+//	}
+//	if (!m_running)
+//	{
+//		COUT_LOG(LOG_CERROR, "初始化未完成");
+//		return;
+//	}
+//	while (m_running)
+//	{
+//		unsigned int uDataKind = 0;
+//		unsigned int bytes = pDataLine->GetData(&pDataLineHead, m_running, uDataKind);
+//		if (bytes == 0 || pDataLineHead == nullptr)
+//		{
+//			continue;
+//		}
+//
+//		SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pDataLineHead);
+//		unsigned int size = pSocketSend->dataLineHead.uSize;
+//		int index = pSocketSend->socketIndex;
+//		void* pData = static_cast<char*>(pDataLineHead) + sizeof(SendDataLineHead);
+//
+//		if (index < 0 || index >= m_socketInfoVec.size())
+//		{
+//			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
+//			continue;
+//		}
+//		TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+//		if (!tcpInfo.lock)
+//		{
+//			continue;
+//		}
+//		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
+//		if (!tcpInfo.isConnect || !tcpInfo.bev)
+//		{
+//			continue;
+//		}
+//		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+//		{
+//			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+//		}
+//		if (pDataLineHead)
+//		{
+//			SafeDeleteArray(pDataLineHead);
+//		}
+//	}
+//
+//	COUT_LOG(LOG_CINFO, "send data thread end...");
+//
+//	return;
+//}

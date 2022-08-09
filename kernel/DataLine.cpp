@@ -86,7 +86,32 @@ unsigned int CDataLine::GetData(void** pDataBuffer, bool& run, unsigned int& uDa
 	return uDataSize;
 }
 
-//清理所有数据
+bool CDataLine::SwapDataList(std::list <ListItemData*>& dataList, bool& run)
+{
+	dataList.clear();
+	std::list <ListItemData*>& mDataList = m_dataList;
+	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
+	m_cond.Wait(uniqLock, [&mDataList, &run]
+	{
+		if (mDataList.size() > 0 || !run)
+		{
+			return true;
+		}
+		return false;
+	});
+	if (m_dataListSize <= 0)
+	{
+		uniqLock.unlock();
+		return false;
+	}
+
+	dataList.swap(m_dataList);
+	m_dataListSize = 0;
+	uniqLock.unlock();
+
+	return true;
+}
+
 bool CDataLine::CleanData()
 {
 	ListItemData* pListItem = nullptr;

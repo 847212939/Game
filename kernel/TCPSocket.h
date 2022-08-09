@@ -53,6 +53,7 @@ private:
 	// 线程入口
 	void ThreadAcceptThread();
 	void ThreadSendMsgThread();
+	void HandleSendData(ListItemData* pListItem);
 	static void ThreadRSSocketThread(void* pThreadData);
 
 private:

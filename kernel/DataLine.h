@@ -21,9 +21,10 @@ public:
 	unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
 	// 提取消息数据
 	unsigned int GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind);
+	bool SwapDataList(std::list <ListItemData*>& dataList, bool& run);
 
 private:
-	std::atomic<unsigned int>	m_dataListSize;
+	unsigned int				m_dataListSize;
 	std::list <ListItemData*>	m_dataList;
 	ConditionVariable			m_cond;
 };

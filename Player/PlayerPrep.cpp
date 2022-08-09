@@ -486,7 +486,7 @@ bool PlayerPrep::SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run)
 	return true;
 }
 
-void PlayerPrep::HandleEexcuteMysql(SqlList& sqlList, std::string& sql)
+void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 {
 	try
 	{
@@ -512,7 +512,7 @@ void PlayerPrep::HandlerExecuteSqlThread()
 		}
 		while (!sqlList.empty())
 		{
-			HandleEexcuteMysql(mysqlList, sqlList.front());
+			HandleEexcuteMysql(sqlList.front());
 			sqlList.pop_front();
 		}
 	}
