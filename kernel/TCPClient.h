@@ -22,8 +22,8 @@ private:
 	void TimerCallback(void* pDataLineHead);
 	void SocketCallback(void* pDataLineHead);
 	void CloseSocketCallback(void* pDataLineHead);
-	bool CallBackFun(unsigned int cmd, void* pDataLineHead);
-	void AddNetTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun);
+	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
+	void AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun);
 
 private:
 	void HandlerRecvDataListThread();

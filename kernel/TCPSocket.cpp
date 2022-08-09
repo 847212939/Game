@@ -541,7 +541,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
 	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
 
-	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), HD_SOCKET_READ);
+	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
 
 	if (addBytes == 0)
 	{
@@ -559,7 +559,7 @@ bool CTCPSocketManage::OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uCo
 	SocketClose.uIndex = uIndex;
 	SocketClose.uAccessIP = uAccessIP;
 	SocketClose.socketType = socketType;
-	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), HD_SOCKET_CLOSE) != 0);
+	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 
 bool CTCPSocketManage::CloseSocket(int index)
@@ -1029,7 +1029,7 @@ bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCm
 		pLineHead->socketIndex = index;
 		pLineHead->pBufferevent = pBufferevent;
 
-		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) +  pHead->uMessageSize, 0);
+		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) +  pHead->uMessageSize);
 
 		if (addBytes == 0)
 		{

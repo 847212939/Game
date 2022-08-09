@@ -20,7 +20,7 @@ public:
 	// 交换数据避免产生竞争
 	bool SwapDataList(std::list<ListItemData*>& dataList, bool& run);
 	// 加入消息队列
-	unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
+	unsigned int AddData(void* pData, unsigned int uDataSize, SysMsgCmd uDataKind = SysMsgCmd::HD_SYS_MSG_BEGIN);
 	// 提取消息数据
 	unsigned int GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind);
 

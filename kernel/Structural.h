@@ -1,11 +1,5 @@
 #pragma once
 
-const int					HD_SOCKET_READ = 1;									// SOCKET 读取事件处理			
-const int					HD_SOCKET_CLOSE = 2;								// SOCKET 关闭事件处理			
-const int					HD_ASYN_THREAD_RESULT = 3;							// 异步线程结果处理
-const int					HD_TIMER_MESSAGE = 4;								// 定时器消息处理
-const int					HD_PLATFORM_SOCKET_READ = 5;						// 中心服读取事件处理
-
 const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
 const int					LOG_BUF_LEN = 20 * 1024;							// 日志打印缓存
 const int					MAX_TIMER_THRED_NUMS = 4;							// 定时器最大线程数量
@@ -29,6 +23,16 @@ const int					MAX_LOG_BUF_SIZE = 1024;							// log缓冲区大小
 const int					MAX_FILE_NAME_SIZE = 256;							// 最大文件名长度
 const int					MAX_FUNC_NAME_SIZE = 128;							// 最大函数名长度
 const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//日子文件的最大的长度，超过长度会生成新的文件
+
+enum class SysMsgCmd
+{
+	HD_SYS_MSG_BEGIN = 0,								// 开始
+	HD_SOCKET_READ = 1,									// SOCKET 读取事件处理
+	HD_SOCKET_CLOSE = 2,								// SOCKET 关闭事件处理
+	HD_ASYN_THREAD_RESULT = 3,							// 异步线程结果处理
+	HD_TIMER_MESSAGE = 4,								// 定时器消息处理
+	HD_PLATFORM_SOCKET_READ = 5,						// 中心服读取事件处理
+};
 
 // 日志等级
 enum LogLevel
@@ -257,7 +261,7 @@ using TimerFunMap			= std::map<TimerCmd, std::function<void()>>;
 using NetFunMap				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
-using TypeFunMap			= std::map<unsigned int, std::function<void(void* pDataLineHead)>>;
+using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using LogLevelNames			= const std::array<const char*, LOG_END>;

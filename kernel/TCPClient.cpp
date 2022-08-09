@@ -2,9 +2,9 @@
 
 TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
 {
-	RegisterNetType(this, TCPClient::SocketCallback, HD_SOCKET_READ);
-	RegisterNetType(this, TCPClient::TimerCallback, HD_TIMER_MESSAGE);
-	RegisterNetType(this, TCPClient::CloseSocketCallback, HD_SOCKET_CLOSE);
+	RegisterNetType(this, TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
+	RegisterNetType(this, TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
+	RegisterNetType(this, TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 
 bool TCPClient::Init(ServiceType serverType)
@@ -61,7 +61,7 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 	{
 		return;
 	}
-	CallBackFun(pListItem->stDataHead.uDataKind, (void*)pListItem->pData);
+	CallBackFun((SysMsgCmd)pListItem->stDataHead.uDataKind, (void*)pListItem->pData);
 
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
@@ -135,7 +135,7 @@ void TCPClient::NotifyAll()
 	}
 }
 
-void TCPClient::AddNetTypeCallback(int cmd, std::function<void(void* pDataLineHead)>&& fun)
+void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
 {
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
@@ -147,7 +147,7 @@ void TCPClient::AddNetTypeCallback(int cmd, std::function<void(void* pDataLineHe
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-bool TCPClient::CallBackFun(unsigned int cmd, void* pDataLineHead)
+bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 {
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())

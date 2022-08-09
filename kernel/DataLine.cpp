@@ -21,7 +21,7 @@ CDataLine::~CDataLine()
 	}
 }
 
-unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind)
+unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd uDataKind)
 {
 	if (!pData || uDataSize == 0)
 	{
@@ -36,7 +36,7 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, unsigned in
 
 	pListItem->pData = nullptr;	
 	pListItem->stDataHead.uSize = uDataSize;
-	pListItem->stDataHead.uDataKind = uDataKind;
+	pListItem->stDataHead.uDataKind = (unsigned int)uDataKind;
 
 	unsigned int size = pListItem->stDataHead.uSize + 1;
 	pListItem->pData = new unsigned char[size];
