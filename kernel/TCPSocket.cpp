@@ -1091,14 +1091,16 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	{
 		return;
 	}
-	std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-	if (!tcpInfo.isConnect || !tcpInfo.bev)
 	{
-		return;
-	}
-	if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-	{
-		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
+		if (!tcpInfo.isConnect || !tcpInfo.bev)
+		{
+			return;
+		}
+		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+		{
+			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+		}
 	}
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
