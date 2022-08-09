@@ -17,11 +17,12 @@ public:
 	size_t GetDataCount();
 	// 获取条件变量
 	ConditionVariable& GetConditionVariable();
+	// 交换数据避免产生竞争
+	bool SwapDataList(std::list<ListItemData*>& dataList, bool& run);
 	// 加入消息队列
 	unsigned int AddData(void* pData, unsigned int uDataSize, unsigned int uDataKind);
 	// 提取消息数据
 	unsigned int GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind);
-	bool SwapDataList(std::list <ListItemData*>& dataList, bool& run);
 
 private:
 	unsigned int				m_dataListSize;
