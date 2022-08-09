@@ -26,12 +26,12 @@ const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//ÈÕ×ÓÎÄ¼þµÄ×î´óµÄ³¤¶È£¬³
 
 enum class SysMsgCmd
 {
-	HD_SYS_MSG_BEGIN = 0,								// ¿ªÊ¼
-	HD_SOCKET_READ = 1,									// SOCKET ¶ÁÈ¡ÊÂ¼þ´¦Àí
-	HD_SOCKET_CLOSE = 2,								// SOCKET ¹Ø±ÕÊÂ¼þ´¦Àí
-	HD_ASYN_THREAD_RESULT = 3,							// Òì²½Ïß³Ì½á¹û´¦Àí
-	HD_TIMER_MESSAGE = 4,								// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
-	HD_PLATFORM_SOCKET_READ = 5,						// ÖÐÐÄ·þ¶ÁÈ¡ÊÂ¼þ´¦Àí
+	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
+	HD_SOCKET_READ				= 1,											// SOCKET ¶ÁÈ¡ÊÂ¼þ´¦Àí
+	HD_SOCKET_CLOSE				= 2,											// SOCKET ¹Ø±ÕÊÂ¼þ´¦Àí
+	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
+	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
+	HD_PLATFORM_SOCKET_READ		= 5,											// ÖÐÐÄ·þ¶ÁÈ¡ÊÂ¼þ´¦Àí
 };
 
 // ÈÕÖ¾µÈ¼¶
