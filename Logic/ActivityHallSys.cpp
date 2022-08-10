@@ -187,6 +187,7 @@ void ActivityHallSys::TimerCallback()
 	{
 		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg)))
 		{
+			// 活动结束
 			ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
 			if (it == m_ActtiveOpenMap.end())
 			{
@@ -201,6 +202,7 @@ void ActivityHallSys::TimerCallback()
 			continue;
 		}
 
+		// 活动开启
 		ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
 		if (it == m_ActtiveOpenMap.end())
 		{
@@ -212,7 +214,4 @@ void ActivityHallSys::TimerCallback()
 		}
 		ActiveEnterCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
 	}
-
-	// 定时器反注册
-	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Active);
 }
