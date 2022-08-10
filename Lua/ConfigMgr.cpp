@@ -62,3 +62,23 @@ void ConfigMgr::ReadKeyCfg(std::string key)
 {
 	m_CBaseCfgMgr.ReadKeyCfg(key);
 }
+
+ActivityHallCfg& ConfigMgr::GetActivityHallCfg()
+{
+	return m_ActivityHallCfgMgr;
+}
+
+void ConfigMgr::ReadMiningCfg(MiningCfg* config)
+{
+	m_ActivityHallCfgMgr.ReadMiningCfg(config);
+}
+
+void ConfigMgr::ReadActivityList(ActivityList* config)
+{
+	m_ActivityHallCfgMgr.ReadActivityList(config);
+}
+
+void ConfigMgr::ReadBrushMonsterCfg(BrushMonsterCfg* config)
+{
+	m_ActivityHallCfgMgr.ReadBrushMonsterCfg(config);
+}

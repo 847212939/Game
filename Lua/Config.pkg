@@ -18,9 +18,11 @@ public:
 	~ConfigMgr();
 
 public:
+	// 日志打印
 	void CoutLog(int level, const char* log);
 
 public:
+	// 基础配置
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);
 	void ReadThreadCntCfg(int cnt);
@@ -30,6 +32,13 @@ public:
 	void ReadExitCfg(std::string exit);
 	void ReadTimerCntCfg(int cnt);
 	void ReadKeyCfg(std::string key);
+
+public:
+	// 活动
+	void ReadMiningCfg(MiningCfg* config);
+	void ReadActivityList(ActivityList* config);
+	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
+
 };
 
 struct LogicCfg
@@ -51,4 +60,43 @@ struct DbCfg
 
 	DbCfg();
 	~DbCfg();
+};
+
+
+struct ActivityList
+{
+	int id;
+	int type;
+	int sid;
+	int brushMonsterCfg;
+	ActivityList();
+	~ActivityList();
+	void AddBeginTime(int tm);
+	void AddEndTime(int tm);
+	void AddSolidTime(int tm);
+	void AddOpenServerTime(int tm);
+};
+
+struct BrushMonsterCfg
+{
+	int id;
+	int echelon;
+	int sid;
+	int mid;
+	int count;
+	int delayTime;
+	int refreshTime;
+	int x;
+	int y;
+	BrushMonsterCfg();
+	~BrushMonsterCfg();
+};
+
+struct MiningCfg
+{
+	int echelon;
+	MiningCfg();
+	~MiningCfg();
+	void AddBeginTime(int tm);
+	void AddEndTime(int tm);
 };

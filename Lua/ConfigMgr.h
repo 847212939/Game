@@ -15,6 +15,7 @@ public:
 	void CoutLog(int level, const char* log);
 
 public:
+	// ª˘¥°≈‰÷√
 	CBaseCfgMgr& GetCBaseCfgMgr();
 	void ReadLogicCfg(LogicCfg* config);
 	void ReadDbCfg(DbCfg* config);
@@ -26,8 +27,16 @@ public:
 	void ReadTimerCntCfg(int cnt);
 	void ReadKeyCfg(std::string key);
 
+public:
+	// ªÓ∂Ø
+	ActivityHallCfg& GetActivityHallCfg();
+	void ReadMiningCfg(MiningCfg* config);
+	void ReadActivityList(ActivityList* config);
+	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
+
 private:
-	CBaseCfgMgr m_CBaseCfgMgr;
+	CBaseCfgMgr		m_CBaseCfgMgr;
+	ActivityHallCfg m_ActivityHallCfgMgr;
 	
 };
 

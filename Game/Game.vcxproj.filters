@@ -44,6 +44,9 @@
     <Filter Include="玩家中心\派生">
       <UniqueIdentifier>{9730ed31-a78a-4f26-ab83-91568cd16a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="游戏逻辑\活动系统">
+      <UniqueIdentifier>{d3ba2375-ec86-4aca-ad08-256f96eeac37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,6 +114,12 @@
     </ClCompile>
     <ClCompile Include="..\Player\SceneClient.cpp">
       <Filter>玩家中心\派生</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActivityHallSys.cpp">
+      <Filter>游戏逻辑\活动系统</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActivityHallCfg.cpp">
+      <Filter>游戏逻辑\活动系统</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +204,12 @@
     <ClInclude Include="..\Player\SceneClient.h">
       <Filter>玩家中心\派生</Filter>
     </ClInclude>
+    <ClInclude Include="..\Logic\ActivityHallSys.h">
+      <Filter>游戏逻辑\活动系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActivityHallCfg.h">
+      <Filter>游戏逻辑\活动系统</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">
@@ -205,6 +220,9 @@
     </None>
     <None Include="..\Lua\LoadScript.lua">
       <Filter>配置管理\配置脚本</Filter>
+    </None>
+    <None Include="..\Data\Config\ActivityCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
     </None>
   </ItemGroup>
 </Project>

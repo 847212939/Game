@@ -249,6 +249,11 @@ struct RecvThreadParam
 };
 
 class PlayerClient;
+template<typename T>
+using CfgSet				= std::set<T>;
+template<typename T>
+using CfgVector				= std::vector<T>;
+using IntVector				= std::vector<int>;
 using TimerList				= std::list<UINT>;
 using AttrsMap				= std::map<int, int>;
 using OnLinePlayerSet		= std::set<unsigned int>;

@@ -165,6 +165,8 @@
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
+    <ClCompile Include="..\Logic\ActivityHallCfg.cpp" />
+    <ClCompile Include="..\Logic\ActivityHallSys.cpp" />
     <ClCompile Include="..\Logic\LoginSys.cpp" />
     <ClCompile Include="..\Logic\MoveSys.cpp" />
     <ClCompile Include="..\Lua\BaseCfgMgr.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="..\kernel\TCPClient.h" />
     <ClInclude Include="..\kernel\TCPSocket.h" />
     <ClInclude Include="..\kernel\Util.h" />
+    <ClInclude Include="..\Logic\ActivityHallCfg.h" />
+    <ClInclude Include="..\Logic\ActivityHallSys.h" />
     <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Logic\MoveSys.h" />
     <ClInclude Include="..\Lua\BaseCfgMgr.h" />
@@ -212,6 +216,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Data\Config\ActivityCfg.lua" />
     <None Include="..\Data\Config\BaseCfg.lua" />
     <None Include="..\Lua\Config.pkg" />
     <None Include="..\Lua\LoadScript.lua" />
