@@ -1,6 +1,27 @@
-ConfigMgr = ConfigMgr:new()
-ConfigMgrFnTable = {}
 package.path = ";;../Data/Config/?.lua"
+ConfigMgrFnTable = {}
+ConfigMgr = ConfigMgr:new()
+
+function LoadConfig()
+    local cnt = GetLength(ConfigMgrFnTable)
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration begin")
+
+	for i = 1, cnt do
+		ConfigMgrFnTable[i]()
+	end
+
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration end")
+    ConfigMgr:CoutLog(LOG_CINFO, "load configurations cnt = " .. tostring(cnt))
+    return ConfigMgr
+end
+
+function GetLength(t)
+    local res = 0
+    for i,v in pairs(t) do
+        res = res + 1
+    end
+    return res
+end
 
 function ReadBaseCfg()
     ConfigMgr:CoutLog(LOG_CINFO, "Load configuration BaseCfg begin")
@@ -118,24 +139,3 @@ function ReadActivityCfg()
     ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadActivityCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadActivityCfg)
-
-function GetLength(t)
-    local res = 0
-    for i,v in pairs(t) do
-        res = res + 1
-    end
-    return res
-end
-
-function LoadConfig()
-    local cnt = GetLength(ConfigMgrFnTable)
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration begin")
-
-	for i = 1, cnt do
-		ConfigMgrFnTable[i]()
-	end
-
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration end")
-    ConfigMgr:CoutLog(LOG_CINFO, "load configurations cnt = " .. tostring(cnt))
-    return ConfigMgr
-end
