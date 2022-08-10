@@ -64,12 +64,12 @@ extern "C"
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
+#include "../Logic/ActivityHallCfg.h"		// 活动配置
+#include "../Logic/ActivityHallSys.h"		// 活动系统
 #include "../Player/Scene.h"				// 场景
 #include "../Player/SceneClient.h"			// 场景
 #include "../Player/ServerTimer.h"			// 定时器
 
-#include "../Logic/ActivityHallCfg.h"		// 活动配置
-#include "../Logic/ActivityHallSys.h"		// 活动系统
 #include "../Logic/LoginSys.h"				// 登录系统
 #include "../Player/PlayerPrep.h"			// 信息在注册
 #include "../Player/PlayerPrepClient.h"		// 逻辑处理类

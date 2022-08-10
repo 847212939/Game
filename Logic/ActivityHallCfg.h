@@ -71,6 +71,9 @@ struct ActivityBreakdown
 class ActivityHallCfg
 {
 public:
+	CfgSet<ActivityList>& GetActivityListCfgSet();
+
+public:
 	ActivityHallCfg() {}
 	~ActivityHallCfg() {}
 

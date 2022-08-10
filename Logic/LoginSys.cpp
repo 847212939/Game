@@ -3,17 +3,10 @@
 LoginSys::LoginSys(PlayerPrepClient* ppc)
 {
 	RegisterNetwk(ppc, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
-	RegisterTimer(ppc, this, LoginSys::TimerCallback, TimerCmd::TimerCmd_Test, 1000, SERVERTIMER_TYPE_PERISIST);
 }
 
 LoginSys::~LoginSys()
 {
-}
-
-void LoginSys::TimerCallback()
-{
-	COUT_LOG(LOG_CINFO, "定时器回调函数");
-	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Test);
 }
 
 void LoginSys::NetworkCallback(PlayerInfo* playerInfo)

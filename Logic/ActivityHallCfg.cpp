@@ -1,5 +1,10 @@
 #include "../Game/stdafx.h"
 
+CfgSet<ActivityList>& ActivityHallCfg::GetActivityListCfgSet()
+{
+	return m_ActivityListCfgSet;
+}
+
 void ActivityHallCfg::ReadActivityBreakdownCfg(ActivityBreakdown* config)
 {
 	CfgMap<ActivityBreakdown>::iterator it = m_ActivityBreakdownCfgMap.find(config->id);

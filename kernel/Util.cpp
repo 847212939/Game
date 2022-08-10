@@ -276,3 +276,22 @@ TCPClient* Util::GetTCPClient()
 {
 	return m_TCPClient;
 }
+
+uint64_t Util::GetCfgSecond(IntVector& vec)
+{
+	if (vec.size() < 3)
+	{
+		return 0;
+	}
+
+	return vec[0] * 60 * 60 + vec[1] * 60 + vec[2];
+}
+
+uint64_t Util::GetSysSecond()
+{
+	time_t tick = ::time(NULL);
+	struct tm tm;
+	tm = *localtime(&tick);
+
+	return tm.tm_hour * 60 * 60 + tm.tm_min * 60 + tm.tm_sec;
+}

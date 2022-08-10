@@ -26,6 +26,8 @@ public:
 	static uint8_t* Encrypt(uint8_t* content, int length);
 	static uint8_t* Decrypt(uint8_t* content, int length);
 
+	static uint64_t GetSysSecond();
+	static uint64_t GetCfgSecond(IntVector& vec);
 
 public:
 	// ΨһID

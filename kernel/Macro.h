@@ -21,6 +21,9 @@
 // 网络消息注册
 #define RegisterNetType(obj, name, cmd) obj->AddNetTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)))
 
+// 注册活动
+#define RegisterActive(obj, name, cmd) obj->AddActiveCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));
+
 // 安全删除指针
 #define SafeDelete(pData)\
 {\
@@ -198,3 +201,4 @@ else\
 {\
 	pobj->AddExitCallback(std::move(std::bind(&name, obj, std::placeholders::_1)));\
 }
+

@@ -15,4 +15,5 @@ public:
 
 private:
 	PlayerCenterClient	m_PlayerCenterClient;
+	ActivityHallSys		m_ActivityHallSys;
 };
