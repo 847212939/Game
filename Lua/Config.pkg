@@ -35,9 +35,9 @@ public:
 
 public:
 	// »î¶¯
-	void ReadMiningCfg(MiningCfg* config);
 	void ReadActivityList(ActivityList* config);
 	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
 
 };
 
@@ -68,7 +68,8 @@ struct ActivityList
 	int id;
 	int type;
 	int sid;
-	int brushMonsterCfg;
+	int activityBreakdown;
+	int breakdown;
 	ActivityList();
 	~ActivityList();
 	void AddBeginTime(int tm);
@@ -80,7 +81,6 @@ struct ActivityList
 struct BrushMonsterCfg
 {
 	int id;
-	int echelon;
 	int sid;
 	int mid;
 	int count;
@@ -92,11 +92,12 @@ struct BrushMonsterCfg
 	~BrushMonsterCfg();
 };
 
-struct MiningCfg
+struct ActivityBreakdown
 {
-	int echelon;
-	MiningCfg();
-	~MiningCfg();
+	int id;
+	int brushMonsterCfg;
+	ActivityBreakdown();
+	~ActivityBreakdown();
 	void AddBeginTime(int tm);
 	void AddEndTime(int tm);
 };

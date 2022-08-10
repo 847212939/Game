@@ -253,6 +253,8 @@ template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>
 using CfgVector				= std::vector<T>;
+template<typename T>
+using CfgMap				= std::map<int, CfgVector<T>>;
 using IntVector				= std::vector<int>;
 using TimerList				= std::list<UINT>;
 using AttrsMap				= std::map<int, int>;

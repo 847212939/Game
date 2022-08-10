@@ -68,9 +68,9 @@ ActivityHallCfg& ConfigMgr::GetActivityHallCfg()
 	return m_ActivityHallCfgMgr;
 }
 
-void ConfigMgr::ReadMiningCfg(MiningCfg* config)
+void ConfigMgr::ReadActivityBreakdownCfg(ActivityBreakdown* config)
 {
-	m_ActivityHallCfgMgr.ReadMiningCfg(config);
+	m_ActivityHallCfgMgr.ReadActivityBreakdownCfg(config);
 }
 
 void ConfigMgr::ReadActivityList(ActivityList* config)

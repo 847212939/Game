@@ -73,7 +73,8 @@ function ReadActivityCfg()
                 ActivityList.id = value.id or 0
                 ActivityList.type = value.type or 0
                 ActivityList.sid = value.sid or 0
-                ActivityList.brushMonsterCfg = value.brushMonsterCfg or 0
+                ActivityList.activityBreakdown = value.activityBreakdown or 0
+                ActivityList.breakdown = value.breakdown or 0
                 if value.beginTime then
                     for k,v in ipairs(value.beginTime) do
 	                    ActivityList:AddBeginTime(v or 0)
@@ -103,35 +104,35 @@ function ReadActivityCfg()
             for k,value in ipairs(ActivityCfg.BrushMonsterCfg) do
                 local BrushMonsterCfg = BrushMonsterCfg:new()
                 BrushMonsterCfg.id = value.id or 0
-                BrushMonsterCfg.echelon = value.echelon or 0
                 BrushMonsterCfg.sid = value.sid or 0
                 BrushMonsterCfg.mid = value.mid or 0
                 BrushMonsterCfg.count = value.count or 0
                 BrushMonsterCfg.delayTime = value.delayTime or 0
                 BrushMonsterCfg.refreshTime = value.refreshTime or 0
                 BrushMonsterCfg.x = value.x or 0
-                BrushMonsterCfg.y = ActivityCfg.BrushMonsterCfg.y or 0
+                BrushMonsterCfg.y = value.y or 0
                 ConfigMgr:ReadBrushMonsterCfg(BrushMonsterCfg)
                 BrushMonsterCfg:delete()
             end
         end
 
-        if ActivityCfg.MiningCfg then
-            for k,value in ipairs(ActivityCfg.MiningCfg) do
-                local MiningCfg = MiningCfg:new()
-                MiningCfg.echelon = value.echelon or 0
+        if ActivityCfg.ActivityBreakdown then
+            for k,value in ipairs(ActivityCfg.ActivityBreakdown) do
+                local ActivityBreakdown = ActivityBreakdown:new()
+                ActivityBreakdown.id = value.id or 0
+                ActivityBreakdown.brushMonsterCfg = value.brushMonsterCfg or 0
                 if value.beginTime then
                     for k,v in ipairs(value.beginTime) do
-	                    MiningCfg:AddBeginTime(v or 0)
+	                    ActivityBreakdown:AddBeginTime(v or 0)
                     end
                 end
                 if value.endTime then
                     for k,v in ipairs(value.endTime) do
-	                    MiningCfg:AddEndTime(v or 0)
+	                    ActivityBreakdown:AddEndTime(v or 0)
                     end
                 end
-                ConfigMgr:ReadMiningCfg(MiningCfg)
-                MiningCfg:delete()
+                ConfigMgr:ReadActivityBreakdownCfg(ActivityBreakdown)
+                ActivityBreakdown:delete()
             end
         end
     end

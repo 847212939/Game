@@ -1,8 +1,18 @@
 #include "../Game/stdafx.h"
 
-void ActivityHallCfg::ReadMiningCfg(MiningCfg* config)
+void ActivityHallCfg::ReadActivityBreakdownCfg(ActivityBreakdown* config)
 {
-	m_MiningCfgSet.insert(*config);
+	CfgMap<ActivityBreakdown>::iterator it = m_ActivityBreakdownCfgMap.find(config->id);
+	if (it == m_ActivityBreakdownCfgMap.end())
+	{
+		CfgVector<ActivityBreakdown> tmp;
+		tmp.push_back(*config);
+		m_ActivityBreakdownCfgMap.insert({ config->id, tmp });
+	}
+	else
+	{
+		it->second.push_back(*config);
+	}
 }
 
 void ActivityHallCfg::ReadActivityList(ActivityList* config)
@@ -12,12 +22,12 @@ void ActivityHallCfg::ReadActivityList(ActivityList* config)
 
 void ActivityHallCfg::ReadBrushMonsterCfg(BrushMonsterCfg* config)
 {
-	BrushMonsterCfgMap::iterator it = m_BrushMonsterCfgMap.find(config->id);
+	CfgMap<BrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
 		CfgVector<BrushMonsterCfg> tmp;
 		tmp.push_back(*config);
-		m_BrushMonsterCfgMap.insert({config->id, tmp});
+		m_BrushMonsterCfgMap.insert({ config->id, tmp });
 	}
 	else
 	{

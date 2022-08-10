@@ -30,9 +30,9 @@ public:
 public:
 	// »î¶¯
 	ActivityHallCfg& GetActivityHallCfg();
-	void ReadMiningCfg(MiningCfg* config);
 	void ReadActivityList(ActivityList* config);
 	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
 
 private:
 	CBaseCfgMgr		m_CBaseCfgMgr;

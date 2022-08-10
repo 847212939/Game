@@ -9,8 +9,9 @@ struct ActivityList
 	IntVector endTime;
 	IntVector solidTime;
 	IntVector openServerTime;
-	int brushMonsterCfg;
-	ActivityList(): id(0), type(0), sid(0), brushMonsterCfg(0) {}
+	int activityBreakdown;
+	int breakdown;
+	ActivityList(): id(0), type(0), sid(0), activityBreakdown(0), breakdown(0){}
 	~ActivityList(){}
 	void AddBeginTime(int tm)
 	{
@@ -38,7 +39,6 @@ struct ActivityList
 struct BrushMonsterCfg
 {
 	int id;
-	int echelon;
 	int sid;
 	int mid;
 	int count;
@@ -46,17 +46,18 @@ struct BrushMonsterCfg
 	int refreshTime;
 	int x;
 	int y;
-	BrushMonsterCfg() : id(0), echelon(0), sid(0), mid(0), count(0), delayTime(0), refreshTime(0), x(0), y(0) {}
+	BrushMonsterCfg() : id(0), sid(0), mid(0), count(0), delayTime(0), refreshTime(0), x(0), y(0) {}
 	~BrushMonsterCfg() {}
 };
 
-struct MiningCfg
+struct ActivityBreakdown
 {
-	int echelon;
+	int id;
+	int brushMonsterCfg;
 	IntVector beginTime;
 	IntVector endTime;
-	MiningCfg() : echelon(0) {}
-	~MiningCfg() {}
+	ActivityBreakdown() : id(0), brushMonsterCfg(0){}
+	~ActivityBreakdown() {}
 	void AddBeginTime(int tm)
 	{
 		beginTime.push_back(tm);
@@ -65,14 +66,7 @@ struct MiningCfg
 	{
 		endTime.push_back(tm);
 	}
-	bool operator < (const MiningCfg& other) const
-	{
-		if (echelon != other.echelon) { return echelon < other.echelon; }
-		return false;
-	}
 };
-
-using BrushMonsterCfgMap = std::map<int, CfgVector<BrushMonsterCfg>>;
 
 class ActivityHallCfg
 {
@@ -81,12 +75,12 @@ public:
 	~ActivityHallCfg() {}
 
 public:
-	void ReadMiningCfg(MiningCfg* config);
 	void ReadActivityList(ActivityList* config);
 	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
 
 private:
-	CfgSet<MiningCfg>		m_MiningCfgSet;
-	CfgSet<ActivityList>	m_ActivityListCfgSet;
-	BrushMonsterCfgMap		m_BrushMonsterCfgMap;
+	CfgSet<ActivityList>		m_ActivityListCfgSet;
+	CfgMap<BrushMonsterCfg>		m_BrushMonsterCfgMap;
+	CfgMap<ActivityBreakdown>	m_ActivityBreakdownCfgMap;
 };
