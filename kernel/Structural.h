@@ -83,6 +83,13 @@ enum class FT
 	DB_STR,
 };
 
+// 场景内类型
+enum class AnimalType
+{
+	vt_player		= 1,														// 玩家
+	vt_monster		= 2,														// 怪物
+};
+
 #pragma pack(1)
 
 //数据队列信息头
@@ -248,6 +255,16 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
+class Animal
+{
+public:
+	Animal() {}
+	virtual~Animal() {}
+
+public:
+	virtual AnimalType GetType() = 0;
+};
+
 class PlayerClient;
 enum class ActType;
 struct ActivityList;
@@ -274,6 +291,7 @@ using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
+using SceneItemTypeMap		= std::map<int, std::list<Animal*>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

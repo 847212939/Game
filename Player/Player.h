@@ -1,11 +1,14 @@
 #pragma once
 
 // ÕÊº“¿‡
-class Player
+class Player : virtual public Animal
 {
 public:
 	Player(const unsigned int& index, const uint64_t& userId);
 	virtual ~Player();
+
+public:
+	virtual AnimalType GetType();
 
 protected:
 	Player(const Player& my);

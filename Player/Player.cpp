@@ -11,6 +11,11 @@ Player::~Player()
 {
 }
 
+AnimalType Player::GetType()
+{
+	return AnimalType::vt_player;
+}
+
 bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
 	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_index);
