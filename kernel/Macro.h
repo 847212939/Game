@@ -1,15 +1,15 @@
 #pragma once
 
-#define DUtil				Util::Instance()
-#define LuaMgr				CLuaMgr::Instance()
-#define LogMgr				CGameLogManage::Instance()
-#define CfgMgr				LuaMgr->GetConfigMgr()
-#define BaseCfgMgr			CfgMgr->GetCBaseCfgMgr()
+#define DUtil		Util::Instance()
+#define LuaMgr		CLuaMgr::Instance()
+#define LogMgr		CGameLogManage::Instance()
+#define CfgMgr		LuaMgr->GetConfigMgr()
+#define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
-#define DTCPC				DUtil.GetTCPClient()
-#define DPPC				DTCPC->GetPlayerPrepClient()
-#define DSC					DPPC->GetSceneClient()
-#define DPCC				DSC->GetPlayerCenterClient()
+#define DTCPC		DUtil.GetTCPClient()
+#define DPPC		DTCPC->GetPlayerPrepClient()
+#define DSC			DPPC->GetSceneClient()
+#define DPCC		DSC->GetPlayerCenterClient()
 
 // 判断大小函数
 #define Min_(x,y) ((x)>(y)?(y):(x))
@@ -23,6 +23,28 @@
 
 // 注册活动
 #define RegisterActive(obj, name, cmd) obj->AddActiveCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));
+
+// 注册活动进入
+#define RegisterActiveEnter(pobj, obj, name, cmd)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+}\
+else\
+{\
+	pobj->AddActiveEnterCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));\
+}
+
+// 注册活动退出
+#define RegisterActiveExit(pobj, obj, name, cmd)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+}\
+else\
+{\
+	pobj->AddActiveExitCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));\
+}
 
 // 安全删除指针
 #define SafeDelete(pData)\

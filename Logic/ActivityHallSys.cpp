@@ -2,11 +2,23 @@
 
 ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc)
 {
-	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 100, SERVERTIMER_TYPE_PERISIST);
 	RegisterActive(this, ActivityHallSys::AtSectionOpen, ActType::at_section_open);
+	RegisterActiveEnter(this, m_ActiveSection, ActiveSection::Enter, ActType::at_section_open);
+	RegisterActiveExit(this, m_ActiveSection, ActiveSection::Exit, ActType::at_section_open);
+
 	RegisterActive(this, ActivityHallSys::AtAlwaysOpen, ActType::at_always_open);
+	RegisterActiveEnter(this, m_ActiveAlways, ActiveAlways::Enter, ActType::at_always_open);
+	RegisterActiveExit(this, m_ActiveAlways, ActiveAlways::Exit, ActType::at_always_open);
+
 	RegisterActive(this, ActivityHallSys::AtServiceOpen, ActType::at_service_open);
+	RegisterActiveEnter(this, m_ActiveService, ActiveService::Enter, ActType::at_service_open);
+	RegisterActiveExit(this, m_ActiveService, ActiveService::Exit, ActType::at_service_open);
+
 	RegisterActive(this, ActivityHallSys::AtTimedOpen, ActType::at_timed_open);
+	RegisterActiveEnter(this, m_ActiveTime, ActiveTime::Enter, ActType::at_timed_open);
+	RegisterActiveExit(this, m_ActiveTime, ActiveTime::Exit, ActType::at_timed_open);
+
+	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 100, SERVERTIMER_TYPE_PERISIST);
 }
 
 ActivityHallSys::~ActivityHallSys()
@@ -14,24 +26,14 @@ ActivityHallSys::~ActivityHallSys()
 
 }
 
-void ActivityHallSys::TimerCallback()
+bool ActivityHallSys::GetActiveOpen(int id)
 {
-	for (auto& cfg : CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())
+	ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(id);
+	if (it == m_ActtiveOpenMap.end())
 	{
-		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg)))
-		{
-			// 活动关闭
-			COUT_LOG(LOG_CINFO, "活动关闭");
-
-			continue;
-		}
-
-		// 活动开启
-		COUT_LOG(LOG_CINFO, "活动开启");
+		return false;
 	}
-
-	// 定时器反注册
-	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Active);
+	return it->second.open;
 }
 
 bool ActivityHallSys::ActiveCallBackFun(ActType type, ActivityList* cfg)
@@ -52,6 +54,55 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(Activit
 	if (it == m_ActivityFunMap.end())
 	{
 		m_ActivityFunMap.insert(std::make_pair(type, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
+}
+
+bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, ActivityList* cfg)
+{
+	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
+	if (it == m_ActivityEnterFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
+		return false;
+	}
+
+	return it->second(cfg);
+}
+
+void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
+{
+	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
+	if (it == m_ActivityEnterFunMap.end())
+	{
+		m_ActivityEnterFunMap.insert(std::make_pair(type, fun));
+		return;
+	}
+
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
+}
+
+
+bool ActivityHallSys::ActiveExitCallBackFun(ActType type, ActivityList* cfg)
+{
+	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
+	if (it == m_ActivityExitFunMap.end())
+	{
+		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
+		return false;
+	}
+
+	return it->second(cfg);
+}
+
+void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
+{
+	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
+	if (it == m_ActivityExitFunMap.end())
+	{
+		m_ActivityExitFunMap.insert(std::make_pair(type, fun));
 		return;
 	}
 
@@ -128,4 +179,40 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 	}
 
 	return false;
+}
+
+void ActivityHallSys::TimerCallback()
+{
+	for (auto& cfg : CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())
+	{
+		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg)))
+		{
+			ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
+			if (it == m_ActtiveOpenMap.end())
+			{
+				continue;
+			}
+			if (!it->second.open)
+			{
+				continue;
+			}
+			ActiveExitCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
+			it->second.open = false;
+			continue;
+		}
+
+		ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
+		if (it == m_ActtiveOpenMap.end())
+		{
+			m_ActtiveOpenMap.insert({ cfg.id, ActtiveOpen(cfg.id, true) });
+		}
+		if (!it->second.open)
+		{
+			it->second.open = true;
+		}
+		ActiveEnterCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
+	}
+
+	// 定时器反注册
+	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Active);
 }

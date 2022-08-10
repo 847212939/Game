@@ -248,9 +248,9 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
-struct ActivityList;
 class PlayerClient;
 enum class ActType;
+struct ActivityList;
 template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>

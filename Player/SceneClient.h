@@ -12,6 +12,7 @@ protected:
 
 public:
 	PlayerCenterClient* GetPlayerCenterClient();
+	ActivityHallSys& GetActivityHallSys();
 
 private:
 	PlayerCenterClient	m_PlayerCenterClient;

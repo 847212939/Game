@@ -8,6 +8,17 @@ enum class ActType
 	at_timed_open		= 4,			// 固定时间开启
 };
 
+struct ActtiveOpen
+{
+	int id;
+	bool open;
+	ActtiveOpen() : id(0), open(false){}
+	ActtiveOpen(int nId, bool isOpen) : id(nId), open(isOpen) {}
+	~ActtiveOpen(){}
+};
+
+using ActtiveOpenMap = std::map<int, ActtiveOpen>;
+
 class ActivityHallSys
 {
 public:
@@ -15,8 +26,17 @@ public:
 	virtual~ActivityHallSys();
 
 public:
+	// 活动开启判断
+	bool GetActiveOpen(int id);
+
+private:
+	// 活动回调
 	bool ActiveCallBackFun(ActType type, ActivityList* cfg);
 	void AddActiveCallback(ActType type, std::function<bool(ActivityList*)>&& fun);
+	bool ActiveExitCallBackFun(ActType type, ActivityList* cfg);
+	void AddActiveExitCallback(ActType type, std::function<bool(ActivityList*)>&& fun);
+	bool ActiveEnterCallBackFun(ActType type, ActivityList* cfg);
+	void AddActiveEnterCallback(ActType type, std::function<bool(ActivityList*)>&& fun);
 
 private:
 	// 活动开启判断
@@ -29,5 +49,12 @@ private:
 	void TimerCallback();
 
 private:
-	ActivityFunMap m_ActivityFunMap;
+	ActivityFunMap	m_ActivityFunMap;
+	ActivityFunMap	m_ActivityEnterFunMap;
+	ActivityFunMap	m_ActivityExitFunMap;
+	ActiveSection	m_ActiveSection;
+	ActiveAlways	m_ActiveAlways;
+	ActiveService	m_ActiveService;
+	ActiveTime		m_ActiveTime;
+	ActtiveOpenMap	m_ActtiveOpenMap;
 };

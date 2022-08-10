@@ -59,7 +59,7 @@
     <Filter Include="游戏逻辑\活动系统\开服活动">
       <UniqueIdentifier>{8220c779-6925-4e96-ab99-70e7f69b0956}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏逻辑\活动系统\定时活动">
+    <Filter Include="游戏逻辑\活动系统\定点活动">
       <UniqueIdentifier>{059c37d5-e1df-4f13-9136-dee7b0f0da41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -135,6 +135,18 @@
     </ClCompile>
     <ClCompile Include="..\Logic\ActivityHallSys.cpp">
       <Filter>游戏逻辑\活动系统\活动大厅</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActiveSection.cpp">
+      <Filter>游戏逻辑\活动系统\区间活动</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActiveAlways.cpp">
+      <Filter>游戏逻辑\活动系统\全天活动</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActiveService.cpp">
+      <Filter>游戏逻辑\活动系统\开服活动</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActiveTime.cpp">
+      <Filter>游戏逻辑\活动系统\定点活动</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +236,18 @@
     </ClInclude>
     <ClInclude Include="..\Logic\ActivityHallSys.h">
       <Filter>游戏逻辑\活动系统\活动大厅</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActiveSection.h">
+      <Filter>游戏逻辑\活动系统\区间活动</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActiveAlways.h">
+      <Filter>游戏逻辑\活动系统\全天活动</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActiveService.h">
+      <Filter>游戏逻辑\活动系统\开服活动</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActiveTime.h">
+      <Filter>游戏逻辑\活动系统\定点活动</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

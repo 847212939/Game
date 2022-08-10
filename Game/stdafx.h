@@ -65,6 +65,10 @@ extern "C"
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
 #include "../Logic/ActivityHallCfg.h"		// 活动配置
+#include "../Logic/ActiveTime.h"			// 固定时间活动
+#include "../Logic/ActiveService.h"			// 开服活动
+#include "../Logic/ActiveAlways.h"			// 全天活动
+#include "../Logic/ActiveSection.h"			// 时间内活动
 #include "../Logic/ActivityHallSys.h"		// 活动系统
 #include "../Player/Scene.h"				// 场景
 #include "../Player/SceneClient.h"			// 场景
