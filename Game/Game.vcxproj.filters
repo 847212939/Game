@@ -47,6 +47,21 @@
     <Filter Include="游戏逻辑\活动系统">
       <UniqueIdentifier>{d3ba2375-ec86-4aca-ad08-256f96eeac37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="游戏逻辑\活动系统\活动大厅">
+      <UniqueIdentifier>{e80cf17c-42af-4481-88d9-ec82ab41f55b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\活动系统\区间活动">
+      <UniqueIdentifier>{90e037ad-0ab2-492a-bf9f-9b7e4c642425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\活动系统\全天活动">
+      <UniqueIdentifier>{ddc52368-b160-4e91-aac6-42c68bf02e8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\活动系统\开服活动">
+      <UniqueIdentifier>{8220c779-6925-4e96-ab99-70e7f69b0956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏逻辑\活动系统\定时活动">
+      <UniqueIdentifier>{059c37d5-e1df-4f13-9136-dee7b0f0da41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -115,11 +130,11 @@
     <ClCompile Include="..\Player\SceneClient.cpp">
       <Filter>玩家中心\派生</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\ActivityHallSys.cpp">
-      <Filter>游戏逻辑\活动系统</Filter>
-    </ClCompile>
     <ClCompile Include="..\Logic\ActivityHallCfg.cpp">
-      <Filter>游戏逻辑\活动系统</Filter>
+      <Filter>游戏逻辑\活动系统\活动大厅</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\ActivityHallSys.cpp">
+      <Filter>游戏逻辑\活动系统\活动大厅</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,11 +219,11 @@
     <ClInclude Include="..\Player\SceneClient.h">
       <Filter>玩家中心\派生</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logic\ActivityHallSys.h">
-      <Filter>游戏逻辑\活动系统</Filter>
-    </ClInclude>
     <ClInclude Include="..\Logic\ActivityHallCfg.h">
-      <Filter>游戏逻辑\活动系统</Filter>
+      <Filter>游戏逻辑\活动系统\活动大厅</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\ActivityHallSys.h">
+      <Filter>游戏逻辑\活动系统\活动大厅</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
