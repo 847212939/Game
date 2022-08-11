@@ -260,6 +260,40 @@ class PlayerClient;
 enum class ActType;
 struct ActivityList;
 
+struct Position
+{
+	float x;
+	float y;
+	float z;
+	Position() : x(0), y(0), z(0) {}
+	~Position() {}
+};
+
+struct Rotation
+{
+	float x;
+	float y;
+	float z;
+	Rotation() : x(0), y(0), z(0) {}
+	~Rotation() {}
+};
+
+struct Scale
+{
+	float x;
+	float y;
+	float z;
+	Scale() : x(0), y(0), z(0) {}
+	~Scale() {}
+};
+
+struct Transform
+{
+	Position	position;
+	Rotation	rotation;
+	Scale		scale;
+};
+
 template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>

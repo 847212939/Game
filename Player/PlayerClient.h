@@ -3,7 +3,7 @@
 class PlayerClient : public Player
 {
 public:
-	PlayerClient(const unsigned int& index, const uint64_t& userId);
+	PlayerClient(const unsigned int& index);
 	virtual ~PlayerClient();
 
 protected:

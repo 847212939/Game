@@ -1,7 +1,7 @@
 #include "../Game/stdafx.h"
 
-PlayerClient::PlayerClient(const unsigned int& index, const uint64_t& userId) :
-	Player(index, userId),
+PlayerClient::PlayerClient(const unsigned int& index) :
+	Player(index),
 	m_MoveSys(this)
 {
 

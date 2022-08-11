@@ -1,8 +1,7 @@
 #include "../Game/stdafx.h"
 
-Player::Player(const unsigned int& index, const uint64_t& userId) :
+Player::Player(const unsigned int& index) :
 	Animal(),
-	m_userId(userId),
 	m_index(index),
 	m_load(false)
 {
@@ -15,11 +14,6 @@ Player::~Player()
 AnimalType Player::GetType()
 {
 	return AnimalType::at_player;
-}
-
-uint64_t Player::GetID()
-{
-	return m_userId;
 }
 
 bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
@@ -118,13 +112,13 @@ void Player::AttrsCallBackFun()
 // 加载一条数据库
 void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
 {
-	DPPC->LoadOneSql(sqlName, m_userId, outStr, dataStr);
+	DPPC->LoadOneSql(sqlName, GetID(), outStr, dataStr);
 }
 
 // insert mysql
 void Player::SaveInsertSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	DPPC->SaveInsertSQL(sqlName, m_userId, data, keyName, dataName);
+	DPPC->SaveInsertSQL(sqlName, GetID(), data, keyName, dataName);
 }
 
 // delete mysql
@@ -136,13 +130,13 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 // replace mysql
 void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
-	DPPC->SaveReplaceSQL(sqlName, m_userId, data, keyName, dataName);
+	DPPC->SaveReplaceSQL(sqlName, GetID(), data, keyName, dataName);
 }
 
 // update mysql
 void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {
-	DPPC->SaveUpdateSQL(sqlName, m_userId, data, sCondition, keyName, dataName);
+	DPPC->SaveUpdateSQL(sqlName, GetID(), data, sCondition, keyName, dataName);
 }
 
 void Player::AdditionAttributes(AttrsMap& attrs)

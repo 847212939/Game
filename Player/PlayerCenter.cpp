@@ -137,12 +137,13 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 	PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.index);
 	if (playerClient)
 	{
-		new(playerClient) PlayerClient(loadPKey.index, userId);
+		new(playerClient) PlayerClient(loadPKey.index);
 	}
 	else
 	{
-		playerClient = new PlayerClient(loadPKey.index, userId);
+		playerClient = new PlayerClient(loadPKey.index);
 	}
+	playerClient->SetID(userId);
 	m_PlayerClientVec[loadPKey.index] = playerClient;
 
 	playerClient->LoadMysql();

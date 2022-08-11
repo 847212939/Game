@@ -14,6 +14,13 @@ public:
 	void Init();
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
+public:
+	bool EnterScene(Animal* animal, int sceneid, Transform& transform);
+
+private:
+	void AddSceneAnimalMap(int sceneid, Animal* animal);
+	void DelSceneAnimalMap(int sceneid, Animal* animal);
+
 private:
 	SceneAnimalMap m_SceneAnimalMap;
 };

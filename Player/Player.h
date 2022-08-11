@@ -4,11 +4,10 @@
 class Player : virtual public Animal
 {
 public:
-	Player(const unsigned int& index, const uint64_t& userId);
+	Player(const unsigned int& index);
 	virtual ~Player();
 
 public:
-	virtual uint64_t GetID();
 	virtual AnimalType GetType();
 
 protected:
@@ -58,7 +57,6 @@ public:
 private:
 	bool					m_load;					// 玩家是否初始化完成
 	unsigned int			m_index;				// 玩家索引
-	uint64_t				m_userId;				// 玩家id
 	AttrsMap				m_AttrsMap;				// 属性集合
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
