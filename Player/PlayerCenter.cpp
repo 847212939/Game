@@ -211,7 +211,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 		{
 			continue;
 		}
-		if (playerClient->GetUserId() == userId)
+		if (playerClient->GetID() == userId)
 		{
 			return playerClient;
 		}

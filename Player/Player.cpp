@@ -16,6 +16,11 @@ AnimalType Player::GetType()
 	return AnimalType::vt_player;
 }
 
+uint64_t Player::GetID()
+{
+	return m_userId;
+}
+
 bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
 	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_index);
@@ -30,12 +35,6 @@ bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistI
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	NetCallBackFun(cmd, playerInfo);
-}
-
-// »ñÈ¡Íæ¼Òid
-uint64_t Player::GetUserId() const
-{
-	return m_userId;
 }
 
 void Player::AddExitCallback(std::function<void(SocketCloseLine*)>&& fun)

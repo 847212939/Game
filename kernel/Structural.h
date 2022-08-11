@@ -263,6 +263,7 @@ public:
 
 public:
 	virtual AnimalType GetType() = 0;
+	virtual uint64_t GetID() = 0;
 };
 
 class PlayerClient;

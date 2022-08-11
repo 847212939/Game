@@ -8,6 +8,7 @@ public:
 	virtual ~Player();
 
 public:
+	virtual uint64_t GetID();
 	virtual AnimalType GetType();
 
 protected:
@@ -17,7 +18,6 @@ protected:
 public:
 	bool GetLoad();
 	int GetIndex();
-	uint64_t GetUserId() const;
 
 public:
 	// 消息处理
