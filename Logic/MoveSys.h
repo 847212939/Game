@@ -13,6 +13,7 @@ public:
 	virtual~MoveSys();
 
 private:
+	void EnterScene();
 	void EnterGameCallback();
 	void MysqlCallback(std::string& data);
 	void NetworkCallback(PlayerInfo* playerInfo);

@@ -22,5 +22,5 @@ private:
 	void DelSceneAnimalMap(int sceneid, Animal* animal);
 
 private:
-	SceneAnimalMap m_SceneAnimalMap;
+	SceneAnimalMap m_SceneAnimalMap;	// 根据场景添加动物
 };

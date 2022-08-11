@@ -26,6 +26,7 @@ ActivityHallSys::~ActivityHallSys()
 
 }
 
+// 活动是否开启
 bool ActivityHallSys::GetActiveOpen(int id)
 {
 	ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(id);
@@ -36,6 +37,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
+// 活动类型判断函数回调
 bool ActivityHallSys::ActiveCallBackFun(ActType type, ActivityList* cfg)
 {
 	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
@@ -48,6 +50,7 @@ bool ActivityHallSys::ActiveCallBackFun(ActType type, ActivityList* cfg)
 	return it->second(cfg);
 }
 
+// 活动类型判断
 void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
 {
 	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
@@ -60,6 +63,7 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(Activit
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
 
+// 进入活动场景回调
 bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, ActivityList* cfg)
 {
 	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
@@ -83,7 +87,6 @@ void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(Ac
 
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
-
 
 bool ActivityHallSys::ActiveExitCallBackFun(ActType type, ActivityList* cfg)
 {
@@ -181,6 +184,7 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 	return false;
 }
 
+// 定时器回调
 void ActivityHallSys::TimerCallback()
 {
 	for (auto& cfg : CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())

@@ -2,6 +2,7 @@
 
 MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
+	RegisterEnter(m_PlayerClient, this, MoveSys::EnterScene);
 	RegisterLgout(m_PlayerClient, this, MoveSys::ExitCallback);
 	RegisterAttrs(m_PlayerClient, this, MoveSys::EnterGameCallback);
 	RegisterMysql(m_PlayerClient, this, MoveSys::MysqlCallback, "move");
@@ -41,6 +42,11 @@ void MoveSys::EnterGameCallback()
 	}
 
 	AddAttributes(m_PlayerClient, attrs);
+}
+
+void MoveSys::EnterScene()
+{
+	COUT_LOG(LOG_CINFO, "场景回调函数");
 }
 
 void MoveSys::NetworkCallback(PlayerInfo* playerInfo)

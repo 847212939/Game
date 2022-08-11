@@ -32,19 +32,21 @@ public:
 	void SetLoad(bool load);
 
 public:
+	void AttrsCallBackFun();
+	void MysqlCallBackFun();
+	void EnterSceneCallBackFun();
+	void ExitCallBackFun(SocketCloseLine* pSocketClose);
+	void NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo);
 	void AddAttrsCallback(std::function<void()>&& fun);
+	void AddEnterSceneCallback(std::function<void()>&& fun);
 	void AddExitCallback(std::function<void(SocketCloseLine*)>&& fun);
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	void AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun);
-	void AttrsCallBackFun();
-	void MysqlCallBackFun();
-	void ExitCallBackFun(SocketCloseLine* pSocketClose);
-	void NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
 	// 属性
 	void AdditionAttributes(AttrsMap& attrs);
-	void RefreshProperties();
+	void RefreshProp();
 
 public:
 	// 数据库操作
@@ -62,4 +64,5 @@ private:
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
+	AttrsFunMap				m_EnterSceneFunMap;		// 回调函数集合
 };

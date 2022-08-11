@@ -213,6 +213,17 @@ else\
 	pobj->AdditionAttributes(attrs);\
 }
 
+// 进入场景
+#define RegisterEnter(pobj, obj, name)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+}\
+else\
+{\
+	pobj->AddEnterSceneCallback(std::move(std::bind(&name, obj)));\
+}
+
 // 注册游戏退出
 #define RegisterLgout(pobj, obj, name)\
 if (!pobj)\

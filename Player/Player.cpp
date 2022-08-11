@@ -42,6 +42,11 @@ void Player::AddAttrsCallback(std::function<void()>&& fun)
 	m_AttrsFunMap.push_back(fun);
 }
 
+void Player::AddEnterSceneCallback(std::function<void()>&& fun)
+{
+	m_EnterSceneFunMap.push_back(fun);
+}
+
 void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
 	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
@@ -108,6 +113,14 @@ void Player::AttrsCallBackFun()
 	}
 }
 
+void Player::EnterSceneCallBackFun()
+{
+	for (auto& fun : m_EnterSceneFunMap)
+	{
+		fun();
+	}
+}
+
 // 数据库操作
 // 加载一条数据库
 void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
@@ -152,7 +165,7 @@ void Player::AdditionAttributes(AttrsMap& attrs)
 	}
 }
 
-void Player::RefreshProperties()
+void Player::RefreshProp()
 {
 	Cos os;
 	os << (int)m_AttrsMap.size();
@@ -172,6 +185,8 @@ void Player::LoadMysql()
 
 bool Player::EnterScene()
 {
+	EnterSceneCallBackFun();
+
 	return true;
 }
 
