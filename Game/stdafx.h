@@ -64,6 +64,8 @@ extern "C"
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
+#include "../Logic/Monster.h"				// 怪物系统
+#include "../Logic/MonsterClient.h"			// 怪物系统
 #include "../Logic/ActivityHallCfg.h"		// 活动配置
 #include "../Logic/ActiveTime.h"			// 固定时间活动
 #include "../Logic/ActiveService.h"			// 开服活动

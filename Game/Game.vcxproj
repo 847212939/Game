@@ -172,6 +172,8 @@
     <ClCompile Include="..\Logic\ActivityHallCfg.cpp" />
     <ClCompile Include="..\Logic\ActivityHallSys.cpp" />
     <ClCompile Include="..\Logic\LoginSys.cpp" />
+    <ClCompile Include="..\Logic\Monster.cpp" />
+    <ClCompile Include="..\Logic\MonsterClient.cpp" />
     <ClCompile Include="..\Logic\MoveSys.cpp" />
     <ClCompile Include="..\Lua\BaseCfgMgr.cpp" />
     <ClCompile Include="..\Lua\ConfigMgr.cpp" />
@@ -205,6 +207,8 @@
     <ClInclude Include="..\Logic\ActivityHallCfg.h" />
     <ClInclude Include="..\Logic\ActivityHallSys.h" />
     <ClInclude Include="..\Logic\LoginSys.h" />
+    <ClInclude Include="..\Logic\Monster.h" />
+    <ClInclude Include="..\Logic\MonsterClient.h" />
     <ClInclude Include="..\Logic\MoveSys.h" />
     <ClInclude Include="..\Lua\BaseCfgMgr.h" />
     <ClInclude Include="..\Lua\ConfigMgr.h" />

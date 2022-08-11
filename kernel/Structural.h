@@ -86,8 +86,8 @@ enum class FT
 // 场景内类型
 enum class AnimalType
 {
-	vt_player		= 1,														// 玩家
-	vt_monster		= 2,														// 怪物
+	at_player		= 1,														// 玩家
+	at_monster		= 2,														// 怪物
 };
 
 #pragma pack(1)
@@ -255,6 +255,11 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
+class PlayerClient;
+enum class ActType;
+struct ActivityList;
+class MonsterClient;
+
 class Animal
 {
 public:
@@ -266,9 +271,6 @@ public:
 	virtual uint64_t GetID() = 0;
 };
 
-class PlayerClient;
-enum class ActType;
-struct ActivityList;
 template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>

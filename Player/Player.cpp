@@ -1,6 +1,7 @@
 #include "../Game/stdafx.h"
 
 Player::Player(const unsigned int& index, const uint64_t& userId) :
+	Animal(),
 	m_userId(userId),
 	m_index(index),
 	m_load(false)
@@ -13,7 +14,7 @@ Player::~Player()
 
 AnimalType Player::GetType()
 {
-	return AnimalType::vt_player;
+	return AnimalType::at_player;
 }
 
 uint64_t Player::GetID()
