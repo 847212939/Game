@@ -48,8 +48,8 @@ bool Scene::EnterScene(Animal* animal, int sceneid, Transform& transform)
 		return false;
 	}
 
-	AddSceneAnimalMap(sceneid, animal);
 	DelSceneAnimalMap(animal->GetSceneid(), animal);
+	AddSceneAnimalMap(sceneid, animal);
 	animal->SetSceneid(sceneid);
 	animal->SetTransform(transform);
 
