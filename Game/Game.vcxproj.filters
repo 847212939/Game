@@ -62,9 +62,6 @@
     <Filter Include="游戏逻辑\活动系统\定点活动">
       <UniqueIdentifier>{059c37d5-e1df-4f13-9136-dee7b0f0da41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏逻辑\怪物系统">
-      <UniqueIdentifier>{0a3f742c-4d2b-4db3-8a57-d31962f564d1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -151,14 +148,14 @@
     <ClCompile Include="..\Logic\ActiveTime.cpp">
       <Filter>游戏逻辑\活动系统\定点活动</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\Monster.cpp">
-      <Filter>游戏逻辑\怪物系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\MonsterClient.cpp">
-      <Filter>游戏逻辑\怪物系统</Filter>
-    </ClCompile>
     <ClCompile Include="..\Logic\Animal.cpp">
       <Filter>玩家中心\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\Monster.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\MonsterClient.cpp">
+      <Filter>玩家中心\派生</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,14 +258,14 @@
     <ClInclude Include="..\Logic\ActiveTime.h">
       <Filter>游戏逻辑\活动系统\定点活动</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logic\Monster.h">
-      <Filter>游戏逻辑\怪物系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\MonsterClient.h">
-      <Filter>游戏逻辑\怪物系统</Filter>
-    </ClInclude>
     <ClInclude Include="..\Logic\Animal.h">
       <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\Monster.h">
+      <Filter>玩家中心\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\MonsterClient.h">
+      <Filter>玩家中心\派生</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
