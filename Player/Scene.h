@@ -15,5 +15,5 @@ public:
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 private:
-	SceneItemTypeMap<PlayerClient> m_SceneItemTypeMap;
+	SceneItemTypeMap m_SceneItemTypeMap;
 };

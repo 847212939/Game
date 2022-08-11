@@ -291,7 +291,7 @@ using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
-using SceneItemTypeMap		= std::map<int, std::list<Animal*>>;
+using SceneItemTypeMap		= std::map<int, std::map<uint64_t, Animal*>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

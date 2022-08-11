@@ -208,7 +208,7 @@ void ActivityHallSys::TimerCallback()
 		{
 			m_ActtiveOpenMap.insert({ cfg.id, ActtiveOpen(cfg.id, true) });
 		}
-		if (!it->second.open)
+		else
 		{
 			it->second.open = true;
 		}
