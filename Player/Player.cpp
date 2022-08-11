@@ -191,7 +191,7 @@ bool Player::EnterScene()
 }
 
 // ½øÈëÓÎÏ·
-void Player::EnterGame()
+void Player::AddAttrs()
 {
 	AttrsCallBackFun();
 }

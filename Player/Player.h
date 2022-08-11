@@ -25,8 +25,8 @@ public:
 
 public:
 	// 上下线处理
+	void AddAttrs();
 	void LoadMysql();
-	void EnterGame();
 	bool EnterScene();
 	void ExitGame(SocketCloseLine* pSocketClose);
 	void SetLoad(bool load);

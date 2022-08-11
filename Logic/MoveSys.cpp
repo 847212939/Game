@@ -2,18 +2,18 @@
 
 MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
+	RegisterLgout(m_PlayerClient, this, MoveSys::Exit);
+	RegisterAttrs(m_PlayerClient, this, MoveSys::AddAttrs);
 	RegisterEnter(m_PlayerClient, this, MoveSys::EnterScene);
-	RegisterLgout(m_PlayerClient, this, MoveSys::ExitCallback);
-	RegisterAttrs(m_PlayerClient, this, MoveSys::EnterGameCallback);
-	RegisterMysql(m_PlayerClient, this, MoveSys::MysqlCallback, "move");
-	RegisterNetwk(m_PlayerClient, this, MoveSys::NetworkCallback, MsgCmd::MsgCmd_Move);
+	RegisterMysql(m_PlayerClient, this, MoveSys::LoadMysql, "move");
+	RegisterNetwk(m_PlayerClient, this, MoveSys::NetWork, MsgCmd::MsgCmd_Move);
 }
 
 MoveSys::~MoveSys()
 {
 }
 
-void MoveSys::MysqlCallback(std::string& data)
+void MoveSys::LoadMysql(std::string& data)
 {
 	if (!m_PlayerClient)
 	{
@@ -33,7 +33,7 @@ void MoveSys::MysqlCallback(std::string& data)
 	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
 }
 
-void MoveSys::EnterGameCallback()
+void MoveSys::AddAttrs()
 {
 	AttrsMap attrs;
 	for (int i = 1; i < 10; i++)
@@ -49,7 +49,7 @@ void MoveSys::EnterScene()
 	COUT_LOG(LOG_CINFO, "场景回调函数");
 }
 
-void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
+void MoveSys::NetWork(PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
@@ -84,7 +84,7 @@ void MoveSys::NetworkCallback(PlayerInfo* playerInfo)
 	return;
 }
 
-void MoveSys::ExitCallback(SocketCloseLine* socketCloseLine)
+void MoveSys::Exit(SocketCloseLine* socketCloseLine)
 {
 	COUT_LOG(LOG_CINFO, "玩家退出");
 }

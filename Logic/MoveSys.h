@@ -13,11 +13,11 @@ public:
 	virtual~MoveSys();
 
 private:
+	void AddAttrs();
 	void EnterScene();
-	void EnterGameCallback();
-	void MysqlCallback(std::string& data);
-	void NetworkCallback(PlayerInfo* playerInfo);
-	void ExitCallback(SocketCloseLine* socketCloseLine);
+	void LoadMysql(std::string& data);
+	void NetWork(PlayerInfo* playerInfo);
+	void Exit(SocketCloseLine* socketCloseLine);
 
 private:
 	bool MoveCoo(Cis& is, PlayerInfo* playerInfo);

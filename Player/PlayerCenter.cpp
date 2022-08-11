@@ -147,8 +147,7 @@ void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
 	m_PlayerClientVec[loadPKey.index] = playerClient;
 
 	playerClient->LoadMysql();
-	playerClient->EnterGame();
-	playerClient->RefreshProp();
+	playerClient->AddAttrs();
 	playerClient->EnterScene();
 	playerClient->SetLoad(true);
 
