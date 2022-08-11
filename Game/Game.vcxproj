@@ -171,6 +171,7 @@
     <ClCompile Include="..\Logic\ActiveTime.cpp" />
     <ClCompile Include="..\Logic\ActivityHallCfg.cpp" />
     <ClCompile Include="..\Logic\ActivityHallSys.cpp" />
+    <ClCompile Include="..\Logic\Animal.cpp" />
     <ClCompile Include="..\Logic\LoginSys.cpp" />
     <ClCompile Include="..\Logic\Monster.cpp" />
     <ClCompile Include="..\Logic\MonsterClient.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\Logic\ActiveTime.h" />
     <ClInclude Include="..\Logic\ActivityHallCfg.h" />
     <ClInclude Include="..\Logic\ActivityHallSys.h" />
+    <ClInclude Include="..\Logic\Animal.h" />
     <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Logic\Monster.h" />
     <ClInclude Include="..\Logic\MonsterClient.h" />

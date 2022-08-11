@@ -3,7 +3,7 @@
 class MonsterClient : public Monster
 {
 public:
-	MonsterClient();
+	MonsterClient(uint64_t id);
 	~MonsterClient();
 
 private:

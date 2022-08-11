@@ -255,21 +255,10 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
+class Animal;
 class PlayerClient;
 enum class ActType;
 struct ActivityList;
-class MonsterClient;
-
-class Animal
-{
-public:
-	Animal() {}
-	virtual~Animal() {}
-
-public:
-	virtual AnimalType GetType() = 0;
-	virtual uint64_t GetID() = 0;
-};
 
 template<typename T>
 using CfgSet				= std::set<T>;
@@ -294,7 +283,7 @@ using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
-using SceneItemTypeMap		= std::map<int, std::map<uint64_t, Animal*>>;
+using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

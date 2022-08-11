@@ -1,6 +1,8 @@
 #include "../Game/stdafx.h"
 
-Monster::Monster() : Animal()
+Monster::Monster(uint64_t id) : 
+	Animal(),
+	m_mid(id)
 {
 }
 
@@ -15,5 +17,5 @@ AnimalType Monster::GetType()
 
 uint64_t Monster::GetID()
 {
-	return m_ID;
+	return m_mid;
 }

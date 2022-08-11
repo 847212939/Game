@@ -56,6 +56,7 @@ extern "C"
 #include "../kernel/TCPClient.h"			// 网络客户端
 #include "../kernel/Util.h"					// 工具类
 #include "../kernel/LogManager.h"			// 日志管理类
+#include "../Logic/Animal.h"				// 怪物
 
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
@@ -64,8 +65,8 @@ extern "C"
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
-#include "../Logic/Monster.h"				// 怪物系统
-#include "../Logic/MonsterClient.h"			// 怪物系统
+#include "../Logic/Monster.h"				// 怪物
+#include "../Logic/MonsterClient.h"			// 怪物
 #include "../Logic/ActivityHallCfg.h"		// 活动配置
 #include "../Logic/ActiveTime.h"			// 固定时间活动
 #include "../Logic/ActiveService.h"			// 开服活动

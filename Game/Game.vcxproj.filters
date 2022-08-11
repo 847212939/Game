@@ -157,6 +157,9 @@
     <ClCompile Include="..\Logic\MonsterClient.cpp">
       <Filter>游戏逻辑\怪物系统</Filter>
     </ClCompile>
+    <ClCompile Include="..\Logic\Animal.cpp">
+      <Filter>玩家中心\基类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="..\Logic\MonsterClient.h">
       <Filter>游戏逻辑\怪物系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\Animal.h">
+      <Filter>玩家中心\基类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

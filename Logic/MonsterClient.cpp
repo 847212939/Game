@@ -1,6 +1,7 @@
 #include "../Game/stdafx.h"
 
-MonsterClient::MonsterClient()
+MonsterClient::MonsterClient(uint64_t id) :
+	Monster(id)
 {
 }
 

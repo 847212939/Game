@@ -3,7 +3,7 @@
 class Monster : virtual public Animal
 {
 public:
-	Monster();
+	Monster(uint64_t id);
 	~Monster();
 
 public:
@@ -11,5 +11,5 @@ public:
 	virtual AnimalType GetType();
 
 private:
-	uint64_t m_ID;
+	uint64_t m_mid;
 };
