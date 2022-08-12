@@ -2,11 +2,11 @@
 
 MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
-	RegisterLgout(m_PlayerClient, this, MoveSys::Exit);
-	RegisterAttrs(m_PlayerClient, this, MoveSys::AddAttrs);
-	RegisterEnter(m_PlayerClient, this, MoveSys::EnterScene);
 	RegisterMysql(m_PlayerClient, this, MoveSys::LoadMysql, "move");
+	RegisterAttrs(m_PlayerClient, this, MoveSys::CalAttrs);
+	RegisterEnter(m_PlayerClient, this, MoveSys::EnterScene);
 	RegisterNetwk(m_PlayerClient, this, MoveSys::NetWork, MsgCmd::MsgCmd_Move);
+	RegisterLgout(m_PlayerClient, this, MoveSys::Exit);
 }
 
 MoveSys::~MoveSys()
@@ -33,7 +33,7 @@ void MoveSys::LoadMysql(std::string& data)
 	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
 }
 
-void MoveSys::AddAttrs()
+void MoveSys::CalAttrs()
 {
 	AttrsMap attrs;
 	for (int i = 1; i < 10; i++)

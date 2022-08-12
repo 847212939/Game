@@ -13,9 +13,9 @@ public:
 	virtual~MoveSys();
 
 private:
-	void AddAttrs();
-	void EnterScene();
 	void LoadMysql(std::string& data);
+	void CalAttrs();
+	void EnterScene();
 	void NetWork(PlayerInfo* playerInfo);
 	void Exit(SocketCloseLine* socketCloseLine);
 

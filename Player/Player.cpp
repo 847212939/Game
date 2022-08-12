@@ -183,15 +183,14 @@ void Player::LoadMysql()
 	MysqlCallBackFun();
 }
 
-bool Player::EnterScene()
+// 进入场景
+void Player::EnterScene()
 {
 	EnterSceneCallBackFun();
-
-	return true;
 }
 
 // 进入游戏
-void Player::AddAttrs()
+void Player::CalAttrs()
 {
 	AttrsCallBackFun();
 }
