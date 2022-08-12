@@ -3,43 +3,36 @@
 ---------------------------------
 ActivityCfg=
 {
-
 ActivityList=
 {
-{id=1,name="九剑仙府",type=1,sid=152,beginTime={11,00,00},endTime={12,30,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=2,breakdown=0},
-{id=2,name="九剑仙府",type=1,sid=152,beginTime={19,00,00},endTime={19,30,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=2,breakdown=0},
-{id=3,name="异火争夺",type=1,sid=151,beginTime={19,30,00},endTime={19,50,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=1,breakdown=0},
-{id=4,name="跨服采矿",type=1,sid=1009,beginTime={21,40,00},endTime={22,00,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=6,breakdown=1},
+{id=1,name="九剑仙府",type=1,sid=152,beginTime={11,00,00},endTime={12,30,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=2},
+{id=2,name="九剑仙府",type=1,sid=152,beginTime={19,00,00},endTime={19,30,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=2},
+{id=3,name="异火争夺",type=1,sid=151,beginTime={19,30,00},endTime={19,50,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=1},
+{id=4,name="跨服采矿",type=1,sid=1009,beginTime={21,40,00},endTime={22,00,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=6},
 
-{id=5,name="boss之家",type=2,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=4,breakdown=0},
+{id=5,name="boss之家",type=2,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={00,00,00,00},activityBreakdown=4},
 
-{id=6,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={01,00,00,15},activityBreakdown=7,breakdown=0},
-{id=7,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={02,00,00,15},activityBreakdown=7,breakdown=0},
-{id=8,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={03,00,00,15},activityBreakdown=7,breakdown=0},
+{id=6,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={01,00,00,15},activityBreakdown=7},
+{id=7,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={02,00,00,15},activityBreakdown=7},
+{id=8,name="神虎赐福",type=3,sid=153,beginTime={00,00,00},endTime={00,00,00},solidTime={00,00,00},openServerTime={03,00,00,15},activityBreakdown=7},
 
-{id=9,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={14,00,00},openServerTime={00,00,00,00},activityBreakdown=8,breakdown=0},
-{id=10,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={18,00,00},openServerTime={00,00,00,00},activityBreakdown=9,breakdown=0},
-{id=11,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={22,00,00},openServerTime={00,00,00,00},activityBreakdown=10,breakdown=0},
-{id=12,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={10,00,00},openServerTime={00,00,00,00},activityBreakdown=11,breakdown=0}
+{id=9,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={14,00,00},openServerTime={00,00,00,00},activityBreakdown=8},
+{id=10,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={18,00,00},openServerTime={00,00,00,00},activityBreakdown=9},
+{id=11,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={22,00,00},openServerTime={00,00,00,00},activityBreakdown=10},
+{id=12,name="跨服boss",type=4,sid=0,beginTime={00,00,00},endTime={00,00,00},solidTime={10,00,00},openServerTime={00,00,00,00},activityBreakdown=11}
 },
 
 ActivityBreakdown=
 {
-{id=1,brushMonsterCfg=1,beginTime={00,00,00},endTime={00,00,00}},
-{id=2,brushMonsterCfg=2,beginTime={00,00,00},endTime={00,00,00}},
-{id=4,brushMonsterCfg=4,beginTime={00,00,00},endTime={00,00,00}},
-{id=6,brushMonsterCfg=6,beginTime={21,40,00},endTime={21,42,59}},
-{id=6,brushMonsterCfg=7,beginTime={21,43,00},endTime={21,45,59}},
-{id=6,brushMonsterCfg=8,beginTime={21,46,00},endTime={21,48,59}},
-{id=6,brushMonsterCfg=9,beginTime={21,49,00},endTime={21,51,59}},
-{id=6,brushMonsterCfg=10,beginTime={21,52,00},endTime={21,54,59}},
-{id=6,brushMonsterCfg=11,beginTime={21,55,00},endTime={21,57,59}},
-{id=6,brushMonsterCfg=12,beginTime={21,58,00},endTime={22,00,00}},
-{id=7,brushMonsterCfg=13,beginTime={00,00,00},endTime={00,00,00}},
-{id=8,brushMonsterCfg=14,beginTime={00,00,00},endTime={00,00,00}},
-{id=9,brushMonsterCfg=15,beginTime={00,00,00},endTime={00,00,00}},
-{id=10,brushMonsterCfg=16,beginTime={00,00,00},endTime={00,00,00}},
-{id=11,brushMonsterCfg=17,beginTime={00,00,00},endTime={00,00,00}},
+{id=1,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,1}},
+{id=2,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,2}},
+{id=4,dayBreakdown=2,breakdown=0,dayBreakdownList={{1,30,4},{31,9999,5}},breakdownList={},
+{id=6,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{21,40,00,21,42,59,6},{21,43,00,21,45,59,7},{21,46,00,21,48,59,8},{21,49,00,21,51,59,9},{21,52,00,21,54,59,10},{21,55,00,21,57,59,11},{21,58,00,22,00,00,12}},
+{id=7,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,13}},
+{id=8,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,14}},
+{id=9,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,15}},
+{id=10,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,16}},
+{id=11,dayBreakdown=0,breakdown=1,dayBreakdownList={},breakdownList={{00,00,00,00,00,00,17}}
 },
 
 BrushMonsterCfg=
