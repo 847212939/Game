@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Wed Aug 10 15:36:19 2022.
+** Generated automatically by tolua++-1.0.92 on Fri Aug 12 10:30:08 2022.
 */
 
 #ifndef __cplusplus
@@ -486,6 +486,39 @@ static int tolua_Config_ConfigMgr_ReadKeyCfg00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ReadKeyCfg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ReadOpenServerTime of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadOpenServerTime00
+static int tolua_Config_ConfigMgr_ReadOpenServerTime00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+  std::string servertm = ((std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadOpenServerTime'", NULL);
+#endif
+  {
+   self->ReadOpenServerTime(servertm);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ReadOpenServerTime'.",&tolua_err);
  return 0;
 #endif
 }
@@ -1912,6 +1945,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ReadExitCfg",tolua_Config_ConfigMgr_ReadExitCfg00);
    tolua_function(tolua_S,"ReadTimerCntCfg",tolua_Config_ConfigMgr_ReadTimerCntCfg00);
    tolua_function(tolua_S,"ReadKeyCfg",tolua_Config_ConfigMgr_ReadKeyCfg00);
+   tolua_function(tolua_S,"ReadOpenServerTime",tolua_Config_ConfigMgr_ReadOpenServerTime00);
    tolua_function(tolua_S,"ReadActivityList",tolua_Config_ConfigMgr_ReadActivityList00);
    tolua_function(tolua_S,"ReadBrushMonsterCfg",tolua_Config_ConfigMgr_ReadBrushMonsterCfg00);
    tolua_function(tolua_S,"ReadActivityBreakdownCfg",tolua_Config_ConfigMgr_ReadActivityBreakdownCfg00);

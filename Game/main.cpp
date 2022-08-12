@@ -13,6 +13,7 @@ int main()
 		return -1;
 	}
 
+	DUtil.MkTime();
 	IDGen& idGen = DUtil.GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 

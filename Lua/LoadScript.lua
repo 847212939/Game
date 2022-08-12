@@ -36,6 +36,7 @@ function ReadBaseCfg()
         ConfigMgr:ReadLogPrintTmCfg(BaseCfg.LogPrintfTime or 0)
         ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
         ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
+        ConfigMgr:ReadOpenServerTime(BaseCfg.OpenServerTime or 0)
 
         if BaseCfg.LogicCfg then
             local LogicCfg = LogicCfg:new()

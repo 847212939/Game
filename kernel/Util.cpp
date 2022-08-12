@@ -1,20 +1,44 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
+// 方法类
+std::mt19937		Util::m_mt(m_rd());
+std::random_device	Util::m_rd;
+time_t				Util::m_OpenServerTimeSecond = 0;
+struct tm			Util::m_tm = tm();
+
 Util& Util::Instance()
 {
 	static Util g_mgr;
 	return g_mgr;
 }
 
-Util::Util() : m_IDGen(new IDGen), m_TCPClient(new TCPClient)
+Util::Util() : 
+	m_IDGen(new IDGen), 
+	m_TCPClient(new TCPClient)
 {
-
 }
 
 Util::~Util() 
 {
 
+}
+
+void Util::MkTime()
+{
+	struct tm tm1;
+	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
+	int ret = sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d",
+		&tm1.tm_year, &tm1.tm_mon, &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
+
+	m_tm = tm1;
+	m_tm.tm_wday = 0;
+	m_tm.tm_yday = 0;
+	m_tm.tm_isdst = -1;
+	tm1.tm_year -= 1900;
+	tm1.tm_mon--;
+	tm1.tm_isdst = -1;
+	m_OpenServerTimeSecond = mktime(&tm1);
 }
 
 // 获取随机数
@@ -239,10 +263,6 @@ Cis& Cis::operator >> (unsigned char* pBuf)
 	return *this;
 }
 
-// 方法类
-std::mt19937		Util::m_mt(m_rd());
-std::random_device	Util::m_rd;
-
 long long Util::GetSysMilliseconds()
 {
 	auto time_now = std::chrono::system_clock::now();
@@ -284,7 +304,7 @@ uint64_t Util::GetCfgSecond(IntVector& vec)
 		return 0;
 	}
 
-	return vec[0] * 60 * 60 + vec[1] * 60 + vec[2];
+	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
 }
 
 uint64_t Util::GetSysSecond()
@@ -293,5 +313,15 @@ uint64_t Util::GetSysSecond()
 	struct tm tm;
 	tm = *localtime(&tick);
 
-	return tm.tm_hour * 60 * 60 + tm.tm_min * 60 + tm.tm_sec;
+	return ((uint64_t)tm.tm_hour) * 60 * 60 + ((uint64_t)tm.tm_min) * 60 + (uint64_t)tm.tm_sec;
+}
+
+uint64_t Util::GetOpenServerTime()
+{
+	return m_OpenServerTimeSecond;
+}
+
+const struct tm& Util::GetOpenServerTimeTM()
+{
+	return m_tm;
 }

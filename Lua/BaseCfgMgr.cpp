@@ -105,3 +105,13 @@ std::string CBaseCfgMgr::GetKey()
 {
 	return m_Key;
 }
+
+void CBaseCfgMgr::ReadOpenServerTime(std::string servertm)
+{
+	m_Servertm = servertm;
+}
+
+std::string CBaseCfgMgr::GetOpenServerTime()
+{
+	return m_Servertm;
+}

@@ -2,14 +2,14 @@
 
 LoginSys::LoginSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, this, LoginSys::NetworkCallback, MsgCmd::MsgCmd_Login);
+	RegisterNetwk(ppc, this, LoginSys::Network, MsgCmd::MsgCmd_Login);
 }
 
 LoginSys::~LoginSys()
 {
 }
 
-void LoginSys::NetworkCallback(PlayerInfo* playerInfo)
+void LoginSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{

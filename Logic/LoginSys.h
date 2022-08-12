@@ -16,7 +16,7 @@ public:
 	bool LoginIn(std::string& id, std::string& passwaed, uint64_t& userId);
 
 private:
-	void NetworkCallback(PlayerInfo* playerInfo);
+	void Network(PlayerInfo* playerInfo);
 
 private:
 	bool LoginIn(Cis& is, PlayerInfo* playerInfo);

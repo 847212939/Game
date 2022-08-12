@@ -26,6 +26,7 @@ public:
 	void ReadExitCfg(std::string exit);
 	void ReadTimerCntCfg(int cnt);
 	void ReadKeyCfg(std::string key);
+	void ReadOpenServerTime(std::string servertm);
 
 public:
 	// »î¶¯

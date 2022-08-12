@@ -26,8 +26,14 @@ public:
 	static uint8_t* Encrypt(uint8_t* content, int length);
 	static uint8_t* Decrypt(uint8_t* content, int length);
 
+	// 配置转化成秒
 	static uint64_t GetSysSecond();
 	static uint64_t GetCfgSecond(IntVector& vec);
+
+	// 获取开服时间
+	static uint64_t GetOpenServerTime();
+	static const struct tm& GetOpenServerTimeTM();
+	static void MkTime();
 
 public:
 	// 唯一ID
@@ -38,6 +44,8 @@ public:
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
+	static struct tm			m_tm;
+	static time_t				m_OpenServerTimeSecond;
 	IDGen*						m_IDGen;
 	TCPClient*					m_TCPClient;
 };

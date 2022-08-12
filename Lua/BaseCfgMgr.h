@@ -39,6 +39,7 @@ public:
 	void ReadMaxSocketCntCfg(int cnt);
 	void ReadKeyCfg(std::string key);
 	void ReadExitCfg(std::string exit);
+	void ReadOpenServerTime(std::string servertm);
 
 	void ReadDbCfg(DbCfg* config);
 	void ReadLogicCfg(LogicCfg* config);
@@ -53,6 +54,7 @@ public:
 	const DbCfg& GetDbCfg();
 	const LogicCfg& GetLogicCfg();
 	std::string GetKey();
+	std::string GetOpenServerTime();
 
 private:
 	int			m_logPrintTm;
@@ -65,4 +67,5 @@ private:
 	DbCfg		m_DbCfg;
 	std::string m_Exit;
 	std::string m_Key;
+	std::string m_Servertm;
 };

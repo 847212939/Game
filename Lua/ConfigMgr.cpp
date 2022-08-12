@@ -63,6 +63,11 @@ void ConfigMgr::ReadKeyCfg(std::string key)
 	m_CBaseCfgMgr.ReadKeyCfg(key);
 }
 
+void ConfigMgr::ReadOpenServerTime(std::string servertm)
+{
+	m_CBaseCfgMgr.ReadOpenServerTime(servertm);
+}
+
 ActivityHallCfg& ConfigMgr::GetActivityHallCfg()
 {
 	return m_ActivityHallCfgMgr;

@@ -17,6 +17,9 @@ BaseCfg =
 
     --最大链接数量 单线程默认的32000
     maxSocketCnt = 24576,
+
+    --开服时间
+    OpenServerTime = "2022-08-12 11:14:35",
     
     --对称加密
     Skey = "nishishabima",

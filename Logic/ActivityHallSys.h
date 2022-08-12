@@ -46,6 +46,7 @@ private:
 	bool AtTimedOpen(ActivityList* cfg);
 
 private:
+	// ¶¨Ê±Æ÷
 	void TimerCallback();
 
 private:
