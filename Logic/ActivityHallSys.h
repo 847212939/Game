@@ -35,12 +35,12 @@ public:
 	// 获取刷怪配置
 	CfgVector<BrushMonsterCfg>* Enter(ActivityList* cfg);
 	bool InitMonster(BrushMonsterCfg& cfg);
-	bool CreateMonster(RefMonsterV* pValue, BrushMonsterCfg& cfg);
+	bool CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCfg& cfg);
 
 public:
 	// 添加场景怪物
-	void AddRefMonsterV(int sid, RefMonsterK& key, RefMonsterV& value);
-	RefMonsterV* GetRefMonsterV(int sid, RefMonsterK& key);
+	void AddRefMonsterVec(int sid, RefMonsterKey& key, std::vector<Animal*>& value);
+	std::vector<Animal*>* GetRefMonsterVec(int sid, RefMonsterKey& key);
 
 private:
 	// 活动回调

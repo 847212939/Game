@@ -41,13 +41,6 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig)
-{
-	return pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ?
-		pConfig->GetDayBrushMonsterCfgid(Util::GetServiceDays()) :
-		pConfig->GetHourBrushMonsterCfgid();
-}
-
 CfgVector<BrushMonsterCfg>* ActivityHallSys::Enter(ActivityList* cfg)
 {
 	const ActivityBreakdown* pConfig = CfgMgr->GetActivityHallCfg().GetActivityBreakdown(cfg->activityBreakdown);
@@ -69,41 +62,62 @@ CfgVector<BrushMonsterCfg>* ActivityHallSys::Enter(ActivityList* cfg)
 
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 {
-	if (cfg.delayTime > 0)
-	{
-		RefMonsterK key(cfg.mid, cfg.x, cfg.y);
-		RefMonsterV value(cfg.count, ::time(nullptr) + cfg.delayTime);
-		AddRefMonsterV(cfg.sid, key, value);
-		return true;
-	}
+	std::vector<Animal*> animalVec;
+	
 	for (int i = 0; i < cfg.count; i++)
 	{
 		Animal* animal = Util::CreatAnimal(AnimalType::at_monster);
+
+		cfg.delayTime > 0 ? animal->SetLived(false): 
+		animal->SetLived(true);
+
+		cfg.delayTime > 0 ? animal->SetResuTime(::time(nullptr) + cfg.delayTime): 
+		animal->SetResuTime(::time(nullptr) + cfg.refreshTime);
+
+		dynamic_cast<MonsterClient*>(animal)->SetMonsterid(cfg.mid);
+
 		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
 		{
 			SafeDelete(animal);
-			COUT_LOG(LOG_CERROR, "进入场景失败");
+			COUT_LOG(LOG_CERROR, "进入场景失败,请检查代码或者配置,重启服务器");
 			return false;
 		}
-		dynamic_cast<MonsterClient*>(animal)->SetMonsterid(cfg.mid);
-		animal->SetLived(true);
+
+		animalVec.push_back(animal);
 	}
 
-	RefMonsterK key(cfg.mid, cfg.x, cfg.y);
-	RefMonsterV value(cfg.count, ::time(nullptr) + cfg.refreshTime);
-	AddRefMonsterV(cfg.sid, key, value);
+	RefMonsterKey key(cfg.mid, cfg.x, cfg.y);
+	AddRefMonsterVec(cfg.sid, key, animalVec);
 	
 	return true;
 }
 
-bool ActivityHallSys::CreateMonster(RefMonsterV* pValue, BrushMonsterCfg& cfg)
+bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCfg& cfg)
 {
-	
+	if (!pValue || pValue->empty())
+	{
+		COUT_LOG(LOG_CERROR, "pValue = null");
+		return false;
+	}
+	time_t cur = ::time(nullptr);
+	for (auto& animal : *pValue)
+	{
+		if (animal->GetLived())
+		{
+			continue;
+		}
+		if (animal->GetResuTime() < (uint64_t)cur)
+		{
+			continue;
+		}
+		animal->SetLived(true);
+		animal->SetResuTime((uint64_t)cur + (uint64_t)cfg.refreshTime);
+	}
 
 	return true;
 }
 
-RefMonsterV* ActivityHallSys::GetRefMonsterV(int sid, RefMonsterK& key)
+std::vector<Animal*>* ActivityHallSys::GetRefMonsterVec(int sid, RefMonsterKey& key)
 {
 	MonsterMap::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
@@ -123,7 +137,7 @@ RefMonsterV* ActivityHallSys::GetRefMonsterV(int sid, RefMonsterK& key)
 	return nullptr;
 }
 
-void ActivityHallSys::AddRefMonsterV(int sid, RefMonsterK& key, RefMonsterV& value)
+void ActivityHallSys::AddRefMonsterVec(int sid, RefMonsterKey& key, std::vector<Animal*>& value)
 {
 	MonsterMap::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
@@ -141,7 +155,7 @@ void ActivityHallSys::AddRefMonsterV(int sid, RefMonsterK& key, RefMonsterV& val
 		}
 		else
 		{
-			pos->second += value;
+			pos->second.swap(value);
 		}
 	}
 }
@@ -291,6 +305,13 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 	}
 
 	return false;
+}
+
+int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig)
+{
+	return	pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ?
+		pConfig->GetDayBrushMonsterCfgid(Util::GetServiceDays()) :
+		pConfig->GetHourBrushMonsterCfgid();
 }
 
 // 定时器回调

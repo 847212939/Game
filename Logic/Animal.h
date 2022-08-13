@@ -13,4 +13,5 @@ public:
 	GetSetMem(uint64_t, ID)
 	GetSetMem(Transform, transform)
 	GetSetMem(bool, Lived)
+	GetSetMem(uint64_t, ResuTime)
 };

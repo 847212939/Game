@@ -19,8 +19,8 @@ bool ActiveAlways::Enter(ActivityList* cfg)
 	}
 	for (auto& cfg : *pVector)
 	{
-		RefMonsterK key(cfg.mid, cfg.x, cfg.y);
-		RefMonsterV* pValue = activeSys.GetRefMonsterV(cfg.sid, key);
+		RefMonsterKey key(cfg.mid, cfg.x, cfg.y);
+		std::vector<Animal*>* pValue = activeSys.GetRefMonsterVec(cfg.sid, key);
 		if (!(pValue ? activeSys.CreateMonster(pValue, cfg) : activeSys.InitMonster(cfg)))
 		{
 			continue;

@@ -361,17 +361,17 @@ Animal* Util::CreatAnimal(AnimalType type)
 	{
 	case AnimalType::at_player:
 	{
-		break;
+		return nullptr;
 	}
 	case AnimalType::at_monster:
 	{
 		uint64_t id = DUtil.CreateUserId();
 		Animal* animal = new MonsterClient;
 		animal->SetID(id);
-		break;
+		return animal;
 	}
 	default:
-		break;
+		return nullptr;
 	}
 	return nullptr;
 }
