@@ -11,6 +11,21 @@
 #define DSC			DPPC->GetSceneClient()
 #define DPCC		DSC->GetPlayerCenterClient()
 
+#define GetSetMem(type,Name)\
+private:\
+	type m_##Name;\
+public:\
+	type Get##Name() const\
+	{\
+		return this->m_##Name;\
+	}\
+public:\
+	void Set##Name(type _arg)\
+	{\
+		this->m_##Name=_arg;\
+	}\
+private:
+
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))

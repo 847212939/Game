@@ -90,6 +90,13 @@ enum class AnimalType
 	at_monster		= 2,														// 怪物
 };
 
+class Animal;
+class PlayerClient;
+enum class ActType;
+struct ActtiveOpen;
+struct ActivityList;
+class CTCPSocketManage;
+
 #pragma pack(1)
 
 //数据队列信息头
@@ -246,7 +253,6 @@ struct LoadPlayerKey
 };
 
 //接收线程参数
-class CTCPSocketManage;
 struct RecvThreadParam
 {
 	CTCPSocketManage*		pThis;
@@ -255,34 +261,29 @@ struct RecvThreadParam
 	RecvThreadParam() :pThis(nullptr), index(0) {}
 };
 
-class Animal;
-class PlayerClient;
-enum class ActType;
-struct ActivityList;
-
 struct Position
 {
-	float x;
-	float y;
-	float z;
+	int x;
+	int y;
+	int z;
 	Position() : x(0), y(0), z(0) {}
 	~Position() {}
 };
 
 struct Rotation
 {
-	float x;
-	float y;
-	float z;
+	int x;
+	int y;
+	int z;
 	Rotation() : x(0), y(0), z(0) {}
 	~Rotation() {}
 };
 
 struct Scale
 {
-	float x;
-	float y;
-	float z;
+	int x;
+	int y;
+	int z;
 	Scale() : x(0), y(0), z(0) {}
 	~Scale() {}
 };
@@ -292,6 +293,32 @@ struct Transform
 	Position	position;
 	Rotation	rotation;
 	Scale		scale;
+
+	Transform() {}
+	Transform(int x, int y)
+	{
+		position.x = x;
+		position.y = y;
+	}
+
+	~Transform() {}
+};
+
+struct RefMonsterKey
+{
+	int mid;
+	int x;
+	int y;
+	~RefMonsterKey(){}
+	RefMonsterKey() : mid(0), x(0), y(0) {}
+	RefMonsterKey(int mId, int X, int Y) : mid(mId), x(X), y(Y) {}
+	bool operator < (const RefMonsterKey& other) const
+	{
+		if (mid != other.mid) { return mid < other.mid; }
+		if (x != other.x) { return x < other.x; }
+		if (y != other.y) { return y < other.y; }
+		return false;
+	}
 };
 
 template<typename T>
@@ -318,6 +345,9 @@ using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
+using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
+using MonsterKVMap			= std::map<RefMonsterK, std::vector<Animal*>>;
+using MonsterMap			= std::map<int, MonsterKVMap>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

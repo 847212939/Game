@@ -9,16 +9,8 @@ public:
 public:
 	virtual AnimalType GetType() = 0;
 
-public:
-	int GetSceneid();
-	uint64_t GetID();
-	const Transform& GetTransform();
-	void SetID(uint64_t id);
-	void SetSceneid(int sceneid);
-	void SetTransform(Transform& transform);
-
-private:
-	int			m_Sceneid;
-	uint64_t	m_Id;
-	Transform	m_Transform;
+	GetSetMem(int, Sceneid)
+	GetSetMem(uint64_t, ID)
+	GetSetMem(Transform, transform)
+	GetSetMem(bool, Lived)
 };

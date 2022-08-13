@@ -6,6 +6,7 @@ std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
 time_t				Util::m_OpenServerTimeSecond = 0;
 struct tm			Util::m_tm = tm();
+int					Util::m_day = 0;
 
 Util& Util::Instance()
 {
@@ -22,23 +23,6 @@ Util::Util() :
 Util::~Util() 
 {
 
-}
-
-void Util::MkTime()
-{
-	struct tm tm1;
-	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
-	int ret = sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d",
-		&tm1.tm_year, &tm1.tm_mon, &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
-
-	m_tm = tm1;
-	m_tm.tm_wday = 0;
-	m_tm.tm_yday = 0;
-	m_tm.tm_isdst = -1;
-	tm1.tm_year -= 1900;
-	tm1.tm_mon--;
-	tm1.tm_isdst = -1;
-	m_OpenServerTimeSecond = mktime(&tm1);
 }
 
 // 获取随机数
@@ -297,7 +281,7 @@ TCPClient* Util::GetTCPClient()
 	return m_TCPClient;
 }
 
-uint64_t Util::GetCfgSecond(IntVector& vec)
+uint64_t Util::GetCfgSecond(const IntVector& vec)
 {
 	if (vec.size() < 3)
 	{
@@ -305,6 +289,16 @@ uint64_t Util::GetCfgSecond(IntVector& vec)
 	}
 
 	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
+}
+
+uint64_t Util::GetCfgSecondEnd(const IntVector& vec)
+{
+	if (vec.size() < 6)
+	{
+		return 0;
+	}
+
+	return ((uint64_t)vec[3]) * 60 * 60 + ((uint64_t)vec[4]) * 60 + (uint64_t)vec[5];
 }
 
 uint64_t Util::GetSysSecond()
@@ -324,4 +318,60 @@ uint64_t Util::GetOpenServerTime()
 const struct tm& Util::GetOpenServerTimeTM()
 {
 	return m_tm;
+}
+
+int Util::GetServiceDays()
+{
+	return m_day;
+}
+
+bool Util::InitTime()
+{
+	struct tm tm1;
+	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
+	if (sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d", 
+	&tm1.tm_year, &tm1.tm_mon, &tm1.tm_mday, &tm1.tm_hour, 
+	&tm1.tm_min, &tm1.tm_sec) <= 0 || openServerTime.empty())
+	{
+		return false;
+	}
+
+	// 开服时间时间戳
+	m_tm = tm1;
+	m_tm.tm_wday = 0;
+	m_tm.tm_yday = 0;
+	m_tm.tm_isdst = -1;
+	tm1.tm_year -= 1900;
+	tm1.tm_mon--;
+	tm1.tm_isdst = -1;
+	m_OpenServerTimeSecond = mktime(&tm1);
+
+	// 开服天数
+	time_t tick2 = ::time(NULL);
+	struct tm tm2;
+	tm2 = *localtime(&tick2);
+	m_day = tm2.tm_mday - m_tm.tm_mday + 1;
+
+	return true;
+}
+
+Animal* Util::CreatAnimal(AnimalType type)
+{
+	switch (type)
+	{
+	case AnimalType::at_player:
+	{
+		break;
+	}
+	case AnimalType::at_monster:
+	{
+		uint64_t id = DUtil.CreateUserId();
+		Animal* animal = new MonsterClient;
+		animal->SetID(id);
+		break;
+	}
+	default:
+		break;
+	}
+	return nullptr;
 }

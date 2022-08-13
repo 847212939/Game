@@ -4,7 +4,7 @@
 class ActiveSection
 {
 public:
-	ActiveSection();
+	ActiveSection(PlayerPrepClient* ppc);
 	~ActiveSection();
 
 public:

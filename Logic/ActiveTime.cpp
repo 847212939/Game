@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-ActiveTime::ActiveTime()
+ActiveTime::ActiveTime(PlayerPrepClient* ppc)
 {
 }
 

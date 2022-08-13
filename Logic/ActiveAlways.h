@@ -3,7 +3,7 @@
 class ActiveAlways
 {
 public:
-	ActiveAlways();
+	ActiveAlways(PlayerPrepClient* ppc);
 	~ActiveAlways();
 
 public:
@@ -11,5 +11,4 @@ public:
 	bool Exit(ActivityList* cfg);
 
 private:
-
 };

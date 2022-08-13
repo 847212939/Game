@@ -17,8 +17,6 @@ struct ActtiveOpen
 	~ActtiveOpen(){}
 };
 
-using ActtiveOpenMap = std::map<int, ActtiveOpen>;
-
 class ActivityHallSys
 {
 public:
@@ -28,6 +26,21 @@ public:
 public:
 	// 活动开启判断
 	bool GetActiveOpen(int id);
+
+public:
+	// 获取刷怪id
+	int GetBrushMonsterId(const ActivityBreakdown* pConfig);
+
+public:
+	// 获取刷怪配置
+	CfgVector<BrushMonsterCfg>* Enter(ActivityList* cfg);
+	bool InitMonster(BrushMonsterCfg& cfg);
+	bool CreateMonster(RefMonsterV* pValue, BrushMonsterCfg& cfg);
+
+public:
+	// 添加场景怪物
+	void AddRefMonsterV(int sid, RefMonsterK& key, RefMonsterV& value);
+	RefMonsterV* GetRefMonsterV(int sid, RefMonsterK& key);
 
 private:
 	// 活动回调
@@ -58,4 +71,5 @@ private:
 	ActiveService	m_ActiveService;
 	ActiveTime		m_ActiveTime;
 	ActtiveOpenMap	m_ActtiveOpenMap;
+	MonsterMap		m_MonsterMap;
 };

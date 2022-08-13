@@ -63,20 +63,29 @@ struct DbCfg
 	~DbCfg();
 };
 
-
 struct ActivityList
 {
 	int id;
 	int type;
 	int sid;
 	int activityBreakdown;
-	int breakdown;
 	ActivityList();
 	~ActivityList();
 	void AddBeginTime(int tm);
 	void AddEndTime(int tm);
 	void AddSolidTime(int tm);
 	void AddOpenServerTime(int tm);
+};
+
+struct ActivityBreakdown
+{
+	int id;
+	int dayBreakdown;
+	int hourBreakdown;
+	ActivityBreakdown();
+	~ActivityBreakdown();
+	void AddDayBreakdownList(int idex, int tm);
+	void AddHourBreakdownList(int idex, int tm);
 };
 
 struct BrushMonsterCfg
@@ -91,14 +100,4 @@ struct BrushMonsterCfg
 	int y;
 	BrushMonsterCfg();
 	~BrushMonsterCfg();
-};
-
-struct ActivityBreakdown
-{
-	int id;
-	int brushMonsterCfg;
-	ActivityBreakdown();
-	~ActivityBreakdown();
-	void AddBeginTime(int tm);
-	void AddEndTime(int tm);
 };

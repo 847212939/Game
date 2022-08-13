@@ -3,7 +3,7 @@
 class ActiveTime
 {
 public:
-	ActiveTime();
+	ActiveTime(PlayerPrepClient* ppc);
 	~ActiveTime();
 
 public:

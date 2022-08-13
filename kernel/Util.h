@@ -28,12 +28,17 @@ public:
 
 	// 配置转化成秒
 	static uint64_t GetSysSecond();
-	static uint64_t GetCfgSecond(IntVector& vec);
+	static uint64_t GetCfgSecond(const IntVector& vec);
+	static uint64_t GetCfgSecondEnd(const IntVector& vec);
 
 	// 获取开服时间
+	static int GetServiceDays();
 	static uint64_t GetOpenServerTime();
 	static const struct tm& GetOpenServerTimeTM();
-	static void MkTime();
+	static bool InitTime();
+
+	// 生产怪
+	static Animal* CreatAnimal(AnimalType type);
 
 public:
 	// 唯一ID
@@ -46,6 +51,7 @@ private:
 	static std::mt19937			m_mt;
 	static struct tm			m_tm;
 	static time_t				m_OpenServerTimeSecond;
+	static int					m_day;
 	IDGen*						m_IDGen;
 	TCPClient*					m_TCPClient;
 };

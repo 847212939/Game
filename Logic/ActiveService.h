@@ -3,7 +3,7 @@
 class ActiveService
 {
 public:
-	ActiveService();
+	ActiveService(PlayerPrepClient* ppc);
 	~ActiveService();
 
 public:

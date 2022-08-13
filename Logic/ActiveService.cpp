@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-ActiveService::ActiveService()
+ActiveService::ActiveService(PlayerPrepClient* ppc)
 {
 }
 

@@ -69,13 +69,12 @@ function ReadActivityCfg()
 
     if ActivityCfg then
         if ActivityCfg.ActivityList then
-            for k,value in ipairs(ActivityCfg.ActivityList) do
+            for _,value in ipairs(ActivityCfg.ActivityList) do
                 local ActivityList = ActivityList:new()
                 ActivityList.id = value.id or 0
                 ActivityList.type = value.type or 0
                 ActivityList.sid = value.sid or 0
                 ActivityList.activityBreakdown = value.activityBreakdown or 0
-                ActivityList.breakdown = value.breakdown or 0
                 if value.beginTime then
                     for k,v in ipairs(value.beginTime) do
 	                    ActivityList:AddBeginTime(v or 0)
@@ -102,7 +101,7 @@ function ReadActivityCfg()
         end
 
         if ActivityCfg.BrushMonsterCfg then
-            for k,value in ipairs(ActivityCfg.BrushMonsterCfg) do
+            for _,value in ipairs(ActivityCfg.BrushMonsterCfg) do
                 local BrushMonsterCfg = BrushMonsterCfg:new()
                 BrushMonsterCfg.id = value.id or 0
                 BrushMonsterCfg.sid = value.sid or 0
@@ -118,18 +117,27 @@ function ReadActivityCfg()
         end
 
         if ActivityCfg.ActivityBreakdown then
-            for k,value in ipairs(ActivityCfg.ActivityBreakdown) do
+            for _,value in ipairs(ActivityCfg.ActivityBreakdown) do
                 local ActivityBreakdown = ActivityBreakdown:new()
                 ActivityBreakdown.id = value.id or 0
-                ActivityBreakdown.brushMonsterCfg = value.brushMonsterCfg or 0
-                if value.beginTime then
-                    for k,v in ipairs(value.beginTime) do
-	                    ActivityBreakdown:AddBeginTime(v or 0)
+                ActivityBreakdown.dayBreakdown = value.dayBreakdown or 0
+                ActivityBreakdown.hourBreakdown = value.hourBreakdown or 0
+                if ActivityBreakdown.dayBreakdown > 0 then
+                    if value.dayBreakdownList then
+                        for index,vp in ipairs(value.dayBreakdownList) do
+                            for _,vc in ipairs(vp) do
+	                            ActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
+                            end
+                        end
                     end
                 end
-                if value.endTime then
-                    for k,v in ipairs(value.endTime) do
-	                    ActivityBreakdown:AddEndTime(v or 0)
+                if ActivityBreakdown.hourBreakdown > 0 then
+                    if value.hourBreakdownList then
+                        for index,vp in ipairs(value.hourBreakdownList) do
+                            for _,vc in ipairs(vp) do
+	                            ActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
+                            end
+                        end
                     end
                 end
                 ConfigMgr:ReadActivityBreakdownCfg(ActivityBreakdown)

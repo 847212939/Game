@@ -40,7 +40,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
-bool Scene::EnterScene(Animal* animal, int sceneid, Transform& transform)
+bool Scene::EnterScene(Animal* animal, int sceneid, Transform transform)
 {
 	if (!animal)
 	{
@@ -48,12 +48,17 @@ bool Scene::EnterScene(Animal* animal, int sceneid, Transform& transform)
 		return false;
 	}
 
+	// ¸üÐÂ
+	UpdateScene(animal, sceneid, transform);
+	return true;
+}
+
+void Scene::UpdateScene(Animal* animal, int sceneid, Transform transform)
+{
 	DelSceneAnimalMap(animal->GetSceneid(), animal);
 	AddSceneAnimalMap(sceneid, animal);
 	animal->SetSceneid(sceneid);
-	animal->SetTransform(transform);
-
-	return true;
+	animal->Settransform(transform);
 }
 
 void Scene::AddSceneAnimalMap(int sceneid, Animal* animal)

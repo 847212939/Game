@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-ActiveSection::ActiveSection()
+ActiveSection::ActiveSection(PlayerPrepClient* ppc)
 {
 }
 

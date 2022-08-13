@@ -12,8 +12,12 @@ int main()
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
+	if (!DUtil.InitTime())
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return -1;
+	}
 
-	DUtil.MkTime();
 	IDGen& idGen = DUtil.GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 

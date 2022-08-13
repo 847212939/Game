@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Fri Aug 12 10:30:08 2022.
+** Generated automatically by tolua++-1.0.92 on Sat Aug 13 10:21:50 2022.
 */
 
 #ifndef __cplusplus
@@ -32,9 +32,9 @@ static int tolua_collect_DbCfg (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_ConfigMgr (lua_State* tolua_S)
+static int tolua_collect_BrushMonsterCfg (lua_State* tolua_S)
 {
- ConfigMgr* self = (ConfigMgr*) tolua_tousertype(tolua_S,1,0);
+ BrushMonsterCfg* self = (BrushMonsterCfg*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
@@ -46,9 +46,9 @@ static int tolua_collect_LogicCfg (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_BrushMonsterCfg (lua_State* tolua_S)
+static int tolua_collect_ConfigMgr (lua_State* tolua_S)
 {
- BrushMonsterCfg* self = (BrushMonsterCfg*) tolua_tousertype(tolua_S,1,0);
+ ConfigMgr* self = (ConfigMgr*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
@@ -67,9 +67,9 @@ static void tolua_reg_types (lua_State* tolua_S)
 {
  tolua_usertype(tolua_S,"ActivityList");
  tolua_usertype(tolua_S,"DbCfg");
- tolua_usertype(tolua_S,"ConfigMgr");
- tolua_usertype(tolua_S,"LogicCfg");
  tolua_usertype(tolua_S,"BrushMonsterCfg");
+ tolua_usertype(tolua_S,"LogicCfg");
+ tolua_usertype(tolua_S,"ConfigMgr");
  tolua_usertype(tolua_S,"ActivityBreakdown");
 }
 
@@ -1125,36 +1125,6 @@ static int tolua_set_ActivityList_activityBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: breakdown of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityList_breakdown
-static int tolua_get_ActivityList_breakdown(lua_State* tolua_S)
-{
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'breakdown'",NULL);
-#endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->breakdown);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: breakdown of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityList_breakdown
-static int tolua_set_ActivityList_breakdown(lua_State* tolua_S)
-{
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'breakdown'",NULL);
-  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->breakdown = ((int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: new of class  ActivityList */
 #ifndef TOLUA_DISABLE_tolua_Config_ActivityList_new00
 static int tolua_Config_ActivityList_new00(lua_State* tolua_S)
@@ -1368,6 +1338,252 @@ static int tolua_Config_ActivityList_AddOpenServerTime00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'AddOpenServerTime'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: id of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_id
+static int tolua_get_ActivityBreakdown_id(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->id);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: id of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_id
+static int tolua_set_ActivityBreakdown_id(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->id = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: dayBreakdown of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_dayBreakdown
+static int tolua_get_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dayBreakdown'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->dayBreakdown);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: dayBreakdown of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_dayBreakdown
+static int tolua_set_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dayBreakdown'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->dayBreakdown = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: hourBreakdown of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_hourBreakdown
+static int tolua_get_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'hourBreakdown'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->hourBreakdown);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: hourBreakdown of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_hourBreakdown
+static int tolua_set_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
+{
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'hourBreakdown'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->hourBreakdown = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00
+static int tolua_Config_ActivityBreakdown_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00_local
+static int tolua_Config_ActivityBreakdown_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
+    tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_delete00
+static int tolua_Config_ActivityBreakdown_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
+#endif
+  Mtolua_delete(self);
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddDayBreakdownList of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddDayBreakdownList00
+static int tolua_Config_ActivityBreakdown_AddDayBreakdownList00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  int idex = ((int)  tolua_tonumber(tolua_S,2,0));
+  int tm = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddDayBreakdownList'", NULL);
+#endif
+  {
+   self->AddDayBreakdownList(idex,tm);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddDayBreakdownList'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddHourBreakdownList of class  ActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddHourBreakdownList00
+static int tolua_Config_ActivityBreakdown_AddHourBreakdownList00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  int idex = ((int)  tolua_tonumber(tolua_S,2,0));
+  int tm = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddHourBreakdownList'", NULL);
+#endif
+  {
+   self->AddHourBreakdownList(idex,tm);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddHourBreakdownList'.",&tolua_err);
  return 0;
 #endif
 }
@@ -1699,218 +1915,6 @@ static int tolua_Config_BrushMonsterCfg_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: id of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_id
-static int tolua_get_ActivityBreakdown_id(lua_State* tolua_S)
-{
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
-#endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->id);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: id of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_id
-static int tolua_set_ActivityBreakdown_id(lua_State* tolua_S)
-{
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
-  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->id = ((int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: brushMonsterCfg of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_brushMonsterCfg
-static int tolua_get_ActivityBreakdown_brushMonsterCfg(lua_State* tolua_S)
-{
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'brushMonsterCfg'",NULL);
-#endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->brushMonsterCfg);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: brushMonsterCfg of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_brushMonsterCfg
-static int tolua_set_ActivityBreakdown_brushMonsterCfg(lua_State* tolua_S)
-{
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'brushMonsterCfg'",NULL);
-  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->brushMonsterCfg = ((int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00
-static int tolua_Config_ActivityBreakdown_new00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new_local of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00_local
-static int tolua_Config_ActivityBreakdown_new00_local(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
-    tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: delete of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_delete00
-static int tolua_Config_ActivityBreakdown_delete00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
-#endif
-  Mtolua_delete(self);
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: AddBeginTime of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddBeginTime00
-static int tolua_Config_ActivityBreakdown_AddBeginTime00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-  int tm = ((int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddBeginTime'", NULL);
-#endif
-  {
-   self->AddBeginTime(tm);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'AddBeginTime'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: AddEndTime of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddEndTime00
-static int tolua_Config_ActivityBreakdown_AddEndTime00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
-  int tm = ((int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddEndTime'", NULL);
-#endif
-  {
-   self->AddEndTime(tm);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'AddEndTime'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* Open function */
 TOLUA_API int tolua_Config_open (lua_State* tolua_S)
 {
@@ -1989,7 +1993,6 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"type",tolua_get_ActivityList_type,tolua_set_ActivityList_type);
    tolua_variable(tolua_S,"sid",tolua_get_ActivityList_sid,tolua_set_ActivityList_sid);
    tolua_variable(tolua_S,"activityBreakdown",tolua_get_ActivityList_activityBreakdown,tolua_set_ActivityList_activityBreakdown);
-   tolua_variable(tolua_S,"breakdown",tolua_get_ActivityList_breakdown,tolua_set_ActivityList_breakdown);
    tolua_function(tolua_S,"new",tolua_Config_ActivityList_new00);
    tolua_function(tolua_S,"new_local",tolua_Config_ActivityList_new00_local);
    tolua_function(tolua_S,".call",tolua_Config_ActivityList_new00_local);
@@ -1998,6 +2001,22 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"AddEndTime",tolua_Config_ActivityList_AddEndTime00);
    tolua_function(tolua_S,"AddSolidTime",tolua_Config_ActivityList_AddSolidTime00);
    tolua_function(tolua_S,"AddOpenServerTime",tolua_Config_ActivityList_AddOpenServerTime00);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",tolua_collect_ActivityBreakdown);
+  #else
+  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"ActivityBreakdown");
+   tolua_variable(tolua_S,"id",tolua_get_ActivityBreakdown_id,tolua_set_ActivityBreakdown_id);
+   tolua_variable(tolua_S,"dayBreakdown",tolua_get_ActivityBreakdown_dayBreakdown,tolua_set_ActivityBreakdown_dayBreakdown);
+   tolua_variable(tolua_S,"hourBreakdown",tolua_get_ActivityBreakdown_hourBreakdown,tolua_set_ActivityBreakdown_hourBreakdown);
+   tolua_function(tolua_S,"new",tolua_Config_ActivityBreakdown_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_ActivityBreakdown_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_ActivityBreakdown_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_ActivityBreakdown_delete00);
+   tolua_function(tolua_S,"AddDayBreakdownList",tolua_Config_ActivityBreakdown_AddDayBreakdownList00);
+   tolua_function(tolua_S,"AddHourBreakdownList",tolua_Config_ActivityBreakdown_AddHourBreakdownList00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"BrushMonsterCfg","BrushMonsterCfg","",tolua_collect_BrushMonsterCfg);
@@ -2017,21 +2036,6 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_Config_BrushMonsterCfg_new00_local);
    tolua_function(tolua_S,".call",tolua_Config_BrushMonsterCfg_new00_local);
    tolua_function(tolua_S,"delete",tolua_Config_BrushMonsterCfg_delete00);
-  tolua_endmodule(tolua_S);
-  #ifdef __cplusplus
-  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",tolua_collect_ActivityBreakdown);
-  #else
-  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",NULL);
-  #endif
-  tolua_beginmodule(tolua_S,"ActivityBreakdown");
-   tolua_variable(tolua_S,"id",tolua_get_ActivityBreakdown_id,tolua_set_ActivityBreakdown_id);
-   tolua_variable(tolua_S,"brushMonsterCfg",tolua_get_ActivityBreakdown_brushMonsterCfg,tolua_set_ActivityBreakdown_brushMonsterCfg);
-   tolua_function(tolua_S,"new",tolua_Config_ActivityBreakdown_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_ActivityBreakdown_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_ActivityBreakdown_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_ActivityBreakdown_delete00);
-   tolua_function(tolua_S,"AddBeginTime",tolua_Config_ActivityBreakdown_AddBeginTime00);
-   tolua_function(tolua_S,"AddEndTime",tolua_Config_ActivityBreakdown_AddEndTime00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

@@ -8,4 +8,7 @@ public:
 
 public:
 	virtual AnimalType GetType();
+
+public:
+	GetSetMem(int, Monsterid)
 };

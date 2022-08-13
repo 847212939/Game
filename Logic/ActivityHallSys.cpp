@@ -1,6 +1,10 @@
 #include "../Game/stdafx.h"
 
-ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc)
+ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc) :
+	m_ActiveSection(ppc),
+	m_ActiveAlways(ppc),
+	m_ActiveService(ppc),
+	m_ActiveTime(ppc)
 {
 	RegisterActive(this, ActivityHallSys::AtSectionOpen, ActType::at_section_open);
 	RegisterActiveEnter(this, m_ActiveSection, ActiveSection::Enter, ActType::at_section_open);
@@ -35,6 +39,111 @@ bool ActivityHallSys::GetActiveOpen(int id)
 		return false;
 	}
 	return it->second.open;
+}
+
+int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig)
+{
+	return pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ?
+		pConfig->GetDayBrushMonsterCfgid(Util::GetServiceDays()) :
+		pConfig->GetHourBrushMonsterCfgid();
+}
+
+CfgVector<BrushMonsterCfg>* ActivityHallSys::Enter(ActivityList* cfg)
+{
+	const ActivityBreakdown* pConfig = CfgMgr->GetActivityHallCfg().GetActivityBreakdown(cfg->activityBreakdown);
+	if (!pConfig)
+	{
+		COUT_LOG(LOG_CINFO, "pConfig = null");
+		return nullptr;
+	}
+
+	int bmid = GetBrushMonsterId(pConfig);
+	if (bmid <= 0)
+	{
+		COUT_LOG(LOG_CINFO, "bmid <= 0");
+		return nullptr;
+	}
+
+	return CfgMgr->GetActivityHallCfg().GetBrushMonsterCfg(bmid);
+}
+
+bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
+{
+	if (cfg.delayTime > 0)
+	{
+		RefMonsterK key(cfg.mid, cfg.x, cfg.y);
+		RefMonsterV value(cfg.count, ::time(nullptr) + cfg.delayTime);
+		AddRefMonsterV(cfg.sid, key, value);
+		return true;
+	}
+	for (int i = 0; i < cfg.count; i++)
+	{
+		Animal* animal = Util::CreatAnimal(AnimalType::at_monster);
+		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
+		{
+			SafeDelete(animal);
+			COUT_LOG(LOG_CERROR, "进入场景失败");
+			return false;
+		}
+		dynamic_cast<MonsterClient*>(animal)->SetMonsterid(cfg.mid);
+		animal->SetLived(true);
+	}
+
+	RefMonsterK key(cfg.mid, cfg.x, cfg.y);
+	RefMonsterV value(cfg.count, ::time(nullptr) + cfg.refreshTime);
+	AddRefMonsterV(cfg.sid, key, value);
+	
+	return true;
+}
+
+bool ActivityHallSys::CreateMonster(RefMonsterV* pValue, BrushMonsterCfg& cfg)
+{
+	
+
+	return true;
+}
+
+RefMonsterV* ActivityHallSys::GetRefMonsterV(int sid, RefMonsterK& key)
+{
+	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	if (it == m_MonsterMap.end())
+	{
+		return nullptr;
+	}
+	else
+	{
+		MonsterKVMap::iterator pos = it->second.find(key);
+		if (pos == it->second.end())
+		{
+			return nullptr;
+		}
+		return &pos->second;
+	}
+
+	return nullptr;
+}
+
+void ActivityHallSys::AddRefMonsterV(int sid, RefMonsterK& key, RefMonsterV& value)
+{
+	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	if (it == m_MonsterMap.end())
+	{
+		MonsterKVMap tmpMonsterKVMap;
+		tmpMonsterKVMap.insert({ key, value });
+		m_MonsterMap.insert({ sid, tmpMonsterKVMap });
+	}
+	else
+	{
+		MonsterKVMap::iterator pos = it->second.find(key);
+		if (pos == it->second.end())
+		{
+			it->second.insert({ key, value });
+		}
+		else
+		{
+			pos->second += value;
+		}
+	}
 }
 
 // 活动类型判断函数回调

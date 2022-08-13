@@ -5,19 +5,30 @@ CfgSet<ActivityList>& ActivityHallCfg::GetActivityListCfgSet()
 	return m_ActivityListCfgSet;
 }
 
+const ActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
+{
+	CfgSet<ActivityBreakdown>::iterator it = m_ActivityBreakdownCfgSet.find(id);
+	if (it == m_ActivityBreakdownCfgSet.end())
+	{
+		return nullptr;
+	}
+	return &(*it);
+}
+
+CfgVector<BrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
+{
+	CfgMap<BrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
+	if (it == m_BrushMonsterCfgMap.end())
+	{
+		return nullptr;
+	}
+
+	return &it->second;
+}
+
 void ActivityHallCfg::ReadActivityBreakdownCfg(ActivityBreakdown* config)
 {
-	CfgMap<ActivityBreakdown>::iterator it = m_ActivityBreakdownCfgMap.find(config->id);
-	if (it == m_ActivityBreakdownCfgMap.end())
-	{
-		CfgVector<ActivityBreakdown> tmp;
-		tmp.push_back(*config);
-		m_ActivityBreakdownCfgMap.insert({ config->id, tmp });
-	}
-	else
-	{
-		it->second.push_back(*config);
-	}
+	m_ActivityBreakdownCfgSet.insert(*config);
 }
 
 void ActivityHallCfg::ReadActivityList(ActivityList* config)
