@@ -101,7 +101,7 @@ struct ActivityBreakdown
 			return 0;
 		}
 		uint64_t sysSecond = Util::GetSysSecond();
-		for (auto& m : dayBreakdownList)
+		for (auto& m : hourBreakdownList)
 		{
 			if (m.second.size() != 7)
 			{

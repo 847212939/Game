@@ -62,6 +62,8 @@ CfgVector<BrushMonsterCfg>* ActivityHallSys::Enter(ActivityList* cfg)
 
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 {
+	COUT_LOG(LOG_CINFO, "ActivityHallSys::Enter = %d", cfg.id);
+
 	std::vector<Animal*> animalVec;
 	
 	for (int i = 0; i < cfg.count; i++)
