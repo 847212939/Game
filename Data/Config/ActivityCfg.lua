@@ -26,7 +26,7 @@ ActivityBreakdown=
 {
 {id=1,dayBreakdown=0,hourBreakdown=1,dayBreakdownList={},hourBreakdownList={{00,00,00,00,00,00,1}}},
 {id=2,dayBreakdown=0,hourBreakdown=1,dayBreakdownList={},hourBreakdownList={{00,00,00,00,00,00,2}}},
-{id=4,dayBreakdown=2,hourBreakdown=0,dayBreakdownList={{1,30,4},{31,9999,5}},hourBreakdownList={}},
+{id=4,dayBreakdown=2,hourBreakdown=0,dayBreakdownList={{1,2,4},{3,9999,5}},hourBreakdownList={}},
 {id=6,dayBreakdown=0,hourBreakdown=1,dayBreakdownList={},hourBreakdownList={{21,40,00,21,42,59,6},{21,43,00,21,45,59,7},{21,46,00,21,48,59,8},{21,49,00,21,51,59,9},{21,52,00,21,54,59,10},{21,55,00,21,57,59,11},{21,58,00,22,00,00,12}}},
 {id=7,dayBreakdown=0,hourBreakdown=1,dayBreakdownList={},hourBreakdownList={{00,00,00,00,00,00,13}}},
 {id=8,dayBreakdown=0,hourBreakdown=1,dayBreakdownList={},hourBreakdownList={{00,00,00,00,00,00,14}}},

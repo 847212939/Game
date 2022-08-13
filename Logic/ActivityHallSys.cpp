@@ -22,7 +22,7 @@ ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc) :
 	RegisterActiveEnter(this, m_ActiveTime, ActiveTime::Enter, ActType::at_timed_open);
 	RegisterActiveExit(this, m_ActiveTime, ActiveTime::Exit, ActType::at_timed_open);
 
-	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 100, SERVERTIMER_TYPE_PERISIST);
+	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 300, SERVERTIMER_TYPE_PERISIST);
 }
 
 ActivityHallSys::~ActivityHallSys()
@@ -43,7 +43,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 
 CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg)
 {
-	std::pair<int, int> pr;
+	std::pair<int, int> pr; // type, index
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
 
 	const ActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
@@ -70,7 +70,7 @@ CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList*
 void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
-	for (int i = 0; i < pr.second; i++)
+	for (int i = 1; i < pr.second; i++)
 	{
 		CfgVector<BrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
 		if (!pVector)
@@ -90,6 +90,7 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 				Animal* pAnimal = pValue->back();
 				if (pAnimal)
 				{
+					DSC->DelSceneAnimalMap(config.sid, pAnimal);
 					SafeDelete(pAnimal);
 				}
 				pValue->pop_back();
@@ -121,8 +122,6 @@ void ActivityHallSys::DelRefMonsterVec(int sid, RefMonsterKey& key)
 
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 {
-	COUT_LOG(LOG_CINFO, "ActivityHallSys::Enter = %d", cfg.id);
-
 	std::vector<Animal*> animalVec;
 	
 	for (int i = 0; i < cfg.count; i++)
