@@ -346,7 +346,7 @@ using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
-using MonsterKVMap			= std::map<RefMonsterK, std::vector<Animal*>>;
+using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MonsterMap			= std::map<int, MonsterKVMap>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
