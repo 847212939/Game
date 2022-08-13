@@ -355,7 +355,7 @@ bool Util::InitTime()
 	return true;
 }
 
-Animal* Util::CreatAnimal(AnimalType type)
+Animal* Util::CreatAnimal(AnimalType type, int mid)
 {
 	switch (type)
 	{
@@ -365,9 +365,8 @@ Animal* Util::CreatAnimal(AnimalType type)
 	}
 	case AnimalType::at_monster:
 	{
-		uint64_t id = DUtil.CreateUserId();
 		Animal* animal = new MonsterClient;
-		animal->SetID(id);
+		dynamic_cast<MonsterClient*>(animal)->Init(mid);
 		return animal;
 	}
 	default:

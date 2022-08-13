@@ -33,7 +33,10 @@ public:
 
 public:
 	// ªÒ»°À¢π÷≈‰÷√
-	CfgVector<BrushMonsterCfg>* Enter(ActivityList* cfg);
+	CfgVector<BrushMonsterCfg>* GetBrushMonsterCfgVec(ActivityList* cfg);
+
+public:
+	// À¢π÷
 	bool InitMonster(BrushMonsterCfg& cfg);
 	bool CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCfg& cfg);
 

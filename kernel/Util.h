@@ -38,7 +38,7 @@ public:
 	static bool InitTime();
 
 	// Éú²ú¹Ö
-	static Animal* CreatAnimal(AnimalType type);
+	static Animal* CreatAnimal(AnimalType type, int mid = 0);
 
 public:
 	// Î¨Ò»ID

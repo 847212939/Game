@@ -10,5 +10,8 @@ public:
 	virtual AnimalType GetType();
 
 public:
+	void Init(int mid);
+
+public:
 	GetSetMem(int, Monsterid)
 };

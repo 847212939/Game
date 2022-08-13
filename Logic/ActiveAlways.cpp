@@ -8,20 +8,21 @@ ActiveAlways::~ActiveAlways()
 {
 }
 
+// 全天活动回调
 bool ActiveAlways::Enter(ActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
-	CfgVector<BrushMonsterCfg>* pVector = activeSys.Enter(cfg);
+	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfgVec(cfg);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");
 		return false;
 	}
-	for (auto& cfg : *pVector)
+	for (auto& config : *pVector)
 	{
-		RefMonsterKey key(cfg.mid, cfg.x, cfg.y);
-		std::vector<Animal*>* pValue = activeSys.GetRefMonsterVec(cfg.sid, key);
-		if (!(pValue ? activeSys.CreateMonster(pValue, cfg) : activeSys.InitMonster(cfg)))
+		RefMonsterKey key(config.mid, config.x, config.y);
+		std::vector<Animal*>* pValue = activeSys.GetRefMonsterVec(config.sid, key);
+		if (!(pValue ? activeSys.CreateMonster(pValue, config) : activeSys.InitMonster(config)))
 		{
 			continue;
 		}

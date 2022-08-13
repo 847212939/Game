@@ -41,7 +41,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-CfgVector<BrushMonsterCfg>* ActivityHallSys::Enter(ActivityList* cfg)
+CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg)
 {
 	const ActivityBreakdown* pConfig = CfgMgr->GetActivityHallCfg().GetActivityBreakdown(cfg->activityBreakdown);
 	if (!pConfig)
@@ -68,15 +68,13 @@ bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 	
 	for (int i = 0; i < cfg.count; i++)
 	{
-		Animal* animal = Util::CreatAnimal(AnimalType::at_monster);
+		Animal* animal = Util::CreatAnimal(AnimalType::at_monster, cfg.mid);
 
 		cfg.delayTime > 0 ? animal->SetLived(false): 
 		animal->SetLived(true);
 
 		cfg.delayTime > 0 ? animal->SetResuTime(::time(nullptr) + cfg.delayTime): 
 		animal->SetResuTime(::time(nullptr) + cfg.refreshTime);
-
-		dynamic_cast<MonsterClient*>(animal)->SetMonsterid(cfg.mid);
 
 		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
 		{

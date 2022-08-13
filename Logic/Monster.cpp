@@ -13,3 +13,9 @@ AnimalType Monster::GetType()
 {
 	return AnimalType::at_monster;
 }
+
+void Monster::Init(int mid)
+{
+	SetID(DUtil.CreateUserId());
+	SetMonsterid(mid);
+}
