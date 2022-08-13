@@ -74,12 +74,9 @@ struct ActivityBreakdown
 	}
 
 	ActivityBreakdown(int nid) : id(nid), dayBreakdown(0), hourBreakdown(0) {}
-	int GetDayBrushMonsterCfgid(int day) const
+	int GetDayBrushMonsterCfgid(int& index) const
 	{
-		if (dayBreakdown <= 0)
-		{
-			return 0;
-		}
+		int day = Util::GetServiceDays();
 		for (auto& m : dayBreakdownList)
 		{
 			if (m.second.size() != 3)
@@ -88,18 +85,15 @@ struct ActivityBreakdown
 			}
 			if (day >= m.second[0] && day <= m.second[1])
 			{
+				index = m.first;
 				return m.second[2];
 			}
 		}
 
 		return 0;
 	}
-	int GetHourBrushMonsterCfgid() const
+	int GetHourBrushMonsterCfgid(int& index) const
 	{
-		if (hourBreakdown <= 0)
-		{
-			return 0;
-		}
 		uint64_t sysSecond = Util::GetSysSecond();
 		for (auto& m : hourBreakdownList)
 		{
@@ -110,11 +104,38 @@ struct ActivityBreakdown
 			if (sysSecond >= Util::GetCfgSecond(m.second) &&
 				sysSecond <= Util::GetCfgSecondEnd(m.second))
 			{
+				index = m.first;
 				return m.second[6];
 			}
 		}
 
 		return 0;
+	}
+	int GetDayBrushMonsterCfg(int index) const
+	{
+		CfgMap<int>::const_iterator it = dayBreakdownList.find(index);
+		if (it == dayBreakdownList.end())
+		{
+			return 0;
+		}
+		if (it->second.size() != 3)
+		{
+			return 0;
+		}
+		return it->second[2];
+	}
+	int GetHourBrushMonsterCfg(int index) const
+	{
+		CfgMap<int>::const_iterator it = hourBreakdownList.find(index);
+		if (it == hourBreakdownList.end())
+		{
+			return 0;
+		}
+		if (it->second.size() != 7)
+		{
+			return 0;
+		}
+		return it->second[6];
 	}
 	bool operator < (const ActivityBreakdown& other) const
 	{

@@ -29,11 +29,16 @@ public:
 
 public:
 	// 获取刷怪id
-	int GetBrushMonsterId(const ActivityBreakdown* pConfig);
+	int GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pair<int, int>& pr);
+	int GetPreBrushMonsterId(const ActivityBreakdown* pConfig, int type, int index);
 
 public:
 	// 获取刷怪配置
 	CfgVector<BrushMonsterCfg>* GetBrushMonsterCfgVec(ActivityList* cfg);
+
+public:
+	// 清理上次活动残留怪
+	void ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, std::pair<int, int>& pr);
 
 public:
 	// 刷怪
@@ -42,6 +47,7 @@ public:
 
 public:
 	// 添加场景怪物
+	void DelRefMonsterVec(int sid, RefMonsterKey& key);
 	void AddRefMonsterVec(int sid, RefMonsterKey& key, std::vector<Animal*>& value);
 	std::vector<Animal*>* GetRefMonsterVec(int sid, RefMonsterKey& key);
 

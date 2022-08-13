@@ -43,21 +43,80 @@ bool ActivityHallSys::GetActiveOpen(int id)
 
 CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg)
 {
-	const ActivityBreakdown* pConfig = CfgMgr->GetActivityHallCfg().GetActivityBreakdown(cfg->activityBreakdown);
+	std::pair<int, int> pr;
+	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
+
+	const ActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
 	if (!pConfig)
 	{
 		COUT_LOG(LOG_CINFO, "pConfig = null");
 		return nullptr;
 	}
 
-	int bmid = GetBrushMonsterId(pConfig);
+	int bmid = GetBrushMonsterId(pConfig, pr);
 	if (bmid <= 0)
 	{
 		COUT_LOG(LOG_CINFO, "bmid <= 0");
 		return nullptr;
 	}
 
-	return CfgMgr->GetActivityHallCfg().GetBrushMonsterCfg(bmid);
+	// 清除上一次场景中怪物
+	ClearBrushMonsterCfgVec(pConfig, pr);
+
+	return activityHallCfg.GetBrushMonsterCfg(bmid);
+}
+
+// 清除上一次场景中怪物
+void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
+{
+	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
+	for (int i = 0; i < pr.second; i++)
+	{
+		CfgVector<BrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
+		if (!pVector)
+		{
+			continue;
+		}
+		for (auto& config : *pVector)
+		{
+			RefMonsterKey key(config.mid, config.x, config.y);
+			std::vector<Animal*>* pValue = GetRefMonsterVec(config.sid, key);
+			if (!pValue)
+			{
+				continue;
+			}
+			while (!pValue->empty())
+			{
+				Animal* pAnimal = pValue->back();
+				if (pAnimal)
+				{
+					SafeDelete(pAnimal);
+				}
+				pValue->pop_back();
+			}
+			pValue->clear();
+
+			DelRefMonsterVec(config.sid, key);
+		}
+	}
+}
+
+void ActivityHallSys::DelRefMonsterVec(int sid, RefMonsterKey& key)
+{
+	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	if (it == m_MonsterMap.end())
+	{
+		return;
+	}
+	else
+	{
+		MonsterKVMap::iterator pos = it->second.find(key);
+		if (pos == it->second.end())
+		{
+			return;
+		}
+		it->second.erase(pos);
+	}
 }
 
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
@@ -307,11 +366,29 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 	return false;
 }
 
-int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig)
+int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
-	return	pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ?
-		pConfig->GetDayBrushMonsterCfgid(Util::GetServiceDays()) :
-		pConfig->GetHourBrushMonsterCfgid();
+	if (pConfig->dayBreakdown - pConfig->hourBreakdown > 0)
+	{
+		pr.first = 1;	// 天做分割
+		return pConfig->GetDayBrushMonsterCfgid(pr.second);
+	}
+	pr.first = 2;	// 时做分割
+	return pConfig->GetHourBrushMonsterCfgid(pr.second);
+}
+
+int ActivityHallSys::GetPreBrushMonsterId(const ActivityBreakdown* pConfig, int type, int index)
+{
+	if (type == 1)
+	{
+		return pConfig->GetDayBrushMonsterCfg(index);
+	}
+	else if (type == 2)
+	{
+		return pConfig->GetHourBrushMonsterCfg(index);
+	}
+	
+	return 0;
 }
 
 // 定时器回调
