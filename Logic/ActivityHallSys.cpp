@@ -158,19 +158,17 @@ bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCf
 		COUT_LOG(LOG_CERROR, "pValue = null");
 		return false;
 	}
-	time_t cur = ::time(nullptr);
 	for (auto& animal : *pValue)
 	{
 		if (animal->GetLived())
 		{
 			continue;
 		}
-		if (animal->GetResuTime() < (uint64_t)cur)
+		if (animal->GetResuTime() < (uint64_t)::time(nullptr))
 		{
 			continue;
 		}
 		animal->SetLived(true);
-		animal->SetResuTime((uint64_t)cur + (uint64_t)cfg.refreshTime);
 	}
 
 	return true;

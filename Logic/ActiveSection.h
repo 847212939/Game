@@ -12,5 +12,5 @@ public:
 	bool Exit(ActivityList* cfg);
 
 private:
-	int m_bmid;
+	int m_bmid;	// 保存上一次刷怪配置id
 };
