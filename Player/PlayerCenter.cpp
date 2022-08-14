@@ -173,7 +173,7 @@ void PlayerCenter::HandlerPlayerThread()
 			loadPlayerList.pop_front();
 		}
 	}
-	COUT_LOG(LOG_CINFO, "playerClient create thread end...");
+	COUT_LOG(LOG_CINFO, "playerClient create thread end");
 }
 
 // ´´½¨½ÇÉ«

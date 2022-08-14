@@ -36,10 +36,6 @@ void MoveSys::LoadMysql(std::string& data)
 void MoveSys::CalAttrs()
 {
 	AttrsMap attrs;
-	for (int i = 1; i < 10; i++)
-	{
-		attrs[i] += i;
-	}
 
 	AddAttributes(m_PlayerClient, attrs);
 }

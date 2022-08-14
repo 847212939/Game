@@ -4,8 +4,8 @@ enum class AttrsCmd
 {
 	AttrsCmd_Begin = 0,
 
-	AttrsCmd_1,
-	AttrsCmd_2,
+	attrs_hp,		// ÑªÁ¿
+	attrs_attack,	// ¹¥»÷
 	AttrsCmd_3,
 	AttrsCmd_4,
 	AttrsCmd_5,

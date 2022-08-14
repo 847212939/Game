@@ -162,6 +162,9 @@ void Player::LoadMysql()
 void Player::EnterScene()
 {
 	EnterSceneCallBackFun();
+
+	// 玩家进入场景
+	DSC->EnterScene(this, GetSceneid(), Gettransform());
 }
 
 // 进入游戏
