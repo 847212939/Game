@@ -18,7 +18,7 @@ void Animal::AdditionAttributes(AttrsMap& attrs)
 {
 	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{
-		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
+		if ((AttrsCmd)it->first <= AttrsCmd::attrs_begin || (AttrsCmd)it->first >= AttrsCmd::attrs_end)
 		{
 			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
 			continue;
