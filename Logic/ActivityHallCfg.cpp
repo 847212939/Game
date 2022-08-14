@@ -12,7 +12,7 @@ ActivityList::ActivityList() : id(0), type(0), sid(0), activityBreakdown(0)
 {
 }
 
-ActivityList::~ActivityList() 
+ActivityList::~ActivityList()
 {
 }
 
