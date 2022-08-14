@@ -41,7 +41,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg)
+CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg, int& bmid)
 {
 	std::pair<int, int> pr; // type, index
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
@@ -53,7 +53,7 @@ CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList*
 		return nullptr;
 	}
 
-	int bmid = GetBrushMonsterId(pConfig, pr);
+	bmid = GetBrushMonsterId(pConfig, pr);
 	if (bmid <= 0)
 	{
 		COUT_LOG(LOG_CINFO, "bmid <= 0");
@@ -133,6 +133,7 @@ bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 
 		cfg.delayTime > 0 ? animal->SetResuTime(::time(nullptr) + cfg.delayTime): 
 		animal->SetResuTime(::time(nullptr) + cfg.refreshTime);
+		animal->SetRefreshTime(cfg.refreshTime);
 
 		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
 		{
@@ -372,7 +373,7 @@ int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pa
 		pr.first = 1;	// 天做分割
 		return pConfig->GetDayBrushMonsterCfgid(pr.second);
 	}
-	pr.first = 2;	// 时做分割
+	pr.first = 2;		// 时做分割
 	return pConfig->GetHourBrushMonsterCfgid(pr.second);
 }
 

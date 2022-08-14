@@ -44,11 +44,6 @@ public:
 	void AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun);
 
 public:
-	// 属性
-	void AdditionAttributes(AttrsMap& attrs);
-	void RefreshProp();
-
-public:
 	// 数据库操作
 	void LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr = "data");
 	void SaveInsertSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
@@ -59,7 +54,6 @@ public:
 private:
 	bool					m_load;					// 玩家是否初始化完成
 	unsigned int			m_index;				// 玩家索引
-	AttrsMap				m_AttrsMap;				// 属性集合
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合

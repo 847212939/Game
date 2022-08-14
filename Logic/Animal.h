@@ -5,13 +5,21 @@ class Animal
 public:
 	Animal();
 	virtual~Animal();
-
-public:
 	virtual AnimalType GetType() = 0;
 
-	GetSetMem(int, Sceneid)
-	GetSetMem(uint64_t, ID)
-	GetSetMem(Transform, transform)
-	GetSetMem(bool, Lived)
-	GetSetMem(uint64_t, ResuTime)
+public:
+	// 属性
+	void AdditionAttributes(AttrsMap& attrs);
+	void RefreshProp();
+
+public:
+	GetSetMem(int, Sceneid)				// 场景id
+	GetSetMem(uint64_t, ID)				// 唯一ID
+	GetSetMem(Transform, transform)		// 坐标
+	GetSetMem(bool, Lived)				// 是否复活
+	GetSetMem(uint64_t, ResuTime)		// 复活时间
+	GetSetMem(uint64_t, RefreshTime)	// 刷新时间
+
+public:
+	AttrsMap m_AttrsMap;				// 属性集合
 };

@@ -83,7 +83,16 @@ struct ActivityBreakdown
 			{
 				continue;
 			}
+			if (m.second[2] <= 0)
+			{
+				continue;
+			}
 			if (day >= m.second[0] && day <= m.second[1])
+			{
+				index = m.first;
+				return m.second[2];
+			}
+			if (m.second[0] == m.second[1] && m.second[0] == 0 && m.second[1] == 0)
 			{
 				index = m.first;
 				return m.second[2];
@@ -101,8 +110,20 @@ struct ActivityBreakdown
 			{
 				continue;
 			}
-			if (sysSecond >= Util::GetCfgSecond(m.second) &&
-				sysSecond <= Util::GetCfgSecondEnd(m.second))
+			if (m.second[6] <= 0)
+			{
+				continue;
+			}
+
+			uint64_t beginTime = Util::GetCfgSecond(m.second);
+			uint64_t endTime = Util::GetCfgSecondEnd(m.second);
+			
+			if (sysSecond >= beginTime && sysSecond <= endTime)
+			{
+				index = m.first;
+				return m.second[6];
+			}
+			if (beginTime == endTime && beginTime == 0 && endTime == 0)
 			{
 				index = m.first;
 				return m.second[6];

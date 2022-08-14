@@ -11,4 +11,5 @@ public:
 	bool Exit(ActivityList* cfg);
 
 private:
+	int m_bmid;
 };

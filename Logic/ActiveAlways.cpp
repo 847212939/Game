@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-ActiveAlways::ActiveAlways(PlayerPrepClient* ppc)
+ActiveAlways::ActiveAlways(PlayerPrepClient* ppc) : m_bmid(0)
 {
 }
 
@@ -12,7 +12,7 @@ ActiveAlways::~ActiveAlways()
 bool ActiveAlways::Enter(ActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
-	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfgVec(cfg);
+	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfgVec(cfg, m_bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");

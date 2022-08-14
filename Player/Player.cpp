@@ -152,31 +152,6 @@ void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::str
 	DPPC->SaveUpdateSQL(sqlName, GetID(), data, sCondition, keyName, dataName);
 }
 
-void Player::AdditionAttributes(AttrsMap& attrs)
-{
-	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
-	{
-		if ((AttrsCmd)it->first <= AttrsCmd::AttrsCmd_Begin || (AttrsCmd)it->first >= AttrsCmd::AttrsCmd_End)
-		{
-			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
-			continue;
-		}
-		m_AttrsMap[it->first] += it->second;
-	}
-}
-
-void Player::RefreshProp()
-{
-	Cos os;
-	os << (int)m_AttrsMap.size();
-	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
-	{
-		os << it->first << it->second;
-	}
-
-	SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
-}
-
 // 加载数据库
 void Player::LoadMysql()
 {

@@ -34,7 +34,7 @@ public:
 
 public:
 	// 获取刷怪配置
-	CfgVector<BrushMonsterCfg>* GetBrushMonsterCfgVec(ActivityList* cfg);
+	CfgVector<BrushMonsterCfg>* GetBrushMonsterCfgVec(ActivityList* cfg, int& bmid);
 
 public:
 	// 清理上次活动残留怪
