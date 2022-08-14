@@ -90,6 +90,14 @@ enum class AnimalType
 	at_monster		= 2,														// 怪物
 };
 
+enum class ActType
+{
+	at_section_open = 1,			// 时间区间
+	at_always_open = 2,			// 全天开启
+	at_service_open = 3,			// 开服活动
+	at_timed_open = 4,			// 固定时间开启
+};
+
 class Animal;
 class PlayerClient;
 enum class ActType;
@@ -320,6 +328,17 @@ struct RefMonsterKey
 		return false;
 	}
 };
+
+struct ActtiveOpen
+{
+	int id;
+	bool open;
+	ActtiveOpen() : id(0), open(false) {}
+	ActtiveOpen(int nId, bool isOpen) : id(nId), open(isOpen) {}
+	~ActtiveOpen() {}
+};
+
+
 
 template<typename T>
 using CfgSet				= std::set<T>;
