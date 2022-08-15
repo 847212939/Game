@@ -103,24 +103,6 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 	}
 }
 
-void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
-{
-	MonsterMap::iterator it = m_MonsterMap.find(sid);
-	if (it == m_MonsterMap.end())
-	{
-		return;
-	}
-	else
-	{
-		MonsterKVMap::iterator pos = it->second.find(key);
-		if (pos == it->second.end())
-		{
-			return;
-		}
-		it->second.erase(pos);
-	}
-}
-
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 {
 	time_t cur = ::time(nullptr);
@@ -214,8 +196,39 @@ void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Ani
 		}
 		else
 		{
+			// 出错才会走到这里面来
+			while (!pos->second.empty())
+			{
+				Animal* pAnimal = pos->second.back();
+				if (pAnimal)
+				{
+					DSC->DelSceneAnimalMap(sid, pAnimal);
+					SafeDelete(pAnimal);
+				}
+				pos->second.pop_back();
+			}
+			pos->second.clear();
 			pos->second.swap(value);
+			COUT_LOG(LOG_CERROR, "add monster is err sid = %d, mid = %d", sid, key.mid);
 		}
+	}
+}
+
+void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
+{
+	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	if (it == m_MonsterMap.end())
+	{
+		return;
+	}
+	else
+	{
+		MonsterKVMap::iterator pos = it->second.find(key);
+		if (pos == it->second.end())
+		{
+			return;
+		}
+		it->second.erase(pos);
 	}
 }
 
