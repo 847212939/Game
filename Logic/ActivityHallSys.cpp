@@ -442,3 +442,59 @@ void ActivityHallSys::TimerCallback()
 		ActiveEnterCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
 	}
 }
+
+bool ActivityHallSys::Enter(ActivityList* cfg, int& bmid)
+{
+	CfgVector<BrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
+	if (!pVector)
+	{
+		COUT_LOG(LOG_CINFO, "pVector = null");
+		return false;
+	}
+	for (auto& config : *pVector)
+	{
+		RefMonsterKey key(config.mid, config.x, config.y);
+		std::vector<Animal*>* pValue = GetRefMonster(config.sid, key);
+		if (!(pValue ? CreateMonster(pValue, config) : InitMonster(config)))
+		{
+			continue;
+		}
+	}
+
+	return true;
+}
+
+bool ActivityHallSys::Exit(ActivityList* cfg, const int& bmid)
+{
+	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
+	CfgVector<BrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
+	if (!pVector)
+	{
+		COUT_LOG(LOG_CINFO, "pVector = null");
+		return false;
+	}
+	for (auto& config : *pVector)
+	{
+		RefMonsterKey key(config.mid, config.x, config.y);
+		std::vector<Animal*>* pValue = GetRefMonster(config.sid, key);
+		if (!pValue)
+		{
+			continue;
+		}
+		while (!pValue->empty())
+		{
+			Animal* pAnimal = pValue->back();
+			if (pAnimal)
+			{
+				DSC->DelSceneAnimalMap(config.sid, pAnimal);
+				SafeDelete(pAnimal);
+			}
+			pValue->pop_back();
+		}
+		pValue->clear();
+
+		DelRefMonster(config.sid, key);
+	}
+
+	return true;
+}

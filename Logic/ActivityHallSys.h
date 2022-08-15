@@ -34,6 +34,11 @@ public:
 	void AddRefMonster(int sid, RefMonsterKey& key, std::vector<Animal*>& value);
 	std::vector<Animal*>* GetRefMonster(int sid, RefMonsterKey& key);
 
+public:
+	// 通用场景进入和退出
+	bool Enter(ActivityList* cfg, int& bmid);
+	bool Exit(ActivityList* cfg, const int& bmid);
+
 private:
 	// 活动回调
 	bool ActiveCallBackFun(ActType type, ActivityList* cfg);
