@@ -30,9 +30,9 @@ public:
 
 public:
 	// 添加场景怪物
-	void DelRefMonsterVec(int sid, RefMonsterKey& key);
-	void AddRefMonsterVec(int sid, RefMonsterKey& key, std::vector<Animal*>& value);
-	std::vector<Animal*>* GetRefMonsterVec(int sid, RefMonsterKey& key);
+	void DelRefMonster(int sid, RefMonsterKey& key);
+	void AddRefMonster(int sid, RefMonsterKey& key, std::vector<Animal*>& value);
+	std::vector<Animal*>* GetRefMonster(int sid, RefMonsterKey& key);
 
 private:
 	// 活动回调

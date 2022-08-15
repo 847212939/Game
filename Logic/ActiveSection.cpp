@@ -21,7 +21,7 @@ bool ActiveSection::Enter(ActivityList* cfg)
 	for (auto& config : *pVector)
 	{
 		RefMonsterKey key(config.mid, config.x, config.y);
-		std::vector<Animal*>* pValue = activeSys.GetRefMonsterVec(config.sid, key);
+		std::vector<Animal*>* pValue = activeSys.GetRefMonster(config.sid, key);
 		if (!(pValue ? activeSys.CreateMonster(pValue, config) : activeSys.InitMonster(config)))
 		{
 			continue;
@@ -44,7 +44,7 @@ bool ActiveSection::Exit(ActivityList* cfg)
 	for (auto& config : *pVector)
 	{
 		RefMonsterKey key(config.mid, config.x, config.y);
-		std::vector<Animal*>* pValue = activeSys.GetRefMonsterVec(config.sid, key);
+		std::vector<Animal*>* pValue = activeSys.GetRefMonster(config.sid, key);
 		if (!pValue)
 		{
 			continue;
@@ -61,7 +61,7 @@ bool ActiveSection::Exit(ActivityList* cfg)
 		}
 		pValue->clear();
 
-		activeSys.DelRefMonsterVec(config.sid, key);
+		activeSys.DelRefMonster(config.sid, key);
 	}
 
 	return true;

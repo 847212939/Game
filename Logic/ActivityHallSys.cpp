@@ -72,7 +72,8 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
 	for (int i = 1; i < pr.second; i++)
 	{
-		CfgVector<BrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
+		CfgVector<BrushMonsterCfg>* pVector = 
+			activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
 		if (!pVector)
 		{
 			continue;
@@ -80,7 +81,7 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 		for (auto& config : *pVector)
 		{
 			RefMonsterKey key(config.mid, config.x, config.y);
-			std::vector<Animal*>* pValue = GetRefMonsterVec(config.sid, key);
+			std::vector<Animal*>* pValue = GetRefMonster(config.sid, key);
 			if (!pValue)
 			{
 				continue;
@@ -97,12 +98,12 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 			}
 			pValue->clear();
 
-			DelRefMonsterVec(config.sid, key);
+			DelRefMonster(config.sid, key);
 		}
 	}
 }
 
-void ActivityHallSys::DelRefMonsterVec(int sid, RefMonsterKey& key)
+void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
 {
 	MonsterMap::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
@@ -146,7 +147,7 @@ bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 	}
 
 	RefMonsterKey key(cfg.mid, cfg.x, cfg.y);
-	AddRefMonsterVec(cfg.sid, key, animalVec);
+	AddRefMonster(cfg.sid, key, animalVec);
 	
 	return true;
 }
@@ -174,7 +175,7 @@ bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCf
 	return true;
 }
 
-std::vector<Animal*>* ActivityHallSys::GetRefMonsterVec(int sid, RefMonsterKey& key)
+std::vector<Animal*>* ActivityHallSys::GetRefMonster(int sid, RefMonsterKey& key)
 {
 	MonsterMap::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
@@ -194,7 +195,7 @@ std::vector<Animal*>* ActivityHallSys::GetRefMonsterVec(int sid, RefMonsterKey& 
 	return nullptr;
 }
 
-void ActivityHallSys::AddRefMonsterVec(int sid, RefMonsterKey& key, std::vector<Animal*>& value)
+void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Animal*>& value)
 {
 	MonsterMap::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
