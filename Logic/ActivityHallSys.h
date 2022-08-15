@@ -58,10 +58,12 @@ private:
 	ActivityFunMap	m_ActivityFunMap;
 	ActivityFunMap	m_ActivityEnterFunMap;
 	ActivityFunMap	m_ActivityExitFunMap;
-	ActiveSection	m_ActiveSection;
-	ActiveAlways	m_ActiveAlways;
-	ActiveService	m_ActiveService;
-	ActiveTime		m_ActiveTime;
 	ActtiveOpenMap	m_ActtiveOpenMap;
 	MonsterMap		m_MonsterMap;
+
+public:
+	GetClass(ActiveSection, ActiveSection)
+	GetClass(ActiveAlways, ActiveAlways)
+	GetClass(ActiveService, ActiveService)
+	GetClass(ActiveTime, ActiveTime)
 };
