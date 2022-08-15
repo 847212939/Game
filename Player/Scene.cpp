@@ -93,3 +93,8 @@ void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 	it->second.erase(pos);
 }
 
+// …À∫¶º∆À„
+bool Scene::CalHurt(Animal* hited, Animal* behited)
+{
+	return true;
+}

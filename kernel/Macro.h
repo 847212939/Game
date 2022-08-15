@@ -26,6 +26,16 @@ public:\
 	}\
 private:
 
+#define GetClass(type,Name)\
+private:\
+	type m_##Name;\
+public:\
+	type& Get##Name()\
+	{\
+		return this->m_##Name;\
+	}\
+private:
+
 // ÅÐ¶Ï´óÐ¡º¯Êý
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))

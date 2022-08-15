@@ -17,9 +17,3 @@ SceneClient* PlayerPrepClient::GetSceneClient()
 {
 	return &m_SceneClient;
 }
-
-
-LoginSys& PlayerPrepClient::GetLoginSys()
-{
-	return m_LoginSys;
-}

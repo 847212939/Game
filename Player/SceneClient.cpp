@@ -17,8 +17,3 @@ PlayerCenterClient* SceneClient::GetPlayerCenterClient()
 {
 	return &m_PlayerCenterClient;
 }
-
-ActivityHallSys& SceneClient::GetActivityHallSys()
-{
-	return m_ActivityHallSys;
-}

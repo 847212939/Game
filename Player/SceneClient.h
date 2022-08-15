@@ -12,9 +12,10 @@ protected:
 
 public:
 	PlayerCenterClient* GetPlayerCenterClient();
-	ActivityHallSys& GetActivityHallSys();
 
 private:
 	PlayerCenterClient	m_PlayerCenterClient;
-	ActivityHallSys		m_ActivityHallSys;
+
+public:
+	GetClass(ActivityHallSys, ActivityHallSys)
 };

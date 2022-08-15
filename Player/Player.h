@@ -15,10 +15,6 @@ protected:
 	Player& operator=(const Player& my);
 
 public:
-	bool GetLoad();
-	int GetIndex();
-
-public:
 	// 消息处理
 	bool SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
@@ -29,7 +25,6 @@ public:
 	void LoadMysql();
 	void EnterScene();
 	void ExitGame(SocketCloseLine* pSocketClose);
-	void SetLoad(bool load);
 
 public:
 	void AttrsCallBackFun();
@@ -51,9 +46,16 @@ public:
 	void SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
+public:
+	GetSetMem(HeroType, Herotype)		// 英雄分类
+	GetSetMem(int, Heroid)				// 英雄id
+	GetSetMem(std::string, Heroname)	// 英雄name
+	GetSetMem(std::string, Playername)	// 玩家网名
+
+	GetSetMem(bool, Load)				// 玩家是否初始化完成
+	GetSetMem(unsigned int, Index)		// 玩家是否初始化完成
+
 private:
-	bool					m_load;					// 玩家是否初始化完成
-	unsigned int			m_index;				// 玩家索引
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
 	ExitFunMap				m_ExitFunMap;			// 回调函数集合
 	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合

@@ -11,8 +11,3 @@ PlayerClient::~PlayerClient()
 {
 
 }
-
-MoveSys& PlayerClient::GetMoveSys()
-{ 
-	return m_MoveSys; 
-}

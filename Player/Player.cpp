@@ -2,8 +2,12 @@
 
 Player::Player(const unsigned int& index) :
 	Animal(),
-	m_index(index),
-	m_load(false)
+	m_Index(index),
+	m_Load(false),
+	m_Herotype((HeroType)0),
+	m_Heroid(0),
+	m_Heroname(""),
+	m_Playername("")
 {
 }
 
@@ -18,13 +22,13 @@ AnimalType Player::GetType()
 
 bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
-	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_index);
+	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_Index);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_index);
+		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
-	return DTCPC->SendData(m_index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+	return DTCPC->SendData(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
@@ -176,22 +180,7 @@ void Player::CalAttrs()
 // Íæ¼ÒÍË³ö
 void Player::ExitGame(SocketCloseLine* pSocketClose)
 {
-	m_load = false;
+	SetLoad(false);
 
 	ExitCallBackFun(pSocketClose);
-}
-
-void Player::SetLoad(bool load)
-{
-	m_load = load;
-}
-
-int Player::GetIndex() 
-{ 
-	return m_index; 
-}
-
-bool Player::GetLoad() 
-{ 
-	return m_load; 
 }

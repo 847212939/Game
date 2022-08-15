@@ -14,6 +14,7 @@ enum class AttrsCmd
 	attrs_cs = 8,	// 暴击概率
 	attrs_pp = 9,	// 物理穿透
 	attrs_mp = 10,	// 魔法穿透
+	attrs_prd = 11,	// 真实伤害百分比
 
 	attrs_end
 };

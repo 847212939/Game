@@ -90,6 +90,16 @@ enum class AnimalType
 	at_monster		= 2,														// 怪物
 };
 
+// 场景内类型
+enum class HeroType
+{
+	ht_shooter	= 1,															// 射手
+	ht_warrior	= 2,															// 战士
+	ht_master	= 3,															// 法师
+	ht_meat		= 4,															// 肉
+	ht_wild		= 5,															// 打野
+};
+
 enum class ActType
 {
 	at_section_open = 1,			// 时间区间

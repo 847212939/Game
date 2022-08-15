@@ -12,9 +12,10 @@ protected:
 
 public:
 	SceneClient* GetSceneClient();
-	LoginSys& GetLoginSys();
 
 private:
 	SceneClient		m_SceneClient;
-	LoginSys		m_LoginSys;
+
+public:
+	GetClass(LoginSys, LoginSys)
 };

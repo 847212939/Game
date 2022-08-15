@@ -11,8 +11,5 @@ protected:
 	PlayerClient& operator=(const PlayerClient& my);
 
 public:
-	MoveSys& GetMoveSys();
-
-private:
-	MoveSys m_MoveSys;
+	GetClass(MoveSys, MoveSys)
 };
