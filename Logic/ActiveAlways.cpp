@@ -12,20 +12,9 @@ ActiveAlways::~ActiveAlways()
 bool ActiveAlways::Enter(ActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
-	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfg(cfg, m_bmid);
-	if (!pVector)
+	if (!activeSys.Enter(cfg, m_bmid))
 	{
-		COUT_LOG(LOG_CINFO, "pVector = null");
 		return false;
-	}
-	for (auto& config : *pVector)
-	{
-		RefMonsterKey key(config.mid, config.x, config.y);
-		std::vector<Animal*>* pValue = activeSys.GetRefMonster(config.sid, key);
-		if (!(pValue ? activeSys.CreateMonster(pValue, config) : activeSys.InitMonster(config)))
-		{
-			continue;
-		}
 	}
 
 	return true;
