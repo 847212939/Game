@@ -41,7 +41,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfgVec(ActivityList* cfg, int& bmid)
+CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(ActivityList* cfg, int& bmid)
 {
 	std::pair<int, int> pr; // type, index
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();

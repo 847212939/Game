@@ -11,7 +11,7 @@ ActiveTime::~ActiveTime()
 bool ActiveTime::Enter(ActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
-	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfgVec(cfg, m_bmid);
+	CfgVector<BrushMonsterCfg>* pVector = activeSys.GetBrushMonsterCfg(cfg, m_bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");
