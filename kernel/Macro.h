@@ -11,6 +11,7 @@
 #define DSC			DPPC->GetSceneClient()
 #define DPCC		DSC->GetPlayerCenterClient()
 
+// Get Set mem
 #define GetSetMem(type,Name)\
 private:\
 	type m_##Name;\
@@ -26,6 +27,7 @@ public:\
 	}\
 private:
 
+// 类型返回以引用方式
 #define GetClass(type,Name)\
 private:\
 	type m_##Name;\
