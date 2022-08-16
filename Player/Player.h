@@ -47,9 +47,6 @@ public:
 	void SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 public:
-	GetSetMem(HeroType, Herotype)		// 英雄分类
-	GetSetMem(int, Heroid)				// 英雄id
-	GetSetMem(std::string, Heroname)	// 英雄name
 	GetSetMem(std::string, Playername)	// 玩家网名
 
 	GetSetMem(bool, Load)				// 玩家是否初始化完成

@@ -4,9 +4,6 @@ Player::Player(const unsigned int& index) :
 	Animal(),
 	m_Index(index),
 	m_Load(false),
-	m_Herotype((HeroType)0),
-	m_Heroid(0),
-	m_Heroname(""),
 	m_Playername("")
 {
 }

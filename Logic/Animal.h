@@ -21,6 +21,9 @@ public:
 	GetSetMem(bool, Lived)				// 是否复活
 	GetSetMem(time_t, ResuTime)			// 复活时间
 	GetSetMem(time_t, RefreshTime)		// 刷新时间
+	GetSetMem(int, Animalid)			// 动物id区分是什么动物
+	GetSetMem(HeroType, Animaltype)		// 英雄分类
+	GetSetMem(std::string, Animalname)	// 英雄name
 
 public:
 	AttrsMap m_AttrsMap;				// 属性集合

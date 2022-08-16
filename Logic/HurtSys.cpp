@@ -34,51 +34,69 @@ void HurtSys::Network(PlayerInfo* playerInfo)
 
 bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 {
-	int sceneid = 0;
+	int sceneid = 0, skillid = 0, norattack = 0;
 	uint64_t hitedid = 0, behitedid = 0;
-	int skillid = 0;
 
-	is >> sceneid >> hitedid >> behitedid >> skillid;
+	is >> sceneid >> hitedid >> behitedid >> skillid >> norattack;
 
 	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
 	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
-	if (!hited)
+	
+	if (norattack == 0)			// 普攻
 	{
-		COUT_LOG(LOG_CERROR, "hited = null");
-		return false;
+		NormalAttack(hited, behited);
 	}
-	if (hited->GetType() == AnimalType::at_player)
+	else if (norattack == 1)	// 技能
 	{
-		PeopleAttackMonster(dynamic_cast<PlayerClient*>(hited), behited, skillid);
-	}
-	else if (hited->GetType() == AnimalType::at_monster)
-	{
-		MonsterAttackPeople(dynamic_cast<MonsterClient*>(hited), behited, skillid);
+		SkillAttack(hited, behited, skillid);
 	}
 
 	return true;
 }
 
-int HurtSys::PeopleAttackMonster(PlayerClient* hited, Animal* behited, int skillid)
+// 普通攻击
+void HurtSys::NormalAttack(Animal* hited, Animal* behited)
 {
+	if (!hited || !behited)
+	{
+		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		return;
+	}
+}
+
+// 技能攻击
+void HurtSys::SkillAttack(Animal* hited, Animal* behited, int skillid)
+{
+	if (!hited)
+	{
+		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		return;
+	}
+
 	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
-	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(hited->GetHeroid());
+	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(hited->GetAnimalid());
 	if (!pCHeroList)
 	{
 		COUT_LOG(LOG_CERROR, "pCHeroList = null");
-		return 0;
+		return;
 	}
 	if (skillid > pCHeroList->skillId.size() || skillid <= 0)
 	{
 		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size() || skillid <= 0");
-		return 0;
+		return;
 	}
 	int relSkillID = pCHeroList->skillId[(size_t)skillid - 1];
-	
-	return 0;
+	const CSkillIdList* pCSkillIdList = skillCfg.GetCSkillIdListCfg(relSkillID);
+	if (!pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		return;
+	}
 }
 
-int HurtSys::MonsterAttackPeople(MonsterClient* hited, Animal* behited, int skillid)
+bool HurtSys::CalHurt(Animal* hited, Animal* behited, int skillid)
 {
-	return 0;
+	
+
+	return true;
 }

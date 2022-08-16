@@ -17,8 +17,9 @@ private:
 
 private:
 	bool CalHurt(Cis& is, PlayerInfo* playerInfo);
+	bool CalHurt(Animal* hited, Animal* behited, int skillid);
 
 private:
-	int MonsterAttackPeople(MonsterClient* hited, Animal* behited, int skillid);
-	int PeopleAttackMonster(PlayerClient* hited, Animal* behited, int skillid);
+	void NormalAttack(Animal* hited, Animal* behited);
+	void SkillAttack(Animal* hited, Animal* behited, int skillid);
 };
