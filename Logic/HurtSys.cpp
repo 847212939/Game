@@ -64,12 +64,12 @@ int HurtSys::PeopleAttackMonster(PlayerClient* hited, Animal* behited, int skill
 		COUT_LOG(LOG_CERROR, "pCHeroList = null");
 		return 0;
 	}
-	if (skillid > pCHeroList->skillId.size())
+	if (skillid > pCHeroList->skillId.size() || skillid <= 0)
 	{
-		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size()");
+		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size() || skillid <= 0");
 		return 0;
 	}
-	int relSkillID = pCHeroList->skillId[skillid - 1];
+	int relSkillID = pCHeroList->skillId[(size_t)skillid - 1];
 	
 	return 0;
 }
