@@ -43,18 +43,38 @@ bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
 	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
 
-	return CalHurt(hited, behited);
-}
-
-// ¼ÆËãÉËº¦ @hited ´òÈË @behited ±»´ò
-// ÉËº¦ = ¹¥»÷*(100¡Â((100+((·ÀÓù-·ÀÓù´©Í¸Öµ)*(1-·ÀÓù´©Í¸°Ù·Ö±È)¡£
-bool HurtSys::CalHurt(Animal* hited, Animal* behited)
-{
-	if (!hited || !behited)
+	if (hited->GetType() == AnimalType::at_player && behited->GetType() == AnimalType::at_monster)
 	{
-		COUT_LOG(LOG_CERROR, "hited = null || behited = null");
-		return false;
+		PeopleAttackMonster(dynamic_cast<PlayerClient*>(hited), behited, skillid);
+	}
+	else if (hited->GetType() == AnimalType::at_monster && behited->GetType() == AnimalType::at_player)
+	{
+		MonsterAttackPeople(dynamic_cast<MonsterClient*>(hited), behited, skillid);
 	}
 
 	return true;
+}
+
+int HurtSys::PeopleAttackMonster(PlayerClient* hited, Animal* behited, int skillid)
+{
+	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
+	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(hited->GetHeroid());
+	if (!pCHeroList)
+	{
+		COUT_LOG(LOG_CERROR, "pCHeroList = null");
+		return 0;
+	}
+	if (skillid > pCHeroList->skillId.size())
+	{
+		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size()");
+		return 0;
+	}
+	int relSkillID = pCHeroList->skillId[skillid - 1];
+	
+	return 0;
+}
+
+int HurtSys::MonsterAttackPeople(MonsterClient* hited, Animal* behited, int skillid)
+{
+	return 0;
 }

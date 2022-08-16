@@ -1,4 +1,5 @@
 #pragma once
+class MonsterClient;
 
 enum class HurtSysMsgCmd
 {
@@ -15,6 +16,9 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
-	bool CalHurt(Animal* hited, Animal* behited);
 	bool CalHurt(Cis& is, PlayerInfo* playerInfo);
+
+private:
+	int MonsterAttackPeople(MonsterClient* hited, Animal* behited, int skillid);
+	int PeopleAttackMonster(PlayerClient* hited, Animal* behited, int skillid);
 };

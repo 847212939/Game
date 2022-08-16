@@ -13,6 +13,7 @@ struct CHeroList
 	}
 
 	CHeroList() : heroId(0), heroType(0), heroName("") {}
+	CHeroList(int heroid) : heroId(heroid), heroType(0), heroName("") {}
 	~CHeroList(){}
 
 	bool operator < (const CHeroList& other) const
@@ -33,6 +34,7 @@ struct CSkillIdList
 	}
 
 	CSkillIdList() : skillId(0) {}
+	CSkillIdList(int skillid) : skillId(skillid) {}
 	~CSkillIdList(){}
 
 	bool operator < (const CSkillIdList& other) const
@@ -49,10 +51,14 @@ public:
 	~SkillCfg();
 
 public:
+	const CHeroList* GetCHeroListCfg(int heroid);
+	const CSkillIdList* GetCSkillIdListCfg(int skillid);
+
+public:
 	void ReadHeroList(CHeroList* config);
 	void ReadSkillIdList(CSkillIdList* config);
 
 private:
-	CfgSet<CHeroList>	m_HeroListSet;
-	CfgSet<CSkillIdList> m_SkillIdListSet;
+	CfgSet<CHeroList>		m_HeroListSet;
+	CfgSet<CSkillIdList>	m_SkillIdListSet;
 };
