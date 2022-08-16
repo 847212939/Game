@@ -42,12 +42,16 @@ bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 
 	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
 	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
-
-	if (hited->GetType() == AnimalType::at_player && behited->GetType() == AnimalType::at_monster)
+	if (!hited)
+	{
+		COUT_LOG(LOG_CERROR, "hited = null");
+		return false;
+	}
+	if (hited->GetType() == AnimalType::at_player)
 	{
 		PeopleAttackMonster(dynamic_cast<PlayerClient*>(hited), behited, skillid);
 	}
-	else if (hited->GetType() == AnimalType::at_monster && behited->GetType() == AnimalType::at_player)
+	else if (hited->GetType() == AnimalType::at_monster)
 	{
 		MonsterAttackPeople(dynamic_cast<MonsterClient*>(hited), behited, skillid);
 	}

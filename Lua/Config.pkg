@@ -121,6 +121,7 @@ struct CHeroList
 struct CSkillIdList
 {
 	int skillId;
+	int skillType;
 	AttrsMap attrs;
 	void AddAttrs(int id, int value);
 	CSkillIdList();

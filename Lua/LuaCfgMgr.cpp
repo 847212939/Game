@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Tue Aug 16 16:09:08 2022.
+** Generated automatically by tolua++-1.0.92 on Tue Aug 16 22:28:44 2022.
 */
 
 #ifndef __cplusplus
@@ -2237,6 +2237,36 @@ static int tolua_set_CSkillIdList_skillId(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: skillType of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_skillType
+static int tolua_get_CSkillIdList_skillType(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillType'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->skillType);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: skillType of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_skillType
+static int tolua_set_CSkillIdList_skillType(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillType'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->skillType = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: attrs of class  CSkillIdList */
 #ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_attrs
 static int tolua_get_CSkillIdList_attrs(lua_State* tolua_S)
@@ -2534,6 +2564,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
   #endif
   tolua_beginmodule(tolua_S,"CSkillIdList");
    tolua_variable(tolua_S,"skillId",tolua_get_CSkillIdList_skillId,tolua_set_CSkillIdList_skillId);
+   tolua_variable(tolua_S,"skillType",tolua_get_CSkillIdList_skillType,tolua_set_CSkillIdList_skillType);
    tolua_variable(tolua_S,"attrs",tolua_get_CSkillIdList_attrs,tolua_set_CSkillIdList_attrs);
    tolua_function(tolua_S,"AddAttrs",tolua_Config_CSkillIdList_AddAttrs00);
    tolua_function(tolua_S,"new",tolua_Config_CSkillIdList_new00);

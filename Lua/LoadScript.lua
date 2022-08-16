@@ -178,6 +178,7 @@ function ReadSkillCfg()
             for _,value in ipairs(SkillCfg.SkillIdList) do
                 local config = CSkillIdList:new()
                 config.skillId = value.skillId or 0
+                config.skillType = value.skillType or 0
                 if value.attrs then
                     for _,v in ipairs(value.attrs) do
                         config:AddAttrs(v[1] or 0, v[2] or 0)
