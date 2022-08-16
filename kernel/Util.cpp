@@ -8,10 +8,10 @@ time_t				Util::m_OpenServerTimeSecond = 0;
 struct tm			Util::m_tm = tm();
 int					Util::m_day = 0;
 
-Util& Util::Instance()
+Util* Util::Instance()
 {
 	static Util g_mgr;
-	return g_mgr;
+	return &g_mgr;
 }
 
 Util::Util() : 

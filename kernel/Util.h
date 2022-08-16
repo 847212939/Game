@@ -4,7 +4,7 @@ class IDGen;
 class Util
 {
 public:
-	static Util& Instance();
+	static Util* Instance();
 
 private:
 	Util();

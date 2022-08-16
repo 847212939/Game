@@ -4,14 +4,10 @@ ConfigMgr = ConfigMgr:new()
 
 function LoadConfig()
     local cnt = GetLength(ConfigMgrFnTable)
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration begin")
-
 	for i = 1, cnt do
 		ConfigMgrFnTable[i]()
 	end
-
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration end")
-    ConfigMgr:CoutLog(LOG_CINFO, "load configurations cnt = " .. tostring(cnt))
+    ConfigMgr:CoutLog(LOG_CINFO, "Load Config cnt = " .. tostring(cnt))
     return ConfigMgr
 end
 
@@ -24,8 +20,7 @@ function GetLength(t)
 end
 
 function ReadBaseCfg()
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration BaseCfg begin")
-
+    ConfigMgr:CoutLog(LOG_CINFO, "Load BaseCfg")
     local BaseCfg = require "BaseCfg"
 
     if BaseCfg then
@@ -57,14 +52,11 @@ function ReadBaseCfg()
             config:delete()
         end
     end
-
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration BaseCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadBaseCfg)
 
 function ReadActivityCfg()
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadActivityCfg begin")
-
+    ConfigMgr:CoutLog(LOG_CINFO, "Load ReadActivityCfg")
     local ActivityCfg = require "ActivityCfg"
 
     if ActivityCfg then
@@ -148,13 +140,11 @@ function ReadActivityCfg()
             end
         end
     end
-
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadActivityCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadActivityCfg)
 
 function ReadSkillCfg()
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadSkillCfg begin")
+    ConfigMgr:CoutLog(LOG_CINFO, "Load ReadSkillCfg")
     local SkillCfg = require "SkillCfg"
 
     if SkillCfg then
@@ -189,7 +179,5 @@ function ReadSkillCfg()
             end
         end
     end
-
-    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadSkillCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadSkillCfg)
