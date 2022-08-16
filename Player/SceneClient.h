@@ -18,4 +18,5 @@ private:
 
 public:
 	GetClass(ActivityHallSys, ActivityHallSys)
+	GetClass(HurtSys, HurtSys)
 };

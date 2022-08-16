@@ -9,7 +9,9 @@ public:
 
 public:
 	//  Ù–‘
+	void SetAttrValue(AttrsCmd attrType, int attr);
 	void AdditionAttributes(AttrsMap& attrs);
+	int GetAttrValue(AttrsCmd attrType);
 	void RefreshProp();
 
 public:

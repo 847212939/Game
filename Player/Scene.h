@@ -18,12 +18,9 @@ public:
 	bool EnterScene(Animal* animal, int sceneid, Transform transform);
 
 public:
-	// 计算伤害 @hited 打人 @behited 被打
-	bool CalHurt(Animal* hited, Animal* behited);
-
-public:
 	void AddSceneAnimalMap(int sceneid, Animal* animal);
 	void DelSceneAnimalMap(int sceneid, Animal* animal);
+	Animal* GetSceneAnimal(int sceneid, uint64_t uid);
 
 private:
 	void UpdateScene(Animal* animal, int sceneid, Transform transform);

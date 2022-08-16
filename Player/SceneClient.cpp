@@ -3,7 +3,8 @@
 SceneClient::SceneClient(PlayerPrepClient* ppc) :
 	Scene(),
 	m_PlayerCenterClient(ppc), 
-	m_ActivityHallSys(ppc)
+	m_ActivityHallSys(ppc),
+	m_HurtSys(ppc)
 {
 
 }

@@ -93,8 +93,20 @@ void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 	it->second.erase(pos);
 }
 
-// …À∫¶º∆À„
-bool Scene::CalHurt(Animal* hited, Animal* behited)
+Animal* Scene::GetSceneAnimal(int sceneid, uint64_t uid)
 {
-	return true;
+	SceneAnimalMap::iterator it = m_SceneAnimalMap.find(sceneid);
+	if (it == m_SceneAnimalMap.end())
+	{
+		return nullptr;
+	}
+
+	std::map<uint64_t, Animal*>::iterator pos = it->second.find(uid);
+	if (pos == it->second.end())
+	{
+		return nullptr;
+	}
+
+	return pos->second;
 }
+

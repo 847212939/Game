@@ -65,6 +65,7 @@ extern "C"
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
+#include "../Logic/HurtSys.h"				// 伤害
 #include "../Logic/Monster.h"				// 怪物
 #include "../Logic/MonsterClient.h"			// 怪物
 #include "../Logic/ActivityHallCfg.h"		// 活动配置

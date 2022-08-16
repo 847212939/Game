@@ -23,7 +23,7 @@ void Animal::AdditionAttributes(AttrsMap& attrs)
 			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
 			continue;
 		}
-		m_AttrsMap[it->first] += it->second;
+		m_AttrsMap[(AttrsCmd)it->first] += it->second;
 	}
 }
 
@@ -33,7 +33,7 @@ void Animal::RefreshProp()
 	os << (int)m_AttrsMap.size();
 	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{
-		os << it->first << it->second;
+		os << (int)it->first << (int)it->second;
 	}
 
 	if (GetType() == AnimalType::at_player)
@@ -42,4 +42,26 @@ void Animal::RefreshProp()
 	}
 }
 
+int Animal::GetAttrValue(AttrsCmd attrType)
+{
+	AttrsMap::iterator it = m_AttrsMap.find(attrType);
+	if (it == m_AttrsMap.end())
+	{
+		return 0;
+	}
 
+	return it->second;
+}
+
+void Animal::SetAttrValue(AttrsCmd attrType, int attr)
+{
+	AttrsMap::iterator it = m_AttrsMap.find(attrType);
+	if (it == m_AttrsMap.end())
+	{
+		m_AttrsMap.insert(std::make_pair(attrType, attr));
+	}
+	else
+	{
+		it->second += attr;
+	}
+}

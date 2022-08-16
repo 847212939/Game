@@ -14,7 +14,7 @@ public:
 	SceneClient* GetSceneClient();
 
 private:
-	SceneClient		m_SceneClient;
+	SceneClient	m_SceneClient;
 
 public:
 	GetClass(LoginSys, LoginSys)

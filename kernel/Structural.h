@@ -358,7 +358,7 @@ template<typename T>
 using CfgMap				= std::map<int, CfgVector<T>>;
 using IntVector				= std::vector<int>;
 using TimerList				= std::list<UINT>;
-using AttrsMap				= std::map<int, int>;
+using AttrsMap				= std::map<AttrsCmd, int>;
 using OnLinePlayerSet		= std::set<unsigned int>;
 using SqlList				= std::list<std::string>;
 using LoadPlayerList		= std::list<LoadPlayerKey>;
