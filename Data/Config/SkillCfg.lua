@@ -11,7 +11,7 @@ HeroList=
 
 SkillIdList=
 {
-{skillId=10001,attrs={{}}},
+{skillId=10001,attrs={{1,100},{2,200}}},
 {skillId=10002,attrs={{}}},
 {skillId=10003,attrs={{}}},
 {skillId=10004,attrs={{}}},

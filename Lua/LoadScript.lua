@@ -39,22 +39,22 @@ function ReadBaseCfg()
         ConfigMgr:ReadOpenServerTime(BaseCfg.OpenServerTime or 0)
 
         if BaseCfg.LogicCfg then
-            local CLogicCfg = CLogicCfg:new()
-            CLogicCfg.ip = BaseCfg.LogicCfg.ip or 0
-            CLogicCfg.port = BaseCfg.LogicCfg.port or 0
-            ConfigMgr:ReadLogicCfg(CLogicCfg)
-            CLogicCfg:delete()
+            local config = CLogicCfg:new()
+            config.ip = BaseCfg.LogicCfg.ip or 0
+            config.port = BaseCfg.LogicCfg.port or 0
+            ConfigMgr:ReadLogicCfg(config)
+            config:delete()
         end
 
         if BaseCfg.DbCfg then
-            local CDbCfg = CDbCfg:new()
-            CDbCfg.ip = BaseCfg.DbCfg.ip or 0
-            CDbCfg.user = BaseCfg.DbCfg.user or 0
-            CDbCfg.passwd = BaseCfg.DbCfg.passwd or 0
-            CDbCfg.database = BaseCfg.DbCfg.database or 0
-            CDbCfg.port = BaseCfg.DbCfg.port or 0
-            ConfigMgr:ReadDbCfg(CDbCfg)
-            CDbCfg:delete()
+            local config = CDbCfg:new()
+            config.ip = BaseCfg.DbCfg.ip or 0
+            config.user = BaseCfg.DbCfg.user or 0
+            config.passwd = BaseCfg.DbCfg.passwd or 0
+            config.database = BaseCfg.DbCfg.database or 0
+            config.port = BaseCfg.DbCfg.port or 0
+            ConfigMgr:ReadDbCfg(config)
+            config:delete()
         end
     end
 
@@ -70,78 +70,81 @@ function ReadActivityCfg()
     if ActivityCfg then
         if ActivityCfg.ActivityList then
             for _,value in ipairs(ActivityCfg.ActivityList) do
-                local CActivityList = CActivityList:new()
-                CActivityList.id = value.id or 0
-                CActivityList.type = value.type or 0
-                CActivityList.sid = value.sid or 0
-                CActivityList.activityBreakdown = value.activityBreakdown or 0
+                local config = CActivityList:new()
+                config.id = value.id or 0
+                config.type = value.type or 0
+                config.sid = value.sid or 0
+                config.activityBreakdown = value.activityBreakdown or 0
                 if value.beginTime then
                     for k,v in ipairs(value.beginTime) do
-	                    CActivityList:AddBeginTime(v or 0)
+	                    config:AddBeginTime(v or 0)
                     end
                 end
                 if value.endTime then
                     for k,v in ipairs(value.endTime) do
-	                    CActivityList:AddEndTime(v or 0)
+	                    config:AddEndTime(v or 0)
                     end
                 end
                 if value.solidTime then
                     for k,v in ipairs(value.solidTime) do
-	                    CActivityList:AddSolidTime(v or 0)
+	                    config:AddSolidTime(v or 0)
                     end
                 end
                 if value.openServerTime then
                     for k,v in ipairs(value.openServerTime) do
-	                    CActivityList:AddOpenServerTime(v or 0)
+	                    config:AddOpenServerTime(v or 0)
                     end
                 end
-                ConfigMgr:ReadActivityList(CActivityList)
-                CActivityList:delete()
+                ConfigMgr:ReadActivityList(config)
+                config:delete()
             end
         end
 
         if ActivityCfg.BrushMonsterCfg then
             for _,value in ipairs(ActivityCfg.BrushMonsterCfg) do
-                local CBrushMonsterCfg = CBrushMonsterCfg:new()
-                CBrushMonsterCfg.id = value.id or 0
-                CBrushMonsterCfg.sid = value.sid or 0
-                CBrushMonsterCfg.mid = value.mid or 0
-                CBrushMonsterCfg.count = value.count or 0
-                CBrushMonsterCfg.delayTime = value.delayTime or 0
-                CBrushMonsterCfg.refreshTime = value.refreshTime or 0
-                CBrushMonsterCfg.x = value.x or 0
-                CBrushMonsterCfg.y = value.y or 0
-                ConfigMgr:ReadBrushMonsterCfg(CBrushMonsterCfg)
-                CBrushMonsterCfg:delete()
+                local config = CBrushMonsterCfg:new()
+                config.id = value.id or 0
+                config.sid = value.sid or 0
+                config.mid = value.mid or 0
+                config.count = value.count or 0
+                config.delayTime = value.delayTime or 0
+                config.refreshTime = value.refreshTime or 0
+                config.x = value.x or 0
+                config.y = value.y or 0
+                ConfigMgr:ReadBrushMonsterCfg(config)
+                config:delete()
             end
         end
 
         if ActivityCfg.ActivityBreakdown then
             for _,value in ipairs(ActivityCfg.ActivityBreakdown) do
-                local CActivityBreakdown = CActivityBreakdown:new()
-                CActivityBreakdown.id = value.id or 0
-                CActivityBreakdown.dayBreakdown = value.dayBreakdown or 0
-                CActivityBreakdown.hourBreakdown = value.hourBreakdown or 0
-                if ActivityCfg.ActivityBreakdown.dayBreakdown > 0 then
+                local config = CActivityBreakdown:new()
+                config.id = value.id or 0
+                config.dayBreakdown = value.dayBreakdown or 0
+                config.hourBreakdown = value.hourBreakdown or 0
+
+                if value.dayBreakdown > 0 then
                     if value.dayBreakdownList then
                         for index,vp in ipairs(value.dayBreakdownList) do
                             for _,vc in ipairs(vp) do
-	                            CActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
+	                            config:AddDayBreakdownList(index or 0, vc or 0)
                             end
                         end
                     end
                 end
-                if ActivityCfg.ActivityBreakdown.hourBreakdown > 0 then
+
+                if value.hourBreakdown > 0 then
                     if value.hourBreakdownList then
                         for index,vp in ipairs(value.hourBreakdownList) do
                             for _,vc in ipairs(vp) do
-	                            CActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
+	                            config:AddHourBreakdownList(index or 0, vc or 0)
                             end
                         end
                     end
                 end
-                ConfigMgr:ReadActivityBreakdownCfg(CActivityBreakdown)
-                CActivityBreakdown:delete()
+
+                ConfigMgr:ReadActivityBreakdownCfg(config)
+                config:delete()
             end
         end
     end
@@ -157,31 +160,31 @@ function ReadSkillCfg()
     if SkillCfg then
         if SkillCfg.HeroList then
             for _,value in ipairs(SkillCfg.HeroList) do
-                local CHeroList = CHeroList:new()
-                CHeroList.heroId = value.heroId or 0
-                CHeroList.heroType = value.heroType or 0
-                CHeroList.heroName = value.heroName or 0
+                local config = CHeroList:new()
+                config.heroId = value.heroId or 0
+                config.heroType = value.heroType or 0
+                config.heroName = value.heroName or 0
                 if SkillCfg.HeroList.skillId then
                     for _,v in ipairs(SkillCfg.HeroList.skillId) do
-                        CHeroList:AddskillId(v)
+                        config:AddskillId(v)
                     end
                 end
-                ConfigMgr:ReadHeroList(CHeroList)
-                CHeroList:delete()
+                ConfigMgr:ReadHeroList(config)
+                config:delete()
             end
         end
 
         if SkillCfg.SkillIdList then
             for _,value in ipairs(SkillCfg.SkillIdList) do
-                local CSkillIdList = SkillIdList:new()
-                CSkillIdList.skillId = value.skillId or 0
-                if SkillCfg.SkillIdList.attrs then
-                    for _,v in ipairs(SkillCfg.SkillIdList.attrs) do
-                        
+                local config = CSkillIdList:new()
+                config.skillId = value.skillId or 0
+                if value.attrs then
+                    for _,v in ipairs(value.attrs) do
+                        config:AddAttrs(v[1] or 0, v[2] or 0)
                     end
                 end
-                ConfigMgr:ReadSkillIdList(CSkillIdList)
-                CSkillIdList:delete()
+                ConfigMgr:ReadSkillIdList(config)
+                config:delete()
             end
         end
     end
