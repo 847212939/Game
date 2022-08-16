@@ -102,7 +102,7 @@ function ReadActivityCfg()
 
         if ActivityCfg.BrushMonsterCfg then
             for _,value in ipairs(ActivityCfg.BrushMonsterCfg) do
-                local CBrushMonsterCfg = BrushMonsterCfg:new()
+                local CBrushMonsterCfg = CBrushMonsterCfg:new()
                 CBrushMonsterCfg.id = value.id or 0
                 CBrushMonsterCfg.sid = value.sid or 0
                 CBrushMonsterCfg.mid = value.mid or 0
@@ -161,26 +161,27 @@ function ReadSkillCfg()
                 CHeroList.heroId = value.heroId or 0
                 CHeroList.heroType = value.heroType or 0
                 CHeroList.heroName = value.heroName or 0
-                if ActivityBreakdown.dayBreakdown > 0 then
-                    if value.dayBreakdownList then
-                        for index,vp in ipairs(value.dayBreakdownList) do
-                            for _,vc in ipairs(vp) do
-	                            ActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
-                            end
-                        end
+                if SkillCfg.HeroList.skillId then
+                    for _,v in ipairs(SkillCfg.HeroList.skillId) do
+                        CHeroList:AddskillId(v)
                     end
                 end
-                if ActivityBreakdown.hourBreakdown > 0 then
-                    if value.hourBreakdownList then
-                        for index,vp in ipairs(value.hourBreakdownList) do
-                            for _,vc in ipairs(vp) do
-	                            ActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
-                            end
-                        end
+                ConfigMgr:ReadHeroList(CHeroList)
+                CHeroList:delete()
+            end
+        end
+
+        if SkillCfg.SkillIdList then
+            for _,value in ipairs(SkillCfg.SkillIdList) do
+                local CSkillIdList = SkillIdList:new()
+                CSkillIdList.skillId = value.skillId or 0
+                if SkillCfg.SkillIdList.attrs then
+                    for _,v in ipairs(SkillCfg.SkillIdList.attrs) do
+                        
                     end
                 end
-                ConfigMgr:ReadActivityBreakdownCfg(ActivityBreakdown)
-                ActivityBreakdown:delete()
+                ConfigMgr:ReadSkillIdList(CSkillIdList)
+                CSkillIdList:delete()
             end
         end
     end
