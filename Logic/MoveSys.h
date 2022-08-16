@@ -1,13 +1,13 @@
 #pragma once
-
 class PlayerClient;
+
+enum class MoveSysMsgCmd
+{
+	cs_move = 1,  // ÒÆ¶¯
+};
+
 class MoveSys
 {
-public:
-	enum class MoveSysMsgCmd
-	{
-		cs_move = 1,  // ÒÆ¶¯
-	};
 public:
 	MoveSys(PlayerClient* playerClient);
 	virtual~MoveSys();

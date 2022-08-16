@@ -36,8 +36,9 @@ bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 {
 	int sceneid = 0;
 	uint64_t hitedid = 0, behitedid = 0;
+	int skillid = 0;
 
-	is >> sceneid >> hitedid >> behitedid;
+	is >> sceneid >> hitedid >> behitedid >> skillid;
 
 	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
 	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
@@ -46,6 +47,7 @@ bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 }
 
 // ¼ÆËãÉËº¦ @hited ´òÈË @behited ±»´ò
+// ÉËº¦ = ¹¥»÷*(100¡Â((100+((·ÀÓù-·ÀÓù´©Í¸Öµ)*(1-·ÀÓù´©Í¸°Ù·Ö±È)¡£
 bool HurtSys::CalHurt(Animal* hited, Animal* behited)
 {
 	if (!hited || !behited)
@@ -53,8 +55,6 @@ bool HurtSys::CalHurt(Animal* hited, Animal* behited)
 		COUT_LOG(LOG_CERROR, "hited = null || behited = null");
 		return false;
 	}
-
-	hited->GetAttrValue(AttrsCmd::attrs_hp);
 
 	return true;
 }

@@ -40,6 +40,11 @@ public:
 	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
 	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
 
+public:
+	// ¼¼ÄÜ
+	void ReadHeroList(HeroList* config);
+	void ReadSkillIdList(SkillIdList* config);
+
 };
 
 struct LogicCfg
@@ -100,4 +105,24 @@ struct BrushMonsterCfg
 	int y;
 	BrushMonsterCfg();
 	~BrushMonsterCfg();
+};
+
+struct HeroList
+{
+	int heroId;
+	int heroType;
+	std::string heroName;
+	void AddskillId(int skillid);
+
+	HeroList();
+	~HeroList();
+};
+
+struct SkillIdList
+{
+	int skillId;
+	AttrsMap attrs;
+	void AddAttrs(int id, int value);
+	SkillIdList();
+	~SkillIdList();
 };

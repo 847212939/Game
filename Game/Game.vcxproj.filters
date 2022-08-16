@@ -65,6 +65,9 @@
     <Filter Include="游戏逻辑\伤害系统">
       <UniqueIdentifier>{6f4b028f-9c90-4e95-a509-f1166def7104}</UniqueIdentifier>
     </Filter>
+    <Filter Include="游戏逻辑\技能系统">
+      <UniqueIdentifier>{6c4d5fde-3bef-4399-9852-0d1bc48137cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +165,12 @@
     </ClCompile>
     <ClCompile Include="..\Logic\HurtSys.cpp">
       <Filter>游戏逻辑\伤害系统</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\SkillSys.h.cpp">
+      <Filter>游戏逻辑\技能系统</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\SkillCfg.cpp">
+      <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +285,12 @@
     <ClInclude Include="..\Logic\HurtSys.h">
       <Filter>游戏逻辑\伤害系统</Filter>
     </ClInclude>
+    <ClInclude Include="..\Logic\SkillSys.h">
+      <Filter>游戏逻辑\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\SkillCfg.h">
+      <Filter>游戏逻辑\技能系统</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">
@@ -288,6 +303,9 @@
       <Filter>配置管理\配置脚本</Filter>
     </None>
     <None Include="..\Data\Config\ActivityCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="..\Data\Config\SkillCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
   </ItemGroup>

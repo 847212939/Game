@@ -68,22 +68,27 @@ void ConfigMgr::ReadOpenServerTime(std::string servertm)
 	m_CBaseCfgMgr.ReadOpenServerTime(servertm);
 }
 
-ActivityHallCfg& ConfigMgr::GetActivityHallCfg()
-{
-	return m_ActivityHallCfgMgr;
-}
-
 void ConfigMgr::ReadActivityBreakdownCfg(ActivityBreakdown* config)
 {
-	m_ActivityHallCfgMgr.ReadActivityBreakdownCfg(config);
+	m_ActivityHallCfg.ReadActivityBreakdownCfg(config);
 }
 
 void ConfigMgr::ReadActivityList(ActivityList* config)
 {
-	m_ActivityHallCfgMgr.ReadActivityList(config);
+	m_ActivityHallCfg.ReadActivityList(config);
 }
 
 void ConfigMgr::ReadBrushMonsterCfg(BrushMonsterCfg* config)
 {
-	m_ActivityHallCfgMgr.ReadBrushMonsterCfg(config);
+	m_ActivityHallCfg.ReadBrushMonsterCfg(config);
+}
+
+void ConfigMgr::ReadHeroList(HeroList* config)
+{
+	m_SkillCfg.ReadHeroList(config);
+}
+
+void ConfigMgr::ReadSkillIdList(SkillIdList* config)
+{
+	m_SkillCfg.ReadSkillIdList(config);
 }

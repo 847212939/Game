@@ -12,4 +12,5 @@ protected:
 
 public:
 	GetClass(MoveSys, MoveSys)
+	GetClass(SkillSys, SkillSys)
 };

@@ -93,11 +93,11 @@ enum class AnimalType
 // 场景内类型
 enum class HeroType
 {
-	ht_shooter	= 1,															// 射手
-	ht_warrior	= 2,															// 战士
-	ht_master	= 3,															// 法师
-	ht_meat		= 4,															// 肉
-	ht_wild		= 5,															// 打野
+	ht_shooter		= 1,														// 射手
+	ht_warrior		= 2,														// 战士
+	ht_master		= 3,														// 法师
+	ht_meat			= 4,														// 肉
+	ht_wild			= 5,														// 打野
 };
 
 enum class ActType
@@ -347,8 +347,6 @@ struct ActtiveOpen
 	ActtiveOpen(int nId, bool isOpen) : id(nId), open(isOpen) {}
 	~ActtiveOpen() {}
 };
-
-
 
 template<typename T>
 using CfgSet				= std::set<T>;

@@ -149,3 +149,42 @@ function ReadActivityCfg()
     ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadActivityCfg end")
 end
 table.insert(ConfigMgrFnTable, ReadActivityCfg)
+
+function ReadSkillCfg()
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadSkillCfg begin")
+    local SkillCfg = require "SkillCfg"
+
+    if SkillCfg then
+        if SkillCfg.HeroList then
+            for _,value in ipairs(SkillCfg.HeroList) do
+                local HeroList = HeroList:new()
+                HeroList.heroId = value.heroId or 0
+                HeroList.heroType = value.heroType or 0
+                HeroList.heroName = value.heroName or 0
+                if ActivityBreakdown.dayBreakdown > 0 then
+                    if value.dayBreakdownList then
+                        for index,vp in ipairs(value.dayBreakdownList) do
+                            for _,vc in ipairs(vp) do
+	                            ActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
+                            end
+                        end
+                    end
+                end
+                if ActivityBreakdown.hourBreakdown > 0 then
+                    if value.hourBreakdownList then
+                        for index,vp in ipairs(value.hourBreakdownList) do
+                            for _,vc in ipairs(vp) do
+	                            ActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
+                            end
+                        end
+                    end
+                end
+                ConfigMgr:ReadActivityBreakdownCfg(ActivityBreakdown)
+                ActivityBreakdown:delete()
+            end
+        end
+    end
+
+    ConfigMgr:CoutLog(LOG_CINFO, "Load configuration ReadSkillCfg end")
+end
+table.insert(ConfigMgrFnTable, ReadSkillCfg)

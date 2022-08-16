@@ -30,15 +30,21 @@ public:
 
 public:
 	// 活动
-	ActivityHallCfg& GetActivityHallCfg();
 	void ReadActivityList(ActivityList* config);
 	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
 	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
 
+public:
+	// 技能
+	void ReadHeroList(HeroList* config);
+	void ReadSkillIdList(SkillIdList* config);
+
 private:
-	CBaseCfgMgr		m_CBaseCfgMgr;
-	ActivityHallCfg m_ActivityHallCfgMgr;
-	
+	CBaseCfgMgr	m_CBaseCfgMgr;
+
+public:
+	GetClass(ActivityHallCfg, ActivityHallCfg)
+	GetClass(SkillCfg, SkillCfg)
 };
 
 // tolua++.exe -o LuaCfgMgr.cpp Config.pkg

@@ -58,14 +58,15 @@ extern "C"
 #include "../kernel/LogManager.h"			// 日志管理类
 #include "../Logic/Animal.h"				// 怪物
 
+#include "../Logic/SkillCfg.h"				// 技能配置
+#include "../Logic/SkillSys.h"				// 技能系统
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
 #include "../Player/PlayerClient.h"			// 逻辑处理类
-
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
-#include "../Logic/HurtSys.h"				// 伤害
+#include "../Logic/HurtSys.h"				// 伤害系统
 #include "../Logic/Monster.h"				// 怪物
 #include "../Logic/MonsterClient.h"			// 怪物
 #include "../Logic/ActivityHallCfg.h"		// 活动配置
