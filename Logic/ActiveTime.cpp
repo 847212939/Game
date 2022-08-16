@@ -8,7 +8,7 @@ ActiveTime::~ActiveTime()
 {
 }
 
-bool ActiveTime::Enter(ActivityList* cfg)
+bool ActiveTime::Enter(CActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
@@ -19,7 +19,7 @@ bool ActiveTime::Enter(ActivityList* cfg)
 	return true;
 }
 
-bool ActiveTime::Exit(ActivityList* cfg)
+bool ActiveTime::Exit(CActivityList* cfg)
 {
 	COUT_LOG(LOG_CINFO, "ActiveTime::Exit");
 	return false;

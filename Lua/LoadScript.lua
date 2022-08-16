@@ -39,22 +39,22 @@ function ReadBaseCfg()
         ConfigMgr:ReadOpenServerTime(BaseCfg.OpenServerTime or 0)
 
         if BaseCfg.LogicCfg then
-            local LogicCfg = LogicCfg:new()
-            LogicCfg.ip = BaseCfg.LogicCfg.ip or 0
-            LogicCfg.port = BaseCfg.LogicCfg.port or 0
-            ConfigMgr:ReadLogicCfg(LogicCfg)
-            LogicCfg:delete()
+            local CLogicCfg = CLogicCfg:new()
+            CLogicCfg.ip = BaseCfg.LogicCfg.ip or 0
+            CLogicCfg.port = BaseCfg.LogicCfg.port or 0
+            ConfigMgr:ReadLogicCfg(CLogicCfg)
+            CLogicCfg:delete()
         end
 
         if BaseCfg.DbCfg then
-            local DbCfg = DbCfg:new()
-            DbCfg.ip = BaseCfg.DbCfg.ip or 0
-            DbCfg.user = BaseCfg.DbCfg.user or 0
-            DbCfg.passwd = BaseCfg.DbCfg.passwd or 0
-            DbCfg.database = BaseCfg.DbCfg.database or 0
-            DbCfg.port = BaseCfg.DbCfg.port or 0
-            ConfigMgr:ReadDbCfg(DbCfg)
-            DbCfg:delete()
+            local CDbCfg = CDbCfg:new()
+            CDbCfg.ip = BaseCfg.DbCfg.ip or 0
+            CDbCfg.user = BaseCfg.DbCfg.user or 0
+            CDbCfg.passwd = BaseCfg.DbCfg.passwd or 0
+            CDbCfg.database = BaseCfg.DbCfg.database or 0
+            CDbCfg.port = BaseCfg.DbCfg.port or 0
+            ConfigMgr:ReadDbCfg(CDbCfg)
+            CDbCfg:delete()
         end
     end
 
@@ -70,78 +70,78 @@ function ReadActivityCfg()
     if ActivityCfg then
         if ActivityCfg.ActivityList then
             for _,value in ipairs(ActivityCfg.ActivityList) do
-                local ActivityList = ActivityList:new()
-                ActivityList.id = value.id or 0
-                ActivityList.type = value.type or 0
-                ActivityList.sid = value.sid or 0
-                ActivityList.activityBreakdown = value.activityBreakdown or 0
+                local CActivityList = CActivityList:new()
+                CActivityList.id = value.id or 0
+                CActivityList.type = value.type or 0
+                CActivityList.sid = value.sid or 0
+                CActivityList.activityBreakdown = value.activityBreakdown or 0
                 if value.beginTime then
                     for k,v in ipairs(value.beginTime) do
-	                    ActivityList:AddBeginTime(v or 0)
+	                    CActivityList:AddBeginTime(v or 0)
                     end
                 end
                 if value.endTime then
                     for k,v in ipairs(value.endTime) do
-	                    ActivityList:AddEndTime(v or 0)
+	                    CActivityList:AddEndTime(v or 0)
                     end
                 end
                 if value.solidTime then
                     for k,v in ipairs(value.solidTime) do
-	                    ActivityList:AddSolidTime(v or 0)
+	                    CActivityList:AddSolidTime(v or 0)
                     end
                 end
                 if value.openServerTime then
                     for k,v in ipairs(value.openServerTime) do
-	                    ActivityList:AddOpenServerTime(v or 0)
+	                    CActivityList:AddOpenServerTime(v or 0)
                     end
                 end
-                ConfigMgr:ReadActivityList(ActivityList)
-                ActivityList:delete()
+                ConfigMgr:ReadActivityList(CActivityList)
+                CActivityList:delete()
             end
         end
 
         if ActivityCfg.BrushMonsterCfg then
             for _,value in ipairs(ActivityCfg.BrushMonsterCfg) do
-                local BrushMonsterCfg = BrushMonsterCfg:new()
-                BrushMonsterCfg.id = value.id or 0
-                BrushMonsterCfg.sid = value.sid or 0
-                BrushMonsterCfg.mid = value.mid or 0
-                BrushMonsterCfg.count = value.count or 0
-                BrushMonsterCfg.delayTime = value.delayTime or 0
-                BrushMonsterCfg.refreshTime = value.refreshTime or 0
-                BrushMonsterCfg.x = value.x or 0
-                BrushMonsterCfg.y = value.y or 0
-                ConfigMgr:ReadBrushMonsterCfg(BrushMonsterCfg)
-                BrushMonsterCfg:delete()
+                local CBrushMonsterCfg = BrushMonsterCfg:new()
+                CBrushMonsterCfg.id = value.id or 0
+                CBrushMonsterCfg.sid = value.sid or 0
+                CBrushMonsterCfg.mid = value.mid or 0
+                CBrushMonsterCfg.count = value.count or 0
+                CBrushMonsterCfg.delayTime = value.delayTime or 0
+                CBrushMonsterCfg.refreshTime = value.refreshTime or 0
+                CBrushMonsterCfg.x = value.x or 0
+                CBrushMonsterCfg.y = value.y or 0
+                ConfigMgr:ReadBrushMonsterCfg(CBrushMonsterCfg)
+                CBrushMonsterCfg:delete()
             end
         end
 
         if ActivityCfg.ActivityBreakdown then
             for _,value in ipairs(ActivityCfg.ActivityBreakdown) do
-                local ActivityBreakdown = ActivityBreakdown:new()
-                ActivityBreakdown.id = value.id or 0
-                ActivityBreakdown.dayBreakdown = value.dayBreakdown or 0
-                ActivityBreakdown.hourBreakdown = value.hourBreakdown or 0
-                if ActivityBreakdown.dayBreakdown > 0 then
+                local CActivityBreakdown = CActivityBreakdown:new()
+                CActivityBreakdown.id = value.id or 0
+                CActivityBreakdown.dayBreakdown = value.dayBreakdown or 0
+                CActivityBreakdown.hourBreakdown = value.hourBreakdown or 0
+                if ActivityCfg.ActivityBreakdown.dayBreakdown > 0 then
                     if value.dayBreakdownList then
                         for index,vp in ipairs(value.dayBreakdownList) do
                             for _,vc in ipairs(vp) do
-	                            ActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
+	                            CActivityBreakdown:AddDayBreakdownList(index or 0, vc or 0)
                             end
                         end
                     end
                 end
-                if ActivityBreakdown.hourBreakdown > 0 then
+                if ActivityCfg.ActivityBreakdown.hourBreakdown > 0 then
                     if value.hourBreakdownList then
                         for index,vp in ipairs(value.hourBreakdownList) do
                             for _,vc in ipairs(vp) do
-	                            ActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
+	                            CActivityBreakdown:AddHourBreakdownList(index or 0, vc or 0)
                             end
                         end
                     end
                 end
-                ConfigMgr:ReadActivityBreakdownCfg(ActivityBreakdown)
-                ActivityBreakdown:delete()
+                ConfigMgr:ReadActivityBreakdownCfg(CActivityBreakdown)
+                CActivityBreakdown:delete()
             end
         end
     end
@@ -157,10 +157,10 @@ function ReadSkillCfg()
     if SkillCfg then
         if SkillCfg.HeroList then
             for _,value in ipairs(SkillCfg.HeroList) do
-                local HeroList = HeroList:new()
-                HeroList.heroId = value.heroId or 0
-                HeroList.heroType = value.heroType or 0
-                HeroList.heroName = value.heroName or 0
+                local CHeroList = CHeroList:new()
+                CHeroList.heroId = value.heroId or 0
+                CHeroList.heroType = value.heroType or 0
+                CHeroList.heroName = value.heroName or 0
                 if ActivityBreakdown.dayBreakdown > 0 then
                     if value.dayBreakdownList then
                         for index,vp in ipairs(value.dayBreakdownList) do

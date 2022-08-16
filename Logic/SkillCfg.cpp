@@ -8,12 +8,12 @@ SkillCfg::~SkillCfg()
 {
 }
 
-void SkillCfg::ReadHeroList(HeroList* config)
+void SkillCfg::ReadHeroList(CHeroList* config)
 {
 	m_HeroListSet.insert(*config);
 }
 
-void SkillCfg::ReadSkillIdList(SkillIdList* config)
+void SkillCfg::ReadSkillIdList(CSkillIdList* config)
 {
 	m_SkillIdListSet.insert(*config);
 }

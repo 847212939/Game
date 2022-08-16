@@ -41,12 +41,12 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(ActivityList* cfg, int& bmid)
+CfgVector<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityList* cfg, int& bmid)
 {
 	std::pair<int, int> pr; // type, index
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
 
-	const ActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
+	const CActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
 	if (!pConfig)
 	{
 		COUT_LOG(LOG_CINFO, "pConfig = null");
@@ -67,12 +67,12 @@ CfgVector<BrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(ActivityList* cf
 }
 
 // 清除上一次场景中怪物
-void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
+void ActivityHallSys::ClearBrushMonsterCfgVec(const CActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
 	for (int i = 1; i < pr.second; i++)
 	{
-		CfgVector<BrushMonsterCfg>* pVector = 
+		CfgVector<CBrushMonsterCfg>* pVector = 
 			activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
 		if (!pVector)
 		{
@@ -103,7 +103,7 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const ActivityBreakdown* pConfig, 
 	}
 }
 
-bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
+bool ActivityHallSys::InitMonster(CBrushMonsterCfg& cfg)
 {
 	time_t cur = ::time(nullptr);
 	std::vector<Animal*> animalVec;
@@ -134,7 +134,7 @@ bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 	return true;
 }
 
-bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCfg& cfg)
+bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, CBrushMonsterCfg& cfg)
 {
 	if (!pValue || pValue->empty())
 	{
@@ -233,7 +233,7 @@ void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
 }
 
 // 活动类型判断函数回调
-bool ActivityHallSys::ActiveCallBackFun(ActType type, ActivityList* cfg)
+bool ActivityHallSys::ActiveCallBackFun(ActType type, CActivityList* cfg)
 {
 	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
@@ -246,7 +246,7 @@ bool ActivityHallSys::ActiveCallBackFun(ActType type, ActivityList* cfg)
 }
 
 // 活动类型判断
-void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
+void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
 	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
@@ -259,7 +259,7 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(Activit
 }
 
 // 进入活动场景回调
-bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, ActivityList* cfg)
+bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, CActivityList* cfg)
 {
 	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
@@ -271,7 +271,7 @@ bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, ActivityList* cfg)
 	return it->second(cfg);
 }
 
-void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
+void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
 	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
@@ -283,7 +283,7 @@ void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(Ac
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
 
-bool ActivityHallSys::ActiveExitCallBackFun(ActType type, ActivityList* cfg)
+bool ActivityHallSys::ActiveExitCallBackFun(ActType type, CActivityList* cfg)
 {
 	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
@@ -295,7 +295,7 @@ bool ActivityHallSys::ActiveExitCallBackFun(ActType type, ActivityList* cfg)
 	return it->second(cfg);
 }
 
-void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(ActivityList*)>&& fun)
+void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
 	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
@@ -308,7 +308,7 @@ void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(Act
 }
 
 // 时间区间
-bool ActivityHallSys::AtSectionOpen(ActivityList* cfg)
+bool ActivityHallSys::AtSectionOpen(CActivityList* cfg)
 {
 	if (!cfg)
 	{
@@ -339,7 +339,7 @@ bool ActivityHallSys::AtSectionOpen(ActivityList* cfg)
 }
 
 // 全天开启
-bool ActivityHallSys::AtAlwaysOpen(ActivityList* cfg)
+bool ActivityHallSys::AtAlwaysOpen(CActivityList* cfg)
 {
 	if (!cfg)
 	{
@@ -356,13 +356,13 @@ bool ActivityHallSys::AtAlwaysOpen(ActivityList* cfg)
 }
 
 // 开服活动
-bool ActivityHallSys::AtServiceOpen(ActivityList* cfg)
+bool ActivityHallSys::AtServiceOpen(CActivityList* cfg)
 {
 	return false;
 }
 
 // 固定时间开启
-bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
+bool ActivityHallSys::AtTimedOpen(CActivityList* cfg)
 {
 	if (!cfg)
 	{
@@ -379,7 +379,7 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 	return false;
 }
 
-int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
+int ActivityHallSys::GetBrushMonsterId(const CActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
 	pr.first = pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ? 1 : 2;
 	if (pr.first == 1)
@@ -393,7 +393,7 @@ int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pa
 	return 0;
 }
 
-int ActivityHallSys::GetPreBrushMonsterId(const ActivityBreakdown* pConfig, int type, int index)
+int ActivityHallSys::GetPreBrushMonsterId(const CActivityBreakdown* pConfig, int type, int index)
 {
 	if (type == 1)
 	{
@@ -412,7 +412,7 @@ void ActivityHallSys::TimerCallback()
 {
 	for (auto& cfg : CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())
 	{
-		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg)))
+		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<CActivityList*>(&cfg)))
 		{
 			// 活动结束
 			ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
@@ -424,7 +424,7 @@ void ActivityHallSys::TimerCallback()
 			{
 				continue;
 			}
-			ActiveExitCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
+			ActiveExitCallBackFun((ActType)cfg.type, const_cast<CActivityList*>(&cfg));
 			it->second.open = false;
 			continue;
 		}
@@ -439,13 +439,13 @@ void ActivityHallSys::TimerCallback()
 		{
 			it->second.open = true;
 		}
-		ActiveEnterCallBackFun((ActType)cfg.type, const_cast<ActivityList*>(&cfg));
+		ActiveEnterCallBackFun((ActType)cfg.type, const_cast<CActivityList*>(&cfg));
 	}
 }
 
-bool ActivityHallSys::Enter(ActivityList* cfg, int& bmid)
+bool ActivityHallSys::Enter(CActivityList* cfg, int& bmid)
 {
-	CfgVector<BrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
+	CfgVector<CBrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");
@@ -464,10 +464,10 @@ bool ActivityHallSys::Enter(ActivityList* cfg, int& bmid)
 	return true;
 }
 
-bool ActivityHallSys::Exit(ActivityList* cfg, const int& bmid)
+bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 {
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
-	CfgVector<BrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
+	CfgVector<CBrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");

@@ -9,7 +9,7 @@ TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
 
 bool TCPClient::Init(ServiceType serverType)
 {
-	const LogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
+	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
 	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))

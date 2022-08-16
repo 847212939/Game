@@ -8,7 +8,7 @@ ActiveService::~ActiveService()
 {
 }
 
-bool ActiveService::Enter(ActivityList* cfg)
+bool ActiveService::Enter(CActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
@@ -19,7 +19,7 @@ bool ActiveService::Enter(ActivityList* cfg)
 	return true;
 }
 
-bool ActiveService::Exit(ActivityList* cfg)
+bool ActiveService::Exit(CActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
 	if (!activeSys.Exit(cfg, m_bmid))

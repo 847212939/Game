@@ -1,6 +1,6 @@
 #pragma once
 
-struct HeroList
+struct CHeroList
 {
 	int heroId;
 	int heroType;
@@ -12,17 +12,17 @@ struct HeroList
 		skillId.push_back(skillid);
 	}
 
-	HeroList() : heroId(0), heroType(0), heroName("") {}
-	~HeroList(){}
+	CHeroList() : heroId(0), heroType(0), heroName("") {}
+	~CHeroList(){}
 
-	bool operator < (const HeroList& other) const
+	bool operator < (const CHeroList& other) const
 	{
 		if (heroId != other.heroId) { return heroId < other.heroId; }
 		return false;
 	}
 };
 
-struct SkillIdList
+struct CSkillIdList
 {
 	int skillId;
 	AttrsMap attrs;
@@ -32,10 +32,10 @@ struct SkillIdList
 		attrs.insert({(AttrsCmd)id, value});
 	}
 
-	SkillIdList() : skillId(0) {}
-	~SkillIdList(){}
+	CSkillIdList() : skillId(0) {}
+	~CSkillIdList(){}
 
-	bool operator < (const SkillIdList& other) const
+	bool operator < (const CSkillIdList& other) const
 	{
 		if (skillId != other.skillId) { return skillId < other.skillId; }
 		return false;
@@ -49,10 +49,10 @@ public:
 	~SkillCfg();
 
 public:
-	void ReadHeroList(HeroList* config);
-	void ReadSkillIdList(SkillIdList* config);
+	void ReadHeroList(CHeroList* config);
+	void ReadSkillIdList(CSkillIdList* config);
 
 private:
-	CfgSet<HeroList>	m_HeroListSet;
-	CfgSet<SkillIdList> m_SkillIdListSet;
+	CfgSet<CHeroList>	m_HeroListSet;
+	CfgSet<CSkillIdList> m_SkillIdListSet;
 };

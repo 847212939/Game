@@ -1,60 +1,60 @@
 #include "../Game/stdafx.h"
 
-BrushMonsterCfg::BrushMonsterCfg() : id(0), sid(0), mid(0), count(0), delayTime(0), refreshTime(0), x(0), y(0) 
+CBrushMonsterCfg::CBrushMonsterCfg() : id(0), sid(0), mid(0), count(0), delayTime(0), refreshTime(0), x(0), y(0) 
 {
 }
 
-ActivityBreakdown::ActivityBreakdown() : id(0), dayBreakdown(0), hourBreakdown(0)
+CActivityBreakdown::CActivityBreakdown() : id(0), dayBreakdown(0), hourBreakdown(0)
 {
 }
 
-ActivityBreakdown::ActivityBreakdown(int nid) : id(nid), dayBreakdown(0), hourBreakdown(0)
+CActivityBreakdown::CActivityBreakdown(int nid) : id(nid), dayBreakdown(0), hourBreakdown(0)
 {
 }
 
-ActivityList::ActivityList() : id(0), type(0), sid(0), activityBreakdown(0)
+CActivityList::CActivityList() : id(0), type(0), sid(0), activityBreakdown(0)
 {
 }
 
-BrushMonsterCfg::~BrushMonsterCfg()
+CBrushMonsterCfg::~CBrushMonsterCfg()
 {
 }
 
-ActivityList::~ActivityList()
+CActivityList::~CActivityList()
 {
 }
 
-ActivityBreakdown::~ActivityBreakdown()
+CActivityBreakdown::~CActivityBreakdown()
 {
 }
 
-void ActivityList::AddBeginTime(int tm)
+void CActivityList::AddBeginTime(int tm)
 {
 	beginTime.push_back(tm);
 }
 
-void ActivityList::AddEndTime(int tm)
+void CActivityList::AddEndTime(int tm)
 {
 	endTime.push_back(tm);
 }
 
-void ActivityList::AddSolidTime(int tm)
+void CActivityList::AddSolidTime(int tm)
 {
 	solidTime.push_back(tm);
 }
 
-void ActivityList::AddOpenServerTime(int tm)
+void CActivityList::AddOpenServerTime(int tm)
 {
 	openServerTime.push_back(tm);
 }
 
-bool ActivityList::operator < (const ActivityList& other) const
+bool CActivityList::operator < (const CActivityList& other) const
 {
 	if (id != other.id) { return id < other.id; }
 	return false;
 }
 
-void ActivityBreakdown::AddDayBreakdownList(int idex, int tm)
+void CActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 {
 	CfgMap<int>::iterator it = dayBreakdownList.find(idex);
 	if (it == dayBreakdownList.end())
@@ -69,7 +69,7 @@ void ActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 	}
 }
 
-void ActivityBreakdown::AddHourBreakdownList(int idex, int tm)
+void CActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 {
 	CfgMap<int>::iterator it = hourBreakdownList.find(idex);
 	if (it == hourBreakdownList.end())
@@ -84,7 +84,7 @@ void ActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 	}
 }
 
-int ActivityBreakdown::GetDayBrushMonsterCfgid(int& index) const
+int CActivityBreakdown::GetDayBrushMonsterCfgid(int& index) const
 {
 	int day = Util::GetServiceDays();
 	for (auto& m : dayBreakdownList)
@@ -112,7 +112,7 @@ int ActivityBreakdown::GetDayBrushMonsterCfgid(int& index) const
 	return 0;
 }
 
-int ActivityBreakdown::GetHourBrushMonsterCfgid(int& index) const
+int CActivityBreakdown::GetHourBrushMonsterCfgid(int& index) const
 {
 	uint64_t sysSecond = Util::GetSysSecond();
 	for (auto& m : hourBreakdownList)
@@ -144,7 +144,7 @@ int ActivityBreakdown::GetHourBrushMonsterCfgid(int& index) const
 	return 0;
 }
 
-int ActivityBreakdown::GetDayBrushMonsterCfg(int index) const
+int CActivityBreakdown::GetDayBrushMonsterCfg(int index) const
 {
 	CfgMap<int>::const_iterator it = dayBreakdownList.find(index);
 	if (it == dayBreakdownList.end())
@@ -158,7 +158,7 @@ int ActivityBreakdown::GetDayBrushMonsterCfg(int index) const
 	return it->second[2];
 }
 
-int ActivityBreakdown::GetHourBrushMonsterCfg(int index) const
+int CActivityBreakdown::GetHourBrushMonsterCfg(int index) const
 {
 	CfgMap<int>::const_iterator it = hourBreakdownList.find(index);
 	if (it == hourBreakdownList.end())
@@ -172,20 +172,20 @@ int ActivityBreakdown::GetHourBrushMonsterCfg(int index) const
 	return it->second[6];
 }
 
-bool ActivityBreakdown::operator < (const ActivityBreakdown& other) const
+bool CActivityBreakdown::operator < (const CActivityBreakdown& other) const
 {
 	if (id != other.id) { return id < other.id; }
 	return false;
 }
 
-CfgSet<ActivityList>& ActivityHallCfg::GetActivityListCfgSet()
+CfgSet<CActivityList>& ActivityHallCfg::GetActivityListCfgSet()
 {
 	return m_ActivityListCfgSet;
 }
 
-const ActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
+const CActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
 {
-	CfgSet<ActivityBreakdown>::iterator it = m_ActivityBreakdownCfgSet.find(id);
+	CfgSet<CActivityBreakdown>::iterator it = m_ActivityBreakdownCfgSet.find(id);
 	if (it == m_ActivityBreakdownCfgSet.end())
 	{
 		return nullptr;
@@ -193,9 +193,9 @@ const ActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
 	return &(*it);
 }
 
-CfgVector<BrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
+CfgVector<CBrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
 {
-	CfgMap<BrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
+	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
 		return nullptr;
@@ -204,22 +204,22 @@ CfgVector<BrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
 	return &it->second;
 }
 
-void ActivityHallCfg::ReadActivityBreakdownCfg(ActivityBreakdown* config)
+void ActivityHallCfg::ReadActivityBreakdownCfg(CActivityBreakdown* config)
 {
 	m_ActivityBreakdownCfgSet.insert(*config);
 }
 
-void ActivityHallCfg::ReadActivityList(ActivityList* config)
+void ActivityHallCfg::ReadActivityList(CActivityList* config)
 {
 	m_ActivityListCfgSet.insert(*config);
 }
 
-void ActivityHallCfg::ReadBrushMonsterCfg(BrushMonsterCfg* config)
+void ActivityHallCfg::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
 {
-	CfgMap<BrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
+	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
-		CfgVector<BrushMonsterCfg> tmp;
+		CfgVector<CBrushMonsterCfg> tmp;
 		tmp.push_back(*config);
 		m_BrushMonsterCfgMap.insert({ config->id, tmp });
 	}

@@ -1,15 +1,15 @@
 #pragma once
 
-struct LogicCfg
+struct CLogicCfg
 {
 	std::string ip;
 	int port;
 
-	LogicCfg() : ip(""), port(0) {}
-	~LogicCfg() {}
+	CLogicCfg() : ip(""), port(0) {}
+	~CLogicCfg() {}
 };
 
-struct DbCfg
+struct CDbCfg
 {
 	std::string ip;
 	std::string user;
@@ -17,8 +17,8 @@ struct DbCfg
 	std::string database;
 	int port;
 
-	DbCfg() : ip(""), user(""), passwd(""), database(""), port(0) {}
-	~DbCfg() {}
+	CDbCfg() : ip(""), user(""), passwd(""), database(""), port(0) {}
+	~CDbCfg() {}
 };
 
 class CBaseCfgMgr
@@ -41,8 +41,8 @@ public:
 	void ReadExitCfg(std::string exit);
 	void ReadOpenServerTime(std::string servertm);
 
-	void ReadDbCfg(DbCfg* config);
-	void ReadLogicCfg(LogicCfg* config);
+	void ReadDbCfg(CDbCfg* config);
+	void ReadLogicCfg(CLogicCfg* config);
 
 public:
 	int GetServerId();
@@ -51,8 +51,8 @@ public:
 	int GetLogPrintTm();
 	int GetMaxSocketCnt();
 	std::string GetExit();
-	const DbCfg& GetDbCfg();
-	const LogicCfg& GetLogicCfg();
+	const CDbCfg& GetDbCfg();
+	const CLogicCfg& GetLogicCfg();
 	std::string GetKey();
 	std::string GetOpenServerTime();
 
@@ -63,8 +63,8 @@ private:
 	int			m_maxSocketCnt;
 	int			m_TimerCnt;
 
-	LogicCfg	m_LogicCfg;
-	DbCfg		m_DbCfg;
+	CLogicCfg	m_LogicCfg;
+	CDbCfg		m_DbCfg;
 	std::string m_Exit;
 	std::string m_Key;
 	std::string m_Servertm;

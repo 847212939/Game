@@ -112,7 +112,7 @@ class Animal;
 class PlayerClient;
 enum class ActType;
 struct ActtiveOpen;
-struct ActivityList;
+struct CActivityList;
 class CTCPSocketManage;
 
 #pragma pack(1)
@@ -370,7 +370,7 @@ using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
-using ActivityFunMap		= std::map<ActType, std::function<bool(ActivityList*)>>;
+using ActivityFunMap		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
 using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;

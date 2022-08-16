@@ -46,7 +46,7 @@ void PlayerPrep::Init()
 // 启动数据库
 bool PlayerPrep::InitDB()
 {
-	const DbCfg& dbCfg = BaseCfgMgr.GetDbCfg();
+	const CDbCfg& dbCfg = BaseCfgMgr.GetDbCfg();
 
 	// 链接数据库
 	m_CMysqlHelperSave.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);

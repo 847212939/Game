@@ -1,6 +1,6 @@
 #pragma once
 
-struct ActivityList
+struct CActivityList
 {
 	int id;
 	int type;
@@ -10,36 +10,36 @@ struct ActivityList
 	IntVector solidTime;
 	IntVector openServerTime;
 	int activityBreakdown;
-	ActivityList();
-	~ActivityList();
+	CActivityList();
+	~CActivityList();
 	void AddBeginTime(int tm);
 	void AddEndTime(int tm);
 	void AddSolidTime(int tm);
 	void AddOpenServerTime(int tm);
-	bool operator < (const ActivityList& other) const;
+	bool operator < (const CActivityList& other) const;
 };
 
-struct ActivityBreakdown
+struct CActivityBreakdown
 {
 	int id;
 	int dayBreakdown;
 	int hourBreakdown;
 	CfgMap<int> dayBreakdownList;
 	CfgMap<int> hourBreakdownList;
-	ActivityBreakdown();
-	~ActivityBreakdown();
+	CActivityBreakdown();
+	~CActivityBreakdown();
 	void AddDayBreakdownList(int idex, int tm);
 	void AddHourBreakdownList(int idex, int tm);
 
-	ActivityBreakdown(int nid);
+	CActivityBreakdown(int nid);
 	int GetDayBrushMonsterCfgid(int& index) const;
 	int GetHourBrushMonsterCfgid(int& index) const;
 	int GetDayBrushMonsterCfg(int index) const;
 	int GetHourBrushMonsterCfg(int index) const;
-	bool operator < (const ActivityBreakdown& other) const;
+	bool operator < (const CActivityBreakdown& other) const;
 };
 
-struct BrushMonsterCfg
+struct CBrushMonsterCfg
 {
 	int id;
 	int sid;
@@ -49,28 +49,28 @@ struct BrushMonsterCfg
 	int refreshTime;
 	int x;
 	int y;
-	BrushMonsterCfg();
-	~BrushMonsterCfg();
+	CBrushMonsterCfg();
+	~CBrushMonsterCfg();
 };
 
 class ActivityHallCfg
 {
 public:
-	CfgSet<ActivityList>& GetActivityListCfgSet();
-	const ActivityBreakdown* GetActivityBreakdown(int id);
-	CfgVector<BrushMonsterCfg>* GetBrushMonsterCfg(int id);
+	CfgSet<CActivityList>& GetActivityListCfgSet();
+	const CActivityBreakdown* GetActivityBreakdown(int id);
+	CfgVector<CBrushMonsterCfg>* GetBrushMonsterCfg(int id);
 
 public:
 	ActivityHallCfg() {}
 	~ActivityHallCfg() {}
 
 public:
-	void ReadActivityList(ActivityList* config);
-	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
-	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
+	void ReadActivityList(CActivityList* config);
+	void ReadBrushMonsterCfg(CBrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
 
 private:
-	CfgSet<ActivityList>		m_ActivityListCfgSet;
-	CfgMap<BrushMonsterCfg>		m_BrushMonsterCfgMap;
-	CfgSet<ActivityBreakdown>	m_ActivityBreakdownCfgSet;
+	CfgSet<CActivityList>		m_ActivityListCfgSet;
+	CfgMap<CBrushMonsterCfg>		m_BrushMonsterCfgMap;
+	CfgSet<CActivityBreakdown>	m_ActivityBreakdownCfgSet;
 };

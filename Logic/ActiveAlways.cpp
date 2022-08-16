@@ -9,7 +9,7 @@ ActiveAlways::~ActiveAlways()
 }
 
 // 全天活动回调
-bool ActiveAlways::Enter(ActivityList* cfg)
+bool ActiveAlways::Enter(CActivityList* cfg)
 {
 	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
@@ -20,7 +20,7 @@ bool ActiveAlways::Enter(ActivityList* cfg)
 	return true;
 }
 
-bool ActiveAlways::Exit(ActivityList* cfg)
+bool ActiveAlways::Exit(CActivityList* cfg)
 {
 	COUT_LOG(LOG_CINFO, "ActiveAlways::Exit");
 	return false;

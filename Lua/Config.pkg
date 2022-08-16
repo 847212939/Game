@@ -23,8 +23,8 @@ public:
 
 public:
 	// 基础配置
-	void ReadLogicCfg(LogicCfg* config);
-	void ReadDbCfg(DbCfg* config);
+	void ReadLogicCfg(CLogicCfg* config);
+	void ReadDbCfg(CDbCfg* config);
 	void ReadThreadCntCfg(int cnt);
 	void ReadServerIDCfg(int id);
 	void ReadLogPrintTmCfg(int tm);
@@ -36,27 +36,27 @@ public:
 
 public:
 	// 活动
-	void ReadActivityList(ActivityList* config);
-	void ReadBrushMonsterCfg(BrushMonsterCfg* config);
-	void ReadActivityBreakdownCfg(ActivityBreakdown* config);
+	void ReadActivityList(CActivityList* config);
+	void ReadBrushMonsterCfg(CBrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
 
 public:
 	// 技能
-	void ReadHeroList(HeroList* config);
-	void ReadSkillIdList(SkillIdList* config);
+	void ReadHeroList(CHeroList* config);
+	void ReadSkillIdList(CSkillIdList* config);
 
 };
 
-struct LogicCfg
+struct CLogicCfg
 {
 	std::string ip;
 	int port;
 
-	LogicCfg();
-	~LogicCfg();
+	CLogicCfg();
+	~CLogicCfg();
 };
 
-struct DbCfg
+struct CDbCfg
 {
 	std::string ip;
 	std::string user;
@@ -64,36 +64,36 @@ struct DbCfg
 	std::string database;
 	int port;
 
-	DbCfg();
-	~DbCfg();
+	CDbCfg();
+	~CDbCfg();
 };
 
-struct ActivityList
+struct CActivityList
 {
 	int id;
 	int type;
 	int sid;
 	int activityBreakdown;
-	ActivityList();
-	~ActivityList();
+	CActivityList();
+	~CActivityList();
 	void AddBeginTime(int tm);
 	void AddEndTime(int tm);
 	void AddSolidTime(int tm);
 	void AddOpenServerTime(int tm);
 };
 
-struct ActivityBreakdown
+struct CActivityBreakdown
 {
 	int id;
 	int dayBreakdown;
 	int hourBreakdown;
-	ActivityBreakdown();
-	~ActivityBreakdown();
+	CActivityBreakdown();
+	~CActivityBreakdown();
 	void AddDayBreakdownList(int idex, int tm);
 	void AddHourBreakdownList(int idex, int tm);
 };
 
-struct BrushMonsterCfg
+struct CBrushMonsterCfg
 {
 	int id;
 	int sid;
@@ -103,26 +103,26 @@ struct BrushMonsterCfg
 	int refreshTime;
 	int x;
 	int y;
-	BrushMonsterCfg();
-	~BrushMonsterCfg();
+	CBrushMonsterCfg();
+	~CBrushMonsterCfg();
 };
 
-struct HeroList
+struct CHeroList
 {
 	int heroId;
 	int heroType;
 	std::string heroName;
 	void AddskillId(int skillid);
 
-	HeroList();
-	~HeroList();
+	CHeroList();
+	~CHeroList();
 };
 
-struct SkillIdList
+struct CSkillIdList
 {
 	int skillId;
 	AttrsMap attrs;
 	void AddAttrs(int id, int value);
-	SkillIdList();
-	~SkillIdList();
+	CSkillIdList();
+	~CSkillIdList();
 };

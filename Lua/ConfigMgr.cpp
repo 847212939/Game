@@ -13,12 +13,12 @@ CBaseCfgMgr& ConfigMgr::GetCBaseCfgMgr()
 	return m_CBaseCfgMgr; 
 }
 
-void ConfigMgr::ReadLogicCfg(LogicCfg* config) 
+void ConfigMgr::ReadLogicCfg(CLogicCfg* config) 
 { 
 	m_CBaseCfgMgr.ReadLogicCfg(config);
 }
 
-void ConfigMgr::ReadDbCfg(DbCfg* config) 
+void ConfigMgr::ReadDbCfg(CDbCfg* config) 
 { 
 	m_CBaseCfgMgr.ReadDbCfg(config); 
 }
@@ -68,27 +68,27 @@ void ConfigMgr::ReadOpenServerTime(std::string servertm)
 	m_CBaseCfgMgr.ReadOpenServerTime(servertm);
 }
 
-void ConfigMgr::ReadActivityBreakdownCfg(ActivityBreakdown* config)
+void ConfigMgr::ReadActivityBreakdownCfg(CActivityBreakdown* config)
 {
 	m_ActivityHallCfg.ReadActivityBreakdownCfg(config);
 }
 
-void ConfigMgr::ReadActivityList(ActivityList* config)
+void ConfigMgr::ReadActivityList(CActivityList* config)
 {
 	m_ActivityHallCfg.ReadActivityList(config);
 }
 
-void ConfigMgr::ReadBrushMonsterCfg(BrushMonsterCfg* config)
+void ConfigMgr::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
 {
 	m_ActivityHallCfg.ReadBrushMonsterCfg(config);
 }
 
-void ConfigMgr::ReadHeroList(HeroList* config)
+void ConfigMgr::ReadHeroList(CHeroList* config)
 {
 	m_SkillCfg.ReadHeroList(config);
 }
 
-void ConfigMgr::ReadSkillIdList(SkillIdList* config)
+void ConfigMgr::ReadSkillIdList(CSkillIdList* config)
 {
 	m_SkillCfg.ReadSkillIdList(config);
 }

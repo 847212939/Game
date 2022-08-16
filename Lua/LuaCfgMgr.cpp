@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Tue Aug 16 15:36:58 2022.
+** Generated automatically by tolua++-1.0.92 on Tue Aug 16 16:09:08 2022.
 */
 
 #ifndef __cplusplus
@@ -18,44 +18,51 @@ TOLUA_API int  tolua_Config_open (lua_State* tolua_S);
 /* function to release collected object via destructor */
 #ifdef __cplusplus
 
-static int tolua_collect_BrushMonsterCfg (lua_State* tolua_S)
+static int tolua_collect_CSkillIdList (lua_State* tolua_S)
 {
- BrushMonsterCfg* self = (BrushMonsterCfg*) tolua_tousertype(tolua_S,1,0);
+ CSkillIdList* self = (CSkillIdList*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
 
-static int tolua_collect_ActivityList (lua_State* tolua_S)
+static int tolua_collect_CActivityList (lua_State* tolua_S)
 {
- ActivityList* self = (ActivityList*) tolua_tousertype(tolua_S,1,0);
+ CActivityList* self = (CActivityList*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
 
-static int tolua_collect_HeroList (lua_State* tolua_S)
+static int tolua_collect_CActivityBreakdown (lua_State* tolua_S)
 {
- HeroList* self = (HeroList*) tolua_tousertype(tolua_S,1,0);
+ CActivityBreakdown* self = (CActivityBreakdown*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
 
-static int tolua_collect_DbCfg (lua_State* tolua_S)
+static int tolua_collect_CBrushMonsterCfg (lua_State* tolua_S)
 {
- DbCfg* self = (DbCfg*) tolua_tousertype(tolua_S,1,0);
+ CBrushMonsterCfg* self = (CBrushMonsterCfg*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
 
-static int tolua_collect_SkillIdList (lua_State* tolua_S)
+static int tolua_collect_CDbCfg (lua_State* tolua_S)
 {
- SkillIdList* self = (SkillIdList*) tolua_tousertype(tolua_S,1,0);
+ CDbCfg* self = (CDbCfg*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
 
-static int tolua_collect_LogicCfg (lua_State* tolua_S)
+static int tolua_collect_CLogicCfg (lua_State* tolua_S)
 {
- LogicCfg* self = (LogicCfg*) tolua_tousertype(tolua_S,1,0);
+ CLogicCfg* self = (CLogicCfg*) tolua_tousertype(tolua_S,1,0);
+	Mtolua_delete(self);
+	return 0;
+}
+
+static int tolua_collect_CHeroList (lua_State* tolua_S)
+{
+ CHeroList* self = (CHeroList*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
@@ -66,28 +73,21 @@ static int tolua_collect_ConfigMgr (lua_State* tolua_S)
 	Mtolua_delete(self);
 	return 0;
 }
-
-static int tolua_collect_ActivityBreakdown (lua_State* tolua_S)
-{
- ActivityBreakdown* self = (ActivityBreakdown*) tolua_tousertype(tolua_S,1,0);
-	Mtolua_delete(self);
-	return 0;
-}
 #endif
 
 
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"DbCfg");
- tolua_usertype(tolua_S,"LogicCfg");
+ tolua_usertype(tolua_S,"CActivityBreakdown");
+ tolua_usertype(tolua_S,"CBrushMonsterCfg");
+ tolua_usertype(tolua_S,"CSkillIdList");
+ tolua_usertype(tolua_S,"CLogicCfg");
  tolua_usertype(tolua_S,"AttrsMap");
- tolua_usertype(tolua_S,"HeroList");
- tolua_usertype(tolua_S,"ActivityList");
- tolua_usertype(tolua_S,"SkillIdList");
+ tolua_usertype(tolua_S,"CHeroList");
+ tolua_usertype(tolua_S,"CDbCfg");
  tolua_usertype(tolua_S,"ConfigMgr");
- tolua_usertype(tolua_S,"BrushMonsterCfg");
- tolua_usertype(tolua_S,"ActivityBreakdown");
+ tolua_usertype(tolua_S,"CActivityList");
 }
 
 /* method: new of class  ConfigMgr */
@@ -219,7 +219,7 @@ static int tolua_Config_ConfigMgr_ReadLogicCfg00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"LogicCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CLogicCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -227,7 +227,7 @@ static int tolua_Config_ConfigMgr_ReadLogicCfg00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  LogicCfg* config = ((LogicCfg*)  tolua_tousertype(tolua_S,2,0));
+  CLogicCfg* config = ((CLogicCfg*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadLogicCfg'", NULL);
 #endif
@@ -252,7 +252,7 @@ static int tolua_Config_ConfigMgr_ReadDbCfg00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"DbCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CDbCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -260,7 +260,7 @@ static int tolua_Config_ConfigMgr_ReadDbCfg00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  DbCfg* config = ((DbCfg*)  tolua_tousertype(tolua_S,2,0));
+  CDbCfg* config = ((CDbCfg*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadDbCfg'", NULL);
 #endif
@@ -549,7 +549,7 @@ static int tolua_Config_ConfigMgr_ReadActivityList00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CActivityList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -557,7 +557,7 @@ static int tolua_Config_ConfigMgr_ReadActivityList00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  ActivityList* config = ((ActivityList*)  tolua_tousertype(tolua_S,2,0));
+  CActivityList* config = ((CActivityList*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadActivityList'", NULL);
 #endif
@@ -582,7 +582,7 @@ static int tolua_Config_ConfigMgr_ReadBrushMonsterCfg00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"BrushMonsterCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CBrushMonsterCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -590,7 +590,7 @@ static int tolua_Config_ConfigMgr_ReadBrushMonsterCfg00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  BrushMonsterCfg* config = ((BrushMonsterCfg*)  tolua_tousertype(tolua_S,2,0));
+  CBrushMonsterCfg* config = ((CBrushMonsterCfg*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadBrushMonsterCfg'", NULL);
 #endif
@@ -615,7 +615,7 @@ static int tolua_Config_ConfigMgr_ReadActivityBreakdownCfg00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -623,7 +623,7 @@ static int tolua_Config_ConfigMgr_ReadActivityBreakdownCfg00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  ActivityBreakdown* config = ((ActivityBreakdown*)  tolua_tousertype(tolua_S,2,0));
+  CActivityBreakdown* config = ((CActivityBreakdown*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadActivityBreakdownCfg'", NULL);
 #endif
@@ -648,7 +648,7 @@ static int tolua_Config_ConfigMgr_ReadHeroList00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"HeroList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CHeroList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -656,7 +656,7 @@ static int tolua_Config_ConfigMgr_ReadHeroList00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  HeroList* config = ((HeroList*)  tolua_tousertype(tolua_S,2,0));
+  CHeroList* config = ((CHeroList*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadHeroList'", NULL);
 #endif
@@ -681,7 +681,7 @@ static int tolua_Config_ConfigMgr_ReadSkillIdList00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"SkillIdList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CSkillIdList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -689,7 +689,7 @@ static int tolua_Config_ConfigMgr_ReadSkillIdList00(lua_State* tolua_S)
 #endif
  {
   ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  SkillIdList* config = ((SkillIdList*)  tolua_tousertype(tolua_S,2,0));
+  CSkillIdList* config = ((CSkillIdList*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadSkillIdList'", NULL);
 #endif
@@ -706,11 +706,11 @@ static int tolua_Config_ConfigMgr_ReadSkillIdList00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: ip of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_get_LogicCfg_ip
-static int tolua_get_LogicCfg_ip(lua_State* tolua_S)
+/* get function: ip of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CLogicCfg_ip
+static int tolua_get_CLogicCfg_ip(lua_State* tolua_S)
 {
-  LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
 #endif
@@ -719,11 +719,11 @@ static int tolua_get_LogicCfg_ip(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: ip of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_set_LogicCfg_ip
-static int tolua_set_LogicCfg_ip(lua_State* tolua_S)
+/* set function: ip of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CLogicCfg_ip
+static int tolua_set_CLogicCfg_ip(lua_State* tolua_S)
 {
-  LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
@@ -736,11 +736,11 @@ static int tolua_set_LogicCfg_ip(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: port of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_get_LogicCfg_port
-static int tolua_get_LogicCfg_port(lua_State* tolua_S)
+/* get function: port of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CLogicCfg_port
+static int tolua_get_CLogicCfg_port(lua_State* tolua_S)
 {
-  LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
 #endif
@@ -749,11 +749,11 @@ static int tolua_get_LogicCfg_port(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: port of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_set_LogicCfg_port
-static int tolua_set_LogicCfg_port(lua_State* tolua_S)
+/* set function: port of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CLogicCfg_port
+static int tolua_set_CLogicCfg_port(lua_State* tolua_S)
 {
-  LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
@@ -766,14 +766,14 @@ static int tolua_set_LogicCfg_port(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_LogicCfg_new00
-static int tolua_Config_LogicCfg_new00(lua_State* tolua_S)
+/* method: new of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CLogicCfg_new00
+static int tolua_Config_CLogicCfg_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"LogicCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CLogicCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -781,8 +781,8 @@ static int tolua_Config_LogicCfg_new00(lua_State* tolua_S)
 #endif
  {
   {
-   LogicCfg* tolua_ret = (LogicCfg*)  Mtolua_new((LogicCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"LogicCfg");
+   CLogicCfg* tolua_ret = (CLogicCfg*)  Mtolua_new((CLogicCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CLogicCfg");
   }
  }
  return 1;
@@ -794,14 +794,14 @@ static int tolua_Config_LogicCfg_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_LogicCfg_new00_local
-static int tolua_Config_LogicCfg_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CLogicCfg_new00_local
+static int tolua_Config_CLogicCfg_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"LogicCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CLogicCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -809,8 +809,8 @@ static int tolua_Config_LogicCfg_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   LogicCfg* tolua_ret = (LogicCfg*)  Mtolua_new((LogicCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"LogicCfg");
+   CLogicCfg* tolua_ret = (CLogicCfg*)  Mtolua_new((CLogicCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CLogicCfg");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -823,21 +823,21 @@ static int tolua_Config_LogicCfg_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  LogicCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_LogicCfg_delete00
-static int tolua_Config_LogicCfg_delete00(lua_State* tolua_S)
+/* method: delete of class  CLogicCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CLogicCfg_delete00
+static int tolua_Config_CLogicCfg_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"LogicCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CLogicCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  LogicCfg* self = (LogicCfg*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -852,11 +852,11 @@ static int tolua_Config_LogicCfg_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: ip of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_DbCfg_ip
-static int tolua_get_DbCfg_ip(lua_State* tolua_S)
+/* get function: ip of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_ip
+static int tolua_get_CDbCfg_ip(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
 #endif
@@ -865,11 +865,11 @@ static int tolua_get_DbCfg_ip(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: ip of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_DbCfg_ip
-static int tolua_set_DbCfg_ip(lua_State* tolua_S)
+/* set function: ip of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_ip
+static int tolua_set_CDbCfg_ip(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
@@ -882,11 +882,11 @@ static int tolua_set_DbCfg_ip(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: user of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_DbCfg_user
-static int tolua_get_DbCfg_user(lua_State* tolua_S)
+/* get function: user of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_user
+static int tolua_get_CDbCfg_user(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
 #endif
@@ -895,11 +895,11 @@ static int tolua_get_DbCfg_user(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: user of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_DbCfg_user
-static int tolua_set_DbCfg_user(lua_State* tolua_S)
+/* set function: user of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_user
+static int tolua_set_CDbCfg_user(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
@@ -912,11 +912,11 @@ static int tolua_set_DbCfg_user(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: passwd of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_DbCfg_passwd
-static int tolua_get_DbCfg_passwd(lua_State* tolua_S)
+/* get function: passwd of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_passwd
+static int tolua_get_CDbCfg_passwd(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
 #endif
@@ -925,11 +925,11 @@ static int tolua_get_DbCfg_passwd(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: passwd of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_DbCfg_passwd
-static int tolua_set_DbCfg_passwd(lua_State* tolua_S)
+/* set function: passwd of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_passwd
+static int tolua_set_CDbCfg_passwd(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
@@ -942,11 +942,11 @@ static int tolua_set_DbCfg_passwd(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: database of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_DbCfg_database
-static int tolua_get_DbCfg_database(lua_State* tolua_S)
+/* get function: database of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_database
+static int tolua_get_CDbCfg_database(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
 #endif
@@ -955,11 +955,11 @@ static int tolua_get_DbCfg_database(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: database of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_DbCfg_database
-static int tolua_set_DbCfg_database(lua_State* tolua_S)
+/* set function: database of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_database
+static int tolua_set_CDbCfg_database(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
@@ -972,11 +972,11 @@ static int tolua_set_DbCfg_database(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: port of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_DbCfg_port
-static int tolua_get_DbCfg_port(lua_State* tolua_S)
+/* get function: port of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_port
+static int tolua_get_CDbCfg_port(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
 #endif
@@ -985,11 +985,11 @@ static int tolua_get_DbCfg_port(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: port of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_DbCfg_port
-static int tolua_set_DbCfg_port(lua_State* tolua_S)
+/* set function: port of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_port
+static int tolua_set_CDbCfg_port(lua_State* tolua_S)
 {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
@@ -1002,14 +1002,14 @@ static int tolua_set_DbCfg_port(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_DbCfg_new00
-static int tolua_Config_DbCfg_new00(lua_State* tolua_S)
+/* method: new of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_new00
+static int tolua_Config_CDbCfg_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"DbCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CDbCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1017,8 +1017,8 @@ static int tolua_Config_DbCfg_new00(lua_State* tolua_S)
 #endif
  {
   {
-   DbCfg* tolua_ret = (DbCfg*)  Mtolua_new((DbCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"DbCfg");
+   CDbCfg* tolua_ret = (CDbCfg*)  Mtolua_new((CDbCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CDbCfg");
   }
  }
  return 1;
@@ -1030,14 +1030,14 @@ static int tolua_Config_DbCfg_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_DbCfg_new00_local
-static int tolua_Config_DbCfg_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_new00_local
+static int tolua_Config_CDbCfg_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"DbCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CDbCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1045,8 +1045,8 @@ static int tolua_Config_DbCfg_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   DbCfg* tolua_ret = (DbCfg*)  Mtolua_new((DbCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"DbCfg");
+   CDbCfg* tolua_ret = (CDbCfg*)  Mtolua_new((CDbCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CDbCfg");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -1059,21 +1059,21 @@ static int tolua_Config_DbCfg_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  DbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_DbCfg_delete00
-static int tolua_Config_DbCfg_delete00(lua_State* tolua_S)
+/* method: delete of class  CDbCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_delete00
+static int tolua_Config_CDbCfg_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"DbCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CDbCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  DbCfg* self = (DbCfg*)  tolua_tousertype(tolua_S,1,0);
+  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -1088,11 +1088,11 @@ static int tolua_Config_DbCfg_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: id of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityList_id
-static int tolua_get_ActivityList_id(lua_State* tolua_S)
+/* get function: id of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityList_id
+static int tolua_get_CActivityList_id(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
 #endif
@@ -1101,11 +1101,11 @@ static int tolua_get_ActivityList_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: id of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityList_id
-static int tolua_set_ActivityList_id(lua_State* tolua_S)
+/* set function: id of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityList_id
+static int tolua_set_CActivityList_id(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
@@ -1118,11 +1118,11 @@ static int tolua_set_ActivityList_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: type of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityList_type
-static int tolua_get_ActivityList_type(lua_State* tolua_S)
+/* get function: type of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityList_type
+static int tolua_get_CActivityList_type(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'type'",NULL);
 #endif
@@ -1131,11 +1131,11 @@ static int tolua_get_ActivityList_type(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: type of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityList_type
-static int tolua_set_ActivityList_type(lua_State* tolua_S)
+/* set function: type of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityList_type
+static int tolua_set_CActivityList_type(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'type'",NULL);
@@ -1148,11 +1148,11 @@ static int tolua_set_ActivityList_type(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: sid of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityList_sid
-static int tolua_get_ActivityList_sid(lua_State* tolua_S)
+/* get function: sid of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityList_sid
+static int tolua_get_CActivityList_sid(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'sid'",NULL);
 #endif
@@ -1161,11 +1161,11 @@ static int tolua_get_ActivityList_sid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: sid of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityList_sid
-static int tolua_set_ActivityList_sid(lua_State* tolua_S)
+/* set function: sid of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityList_sid
+static int tolua_set_CActivityList_sid(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'sid'",NULL);
@@ -1178,11 +1178,11 @@ static int tolua_set_ActivityList_sid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: activityBreakdown of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityList_activityBreakdown
-static int tolua_get_ActivityList_activityBreakdown(lua_State* tolua_S)
+/* get function: activityBreakdown of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityList_activityBreakdown
+static int tolua_get_CActivityList_activityBreakdown(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'activityBreakdown'",NULL);
 #endif
@@ -1191,11 +1191,11 @@ static int tolua_get_ActivityList_activityBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: activityBreakdown of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityList_activityBreakdown
-static int tolua_set_ActivityList_activityBreakdown(lua_State* tolua_S)
+/* set function: activityBreakdown of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityList_activityBreakdown
+static int tolua_set_CActivityList_activityBreakdown(lua_State* tolua_S)
 {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'activityBreakdown'",NULL);
@@ -1208,14 +1208,14 @@ static int tolua_set_ActivityList_activityBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_new00
-static int tolua_Config_ActivityList_new00(lua_State* tolua_S)
+/* method: new of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_new00
+static int tolua_Config_CActivityList_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1223,8 +1223,8 @@ static int tolua_Config_ActivityList_new00(lua_State* tolua_S)
 #endif
  {
   {
-   ActivityList* tolua_ret = (ActivityList*)  Mtolua_new((ActivityList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityList");
+   CActivityList* tolua_ret = (CActivityList*)  Mtolua_new((CActivityList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CActivityList");
   }
  }
  return 1;
@@ -1236,14 +1236,14 @@ static int tolua_Config_ActivityList_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_new00_local
-static int tolua_Config_ActivityList_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_new00_local
+static int tolua_Config_CActivityList_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1251,8 +1251,8 @@ static int tolua_Config_ActivityList_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   ActivityList* tolua_ret = (ActivityList*)  Mtolua_new((ActivityList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityList");
+   CActivityList* tolua_ret = (CActivityList*)  Mtolua_new((CActivityList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CActivityList");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -1265,21 +1265,21 @@ static int tolua_Config_ActivityList_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_delete00
-static int tolua_Config_ActivityList_delete00(lua_State* tolua_S)
+/* method: delete of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_delete00
+static int tolua_Config_CActivityList_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -1294,14 +1294,14 @@ static int tolua_Config_ActivityList_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddBeginTime of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_AddBeginTime00
-static int tolua_Config_ActivityList_AddBeginTime00(lua_State* tolua_S)
+/* method: AddBeginTime of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_AddBeginTime00
+static int tolua_Config_CActivityList_AddBeginTime00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -1309,7 +1309,7 @@ static int tolua_Config_ActivityList_AddBeginTime00(lua_State* tolua_S)
  else
 #endif
  {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
   int tm = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddBeginTime'", NULL);
@@ -1327,14 +1327,14 @@ static int tolua_Config_ActivityList_AddBeginTime00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddEndTime of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_AddEndTime00
-static int tolua_Config_ActivityList_AddEndTime00(lua_State* tolua_S)
+/* method: AddEndTime of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_AddEndTime00
+static int tolua_Config_CActivityList_AddEndTime00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -1342,7 +1342,7 @@ static int tolua_Config_ActivityList_AddEndTime00(lua_State* tolua_S)
  else
 #endif
  {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
   int tm = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddEndTime'", NULL);
@@ -1360,14 +1360,14 @@ static int tolua_Config_ActivityList_AddEndTime00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddSolidTime of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_AddSolidTime00
-static int tolua_Config_ActivityList_AddSolidTime00(lua_State* tolua_S)
+/* method: AddSolidTime of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_AddSolidTime00
+static int tolua_Config_CActivityList_AddSolidTime00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -1375,7 +1375,7 @@ static int tolua_Config_ActivityList_AddSolidTime00(lua_State* tolua_S)
  else
 #endif
  {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
   int tm = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddSolidTime'", NULL);
@@ -1393,14 +1393,14 @@ static int tolua_Config_ActivityList_AddSolidTime00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddOpenServerTime of class  ActivityList */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityList_AddOpenServerTime00
-static int tolua_Config_ActivityList_AddOpenServerTime00(lua_State* tolua_S)
+/* method: AddOpenServerTime of class  CActivityList */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityList_AddOpenServerTime00
+static int tolua_Config_CActivityList_AddOpenServerTime00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -1408,7 +1408,7 @@ static int tolua_Config_ActivityList_AddOpenServerTime00(lua_State* tolua_S)
  else
 #endif
  {
-  ActivityList* self = (ActivityList*)  tolua_tousertype(tolua_S,1,0);
+  CActivityList* self = (CActivityList*)  tolua_tousertype(tolua_S,1,0);
   int tm = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddOpenServerTime'", NULL);
@@ -1426,11 +1426,11 @@ static int tolua_Config_ActivityList_AddOpenServerTime00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: id of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_id
-static int tolua_get_ActivityBreakdown_id(lua_State* tolua_S)
+/* get function: id of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityBreakdown_id
+static int tolua_get_CActivityBreakdown_id(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
 #endif
@@ -1439,11 +1439,11 @@ static int tolua_get_ActivityBreakdown_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: id of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_id
-static int tolua_set_ActivityBreakdown_id(lua_State* tolua_S)
+/* set function: id of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityBreakdown_id
+static int tolua_set_CActivityBreakdown_id(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
@@ -1456,11 +1456,11 @@ static int tolua_set_ActivityBreakdown_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: dayBreakdown of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_dayBreakdown
-static int tolua_get_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
+/* get function: dayBreakdown of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityBreakdown_dayBreakdown
+static int tolua_get_CActivityBreakdown_dayBreakdown(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dayBreakdown'",NULL);
 #endif
@@ -1469,11 +1469,11 @@ static int tolua_get_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: dayBreakdown of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_dayBreakdown
-static int tolua_set_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
+/* set function: dayBreakdown of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityBreakdown_dayBreakdown
+static int tolua_set_CActivityBreakdown_dayBreakdown(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dayBreakdown'",NULL);
@@ -1486,11 +1486,11 @@ static int tolua_set_ActivityBreakdown_dayBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: hourBreakdown of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_get_ActivityBreakdown_hourBreakdown
-static int tolua_get_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
+/* get function: hourBreakdown of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_get_CActivityBreakdown_hourBreakdown
+static int tolua_get_CActivityBreakdown_hourBreakdown(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'hourBreakdown'",NULL);
 #endif
@@ -1499,11 +1499,11 @@ static int tolua_get_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: hourBreakdown of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_set_ActivityBreakdown_hourBreakdown
-static int tolua_set_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
+/* set function: hourBreakdown of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_set_CActivityBreakdown_hourBreakdown
+static int tolua_set_CActivityBreakdown_hourBreakdown(lua_State* tolua_S)
 {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'hourBreakdown'",NULL);
@@ -1516,14 +1516,14 @@ static int tolua_set_ActivityBreakdown_hourBreakdown(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00
-static int tolua_Config_ActivityBreakdown_new00(lua_State* tolua_S)
+/* method: new of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityBreakdown_new00
+static int tolua_Config_CActivityBreakdown_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1531,8 +1531,8 @@ static int tolua_Config_ActivityBreakdown_new00(lua_State* tolua_S)
 #endif
  {
   {
-   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
+   CActivityBreakdown* tolua_ret = (CActivityBreakdown*)  Mtolua_new((CActivityBreakdown)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CActivityBreakdown");
   }
  }
  return 1;
@@ -1544,14 +1544,14 @@ static int tolua_Config_ActivityBreakdown_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_new00_local
-static int tolua_Config_ActivityBreakdown_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityBreakdown_new00_local
+static int tolua_Config_CActivityBreakdown_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1559,8 +1559,8 @@ static int tolua_Config_ActivityBreakdown_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   ActivityBreakdown* tolua_ret = (ActivityBreakdown*)  Mtolua_new((ActivityBreakdown)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"ActivityBreakdown");
+   CActivityBreakdown* tolua_ret = (CActivityBreakdown*)  Mtolua_new((CActivityBreakdown)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CActivityBreakdown");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -1573,21 +1573,21 @@ static int tolua_Config_ActivityBreakdown_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_delete00
-static int tolua_Config_ActivityBreakdown_delete00(lua_State* tolua_S)
+/* method: delete of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityBreakdown_delete00
+static int tolua_Config_CActivityBreakdown_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -1602,14 +1602,14 @@ static int tolua_Config_ActivityBreakdown_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddDayBreakdownList of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddDayBreakdownList00
-static int tolua_Config_ActivityBreakdown_AddDayBreakdownList00(lua_State* tolua_S)
+/* method: AddDayBreakdownList of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityBreakdown_AddDayBreakdownList00
+static int tolua_Config_CActivityBreakdown_AddDayBreakdownList00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,4,&tolua_err)
@@ -1618,7 +1618,7 @@ static int tolua_Config_ActivityBreakdown_AddDayBreakdownList00(lua_State* tolua
  else
 #endif
  {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
   int idex = ((int)  tolua_tonumber(tolua_S,2,0));
   int tm = ((int)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
@@ -1637,14 +1637,14 @@ static int tolua_Config_ActivityBreakdown_AddDayBreakdownList00(lua_State* tolua
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddHourBreakdownList of class  ActivityBreakdown */
-#ifndef TOLUA_DISABLE_tolua_Config_ActivityBreakdown_AddHourBreakdownList00
-static int tolua_Config_ActivityBreakdown_AddHourBreakdownList00(lua_State* tolua_S)
+/* method: AddHourBreakdownList of class  CActivityBreakdown */
+#ifndef TOLUA_DISABLE_tolua_Config_CActivityBreakdown_AddHourBreakdownList00
+static int tolua_Config_CActivityBreakdown_AddHourBreakdownList00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"ActivityBreakdown",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CActivityBreakdown",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,4,&tolua_err)
@@ -1653,7 +1653,7 @@ static int tolua_Config_ActivityBreakdown_AddHourBreakdownList00(lua_State* tolu
  else
 #endif
  {
-  ActivityBreakdown* self = (ActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
+  CActivityBreakdown* self = (CActivityBreakdown*)  tolua_tousertype(tolua_S,1,0);
   int idex = ((int)  tolua_tonumber(tolua_S,2,0));
   int tm = ((int)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
@@ -1672,11 +1672,11 @@ static int tolua_Config_ActivityBreakdown_AddHourBreakdownList00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: id of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_id
-static int tolua_get_BrushMonsterCfg_id(lua_State* tolua_S)
+/* get function: id of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_id
+static int tolua_get_CBrushMonsterCfg_id(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
 #endif
@@ -1685,11 +1685,11 @@ static int tolua_get_BrushMonsterCfg_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: id of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_id
-static int tolua_set_BrushMonsterCfg_id(lua_State* tolua_S)
+/* set function: id of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_id
+static int tolua_set_CBrushMonsterCfg_id(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
@@ -1702,11 +1702,11 @@ static int tolua_set_BrushMonsterCfg_id(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: sid of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_sid
-static int tolua_get_BrushMonsterCfg_sid(lua_State* tolua_S)
+/* get function: sid of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_sid
+static int tolua_get_CBrushMonsterCfg_sid(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'sid'",NULL);
 #endif
@@ -1715,11 +1715,11 @@ static int tolua_get_BrushMonsterCfg_sid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: sid of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_sid
-static int tolua_set_BrushMonsterCfg_sid(lua_State* tolua_S)
+/* set function: sid of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_sid
+static int tolua_set_CBrushMonsterCfg_sid(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'sid'",NULL);
@@ -1732,11 +1732,11 @@ static int tolua_set_BrushMonsterCfg_sid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: mid of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_mid
-static int tolua_get_BrushMonsterCfg_mid(lua_State* tolua_S)
+/* get function: mid of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_mid
+static int tolua_get_CBrushMonsterCfg_mid(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mid'",NULL);
 #endif
@@ -1745,11 +1745,11 @@ static int tolua_get_BrushMonsterCfg_mid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: mid of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_mid
-static int tolua_set_BrushMonsterCfg_mid(lua_State* tolua_S)
+/* set function: mid of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_mid
+static int tolua_set_CBrushMonsterCfg_mid(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mid'",NULL);
@@ -1762,11 +1762,11 @@ static int tolua_set_BrushMonsterCfg_mid(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: count of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_count
-static int tolua_get_BrushMonsterCfg_count(lua_State* tolua_S)
+/* get function: count of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_count
+static int tolua_get_CBrushMonsterCfg_count(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'count'",NULL);
 #endif
@@ -1775,11 +1775,11 @@ static int tolua_get_BrushMonsterCfg_count(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: count of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_count
-static int tolua_set_BrushMonsterCfg_count(lua_State* tolua_S)
+/* set function: count of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_count
+static int tolua_set_CBrushMonsterCfg_count(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'count'",NULL);
@@ -1792,11 +1792,11 @@ static int tolua_set_BrushMonsterCfg_count(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: delayTime of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_delayTime
-static int tolua_get_BrushMonsterCfg_delayTime(lua_State* tolua_S)
+/* get function: delayTime of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_delayTime
+static int tolua_get_CBrushMonsterCfg_delayTime(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'delayTime'",NULL);
 #endif
@@ -1805,11 +1805,11 @@ static int tolua_get_BrushMonsterCfg_delayTime(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: delayTime of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_delayTime
-static int tolua_set_BrushMonsterCfg_delayTime(lua_State* tolua_S)
+/* set function: delayTime of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_delayTime
+static int tolua_set_CBrushMonsterCfg_delayTime(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'delayTime'",NULL);
@@ -1822,11 +1822,11 @@ static int tolua_set_BrushMonsterCfg_delayTime(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: refreshTime of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_refreshTime
-static int tolua_get_BrushMonsterCfg_refreshTime(lua_State* tolua_S)
+/* get function: refreshTime of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_refreshTime
+static int tolua_get_CBrushMonsterCfg_refreshTime(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'refreshTime'",NULL);
 #endif
@@ -1835,11 +1835,11 @@ static int tolua_get_BrushMonsterCfg_refreshTime(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: refreshTime of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_refreshTime
-static int tolua_set_BrushMonsterCfg_refreshTime(lua_State* tolua_S)
+/* set function: refreshTime of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_refreshTime
+static int tolua_set_CBrushMonsterCfg_refreshTime(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'refreshTime'",NULL);
@@ -1852,11 +1852,11 @@ static int tolua_set_BrushMonsterCfg_refreshTime(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: x of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_x
-static int tolua_get_BrushMonsterCfg_x(lua_State* tolua_S)
+/* get function: x of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_x
+static int tolua_get_CBrushMonsterCfg_x(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'x'",NULL);
 #endif
@@ -1865,11 +1865,11 @@ static int tolua_get_BrushMonsterCfg_x(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: x of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_x
-static int tolua_set_BrushMonsterCfg_x(lua_State* tolua_S)
+/* set function: x of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_x
+static int tolua_set_CBrushMonsterCfg_x(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'x'",NULL);
@@ -1882,11 +1882,11 @@ static int tolua_set_BrushMonsterCfg_x(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: y of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_get_BrushMonsterCfg_y
-static int tolua_get_BrushMonsterCfg_y(lua_State* tolua_S)
+/* get function: y of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_get_CBrushMonsterCfg_y
+static int tolua_get_CBrushMonsterCfg_y(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'y'",NULL);
 #endif
@@ -1895,11 +1895,11 @@ static int tolua_get_BrushMonsterCfg_y(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: y of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_set_BrushMonsterCfg_y
-static int tolua_set_BrushMonsterCfg_y(lua_State* tolua_S)
+/* set function: y of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_set_CBrushMonsterCfg_y
+static int tolua_set_CBrushMonsterCfg_y(lua_State* tolua_S)
 {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'y'",NULL);
@@ -1912,14 +1912,14 @@ static int tolua_set_BrushMonsterCfg_y(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_BrushMonsterCfg_new00
-static int tolua_Config_BrushMonsterCfg_new00(lua_State* tolua_S)
+/* method: new of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CBrushMonsterCfg_new00
+static int tolua_Config_CBrushMonsterCfg_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"BrushMonsterCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CBrushMonsterCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1927,8 +1927,8 @@ static int tolua_Config_BrushMonsterCfg_new00(lua_State* tolua_S)
 #endif
  {
   {
-   BrushMonsterCfg* tolua_ret = (BrushMonsterCfg*)  Mtolua_new((BrushMonsterCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"BrushMonsterCfg");
+   CBrushMonsterCfg* tolua_ret = (CBrushMonsterCfg*)  Mtolua_new((CBrushMonsterCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CBrushMonsterCfg");
   }
  }
  return 1;
@@ -1940,14 +1940,14 @@ static int tolua_Config_BrushMonsterCfg_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_BrushMonsterCfg_new00_local
-static int tolua_Config_BrushMonsterCfg_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CBrushMonsterCfg_new00_local
+static int tolua_Config_CBrushMonsterCfg_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"BrushMonsterCfg",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CBrushMonsterCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -1955,8 +1955,8 @@ static int tolua_Config_BrushMonsterCfg_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   BrushMonsterCfg* tolua_ret = (BrushMonsterCfg*)  Mtolua_new((BrushMonsterCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"BrushMonsterCfg");
+   CBrushMonsterCfg* tolua_ret = (CBrushMonsterCfg*)  Mtolua_new((CBrushMonsterCfg)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CBrushMonsterCfg");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -1969,21 +1969,21 @@ static int tolua_Config_BrushMonsterCfg_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  BrushMonsterCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_BrushMonsterCfg_delete00
-static int tolua_Config_BrushMonsterCfg_delete00(lua_State* tolua_S)
+/* method: delete of class  CBrushMonsterCfg */
+#ifndef TOLUA_DISABLE_tolua_Config_CBrushMonsterCfg_delete00
+static int tolua_Config_CBrushMonsterCfg_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"BrushMonsterCfg",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CBrushMonsterCfg",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  BrushMonsterCfg* self = (BrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
+  CBrushMonsterCfg* self = (CBrushMonsterCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -1998,11 +1998,11 @@ static int tolua_Config_BrushMonsterCfg_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: heroId of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_get_HeroList_heroId
-static int tolua_get_HeroList_heroId(lua_State* tolua_S)
+/* get function: heroId of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_get_CHeroList_heroId
+static int tolua_get_CHeroList_heroId(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroId'",NULL);
 #endif
@@ -2011,11 +2011,11 @@ static int tolua_get_HeroList_heroId(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: heroId of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_set_HeroList_heroId
-static int tolua_set_HeroList_heroId(lua_State* tolua_S)
+/* set function: heroId of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_set_CHeroList_heroId
+static int tolua_set_CHeroList_heroId(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroId'",NULL);
@@ -2028,11 +2028,11 @@ static int tolua_set_HeroList_heroId(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: heroType of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_get_HeroList_heroType
-static int tolua_get_HeroList_heroType(lua_State* tolua_S)
+/* get function: heroType of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_get_CHeroList_heroType
+static int tolua_get_CHeroList_heroType(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroType'",NULL);
 #endif
@@ -2041,11 +2041,11 @@ static int tolua_get_HeroList_heroType(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: heroType of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_set_HeroList_heroType
-static int tolua_set_HeroList_heroType(lua_State* tolua_S)
+/* set function: heroType of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_set_CHeroList_heroType
+static int tolua_set_CHeroList_heroType(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroType'",NULL);
@@ -2058,11 +2058,11 @@ static int tolua_set_HeroList_heroType(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: heroName of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_get_HeroList_heroName
-static int tolua_get_HeroList_heroName(lua_State* tolua_S)
+/* get function: heroName of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_get_CHeroList_heroName
+static int tolua_get_CHeroList_heroName(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroName'",NULL);
 #endif
@@ -2071,11 +2071,11 @@ static int tolua_get_HeroList_heroName(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: heroName of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_set_HeroList_heroName
-static int tolua_set_HeroList_heroName(lua_State* tolua_S)
+/* set function: heroName of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_set_CHeroList_heroName
+static int tolua_set_CHeroList_heroName(lua_State* tolua_S)
 {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'heroName'",NULL);
@@ -2088,14 +2088,14 @@ static int tolua_set_HeroList_heroName(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddskillId of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_Config_HeroList_AddskillId00
-static int tolua_Config_HeroList_AddskillId00(lua_State* tolua_S)
+/* method: AddskillId of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_Config_CHeroList_AddskillId00
+static int tolua_Config_CHeroList_AddskillId00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"HeroList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CHeroList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -2103,7 +2103,7 @@ static int tolua_Config_HeroList_AddskillId00(lua_State* tolua_S)
  else
 #endif
  {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
   int skillid = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddskillId'", NULL);
@@ -2121,14 +2121,14 @@ static int tolua_Config_HeroList_AddskillId00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_Config_HeroList_new00
-static int tolua_Config_HeroList_new00(lua_State* tolua_S)
+/* method: new of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_Config_CHeroList_new00
+static int tolua_Config_CHeroList_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"HeroList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CHeroList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -2136,8 +2136,8 @@ static int tolua_Config_HeroList_new00(lua_State* tolua_S)
 #endif
  {
   {
-   HeroList* tolua_ret = (HeroList*)  Mtolua_new((HeroList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"HeroList");
+   CHeroList* tolua_ret = (CHeroList*)  Mtolua_new((CHeroList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CHeroList");
   }
  }
  return 1;
@@ -2149,14 +2149,14 @@ static int tolua_Config_HeroList_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_Config_HeroList_new00_local
-static int tolua_Config_HeroList_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_Config_CHeroList_new00_local
+static int tolua_Config_CHeroList_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"HeroList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CHeroList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -2164,8 +2164,8 @@ static int tolua_Config_HeroList_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   HeroList* tolua_ret = (HeroList*)  Mtolua_new((HeroList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"HeroList");
+   CHeroList* tolua_ret = (CHeroList*)  Mtolua_new((CHeroList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CHeroList");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -2178,21 +2178,21 @@ static int tolua_Config_HeroList_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  HeroList */
-#ifndef TOLUA_DISABLE_tolua_Config_HeroList_delete00
-static int tolua_Config_HeroList_delete00(lua_State* tolua_S)
+/* method: delete of class  CHeroList */
+#ifndef TOLUA_DISABLE_tolua_Config_CHeroList_delete00
+static int tolua_Config_CHeroList_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"HeroList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CHeroList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  HeroList* self = (HeroList*)  tolua_tousertype(tolua_S,1,0);
+  CHeroList* self = (CHeroList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -2207,11 +2207,11 @@ static int tolua_Config_HeroList_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: skillId of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_get_SkillIdList_skillId
-static int tolua_get_SkillIdList_skillId(lua_State* tolua_S)
+/* get function: skillId of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_skillId
+static int tolua_get_CSkillIdList_skillId(lua_State* tolua_S)
 {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillId'",NULL);
 #endif
@@ -2220,11 +2220,11 @@ static int tolua_get_SkillIdList_skillId(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: skillId of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_set_SkillIdList_skillId
-static int tolua_set_SkillIdList_skillId(lua_State* tolua_S)
+/* set function: skillId of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_skillId
+static int tolua_set_CSkillIdList_skillId(lua_State* tolua_S)
 {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillId'",NULL);
@@ -2237,11 +2237,11 @@ static int tolua_set_SkillIdList_skillId(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: attrs of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_get_SkillIdList_attrs
-static int tolua_get_SkillIdList_attrs(lua_State* tolua_S)
+/* get function: attrs of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_attrs
+static int tolua_get_CSkillIdList_attrs(lua_State* tolua_S)
 {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'attrs'",NULL);
 #endif
@@ -2250,11 +2250,11 @@ static int tolua_get_SkillIdList_attrs(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: attrs of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_set_SkillIdList_attrs
-static int tolua_set_SkillIdList_attrs(lua_State* tolua_S)
+/* set function: attrs of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_attrs
+static int tolua_set_CSkillIdList_attrs(lua_State* tolua_S)
 {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
   if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'attrs'",NULL);
@@ -2267,14 +2267,14 @@ static int tolua_set_SkillIdList_attrs(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: AddAttrs of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_Config_SkillIdList_AddAttrs00
-static int tolua_Config_SkillIdList_AddAttrs00(lua_State* tolua_S)
+/* method: AddAttrs of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_Config_CSkillIdList_AddAttrs00
+static int tolua_Config_CSkillIdList_AddAttrs00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"SkillIdList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CSkillIdList",0,&tolua_err) ||
      !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,4,&tolua_err)
@@ -2283,7 +2283,7 @@ static int tolua_Config_SkillIdList_AddAttrs00(lua_State* tolua_S)
  else
 #endif
  {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
   int id = ((int)  tolua_tonumber(tolua_S,2,0));
   int value = ((int)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
@@ -2302,14 +2302,14 @@ static int tolua_Config_SkillIdList_AddAttrs00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_Config_SkillIdList_new00
-static int tolua_Config_SkillIdList_new00(lua_State* tolua_S)
+/* method: new of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_Config_CSkillIdList_new00
+static int tolua_Config_CSkillIdList_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"SkillIdList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CSkillIdList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -2317,8 +2317,8 @@ static int tolua_Config_SkillIdList_new00(lua_State* tolua_S)
 #endif
  {
   {
-   SkillIdList* tolua_ret = (SkillIdList*)  Mtolua_new((SkillIdList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"SkillIdList");
+   CSkillIdList* tolua_ret = (CSkillIdList*)  Mtolua_new((CSkillIdList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CSkillIdList");
   }
  }
  return 1;
@@ -2330,14 +2330,14 @@ static int tolua_Config_SkillIdList_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_Config_SkillIdList_new00_local
-static int tolua_Config_SkillIdList_new00_local(lua_State* tolua_S)
+/* method: new_local of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_Config_CSkillIdList_new00_local
+static int tolua_Config_CSkillIdList_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"SkillIdList",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"CSkillIdList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -2345,8 +2345,8 @@ static int tolua_Config_SkillIdList_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   SkillIdList* tolua_ret = (SkillIdList*)  Mtolua_new((SkillIdList)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"SkillIdList");
+   CSkillIdList* tolua_ret = (CSkillIdList*)  Mtolua_new((CSkillIdList)());
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CSkillIdList");
     tolua_register_gc(tolua_S,lua_gettop(tolua_S));
   }
  }
@@ -2359,21 +2359,21 @@ static int tolua_Config_SkillIdList_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  SkillIdList */
-#ifndef TOLUA_DISABLE_tolua_Config_SkillIdList_delete00
-static int tolua_Config_SkillIdList_delete00(lua_State* tolua_S)
+/* method: delete of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_Config_CSkillIdList_delete00
+static int tolua_Config_CSkillIdList_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"SkillIdList",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"CSkillIdList",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  SkillIdList* self = (SkillIdList*)  tolua_tousertype(tolua_S,1,0);
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -2430,116 +2430,116 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ReadSkillIdList",tolua_Config_ConfigMgr_ReadSkillIdList00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",tolua_collect_LogicCfg);
+  tolua_cclass(tolua_S,"CLogicCfg","CLogicCfg","",tolua_collect_CLogicCfg);
   #else
-  tolua_cclass(tolua_S,"LogicCfg","LogicCfg","",NULL);
+  tolua_cclass(tolua_S,"CLogicCfg","CLogicCfg","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"LogicCfg");
-   tolua_variable(tolua_S,"ip",tolua_get_LogicCfg_ip,tolua_set_LogicCfg_ip);
-   tolua_variable(tolua_S,"port",tolua_get_LogicCfg_port,tolua_set_LogicCfg_port);
-   tolua_function(tolua_S,"new",tolua_Config_LogicCfg_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_LogicCfg_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_LogicCfg_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_LogicCfg_delete00);
+  tolua_beginmodule(tolua_S,"CLogicCfg");
+   tolua_variable(tolua_S,"ip",tolua_get_CLogicCfg_ip,tolua_set_CLogicCfg_ip);
+   tolua_variable(tolua_S,"port",tolua_get_CLogicCfg_port,tolua_set_CLogicCfg_port);
+   tolua_function(tolua_S,"new",tolua_Config_CLogicCfg_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CLogicCfg_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CLogicCfg_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CLogicCfg_delete00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"DbCfg","DbCfg","",tolua_collect_DbCfg);
+  tolua_cclass(tolua_S,"CDbCfg","CDbCfg","",tolua_collect_CDbCfg);
   #else
-  tolua_cclass(tolua_S,"DbCfg","DbCfg","",NULL);
+  tolua_cclass(tolua_S,"CDbCfg","CDbCfg","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"DbCfg");
-   tolua_variable(tolua_S,"ip",tolua_get_DbCfg_ip,tolua_set_DbCfg_ip);
-   tolua_variable(tolua_S,"user",tolua_get_DbCfg_user,tolua_set_DbCfg_user);
-   tolua_variable(tolua_S,"passwd",tolua_get_DbCfg_passwd,tolua_set_DbCfg_passwd);
-   tolua_variable(tolua_S,"database",tolua_get_DbCfg_database,tolua_set_DbCfg_database);
-   tolua_variable(tolua_S,"port",tolua_get_DbCfg_port,tolua_set_DbCfg_port);
-   tolua_function(tolua_S,"new",tolua_Config_DbCfg_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_DbCfg_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_DbCfg_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_DbCfg_delete00);
+  tolua_beginmodule(tolua_S,"CDbCfg");
+   tolua_variable(tolua_S,"ip",tolua_get_CDbCfg_ip,tolua_set_CDbCfg_ip);
+   tolua_variable(tolua_S,"user",tolua_get_CDbCfg_user,tolua_set_CDbCfg_user);
+   tolua_variable(tolua_S,"passwd",tolua_get_CDbCfg_passwd,tolua_set_CDbCfg_passwd);
+   tolua_variable(tolua_S,"database",tolua_get_CDbCfg_database,tolua_set_CDbCfg_database);
+   tolua_variable(tolua_S,"port",tolua_get_CDbCfg_port,tolua_set_CDbCfg_port);
+   tolua_function(tolua_S,"new",tolua_Config_CDbCfg_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CDbCfg_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CDbCfg_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CDbCfg_delete00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"ActivityList","ActivityList","",tolua_collect_ActivityList);
+  tolua_cclass(tolua_S,"CActivityList","CActivityList","",tolua_collect_CActivityList);
   #else
-  tolua_cclass(tolua_S,"ActivityList","ActivityList","",NULL);
+  tolua_cclass(tolua_S,"CActivityList","CActivityList","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"ActivityList");
-   tolua_variable(tolua_S,"id",tolua_get_ActivityList_id,tolua_set_ActivityList_id);
-   tolua_variable(tolua_S,"type",tolua_get_ActivityList_type,tolua_set_ActivityList_type);
-   tolua_variable(tolua_S,"sid",tolua_get_ActivityList_sid,tolua_set_ActivityList_sid);
-   tolua_variable(tolua_S,"activityBreakdown",tolua_get_ActivityList_activityBreakdown,tolua_set_ActivityList_activityBreakdown);
-   tolua_function(tolua_S,"new",tolua_Config_ActivityList_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_ActivityList_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_ActivityList_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_ActivityList_delete00);
-   tolua_function(tolua_S,"AddBeginTime",tolua_Config_ActivityList_AddBeginTime00);
-   tolua_function(tolua_S,"AddEndTime",tolua_Config_ActivityList_AddEndTime00);
-   tolua_function(tolua_S,"AddSolidTime",tolua_Config_ActivityList_AddSolidTime00);
-   tolua_function(tolua_S,"AddOpenServerTime",tolua_Config_ActivityList_AddOpenServerTime00);
+  tolua_beginmodule(tolua_S,"CActivityList");
+   tolua_variable(tolua_S,"id",tolua_get_CActivityList_id,tolua_set_CActivityList_id);
+   tolua_variable(tolua_S,"type",tolua_get_CActivityList_type,tolua_set_CActivityList_type);
+   tolua_variable(tolua_S,"sid",tolua_get_CActivityList_sid,tolua_set_CActivityList_sid);
+   tolua_variable(tolua_S,"activityBreakdown",tolua_get_CActivityList_activityBreakdown,tolua_set_CActivityList_activityBreakdown);
+   tolua_function(tolua_S,"new",tolua_Config_CActivityList_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CActivityList_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CActivityList_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CActivityList_delete00);
+   tolua_function(tolua_S,"AddBeginTime",tolua_Config_CActivityList_AddBeginTime00);
+   tolua_function(tolua_S,"AddEndTime",tolua_Config_CActivityList_AddEndTime00);
+   tolua_function(tolua_S,"AddSolidTime",tolua_Config_CActivityList_AddSolidTime00);
+   tolua_function(tolua_S,"AddOpenServerTime",tolua_Config_CActivityList_AddOpenServerTime00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",tolua_collect_ActivityBreakdown);
+  tolua_cclass(tolua_S,"CActivityBreakdown","CActivityBreakdown","",tolua_collect_CActivityBreakdown);
   #else
-  tolua_cclass(tolua_S,"ActivityBreakdown","ActivityBreakdown","",NULL);
+  tolua_cclass(tolua_S,"CActivityBreakdown","CActivityBreakdown","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"ActivityBreakdown");
-   tolua_variable(tolua_S,"id",tolua_get_ActivityBreakdown_id,tolua_set_ActivityBreakdown_id);
-   tolua_variable(tolua_S,"dayBreakdown",tolua_get_ActivityBreakdown_dayBreakdown,tolua_set_ActivityBreakdown_dayBreakdown);
-   tolua_variable(tolua_S,"hourBreakdown",tolua_get_ActivityBreakdown_hourBreakdown,tolua_set_ActivityBreakdown_hourBreakdown);
-   tolua_function(tolua_S,"new",tolua_Config_ActivityBreakdown_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_ActivityBreakdown_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_ActivityBreakdown_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_ActivityBreakdown_delete00);
-   tolua_function(tolua_S,"AddDayBreakdownList",tolua_Config_ActivityBreakdown_AddDayBreakdownList00);
-   tolua_function(tolua_S,"AddHourBreakdownList",tolua_Config_ActivityBreakdown_AddHourBreakdownList00);
+  tolua_beginmodule(tolua_S,"CActivityBreakdown");
+   tolua_variable(tolua_S,"id",tolua_get_CActivityBreakdown_id,tolua_set_CActivityBreakdown_id);
+   tolua_variable(tolua_S,"dayBreakdown",tolua_get_CActivityBreakdown_dayBreakdown,tolua_set_CActivityBreakdown_dayBreakdown);
+   tolua_variable(tolua_S,"hourBreakdown",tolua_get_CActivityBreakdown_hourBreakdown,tolua_set_CActivityBreakdown_hourBreakdown);
+   tolua_function(tolua_S,"new",tolua_Config_CActivityBreakdown_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CActivityBreakdown_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CActivityBreakdown_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CActivityBreakdown_delete00);
+   tolua_function(tolua_S,"AddDayBreakdownList",tolua_Config_CActivityBreakdown_AddDayBreakdownList00);
+   tolua_function(tolua_S,"AddHourBreakdownList",tolua_Config_CActivityBreakdown_AddHourBreakdownList00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"BrushMonsterCfg","BrushMonsterCfg","",tolua_collect_BrushMonsterCfg);
+  tolua_cclass(tolua_S,"CBrushMonsterCfg","CBrushMonsterCfg","",tolua_collect_CBrushMonsterCfg);
   #else
-  tolua_cclass(tolua_S,"BrushMonsterCfg","BrushMonsterCfg","",NULL);
+  tolua_cclass(tolua_S,"CBrushMonsterCfg","CBrushMonsterCfg","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"BrushMonsterCfg");
-   tolua_variable(tolua_S,"id",tolua_get_BrushMonsterCfg_id,tolua_set_BrushMonsterCfg_id);
-   tolua_variable(tolua_S,"sid",tolua_get_BrushMonsterCfg_sid,tolua_set_BrushMonsterCfg_sid);
-   tolua_variable(tolua_S,"mid",tolua_get_BrushMonsterCfg_mid,tolua_set_BrushMonsterCfg_mid);
-   tolua_variable(tolua_S,"count",tolua_get_BrushMonsterCfg_count,tolua_set_BrushMonsterCfg_count);
-   tolua_variable(tolua_S,"delayTime",tolua_get_BrushMonsterCfg_delayTime,tolua_set_BrushMonsterCfg_delayTime);
-   tolua_variable(tolua_S,"refreshTime",tolua_get_BrushMonsterCfg_refreshTime,tolua_set_BrushMonsterCfg_refreshTime);
-   tolua_variable(tolua_S,"x",tolua_get_BrushMonsterCfg_x,tolua_set_BrushMonsterCfg_x);
-   tolua_variable(tolua_S,"y",tolua_get_BrushMonsterCfg_y,tolua_set_BrushMonsterCfg_y);
-   tolua_function(tolua_S,"new",tolua_Config_BrushMonsterCfg_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_BrushMonsterCfg_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_BrushMonsterCfg_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_BrushMonsterCfg_delete00);
+  tolua_beginmodule(tolua_S,"CBrushMonsterCfg");
+   tolua_variable(tolua_S,"id",tolua_get_CBrushMonsterCfg_id,tolua_set_CBrushMonsterCfg_id);
+   tolua_variable(tolua_S,"sid",tolua_get_CBrushMonsterCfg_sid,tolua_set_CBrushMonsterCfg_sid);
+   tolua_variable(tolua_S,"mid",tolua_get_CBrushMonsterCfg_mid,tolua_set_CBrushMonsterCfg_mid);
+   tolua_variable(tolua_S,"count",tolua_get_CBrushMonsterCfg_count,tolua_set_CBrushMonsterCfg_count);
+   tolua_variable(tolua_S,"delayTime",tolua_get_CBrushMonsterCfg_delayTime,tolua_set_CBrushMonsterCfg_delayTime);
+   tolua_variable(tolua_S,"refreshTime",tolua_get_CBrushMonsterCfg_refreshTime,tolua_set_CBrushMonsterCfg_refreshTime);
+   tolua_variable(tolua_S,"x",tolua_get_CBrushMonsterCfg_x,tolua_set_CBrushMonsterCfg_x);
+   tolua_variable(tolua_S,"y",tolua_get_CBrushMonsterCfg_y,tolua_set_CBrushMonsterCfg_y);
+   tolua_function(tolua_S,"new",tolua_Config_CBrushMonsterCfg_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CBrushMonsterCfg_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CBrushMonsterCfg_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CBrushMonsterCfg_delete00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"HeroList","HeroList","",tolua_collect_HeroList);
+  tolua_cclass(tolua_S,"CHeroList","CHeroList","",tolua_collect_CHeroList);
   #else
-  tolua_cclass(tolua_S,"HeroList","HeroList","",NULL);
+  tolua_cclass(tolua_S,"CHeroList","CHeroList","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"HeroList");
-   tolua_variable(tolua_S,"heroId",tolua_get_HeroList_heroId,tolua_set_HeroList_heroId);
-   tolua_variable(tolua_S,"heroType",tolua_get_HeroList_heroType,tolua_set_HeroList_heroType);
-   tolua_variable(tolua_S,"heroName",tolua_get_HeroList_heroName,tolua_set_HeroList_heroName);
-   tolua_function(tolua_S,"AddskillId",tolua_Config_HeroList_AddskillId00);
-   tolua_function(tolua_S,"new",tolua_Config_HeroList_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_HeroList_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_HeroList_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_HeroList_delete00);
+  tolua_beginmodule(tolua_S,"CHeroList");
+   tolua_variable(tolua_S,"heroId",tolua_get_CHeroList_heroId,tolua_set_CHeroList_heroId);
+   tolua_variable(tolua_S,"heroType",tolua_get_CHeroList_heroType,tolua_set_CHeroList_heroType);
+   tolua_variable(tolua_S,"heroName",tolua_get_CHeroList_heroName,tolua_set_CHeroList_heroName);
+   tolua_function(tolua_S,"AddskillId",tolua_Config_CHeroList_AddskillId00);
+   tolua_function(tolua_S,"new",tolua_Config_CHeroList_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CHeroList_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CHeroList_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CHeroList_delete00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"SkillIdList","SkillIdList","",tolua_collect_SkillIdList);
+  tolua_cclass(tolua_S,"CSkillIdList","CSkillIdList","",tolua_collect_CSkillIdList);
   #else
-  tolua_cclass(tolua_S,"SkillIdList","SkillIdList","",NULL);
+  tolua_cclass(tolua_S,"CSkillIdList","CSkillIdList","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"SkillIdList");
-   tolua_variable(tolua_S,"skillId",tolua_get_SkillIdList_skillId,tolua_set_SkillIdList_skillId);
-   tolua_variable(tolua_S,"attrs",tolua_get_SkillIdList_attrs,tolua_set_SkillIdList_attrs);
-   tolua_function(tolua_S,"AddAttrs",tolua_Config_SkillIdList_AddAttrs00);
-   tolua_function(tolua_S,"new",tolua_Config_SkillIdList_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_SkillIdList_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_SkillIdList_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_SkillIdList_delete00);
+  tolua_beginmodule(tolua_S,"CSkillIdList");
+   tolua_variable(tolua_S,"skillId",tolua_get_CSkillIdList_skillId,tolua_set_CSkillIdList_skillId);
+   tolua_variable(tolua_S,"attrs",tolua_get_CSkillIdList_attrs,tolua_set_CSkillIdList_attrs);
+   tolua_function(tolua_S,"AddAttrs",tolua_Config_CSkillIdList_AddAttrs00);
+   tolua_function(tolua_S,"new",tolua_Config_CSkillIdList_new00);
+   tolua_function(tolua_S,"new_local",tolua_Config_CSkillIdList_new00_local);
+   tolua_function(tolua_S,".call",tolua_Config_CSkillIdList_new00_local);
+   tolua_function(tolua_S,"delete",tolua_Config_CSkillIdList_delete00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;
