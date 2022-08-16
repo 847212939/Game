@@ -123,17 +123,17 @@ void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
 
 bool ActivityHallSys::InitMonster(BrushMonsterCfg& cfg)
 {
+	time_t cur = ::time(nullptr);
 	std::vector<Animal*> animalVec;
-	
+
 	for (int i = 0; i < cfg.count; i++)
 	{
 		Animal* animal = Util::CreatAnimal(AnimalType::at_monster, cfg.mid);
 
-		cfg.delayTime > 0 ? animal->SetLived(false): 
+		cfg.delayTime > 0 ? 
+		animal->SetLived(false),
+		animal->SetResuTime(cur + cfg.delayTime): 
 		animal->SetLived(true);
-
-		cfg.delayTime > 0 ? animal->SetResuTime(::time(nullptr) + cfg.delayTime): 
-		animal->SetResuTime(::time(nullptr) + cfg.refreshTime);
 		animal->SetRefreshTime(cfg.refreshTime);
 
 		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
@@ -159,13 +159,14 @@ bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, BrushMonsterCf
 		COUT_LOG(LOG_CERROR, "pValue = null");
 		return false;
 	}
+	time_t cur = ::time(nullptr);
 	for (auto& animal : *pValue)
 	{
 		if (animal->GetLived())
 		{
 			continue;
 		}
-		if (animal->GetResuTime() < (uint64_t)::time(nullptr))
+		if (cur < animal->GetResuTime())
 		{
 			continue;
 		}
@@ -367,13 +368,16 @@ bool ActivityHallSys::AtTimedOpen(ActivityList* cfg)
 
 int ActivityHallSys::GetBrushMonsterId(const ActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
-	if (pConfig->dayBreakdown - pConfig->hourBreakdown > 0)
+	pr.first = pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ? 1 : 2;
+	if (pr.first == 1)
 	{
-		pr.first = 1;	// 天做分割
 		return pConfig->GetDayBrushMonsterCfgid(pr.second);
 	}
-	pr.first = 2;		// 时做分割
-	return pConfig->GetHourBrushMonsterCfgid(pr.second);
+	else if (pr.first == 2)
+	{
+		return pConfig->GetHourBrushMonsterCfgid(pr.second);
+	}
+	return 0;
 }
 
 int ActivityHallSys::GetPreBrushMonsterId(const ActivityBreakdown* pConfig, int type, int index)

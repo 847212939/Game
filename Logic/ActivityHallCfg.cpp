@@ -4,15 +4,27 @@ BrushMonsterCfg::BrushMonsterCfg() : id(0), sid(0), mid(0), count(0), delayTime(
 {
 }
 
+ActivityBreakdown::ActivityBreakdown() : id(0), dayBreakdown(0), hourBreakdown(0)
+{
+}
+
+ActivityBreakdown::ActivityBreakdown(int nid) : id(nid), dayBreakdown(0), hourBreakdown(0)
+{
+}
+
+ActivityList::ActivityList() : id(0), type(0), sid(0), activityBreakdown(0)
+{
+}
+
 BrushMonsterCfg::~BrushMonsterCfg()
 {
 }
 
-ActivityList::ActivityList() : id(0), type(0), sid(0), activityBreakdown(0) 
+ActivityList::~ActivityList()
 {
 }
 
-ActivityList::~ActivityList()
+ActivityBreakdown::~ActivityBreakdown()
 {
 }
 
@@ -40,14 +52,6 @@ bool ActivityList::operator < (const ActivityList& other) const
 {
 	if (id != other.id) { return id < other.id; }
 	return false;
-}
-
-ActivityBreakdown::ActivityBreakdown() : id(0), dayBreakdown(0), hourBreakdown(0) 
-{
-}
-
-ActivityBreakdown::~ActivityBreakdown() 
-{
 }
 
 void ActivityBreakdown::AddDayBreakdownList(int idex, int tm)
@@ -78,10 +82,6 @@ void ActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 	{
 		it->second.push_back(tm);
 	}
-}
-
-ActivityBreakdown::ActivityBreakdown(int nid) : id(nid), dayBreakdown(0), hourBreakdown(0) 
-{
 }
 
 int ActivityBreakdown::GetDayBrushMonsterCfgid(int& index) const
