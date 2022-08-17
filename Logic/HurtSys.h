@@ -14,7 +14,7 @@ public:
 	virtual~HurtSys();
 
 public:
-	void AddSkillCDList(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList);
 
 private:
 	void Network(PlayerInfo* playerInfo);

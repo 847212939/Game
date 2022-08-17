@@ -36,5 +36,5 @@ void SkillSys::SkillAttack(Animal* behited, const CSkillIdList* pCSkillIdList)
 {
 
 	// 技能效果和技能cd
-	DSC->GetHurtSys().AddSkillCDList(m_Animal, pCSkillIdList);
+	DSC->GetHurtSys().AddSkillCDList(m_Animal, behited, pCSkillIdList);
 }

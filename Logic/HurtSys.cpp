@@ -161,10 +161,10 @@ void HurtSys::SendSkillCD(Animal* animal, int position)
 	}
 }
 
-void HurtSys::AddSkillCDList(Animal* animal, const CSkillIdList* pCSkillIdList)
+void HurtSys::AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList)
 {
-	SkillCD(animal, pCSkillIdList);
-	SkillEffectCD(animal, pCSkillIdList);
+	SkillCD(hited, pCSkillIdList);
+	SkillEffectCD(behited, pCSkillIdList);
 }
 
 // ¼õCD×°±¸
