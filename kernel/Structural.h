@@ -375,6 +375,7 @@ using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
 using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MonsterMap			= std::map<int, MonsterKVMap>;
+using SkillCDList			= std::list< std::pair<int, std::pair<int, Animal*>>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

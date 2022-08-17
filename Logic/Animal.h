@@ -25,6 +25,10 @@ public:
 	GetSetMem(HeroType, Animaltype)		// 英雄分类
 	GetSetMem(std::string, Animalname)	// 英雄name
 
+	GetSetMem(int, Silencetime)			// 沉默时间(单位毫秒)
+	GetSetMem(int, Striketime)			// 击飞时间(单位毫秒)
+	GetSetMem(int, Confinementtime)		// 禁锢时间(单位毫秒)
+
 public:
 	GetClass(SkillSys, SkillSys)		// 技能系统
 

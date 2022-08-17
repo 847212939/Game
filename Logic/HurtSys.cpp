@@ -10,6 +10,16 @@ HurtSys::~HurtSys()
 
 }
 
+void HurtSys::RegisterSkillTimer()
+{
+	RegisterTimer(DPPC, this, HurtSys::TimerCallback, TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
+}
+
+void HurtSys::UnRegisterSkillTimer()
+{
+	UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Skill);
+}
+
 void HurtSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -95,4 +105,71 @@ void HurtSys::SkillAttack(Animal* hited, Animal* behited, int skillid)
 		return;
 	}
 	hited->GetSkillSys().ProcessAttacks(SkillSysMsgCmd::ssmc_norattack, behited, pCSkillIdList);
+}
+
+// 技能时间定时器
+void HurtSys::TimerCallback()
+{
+	SkillCDList::iterator it = m_SkillCDList.begin();
+	while (it != m_SkillCDList.end())
+	{
+		if (!it->second.second)
+		{
+			it = m_SkillCDList.erase(it);
+			continue;
+		}
+		if (SkillCountdown(it->second.second, it->first, it->second.first))
+		{
+			it = m_SkillCDList.erase(it);
+			continue;
+		}
+
+		++it;
+	}
+	if (m_SkillCDList.empty())
+	{
+		UnRegisterSkillTimer();
+	}
+}
+
+// 技能时间倒计时
+bool HurtSys::SkillCountdown(Animal* animal, int& cnt, int position)
+{
+	if (--cnt <= 0)
+	{
+		SendSkillCD(animal, position);
+		return true;
+	}
+
+	return false;
+}
+
+void HurtSys::SendSkillCD(Animal* animal, int position)
+{
+	if (animal->GetType() == AnimalType::at_player)
+	{
+		Cos os;
+		os << position;
+		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)HurtSysMsgCmd::sc_skillcd, 0);
+	}
+	else
+	{
+		// 小怪的技能CD 等待处理
+	}
+}
+
+// @cnt 几个100ms
+// @position 技能位置
+void HurtSys::AddSkillCDList(Animal* animal, int cnt, int position)
+{
+	if (animal->GetType() == AnimalType::at_player)
+	{
+		m_SkillCDList.push_back({ cnt, { position, animal } });
+	}
+	else
+	{
+
+	}
+
+	RegisterSkillTimer();
 }
