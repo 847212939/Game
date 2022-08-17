@@ -67,7 +67,7 @@ bool SkillSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 	
 	if (norattack == 0)			// 普攻
 	{
-		NormalAttack(hited, behited);
+		NormalAttack(hited, behited, skillpos);
 	}
 	else if (norattack == 1)	// 技能
 	{
@@ -83,12 +83,13 @@ void SkillSys::SkillCdTimer()
 	SkillCDList::iterator it = m_SkillCDList.begin();
 	while (it != m_SkillCDList.end())
 	{
-		if (!it->second.second)
+		SkillCDData& data = *it;
+		if (!data.animal)
 		{
 			it = m_SkillCDList.erase(it);
 			continue;
 		}
-		if (SkillCountdown(it->second.second, it->first, it->second.first))
+		if (SkillCountdown(data.type, data.id, data.cnt, data.animal))
 		{
 			it = m_SkillCDList.erase(it);
 			continue;
@@ -103,7 +104,7 @@ void SkillSys::SkillCdTimer()
 }
 
 // 技能时间倒计时
-bool SkillSys::SkillCountdown(Animal* animal, int& cnt, int position)
+bool SkillSys::SkillCountdown(HurtSysMsgCmd type, int value, int& cnt, Animal* animal)
 {
 	--cnt;
 
@@ -112,19 +113,23 @@ bool SkillSys::SkillCountdown(Animal* animal, int& cnt, int position)
 		return false;
 	}
 
-	SendSkillCD(animal, position);
+	SendSkillCD(type, value, animal);
 	return true;
 }
 
-void SkillSys::SendSkillCD(Animal* animal, int position)
+// 技能cd时间到通知客户端
+void SkillSys::SendSkillCD(HurtSysMsgCmd type, int value, Animal* animal)
 {
-	// 判断是技能id还是技能槽位
-	int sc_cd = position > 100 ? (int)HurtSysMsgCmd::sc_effeckcd : (int)HurtSysMsgCmd::sc_skillcd;
 	if (animal->GetType() == AnimalType::at_player)
 	{
 		Cos os;
-		os << position;
-		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, sc_cd, 0);
+		os << value;
+		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)type, 0);
+
+		if (type == HurtSysMsgCmd::sc_skillcd)
+		{
+			animal->SetSkillAcitve(value, true);
+		}
 	}
 	else
 	{
@@ -134,12 +139,12 @@ void SkillSys::SendSkillCD(Animal* animal, int position)
 
 void SkillSys::AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList)
 {
-	SkillCD(hited, pCSkillIdList);
-	SkillEffectCD(behited, pCSkillIdList);
+	AddSkillCD(hited, pCSkillIdList);
+	AddSkillEffectCD(behited, pCSkillIdList);
 }
 
-// 减CD装备
-void SkillSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+// 普通攻击
+void SkillSys::AddNorSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
@@ -154,21 +159,47 @@ void SkillSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 			COUT_LOG(LOG_CERROR, "skillpos <= 0");
 			return;
 		}
-		int surpluscd = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_scd);
-		if (surpluscd > 0)
+		int cnt = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_gs);
+		if (cnt <= 0)
 		{
-			m_SkillCDList.push_back({ surpluscd, { skillpos, animal } });
-			RegisterSkillTimer();
+			cnt = pCSkillIdList->minSkillCd;
 		}
-		else
+		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
+		animal->SetSkillAcitve(skillpos, false);
+		RegisterSkillTimer();
+	}
+}
+
+// 技能cd
+void SkillSys::AddSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+{
+	if (!animal || !pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
+		return;
+	}
+	if (pCSkillIdList->skillCd > 0)
+	{
+		int skillpos = animal->GetSkillIdPos(pCSkillIdList);
+		if (skillpos <= 0)
 		{
-			SendSkillCD(animal, skillpos);
+			COUT_LOG(LOG_CERROR, "skillpos <= 0");
+			return;
 		}
+		int cnt = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_scd);
+		if (cnt <= 0)
+		{
+			cnt = pCSkillIdList->minSkillCd;
+		}
+
+		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
+		animal->SetSkillAcitve(skillpos, false);
+		RegisterSkillTimer();
 	}
 }
 
 // 技能效果cd
-void SkillSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+void SkillSys::AddSkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
@@ -177,36 +208,51 @@ void SkillSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 	}
 	if (pCSkillIdList->skillEffectCd > 0)
 	{
-		int effectcd = pCSkillIdList->skillEffectCd - animal->GetAttrValue(AttrsCmd::attrs_secd);
-		if (effectcd > 0)
+		int cnt = pCSkillIdList->skillEffectCd - animal->GetAttrValue(AttrsCmd::attrs_secd);
+		if (cnt <= 0)
 		{
-			m_SkillCDList.push_back({ effectcd, { pCSkillIdList->skillId, animal } });
-			RegisterSkillTimer();
+			cnt = pCSkillIdList->minSkillEffect;
 		}
-		else
-		{
-			SendSkillCD(animal, effectcd);
-		}
+		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_effeckcd, pCSkillIdList->skillId, cnt, animal));
+		RegisterSkillTimer();
 	}
 }
 
 // 普通攻击
-void SkillSys::NormalAttack(Animal* hited, Animal* behited)
+void SkillSys::NormalAttack(Animal* hited, Animal* behited, int skillpos)
 {
 	if (!hited || !behited)
 	{
-		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		COUT_LOG(LOG_CERROR, "hited = null or behited = null");
+		return;
+	}
+	// 普通攻击默认槽位是0
+	if (!hited->GetSkillAcitve(0))
+	{
+		//COUT_LOG(LOG_CINFO, "技能还在冷却中");
+		return;
+	}
+	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(0);
+	if (!pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
 		return;
 	}
 
+	AddNorSkillCD(hited, pCSkillIdList);
 }
 
 // 技能攻击
 void SkillSys::SkillAttack(Animal* hited, Animal* behited, int skillpos)
 {
-	if (!hited)
+	if (!hited || !behited)
 	{
-		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		COUT_LOG(LOG_CERROR, "hited = null or behited = null");
+		return;
+	}
+	if (!hited->GetSkillAcitve(skillpos))
+	{
+		//COUT_LOG(LOG_CINFO, "技能还在冷却中");
 		return;
 	}
 	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(skillpos);

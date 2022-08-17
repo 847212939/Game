@@ -59,6 +59,7 @@ extern "C"
 #include "../Logic/SkillCfg.h"				// 技能配置
 #include "../Logic/Animal.h"				// 动物
 
+#include "../Logic/SkillLevelSys.h"			// 技能等级
 #include "../Logic/MoveSys.h"				// 移动
 #include "../Player/Player.h"				// 玩家
 #include "../Player/PlayerClient.h"			// 逻辑处理类

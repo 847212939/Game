@@ -20,6 +20,10 @@ public:
 	int GetSkillIdPos(const CSkillIdList* pCSkillIdList);
 
 public:
+	bool GetSkillAcitve(int pos);
+	void SetSkillAcitve(int pos, bool active);
+
+public:
 	GetSetMem(int, Sceneid)				// 场景id
 	GetSetMem(uint64_t, ID)				// 唯一ID
 	GetSetMem(Transform, transform)		// 坐标
@@ -35,5 +39,6 @@ public:
 	GetSetMem(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
 
 public:
-	AttrsMap m_AttrsMap;				// 属性集合
+	AttrsMap		m_AttrsMap;				// 属性集合
+	SkillDataMap	m_SkillDataMap;			// 技能是否可以释放
 };

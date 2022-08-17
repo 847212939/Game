@@ -114,6 +114,7 @@ enum class ActType;
 struct ActtiveOpen;
 struct CActivityList;
 class CTCPSocketManage;
+enum class HurtSysMsgCmd;
 
 #pragma pack(1)
 
@@ -348,6 +349,23 @@ struct ActtiveOpen
 	~ActtiveOpen() {}
 };
 
+struct SkillData
+{
+	bool cd;
+	int level;
+};
+
+struct SkillCDData
+{
+	HurtSysMsgCmd type;
+	int id;
+	int cnt;
+	Animal* animal;
+
+	SkillCDData(HurtSysMsgCmd cmd, int nid, int ncnt, Animal* ani) : type(cmd), id(nid), cnt(ncnt), animal(ani) {}
+	~SkillCDData() {}
+};
+
 template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>
@@ -375,7 +393,8 @@ using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
 using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MonsterMap			= std::map<int, MonsterKVMap>;
-using SkillCDList			= std::list< std::pair<int, std::pair<int, Animal*>>>;
+using SkillCDList			= std::list<SkillCDData>;
+using SkillDataMap 			= std::map<int, SkillData>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

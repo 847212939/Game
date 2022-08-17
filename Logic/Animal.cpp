@@ -5,7 +5,13 @@ Animal::Animal() :
 	m_ID(0),
 	m_Lived(false),
 	m_ResuTime(0),
-	m_RefreshTime(0)
+	m_RefreshTime(0),
+	m_Animalid(0),
+	m_Animaltype(HeroType(0)),
+	m_Animalname(""),
+	m_Silencetime(0),
+	m_Striketime(0),
+	m_Confinementtime(0)
 {
 }
 
@@ -82,7 +88,7 @@ const CSkillIdList* Animal::GetSkillIdListCfg(int skillpos)
 		return nullptr;
 	}
 
-	int relSkillID = pCHeroList->skillId[(size_t)skillpos - 1];
+	int relSkillID = pCHeroList->skillId[(size_t)skillpos];
 
 	return skillCfg.GetCSkillIdListCfg(relSkillID);
 }
@@ -112,4 +118,29 @@ int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
 		}
 	}
 	return 0;
+}
+
+void Animal::SetSkillAcitve(int pos, bool active)
+{
+	SkillDataMap::iterator it = m_SkillDataMap.find(pos);
+	if (it == m_SkillDataMap.end())
+	{
+		SkillData data;
+		m_SkillDataMap.insert({ pos, data });
+	}
+	else
+	{
+		it->second.cd = active;
+	}
+}
+
+bool Animal::GetSkillAcitve(int pos)
+{
+	SkillDataMap::iterator it = m_SkillDataMap.find(pos);
+	if (it == m_SkillDataMap.end())
+	{
+		return true;
+	}
+
+	return it->second.cd;
 }

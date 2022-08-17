@@ -166,6 +166,9 @@
     <ClCompile Include="..\Logic\SkillSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
+    <ClCompile Include="..\Logic\SkillLevelSys.cpp">
+      <Filter>游戏逻辑\技能系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
@@ -280,6 +283,9 @@
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\SkillSys.h">
+      <Filter>游戏逻辑\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\SkillLevelSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,15 +29,16 @@ private:
 	bool CalHurt(Cis& is, PlayerInfo* playerInfo);
 
 private:
-	void NormalAttack(Animal* hited, Animal* behited);
 	void SkillAttack(Animal* hited, Animal* behited, int skillpos);
+	void NormalAttack(Animal* hited, Animal* behited, int skillpos);
 
 private:
 	// cd ±º‰
-	void SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList);
-	void SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList);
-	void SendSkillCD(Animal* animal, int position);
-	bool SkillCountdown(Animal* animal, int& cnt, int position);
+	void AddSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void AddNorSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void AddSkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void SendSkillCD(HurtSysMsgCmd type, int value, Animal* animal);
+	bool SkillCountdown(HurtSysMsgCmd type, int value, int& cnt, Animal* animal);
 
 private:
 	SkillCDList m_SkillCDList;

@@ -7,6 +7,7 @@ PlayerPrepClient::PlayerPrepClient() :
 {
 	RegisterCreat(this, "move");
 	RegisterCreatS(this, "useraccount");
+	RegisterCreatS(this, "skilllevel");
 }
 
 PlayerPrepClient::~PlayerPrepClient()
