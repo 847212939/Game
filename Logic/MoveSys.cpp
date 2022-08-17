@@ -49,17 +49,17 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
-		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
+		COUT_LOG(LOG_CERROR, "sub player is null");
 		return;
 	}
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "MoveSys Player Info is null");
+		COUT_LOG(LOG_CERROR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "MoveSys player info pMsg is null or player info sock info is null");
+		COUT_LOG(LOG_CERROR, "player info pMsg is null or player info sock info is null");
 		return;
 	}
 

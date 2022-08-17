@@ -1,6 +1,11 @@
 #pragma once
 class PlayerClient;
 
+enum class SkillLevelSysCmd
+{
+	cs_lv = 1,			// Éý¼¶
+};
+
 class SkillLevelSys
 {
 public:
