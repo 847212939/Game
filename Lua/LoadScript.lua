@@ -171,6 +171,7 @@ function ReadSkillCfg()
                 config.skillType = value.skillType or 0
                 config.skillCd = value.skillCd or 0
                 config.skillEffect = value.skillEffect or 0
+                config.skillEffectCd = value.skillEffectCd or 0
                 if value.attrs then
                     for _,v in ipairs(value.attrs) do
                         config:AddAttrs(v[1] or 0, v[2] or 0)

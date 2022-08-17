@@ -25,7 +25,8 @@ enum class AttrsCmd
 	attrs_cm	= 19,		// 沉默
 	attrs_jf	= 20,		// 击飞
 	attrs_jg	= 21,		// 禁锢
-	attrs_scd	= 22,		// 减CD
+	attrs_scd	= 22,		// 减技能CD
+	attrs_secd	= 23,		// 减技能效果CD
 
 	attrs_end
 };

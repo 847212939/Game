@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Wed Aug 17 14:03:15 2022.
+** Generated automatically by tolua++-1.0.92 on Wed Aug 17 15:31:13 2022.
 */
 
 #ifndef __cplusplus
@@ -2327,6 +2327,36 @@ static int tolua_set_CSkillIdList_skillEffect(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: skillEffectCd of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_skillEffectCd
+static int tolua_get_CSkillIdList_skillEffectCd(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillEffectCd'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->skillEffectCd);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: skillEffectCd of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_skillEffectCd
+static int tolua_set_CSkillIdList_skillEffectCd(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillEffectCd'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->skillEffectCd = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: attrs of class  CSkillIdList */
 #ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_attrs
 static int tolua_get_CSkillIdList_attrs(lua_State* tolua_S)
@@ -2627,6 +2657,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"skillType",tolua_get_CSkillIdList_skillType,tolua_set_CSkillIdList_skillType);
    tolua_variable(tolua_S,"skillCd",tolua_get_CSkillIdList_skillCd,tolua_set_CSkillIdList_skillCd);
    tolua_variable(tolua_S,"skillEffect",tolua_get_CSkillIdList_skillEffect,tolua_set_CSkillIdList_skillEffect);
+   tolua_variable(tolua_S,"skillEffectCd",tolua_get_CSkillIdList_skillEffectCd,tolua_set_CSkillIdList_skillEffectCd);
    tolua_variable(tolua_S,"attrs",tolua_get_CSkillIdList_attrs,tolua_set_CSkillIdList_attrs);
    tolua_function(tolua_S,"AddAttrs",tolua_Config_CSkillIdList_AddAttrs00);
    tolua_function(tolua_S,"new",tolua_Config_CSkillIdList_new00);

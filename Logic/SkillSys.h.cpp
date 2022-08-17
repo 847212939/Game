@@ -34,13 +34,7 @@ void SkillSys::NormalAttack(Animal* behited)
 
 void SkillSys::SkillAttack(Animal* behited, const CSkillIdList* pCSkillIdList)
 {
-	pCSkillIdList->skillEffect;	// 技能效果
-	pCSkillIdList->skillCd;
 
-	if (pCSkillIdList->skillCd < 0)
-	{
-		return;
-	}
-	// 技能cd倒计时
+	// 技能效果和技能cd
 	DSC->GetHurtSys().AddSkillCDList(m_Animal, pCSkillIdList);
 }

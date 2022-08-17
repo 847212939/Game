@@ -17,7 +17,7 @@ void HurtSys::RegisterSkillTimer()
 		BaseCfgMgr.GetTimerCnt()].
 		ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
-		RegisterTimer(DPPC, this, HurtSys::TimerCallback, 
+		RegisterTimer(DPPC, this, HurtSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
 	}
 }
@@ -107,7 +107,7 @@ void HurtSys::SkillAttack(Animal* hited, Animal* behited, int skillpos)
 }
 
 // 技能时间定时器
-void HurtSys::TimerCallback()
+void HurtSys::SkillCdTimer()
 {
 	SkillCDList::iterator it = m_SkillCDList.begin();
 	while (it != m_SkillCDList.end())
@@ -134,21 +134,25 @@ void HurtSys::TimerCallback()
 // 技能时间倒计时
 bool HurtSys::SkillCountdown(Animal* animal, int& cnt, int position)
 {
-	if (--cnt <= 0)
+	--cnt;
+
+	if (cnt > 0)
 	{
-		SendSkillCD(animal, position);
-		return true;
+		return false;
 	}
 
-	return false;
+	SendSkillCD(animal, position);
+	return true;
 }
 
 void HurtSys::SendSkillCD(Animal* animal, int position)
 {
+	// 判断是否是技能id
+	bool isSkillid = position > 100 ? true : false;
 	if (animal->GetType() == AnimalType::at_player)
 	{
 		Cos os;
-		os << position;
+		os << isSkillid << position;
 		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)HurtSysMsgCmd::sc_skillcd, 0);
 	}
 	else
@@ -159,23 +163,58 @@ void HurtSys::SendSkillCD(Animal* animal, int position)
 
 void HurtSys::AddSkillCDList(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
+	SkillCD(animal, pCSkillIdList);
+	SkillEffectCD(animal, pCSkillIdList);
+}
+
+// 减CD装备
+void HurtSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+{
 	if (!animal || !pCSkillIdList)
 	{
 		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
 		return;
 	}
-	int skillpos = animal->GetSkillIdPos(pCSkillIdList);
-	if (skillpos <= 0)
+	if (pCSkillIdList->skillCd > 0)
 	{
-		COUT_LOG(LOG_CERROR, "skillpos <= 0");
+		int skillpos = animal->GetSkillIdPos(pCSkillIdList);
+		if (skillpos <= 0)
+		{
+			COUT_LOG(LOG_CERROR, "skillpos <= 0");
+			return;
+		}
+		int surpluscd = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_scd);
+		if (surpluscd > 0)
+		{
+			m_SkillCDList.push_back({ surpluscd, { skillpos, animal } });
+			RegisterSkillTimer();
+		}
+		else
+		{
+			SendSkillCD(animal, skillpos);
+		}
+	}
+}
+
+// 技能效果cd
+void HurtSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+{
+	if (!animal || !pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
 		return;
 	}
-
-	// 减CD装备
-	int surpluscd = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_scd);
-	if (surpluscd > 0)
+	if (pCSkillIdList->skillEffectCd > 0)
 	{
-		m_SkillCDList.push_back({ surpluscd, { skillpos, animal } });
-		RegisterSkillTimer();
+		int effectcd = pCSkillIdList->skillEffectCd - animal->GetAttrValue(AttrsCmd::attrs_secd);
+		if (effectcd > 0)
+		{
+			m_SkillCDList.push_back({ effectcd, { pCSkillIdList->skillId, animal } });
+			RegisterSkillTimer();
+		}
+		else
+		{
+			SendSkillCD(animal, effectcd);
+		}
 	}
 }

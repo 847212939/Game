@@ -20,11 +20,9 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
-	void TimerCallback();
+	void SkillCdTimer();
 	void RegisterSkillTimer();
 	void UnRegisterSkillTimer();
-	void SendSkillCD(Animal* animal, int position);
-	bool SkillCountdown(Animal* animal, int& cnt, int position);
 
 private:
 	bool CalHurt(Cis& is, PlayerInfo* playerInfo);
@@ -32,6 +30,13 @@ private:
 private:
 	void NormalAttack(Animal* hited, Animal* behited);
 	void SkillAttack(Animal* hited, Animal* behited, int skillpos);
+
+private:
+	// cd ±º‰
+	void SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void SendSkillCD(Animal* animal, int position);
+	bool SkillCountdown(Animal* animal, int& cnt, int position);
 
 private:
 	SkillCDList m_SkillCDList;

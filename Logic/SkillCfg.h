@@ -29,6 +29,7 @@ struct CSkillIdList
 	int skillType;
 	int skillCd;
 	int skillEffect;
+	int skillEffectCd;
 	AttrsMap attrs;
 
 	void AddAttrs(int id, int value)
@@ -36,8 +37,8 @@ struct CSkillIdList
 		attrs.insert({(AttrsCmd)id, value});
 	}
 
-	CSkillIdList() : skillId(0), skillType(0), skillCd(0), skillEffect(0){}
-	CSkillIdList(int skillid) : skillId(skillid), skillType(0), skillCd(0), skillEffect(0) {}
+	CSkillIdList() : skillId(0), skillType(0), skillCd(0), skillEffect(0), skillEffectCd(0){}
+	CSkillIdList(int skillid) : skillId(skillid), skillType(0), skillCd(0), skillEffect(0), skillEffectCd(0) {}
 	~CSkillIdList(){}
 
 	bool operator < (const CSkillIdList& other) const
