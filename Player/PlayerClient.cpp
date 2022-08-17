@@ -2,8 +2,7 @@
 
 PlayerClient::PlayerClient(const unsigned int& index) :
 	Player(index),
-	m_MoveSys(this),
-	m_SkillSys(this)
+	m_MoveSys(this)
 {
 
 }

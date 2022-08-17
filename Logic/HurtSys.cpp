@@ -62,6 +62,8 @@ void HurtSys::NormalAttack(Animal* hited, Animal* behited)
 		COUT_LOG(LOG_CERROR, "hited = null behited = null");
 		return;
 	}
+
+	hited->GetSkillSys().ProcessAttacks(SkillSysMsgCmd::ssmc_norattack, behited);
 }
 
 // ¼¼ÄÜ¹¥»÷
@@ -92,11 +94,5 @@ void HurtSys::SkillAttack(Animal* hited, Animal* behited, int skillid)
 		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
 		return;
 	}
-}
-
-bool HurtSys::CalHurt(Animal* hited, Animal* behited, int skillid)
-{
-	
-
-	return true;
+	hited->GetSkillSys().ProcessAttacks(SkillSysMsgCmd::ssmc_norattack, behited, pCSkillIdList);
 }

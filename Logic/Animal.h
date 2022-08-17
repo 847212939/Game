@@ -26,5 +26,8 @@ public:
 	GetSetMem(std::string, Animalname)	// 英雄name
 
 public:
+	GetClass(SkillSys, SkillSys)		// 技能系统
+
+public:
 	AttrsMap m_AttrsMap;				// 属性集合
 };
