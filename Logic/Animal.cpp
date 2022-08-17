@@ -66,3 +66,51 @@ void Animal::SetAttrValue(AttrsCmd attrType, int attr)
 		it->second += attr;
 	}
 }
+
+// 根据技能位置确定技能配置
+const CSkillIdList* Animal::GetSkillIdListCfg(int skillpos)
+{
+	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
+	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
+	if (!pCHeroList)
+	{
+		COUT_LOG(LOG_CERROR, "pCHeroList = null");
+		return nullptr;
+	}
+	if (skillpos > pCHeroList->skillId.size() || skillpos <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size() || skillid <= 0");
+		return nullptr;
+	}
+
+	int relSkillID = pCHeroList->skillId[(size_t)skillpos - 1];
+
+	return skillCfg.GetCSkillIdListCfg(relSkillID);
+}
+
+// 根据技能配置获取技能位置
+int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
+{
+	if (!pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		return 0;
+	}
+	int pos = 0;
+	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
+	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
+	if (!pCHeroList)
+	{
+		COUT_LOG(LOG_CERROR, "pCHeroList = null");
+		return 0;
+	}
+	for (auto& skillid : pCHeroList->skillId)
+	{
+		++pos;
+		if (skillid == pCSkillIdList->skillId)
+		{
+			return pos;
+		}
+	}
+	return 0;
+}

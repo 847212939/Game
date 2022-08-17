@@ -15,6 +15,11 @@ public:
 	void RefreshProp();
 
 public:
+	// 技能
+	const CSkillIdList* GetSkillIdListCfg(int skillpos);
+	int GetSkillIdPos(const CSkillIdList* pCSkillIdList);
+
+public:
 	GetSetMem(int, Sceneid)				// 场景id
 	GetSetMem(uint64_t, ID)				// 唯一ID
 	GetSetMem(Transform, transform)		// 坐标
@@ -25,9 +30,9 @@ public:
 	GetSetMem(HeroType, Animaltype)		// 英雄分类
 	GetSetMem(std::string, Animalname)	// 英雄name
 
-	GetSetMem(int, Silencetime)			// 沉默时间(单位毫秒)
-	GetSetMem(int, Striketime)			// 击飞时间(单位毫秒)
-	GetSetMem(int, Confinementtime)		// 禁锢时间(单位毫秒)
+	GetSetMem(int, Silencetime)			// 技能沉默时间(单位毫秒/100)
+	GetSetMem(int, Striketime)			// 技能击飞时间(单位毫秒/100)
+	GetSetMem(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
 
 public:
 	GetClass(SkillSys, SkillSys)		// 技能系统

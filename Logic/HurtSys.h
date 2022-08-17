@@ -14,7 +14,7 @@ public:
 	virtual~HurtSys();
 
 public:
-	void AddSkillCDList(Animal* animal, int cnt, int position);
+	void AddSkillCDList(Animal* animal, const CSkillIdList* pCSkillIdList);
 
 private:
 	void Network(PlayerInfo* playerInfo);
@@ -31,7 +31,7 @@ private:
 
 private:
 	void NormalAttack(Animal* hited, Animal* behited);
-	void SkillAttack(Animal* hited, Animal* behited, int skillid);
+	void SkillAttack(Animal* hited, Animal* behited, int skillpos);
 
 private:
 	SkillCDList m_SkillCDList;

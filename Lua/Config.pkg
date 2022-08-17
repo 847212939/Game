@@ -122,6 +122,8 @@ struct CSkillIdList
 {
 	int skillId;
 	int skillType;
+	int skillCd;
+	int skillEffect;
 	AttrsMap attrs;
 	void AddAttrs(int id, int value);
 	CSkillIdList();

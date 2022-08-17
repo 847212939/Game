@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Tue Aug 16 22:28:44 2022.
+** Generated automatically by tolua++-1.0.92 on Wed Aug 17 14:03:15 2022.
 */
 
 #ifndef __cplusplus
@@ -2267,6 +2267,66 @@ static int tolua_set_CSkillIdList_skillType(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: skillCd of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_skillCd
+static int tolua_get_CSkillIdList_skillCd(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillCd'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->skillCd);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: skillCd of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_skillCd
+static int tolua_set_CSkillIdList_skillCd(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillCd'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->skillCd = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: skillEffect of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_skillEffect
+static int tolua_get_CSkillIdList_skillEffect(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillEffect'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->skillEffect);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: skillEffect of class  CSkillIdList */
+#ifndef TOLUA_DISABLE_tolua_set_CSkillIdList_skillEffect
+static int tolua_set_CSkillIdList_skillEffect(lua_State* tolua_S)
+{
+  CSkillIdList* self = (CSkillIdList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'skillEffect'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->skillEffect = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: attrs of class  CSkillIdList */
 #ifndef TOLUA_DISABLE_tolua_get_CSkillIdList_attrs
 static int tolua_get_CSkillIdList_attrs(lua_State* tolua_S)
@@ -2565,6 +2625,8 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"CSkillIdList");
    tolua_variable(tolua_S,"skillId",tolua_get_CSkillIdList_skillId,tolua_set_CSkillIdList_skillId);
    tolua_variable(tolua_S,"skillType",tolua_get_CSkillIdList_skillType,tolua_set_CSkillIdList_skillType);
+   tolua_variable(tolua_S,"skillCd",tolua_get_CSkillIdList_skillCd,tolua_set_CSkillIdList_skillCd);
+   tolua_variable(tolua_S,"skillEffect",tolua_get_CSkillIdList_skillEffect,tolua_set_CSkillIdList_skillEffect);
    tolua_variable(tolua_S,"attrs",tolua_get_CSkillIdList_attrs,tolua_set_CSkillIdList_attrs);
    tolua_function(tolua_S,"AddAttrs",tolua_Config_CSkillIdList_AddAttrs00);
    tolua_function(tolua_S,"new",tolua_Config_CSkillIdList_new00);

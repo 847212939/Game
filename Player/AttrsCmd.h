@@ -22,6 +22,10 @@ enum class AttrsCmd
 	attrs_mxx	= 16,		// Ä§·¨ÎüÑª
 	attrs_dmxx	= 17,		// Ä§·¨ÎüÑªµÖ¿¹
 	attrs_fs	= 18,		// ·´ÉË(ÖµÕë¶ÔÎïÀí¹¥»÷)
+	attrs_cm	= 19,		// ³ÁÄ¬
+	attrs_jf	= 20,		// »÷·É
+	attrs_jg	= 21,		// ½ûïÀ
+	attrs_scd	= 22,		// ¼õCD
 
 	attrs_end
 };
