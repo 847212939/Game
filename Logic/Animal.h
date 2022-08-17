@@ -35,8 +35,5 @@ public:
 	GetSetMem(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
 
 public:
-	GetClass(SkillSys, SkillSys)		// 技能系统
-
-public:
 	AttrsMap m_AttrsMap;				// 属性集合
 };

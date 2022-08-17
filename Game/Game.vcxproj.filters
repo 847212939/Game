@@ -62,9 +62,6 @@
     <Filter Include="游戏逻辑\活动系统\定点活动">
       <UniqueIdentifier>{059c37d5-e1df-4f13-9136-dee7b0f0da41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏逻辑\伤害系统">
-      <UniqueIdentifier>{6f4b028f-9c90-4e95-a509-f1166def7104}</UniqueIdentifier>
-    </Filter>
     <Filter Include="游戏逻辑\技能系统">
       <UniqueIdentifier>{6c4d5fde-3bef-4399-9852-0d1bc48137cf}</UniqueIdentifier>
     </Filter>
@@ -163,13 +160,10 @@
     <ClCompile Include="..\Logic\MonsterClient.cpp">
       <Filter>玩家中心\派生</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\HurtSys.cpp">
-      <Filter>游戏逻辑\伤害系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\SkillSys.h.cpp">
+    <ClCompile Include="..\Logic\SkillCfg.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\SkillCfg.cpp">
+    <ClCompile Include="..\Logic\SkillSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
   </ItemGroup>
@@ -282,13 +276,10 @@
     <ClInclude Include="..\Logic\MonsterClient.h">
       <Filter>玩家中心\派生</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logic\HurtSys.h">
-      <Filter>游戏逻辑\伤害系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\SkillSys.h">
+    <ClInclude Include="..\Logic\SkillCfg.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logic\SkillCfg.h">
+    <ClInclude Include="..\Logic\SkillSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
   </ItemGroup>

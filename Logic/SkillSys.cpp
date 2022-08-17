@@ -1,29 +1,29 @@
 #include "../Game/stdafx.h"
 
-HurtSys::HurtSys(PlayerPrepClient* ppc)
+SkillSys::SkillSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, this, HurtSys::Network, MsgCmd::MsgCmd_Hurt);
+	RegisterNetwk(ppc, this, SkillSys::Network, MsgCmd::MsgCmd_Hurt);
 }
 
-HurtSys::~HurtSys()
+SkillSys::~SkillSys()
 {
 
 }
 
 // 注册技能CD定时器
-void HurtSys::RegisterSkillTimer()
+void SkillSys::RegisterSkillTimer()
 {
 	if (!DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
 		BaseCfgMgr.GetTimerCnt()].
 		ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
-		RegisterTimer(DPPC, this, HurtSys::SkillCdTimer,
+		RegisterTimer(DPPC, this, SkillSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
 	}
 }
 
 // 反注册技能CD定时器
-void HurtSys::UnRegisterSkillTimer()
+void SkillSys::UnRegisterSkillTimer()
 {
 	if (DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
 		BaseCfgMgr.GetTimerCnt()].
@@ -33,7 +33,7 @@ void HurtSys::UnRegisterSkillTimer()
 	}
 }
 
-void HurtSys::Network(PlayerInfo* playerInfo)
+void SkillSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -55,7 +55,7 @@ void HurtSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
+bool SkillSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 {
 	int sceneid = 0, skillpos = 0, norattack = 0;
 	uint64_t hitedid = 0, behitedid = 0;
@@ -77,37 +77,8 @@ bool HurtSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
 	return true;
 }
 
-// 普通攻击
-void HurtSys::NormalAttack(Animal* hited, Animal* behited)
-{
-	if (!hited || !behited)
-	{
-		COUT_LOG(LOG_CERROR, "hited = null behited = null");
-		return;
-	}
-
-	hited->GetSkillSys().ProcessAttacks(SkillSysMsgCmd::ssmc_norattack, behited);
-}
-
-// 技能攻击
-void HurtSys::SkillAttack(Animal* hited, Animal* behited, int skillpos)
-{
-	if (!hited)
-	{
-		COUT_LOG(LOG_CERROR, "hited = null behited = null");
-		return;
-	}
-	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(skillpos);
-	if (!pCSkillIdList)
-	{
-		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
-		return;
-	}
-	hited->GetSkillSys().ProcessAttacks(SkillSysMsgCmd::ssmc_norattack, behited, pCSkillIdList);
-}
-
 // 技能时间定时器
-void HurtSys::SkillCdTimer()
+void SkillSys::SkillCdTimer()
 {
 	SkillCDList::iterator it = m_SkillCDList.begin();
 	while (it != m_SkillCDList.end())
@@ -132,7 +103,7 @@ void HurtSys::SkillCdTimer()
 }
 
 // 技能时间倒计时
-bool HurtSys::SkillCountdown(Animal* animal, int& cnt, int position)
+bool SkillSys::SkillCountdown(Animal* animal, int& cnt, int position)
 {
 	--cnt;
 
@@ -145,7 +116,7 @@ bool HurtSys::SkillCountdown(Animal* animal, int& cnt, int position)
 	return true;
 }
 
-void HurtSys::SendSkillCD(Animal* animal, int position)
+void SkillSys::SendSkillCD(Animal* animal, int position)
 {
 	// 判断是否是技能id
 	bool isSkillid = position > 100 ? true : false;
@@ -161,14 +132,14 @@ void HurtSys::SendSkillCD(Animal* animal, int position)
 	}
 }
 
-void HurtSys::AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList)
+void SkillSys::AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList)
 {
 	SkillCD(hited, pCSkillIdList);
 	SkillEffectCD(behited, pCSkillIdList);
 }
 
 // 减CD装备
-void HurtSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+void SkillSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
@@ -197,7 +168,7 @@ void HurtSys::SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 }
 
 // 技能效果cd
-void HurtSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
+void SkillSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
@@ -217,4 +188,34 @@ void HurtSys::SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 			SendSkillCD(animal, effectcd);
 		}
 	}
+}
+
+// 普通攻击
+void SkillSys::NormalAttack(Animal* hited, Animal* behited)
+{
+	if (!hited || !behited)
+	{
+		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		return;
+	}
+
+}
+
+// 技能攻击
+void SkillSys::SkillAttack(Animal* hited, Animal* behited, int skillpos)
+{
+	if (!hited)
+	{
+		COUT_LOG(LOG_CERROR, "hited = null behited = null");
+		return;
+	}
+	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(skillpos);
+	if (!pCSkillIdList)
+	{
+		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		return;
+	}
+
+	// 技能效果和技能cd
+	AddSkillCDList(hited, behited, pCSkillIdList);
 }

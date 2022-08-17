@@ -1,25 +1,43 @@
 #pragma once
-class Animal;
+class MonsterClient;
 
-enum class SkillSysMsgCmd
+enum class HurtSysMsgCmd
 {
-	ssmc_norattack		= 1,		// 普通攻击
-	ssmc_skillattack	= 2,		// 技能攻击
+	cs_attack		= 1,  // 攻击
+	sc_skillcd		= 2,  // 技能CD
 };
 
 class SkillSys
 {
 public:
-	SkillSys(Animal* animal);
-	~SkillSys();
+	SkillSys(PlayerPrepClient* ppc);
+	virtual~SkillSys();
 
 public:
-	void ProcessAttacks(SkillSysMsgCmd cmd, Animal* behited, const CSkillIdList* pCSkillIdList = nullptr);
+	void AddSkillCDList(Animal* hited, Animal* behited, const CSkillIdList* pCSkillIdList);
 
 private:
-	void NormalAttack(Animal* behited);
-	void SkillAttack(Animal* behited, const CSkillIdList* pCSkillIdList);
+	void Network(PlayerInfo* playerInfo);
 
 private:
-	Animal* m_Animal;
+	void SkillCdTimer();
+	void RegisterSkillTimer();
+	void UnRegisterSkillTimer();
+
+private:
+	bool CalHurt(Cis& is, PlayerInfo* playerInfo);
+
+private:
+	void NormalAttack(Animal* hited, Animal* behited);
+	void SkillAttack(Animal* hited, Animal* behited, int skillpos);
+
+private:
+	// cd时间
+	void SkillCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void SkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdList);
+	void SendSkillCD(Animal* animal, int position);
+	bool SkillCountdown(Animal* animal, int& cnt, int position);
+
+private:
+	SkillCDList m_SkillCDList;
 };

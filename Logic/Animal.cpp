@@ -5,8 +5,7 @@ Animal::Animal() :
 	m_ID(0),
 	m_Lived(false),
 	m_ResuTime(0),
-	m_RefreshTime(0),
-	m_SkillSys(this)
+	m_RefreshTime(0)
 {
 }
 

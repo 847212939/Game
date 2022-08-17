@@ -56,9 +56,7 @@ extern "C"
 #include "../kernel/TCPClient.h"			// 网络客户端
 #include "../kernel/Util.h"					// 工具类
 #include "../kernel/LogManager.h"			// 日志管理类
-
 #include "../Logic/SkillCfg.h"				// 技能配置
-#include "../Logic/SkillSys.h"				// 技能系统
 #include "../Logic/Animal.h"				// 动物
 
 #include "../Logic/MoveSys.h"				// 移动
@@ -67,7 +65,7 @@ extern "C"
 #include "../Player/PlayerCenter.h"			// 玩家管理
 #include "../Player/PlayerCenterClient.h"	// 玩家管理
 
-#include "../Logic/HurtSys.h"				// 伤害系统
+#include "../Logic/SkillSys.h"				// 伤害系统
 #include "../Logic/Monster.h"				// 怪物
 #include "../Logic/MonsterClient.h"			// 怪物
 #include "../Logic/ActivityHallCfg.h"		// 活动配置
