@@ -5,6 +5,7 @@ enum class HurtSysMsgCmd
 {
 	cs_attack		= 1,  // 攻击
 	sc_skillcd		= 2,  // 技能CD
+	sc_effeckcd		= 3,  // 技能效果CD
 };
 
 class SkillSys

@@ -118,13 +118,13 @@ bool SkillSys::SkillCountdown(Animal* animal, int& cnt, int position)
 
 void SkillSys::SendSkillCD(Animal* animal, int position)
 {
-	// 判断是否是技能id
-	bool isSkillid = position > 100 ? true : false;
+	// 判断是技能id还是技能槽位
+	int sc_cd = position > 100 ? (int)HurtSysMsgCmd::sc_effeckcd : (int)HurtSysMsgCmd::sc_skillcd;
 	if (animal->GetType() == AnimalType::at_player)
 	{
 		Cos os;
-		os << isSkillid << position;
-		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)HurtSysMsgCmd::sc_skillcd, 0);
+		os << position;
+		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, sc_cd, 0);
 	}
 	else
 	{
