@@ -2,11 +2,11 @@
 
 SkillLvSys::SkillLvSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
-	RegisterMysql(playerClient, SkillLvSys::LoadMysql, "skill");
+	RegisterLgout(playerClient, SkillLvSys::Exit);
 	RegisterAttrs(playerClient, SkillLvSys::CalAttrs);
 	RegisterEnter(playerClient, SkillLvSys::EnterScene);
+	RegisterMysql(playerClient, SkillLvSys::LoadMysql, "skill");
 	RegisterNetwk(playerClient, SkillLvSys::NetWork, MsgCmd::MsgCmd_Skill);
-	RegisterLgout(playerClient, SkillLvSys::Exit);
 }
 
 SkillLvSys::~SkillLvSys()
