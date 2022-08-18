@@ -2,9 +2,9 @@
 
 TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
 {
-	RegisterNetType(this, TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
-	RegisterNetType(this, TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
-	RegisterNetType(this, TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
+	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
+	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
+	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 
 bool TCPClient::Init(ServiceType serverType)

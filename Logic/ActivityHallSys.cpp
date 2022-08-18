@@ -22,7 +22,7 @@ ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc) :
 	RegisterActiveEnter(ActiveTime::Enter, ActType::at_timed_open, m_ActiveTime);
 	RegisterActiveExit(ActiveTime::Exit, ActType::at_timed_open, m_ActiveTime);
 
-	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 300, SERVERTIMER_TYPE_PERISIST);
+	RegisterTimer(ppc, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 300, SERVERTIMER_TYPE_PERISIST);
 }
 
 ActivityHallSys::~ActivityHallSys()

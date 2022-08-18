@@ -17,7 +17,7 @@ void SkillSys::RegisterSkillTimer()
 		BaseCfgMgr.GetTimerCnt()].
 		ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
-		RegisterTimer(DPPC, this, SkillSys::SkillCdTimer,
+		RegisterTimer(DPPC, SkillSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
 	}
 }

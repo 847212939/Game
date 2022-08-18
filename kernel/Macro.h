@@ -50,7 +50,7 @@ private:
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 
 // 网络消息注册
-#define RegisterNetType(obj, name, cmd) obj->AddNetTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)))
+#define RegisterNetType(name, cmd) this->AddNetTypeCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)))
 
 // 注册活动
 #define RegisterActive(name, cmd) this->AddActiveCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));
@@ -173,7 +173,7 @@ else\
 }
 
 // 注册定时器
-#define RegisterTimer(pobj, obj, name, cmd, uElapse, timerType)\
+#define RegisterTimer(pobj, name, cmd, uElapse, timerType)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
@@ -181,7 +181,7 @@ if (!pobj)\
 else\
 {\
 	pobj->SetTimer(cmd, uElapse, timerType);\
-	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, obj)));\
+	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, this)));\
 }
 
 // 反注册定时器
