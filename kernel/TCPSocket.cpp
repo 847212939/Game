@@ -68,11 +68,11 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, SocketType s
 
 bool CTCPSocketManage::Stop()
 {
-	COUT_LOG(LOG_CINFO, "service tcp stop begin...");
+	COUT_LOG(LOG_CINFO, "service tcp stop begin");
 
 	if (!m_running)
 	{
-		COUT_LOG(LOG_CERROR, "TCPSocketManage is not running......");
+		COUT_LOG(LOG_CERROR, "TCPSocketManage is not running");
 		return false;
 	}
 
@@ -94,7 +94,7 @@ bool CTCPSocketManage::Stop()
 		}
 	}
 
-	COUT_LOG(LOG_INFO, "service tcp stop end...");
+	COUT_LOG(LOG_INFO, "service tcp stop end");
 
 	return true;
 }
@@ -1128,7 +1128,7 @@ void CTCPSocketManage::ThreadSendMsgThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "send data thread end...");
+	COUT_LOG(LOG_CINFO, "send data thread end");
 
 	return;
 }
@@ -1187,7 +1187,7 @@ void CTCPSocketManage::ThreadSendMsgThread()
 //		}
 //	}
 //
-//	COUT_LOG(LOG_CINFO, "send data thread end...");
+//	COUT_LOG(LOG_CINFO, "send data thread end");
 //
 //	return;
 //}

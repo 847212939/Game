@@ -317,7 +317,7 @@ void CGameLogManage::HandlerLogThread(bool& run)
 			Fflush(logBuf);
 		}
 	}
-	COUT_LOG(LOG_CINFO, "log thread end...");
+	COUT_LOG(LOG_CINFO, "log thread end");
 }
 
 void CGameLogManage::Init(bool& run)
