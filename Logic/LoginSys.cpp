@@ -2,7 +2,7 @@
 
 LoginSys::LoginSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, this, LoginSys::Network, MsgCmd::MsgCmd_Login);
+	RegisterNetwk(ppc, LoginSys::Network, MsgCmd::MsgCmd_Login);
 }
 
 LoginSys::~LoginSys()

@@ -140,36 +140,36 @@ else\
 }
 
 // 注册游戏进入回调
-#define RegisterAttrs(pobj, obj, name)\
+#define RegisterAttrs(pobj, name)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddAttrsCallback(std::move(std::bind(&name, obj)));\
+	pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
 }
 
 // 注册网络协议
-#define RegisterNetwk(pobj, obj, name, cmd)\
+#define RegisterNetwk(pobj, name, cmd)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddNetCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));\
+	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
 
 // 注册数据库回调
-#define RegisterMysql(pobj, obj, name, sql)\
+#define RegisterMysql(pobj, name, sql)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, obj, std::placeholders::_1)));\
+	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
 
 // 注册定时器
@@ -208,24 +208,24 @@ else\
 }
 
 // 进入场景
-#define RegisterEnter(pobj, obj, name)\
+#define RegisterEnter(pobj, name)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddEnterSceneCallback(std::move(std::bind(&name, obj)));\
+	pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
 }
 
 // 注册游戏退出
-#define RegisterLgout(pobj, obj, name)\
+#define RegisterLgout(pobj, name)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddExitCallback(std::move(std::bind(&name, obj, std::placeholders::_1)));\
+	pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
 

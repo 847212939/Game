@@ -2,7 +2,7 @@
 
 SkillSys::SkillSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, this, SkillSys::Network, MsgCmd::MsgCmd_Hurt);
+	RegisterNetwk(ppc, SkillSys::Network, MsgCmd::MsgCmd_Hurt);
 }
 
 SkillSys::~SkillSys()
