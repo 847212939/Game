@@ -16,6 +16,12 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Player Info is null");
 		return;
 	}
+	if (!playerInfo->pMsg)
+	{
+		COUT_LOG(LOG_CERROR, "Player Info pMsg is null");
+		return;
+	}
+
 	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
 	Cis is((char*)playerInfo->pData);
 
