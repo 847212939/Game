@@ -723,7 +723,8 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 清理登录内存
 	DPPC->GetLoginSys().DelLoginInMap(index);
 	
-	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
+	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]", 
+		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
 }
 
 void CTCPSocketManage::SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize)
@@ -1135,62 +1136,3 @@ void CTCPSocketManage::ThreadSendMsgThread()
 
 	return;
 }
-
-//
-//void CTCPSocketManage::ThreadSendMsgThread()
-//{
-//	void* pDataLineHead = nullptr;
-//	CDataLine* pDataLine = GetSendDataLine();
-//	if (!pDataLine)
-//	{
-//		COUT_LOG(LOG_CERROR, "send list is null");
-//		return;
-//	}
-//	if (!m_running)
-//	{
-//		COUT_LOG(LOG_CERROR, "初始化未完成");
-//		return;
-//	}
-//	while (m_running)
-//	{
-//		unsigned int uDataKind = 0;
-//		unsigned int bytes = pDataLine->GetData(&pDataLineHead, m_running, uDataKind);
-//		if (bytes == 0 || pDataLineHead == nullptr)
-//		{
-//			continue;
-//		}
-//
-//		SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pDataLineHead);
-//		unsigned int size = pSocketSend->dataLineHead.uSize;
-//		int index = pSocketSend->socketIndex;
-//		void* pData = static_cast<char*>(pDataLineHead) + sizeof(SendDataLineHead);
-//
-//		if (index < 0 || index >= m_socketInfoVec.size())
-//		{
-//			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
-//			continue;
-//		}
-//		TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-//		if (!tcpInfo.lock)
-//		{
-//			continue;
-//		}
-//		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-//		if (!tcpInfo.isConnect || !tcpInfo.bev)
-//		{
-//			continue;
-//		}
-//		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-//		{
-//			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
-//		}
-//		if (pDataLineHead)
-//		{
-//			SafeDeleteArray(pDataLineHead);
-//		}
-//	}
-//
-//	COUT_LOG(LOG_CINFO, "send data thread end");
-//
-//	return;
-//}
