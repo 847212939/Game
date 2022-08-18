@@ -14,6 +14,9 @@ public:
 	LoginSys(PlayerPrepClient* ppc);
 	virtual~LoginSys();
 
+public:
+	void DelLoginInMap(UINT index);
+
 private:
 	void Network(PlayerInfo* playerInfo);
 
@@ -23,7 +26,6 @@ private:
 	bool LoginIn(Cis& is, PlayerInfo* playerInfo);
 
 private:
-	void DelLoginInMap(UINT index);
 	void AddLoginInMap(LoginData key);
 	LoginData* GetLoginInMap(UINT index);
 

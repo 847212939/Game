@@ -387,7 +387,9 @@ void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::strin
 	CMysqlHelper::MysqlData data;
 	try
 	{
+		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, data);
+		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
@@ -419,7 +421,9 @@ void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& o
 	CMysqlHelper::MysqlData queryData;
 	try
 	{
+		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
+		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
@@ -449,7 +453,9 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 
 	try
 	{
+		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
+		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
