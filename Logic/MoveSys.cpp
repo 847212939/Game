@@ -2,11 +2,11 @@
 
 MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 {
-	RegisterMysql(m_PlayerClient, MoveSys::LoadMysql, "move");
+	RegisterLgout(m_PlayerClient, MoveSys::Exit);
 	RegisterAttrs(m_PlayerClient, MoveSys::CalAttrs);
 	RegisterEnter(m_PlayerClient, MoveSys::EnterScene);
+	RegisterMysql(m_PlayerClient, MoveSys::LoadMysql, "move");
 	RegisterNetwk(m_PlayerClient, MoveSys::NetWork, MsgCmd::MsgCmd_Move);
-	RegisterLgout(m_PlayerClient, MoveSys::Exit);
 }
 
 MoveSys::~MoveSys()
