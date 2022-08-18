@@ -15,6 +15,7 @@ enum class MsgCmd
 	MsgCmd_RefreshProperties			= 8,	// 属性刷新
 	MsgCmd_Move							= 9,	// 移动系统
 	MsgCmd_Hurt							= 10,	// 伤害系统
+	MsgCmd_Skill						= 11,	// 技能系统
 
 	MsgCmd_End                               // 消息结束                      
 };
