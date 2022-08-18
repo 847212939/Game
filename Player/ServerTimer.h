@@ -27,6 +27,6 @@ private:
 private:
 	int					m_timeOnce;
 	volatile bool		m_bRun;
-	ConditionVariable	m_cond;	
+	ConditionVariable	m_cond;
 	ServerTimerInfomap  m_timerMap;
 };

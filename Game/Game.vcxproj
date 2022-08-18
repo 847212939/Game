@@ -239,6 +239,7 @@
   <ItemGroup>
     <None Include="..\Data\Config\ActivityCfg.lua" />
     <None Include="..\Data\Config\BaseCfg.lua" />
+    <None Include="..\Data\Config\Monster.lua" />
     <None Include="..\Data\Config\SkillCfg.lua" />
     <None Include="..\Lua\Config.pkg" />
     <None Include="..\Lua\LoadScript.lua" />

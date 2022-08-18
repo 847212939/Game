@@ -56,9 +56,9 @@ void CMysqlHelper::connect()
 	}
 
 	//建立连接后, 自动调用设置字符集语句
-	if (!m_dbConf.charset.empty()) 
+	if (!m_dbConf.charset.empty())
 	{
-		if (mysql_options(m_pstMql, MYSQL_SET_CHARSET_NAME, m_dbConf.charset.c_str())) 
+		if (mysql_options(m_pstMql, MYSQL_SET_CHARSET_NAME, m_dbConf.charset.c_str()))
 		{
 			throw MysqlHelper_Exception(std::string("CMysqlHelper::connect: mysql_options MYSQL_SET_CHARSET_NAME ") + m_dbConf.charset + ":" + std::string(mysql_error(m_pstMql)));
 		}

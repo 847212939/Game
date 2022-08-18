@@ -32,9 +32,9 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 		COUT_LOG(LOG_CERROR, "¶ÓÁÐÒÑÂú(%d)", MAX_DATALINE_LEN);
 		return 0;
 	}
-	ListItemData* pListItem = new ListItemData;			
+	ListItemData* pListItem = new ListItemData;
 
-	pListItem->pData = nullptr;	
+	pListItem->pData = nullptr;
 	pListItem->stDataHead.uSize = uDataSize;
 	pListItem->stDataHead.uDataKind = (unsigned int)uDataKind;
 
@@ -92,13 +92,13 @@ bool CDataLine::SwapDataList(std::list <ListItemData*>& dataList, bool& run)
 	std::list <ListItemData*>& mDataList = m_dataList;
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
 	m_cond.Wait(uniqLock, [&mDataList, &run]
-	{
-		if (mDataList.size() > 0 || !run)
 		{
-			return true;
-		}
-		return false;
-	});
+			if (mDataList.size() > 0 || !run)
+			{
+				return true;
+			}
+			return false;
+		});
 	if (m_dataListSize <= 0)
 	{
 		uniqLock.unlock();
@@ -140,6 +140,6 @@ ConditionVariable& CDataLine::GetConditionVariable()
 }
 
 size_t CDataLine::GetDataCount()
-{ 
-	return m_dataListSize; 
+{
+	return m_dataListSize;
 }

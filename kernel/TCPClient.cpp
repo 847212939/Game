@@ -55,8 +55,8 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 	{
 		return;
 	}
-	if (pListItem->stDataHead.uSize == 0 || 
-		pListItem->pData == nullptr || 
+	if (pListItem->stDataHead.uSize == 0 ||
+		pListItem->pData == nullptr ||
 		pListItem->stDataHead.uDataKind <= 0)
 	{
 		return;
@@ -212,42 +212,3 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 
 	SafeDelete(playerClient);
 }
-
-//void TCPClient::HandlerRecvDataListThread()
-//{
-//	CDataLine* pDataLine = GetRecvDataLine();
-//	if (!pDataLine)
-//	{
-//		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == nullptr");
-//		return;
-//	}
-//	if (!GetRuninged())
-//	{
-//		COUT_LOG(LOG_CERROR, "TCPClient::HandlerRecvDataListThread 初始化未完成");
-//		return;
-//	}
-//
-//	void* pDataLineHead = nullptr;
-//	bool& run = GetRuninged();
-//
-//	while (run)
-//	{
-//		unsigned int uDataKind = 0;
-//		unsigned int bytes = pDataLine->GetData(&pDataLineHead, run, uDataKind);
-//		if (bytes == 0 || pDataLineHead == nullptr || uDataKind <= 0)
-//		{
-//			continue;
-//		}
-//
-//		CallBackFun(uDataKind, pDataLineHead);
-//
-//		if (pDataLineHead)
-//		{
-//			SafeDeleteArray(pDataLineHead);
-//		}
-//	}
-//
-//	COUT_LOG(LOG_CINFO, "recv data thread end");
-//
-//	return;
-//}

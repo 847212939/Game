@@ -221,8 +221,8 @@ std::string CGameLogManage::GetLogPath()
 }
 
 std::mutex& CGameLogManage::GetMutex()
-{ 
-	return m_mutex; 
+{
+	return m_mutex;
 }
 
 // »’÷æª∫¥Ê

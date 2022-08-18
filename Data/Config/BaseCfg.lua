@@ -1,4 +1,4 @@
-BaseCfg = 
+BaseCfg= 
 {
     --服务器ID
     serverID = 1005, 

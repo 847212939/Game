@@ -466,8 +466,10 @@ bool ActivityHallSys::AtAlwaysOpen(CActivityList* cfg)
 	{
 		return false;
 	}
+
 	uint64_t endSecond = Util::GetCfgSecond(cfg->endTime);
 	uint64_t beginSecond = Util::GetCfgSecond(cfg->beginTime);
+
 	if (endSecond == beginSecond)
 	{
 		return true;
@@ -490,12 +492,11 @@ bool ActivityHallSys::AtServiceOpen(CActivityList* cfg)
 
 	uint64_t openServerTime = Util::GetCfgSecond(cfg->openServerTime);
 	uint64_t curTime = ::time(nullptr) - Util::GetOpenServerTime();
-
+	
 	if (curTime <= 0)
 	{
 		return false;
 	}
-
 	if (curTime >= openServerTime && curTime < openServerTime + cfg->openServerTime[3] * 60)
 	{
 		return true;
@@ -511,6 +512,7 @@ bool ActivityHallSys::AtTimedOpen(CActivityList* cfg)
 	{
 		return false;
 	}
+
 	uint64_t sysSecond = Util::GetSysSecond();
 	uint64_t solidSecond = Util::GetCfgSecond(cfg->solidTime);
 
