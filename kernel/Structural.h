@@ -256,14 +256,13 @@ struct LoginData
 	unsigned int			index;
 	std::string				id;
 	std::string				pw;
-	int						roleid;
-	int						roleType;
 	std::string				roleName;	// Ó¢ÐÛÃû
 	std::string				netName;	// ÓÎÏ·Ãû
 	uint64_t				userId;
+	int						roleid;
+	int						roleType;
 
-	LoginData(int nIndex, std::string& sId, std::string& sPw) : index(nIndex), id(sId), pw(sPw), roleid(0), userId(0) {}
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0) {}
+	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0) {}
 	~LoginData() {}
 };
 

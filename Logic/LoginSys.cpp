@@ -78,26 +78,23 @@ bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 
 	if (!data.empty())
 	{
+		uint64_t userid = 0;
 		std::string passwaed;
 
 		Cis is(data);
-		is >> passwaed;
+		is >> passwaed >> userid;
 
 		if (pw != passwaed)
 		{
 			// 密码不正确
 			return false;
 		}
-
-		// 检查玩家是否在线
-		uint64_t userid = 0;
-		is >> userid;
-
 		if (userid <= 0)
 		{
+			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
 			return false;
 		}
-		if (DPCC->GetPlayerClientByUserid(userid))
+		if (DPCC->GetPlayerClientByIndex(loginData.index))
 		{
 			// 玩家在线
 			return false;
