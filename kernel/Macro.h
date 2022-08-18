@@ -43,8 +43,8 @@ private:
 #define Max_(x,y) ((x)>(y)?(x):(y))
 
 // 注册创建数据库
-#define RegisterCreat(name) this->CreateTableI(name);
-#define RegisterCreatS(name) this->CreateTableS(name);
+#define RegisterTable(name) this->CreateTableI(name);
+#define RegisterCreate(name) this->CreateTableS(name);
 
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))

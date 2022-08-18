@@ -3,7 +3,7 @@
 // 新建数据库表
 void PlayerPrepClient::InitMysqlTable()
 {
-	RegisterCreatS("useraccount");
-	RegisterCreat("move");
-	RegisterCreatS("skill");
+	RegisterCreate("useraccount");
+	RegisterTable("move");
+	RegisterTable("skill");
 }
