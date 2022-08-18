@@ -306,7 +306,7 @@ uint64_t Util::GetCfgSecondEnd(const IntVector& vec)
 
 uint64_t Util::GetSysSecond()
 {
-	time_t tick = ::time(NULL);
+	time_t tick = ::time(nullptr);
 	struct tm tm;
 	tm = *localtime(&tick);
 
@@ -350,7 +350,7 @@ bool Util::InitTime()
 	m_OpenServerTimeSecond = mktime(&tm1);
 
 	// 开服天数
-	time_t tick2 = ::time(NULL);
+	time_t tick2 = ::time(nullptr);
 	struct tm tm2;
 	tm2 = *localtime(&tick2);
 	m_day = tm2.tm_mday - m_tm.tm_mday + 1;

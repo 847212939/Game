@@ -358,6 +358,28 @@ bool ActivityHallSys::AtAlwaysOpen(CActivityList* cfg)
 // 开服活动
 bool ActivityHallSys::AtServiceOpen(CActivityList* cfg)
 {
+	if (!cfg)
+	{
+		return false;
+	}
+	if (cfg->openServerTime.size() < 4)
+	{
+		return false;
+	}
+
+	uint64_t openServerTime = Util::GetCfgSecond(cfg->openServerTime);
+	uint64_t curTime = ::time(nullptr) - Util::GetOpenServerTime();
+
+	if (curTime <= 0)
+	{
+		return false;
+	}
+
+	if (curTime >= openServerTime && curTime < openServerTime + cfg->openServerTime[3] * 60)
+	{
+		return true;
+	}
+
 	return false;
 }
 
