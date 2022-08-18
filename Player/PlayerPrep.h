@@ -50,7 +50,7 @@ public:
 
 public:
 	// ´´½¨½ÇÉ«
-	void CreatePlayer(unsigned int index, std::string& id, std::string& pw);
+	void CreatePlayer(LoginData& loginData);
 
 private:
 	bool InitDB();

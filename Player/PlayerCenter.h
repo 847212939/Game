@@ -15,7 +15,7 @@ public:
 
 public:
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
-	void CreatePlayer(unsigned int index, std::string& id, std::string& pw);
+	void CreatePlayer(LoginData& loginData);
 
 public:
 	void GetSocketSet(std::vector<UINT>& socketVec);
@@ -26,7 +26,7 @@ public:
 
 private:
 	void HandlerPlayerThread();
-	void HandleLoadPlayer(LoadPlayerKey& loadPKey);
+	void HandleLoadPlayer(LoginData& loginData);
 	bool SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlayerList& RloadPlayerList, bool& run);
 
 private:

@@ -1,23 +1,35 @@
 #pragma once
+class PlayerPrepClient;
 
 enum class LoginSysMsgCmd
 {
-	cs_login = 1,  // µÇÂ¼
+	cs_verification_account		= 1,	// ÑéÖ¤ÕËºÅÃÜÂë
+	cs_select_role				= 2,	// Ñ¡½ÇÉ«
+	cs_login					= 3,	// µÇÂ¼
 };
 
-class PlayerPrepClient;
 class LoginSys
 {
 public:
 	LoginSys(PlayerPrepClient* ppc);
 	virtual~LoginSys();
 
-public:
-	bool LoginIn(std::string& id, std::string& passwaed, uint64_t& userId);
-
 private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
+	bool VerificationAccount(Cis& is, PlayerInfo* playerInfo);
+	bool SelectRole(Cis& is, PlayerInfo* playerInfo);
 	bool LoginIn(Cis& is, PlayerInfo* playerInfo);
+
+private:
+	void DelLoginInMap(UINT index);
+	void AddLoginInMap(LoginData key);
+	LoginData* GetLoginInMap(UINT index);
+
+private:
+	void Save(std::string& id, std::string& pw, uint64_t userid = 0);
+
+private:
+	LoginInMap m_LoginInMap;
 };

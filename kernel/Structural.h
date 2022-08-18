@@ -259,16 +259,19 @@ struct PlayerInfo
 	~PlayerInfo() {}
 };
 
-// 加载玩家键
-struct LoadPlayerKey
+struct LoginData
 {
 	unsigned int			index;
-	uint64_t				userId;
 	std::string				id;
 	std::string				pw;
+	int						roleid;
+	int						roleType;
+	std::string				roleName;
+	uint64_t				userId;
 
-	LoadPlayerKey(int nIndex, std::string& sId, std::string& sPw) : index(nIndex), userId(0), id(sId), pw(sPw) {}
-	~LoadPlayerKey() {}
+	LoginData(int nIndex, std::string& sId, std::string& sPw) : index(nIndex), id(sId), pw(sPw), roleid(0), userId(0) {}
+	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0) {}
+	~LoginData() {}
 };
 
 //接收线程参数
@@ -377,7 +380,7 @@ using TimerList				= std::list<UINT>;
 using AttrsMap				= std::map<AttrsCmd, int>;
 using OnLinePlayerSet		= std::set<unsigned int>;
 using SqlList				= std::list<std::string>;
-using LoadPlayerList		= std::list<LoadPlayerKey>;
+using LoadPlayerList		= std::list<LoginData>;
 using PlayerClientVec		= std::vector<PlayerClient*>;
 using SqlKeyDataMap			= std::map<std::string, std::string>;
 using AttrsFunMap			= std::vector<std::function<void()>>;
@@ -395,6 +398,7 @@ using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MonsterMap			= std::map<int, MonsterKVMap>;
 using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
+using LoginInMap			= std::map<UINT, LoginData>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

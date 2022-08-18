@@ -131,9 +131,9 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 }
 
 // 创建角色
-void PlayerPrep::CreatePlayer(unsigned int index, std::string& id, std::string& pw)
+void PlayerPrep::CreatePlayer(LoginData& loginData)
 {
-	DPCC->CreatePlayer(index, id, pw);
+	DPCC->CreatePlayer(loginData);
 }
 
 // 获取数据库

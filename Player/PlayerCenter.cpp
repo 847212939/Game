@@ -104,47 +104,42 @@ bool PlayerCenter::SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlaye
 	return true;
 }
 
-void PlayerCenter::HandleLoadPlayer(LoadPlayerKey& loadPKey)
+void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 {
-	uint64_t userId = 0;
-
-	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(loadPKey.index);
+	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(loginData.index);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loadPKey.index);
+		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loginData.index);
 		return;
 	}
-	if (loadPKey.index < 0 || loadPKey.index >= m_PlayerClientVec.size())
+	if (loginData.index < 0 || loginData.index >= m_PlayerClientVec.size())
 	{
-		DTCPC->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loginData.index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		DTCPC->CloseSocket(loadPKey.index);
+		DTCPC->CloseSocket(loginData.index);
 		return;
 	}
-	if (!DPPC->GetLoginSys().LoginIn(loadPKey.id, loadPKey.pw, userId))
-	{
-		DTCPC->CloseSocket(loadPKey.index);
-		return;
-	}
-	if (userId == 0)
-	{
-		DTCPC->CloseSocket(loadPKey.index);
-		return;
-	}
-	PlayerClient* playerClient = GetPlayerClientByIndex(loadPKey.index);
+	PlayerClient* playerClient = GetPlayerClientByIndex(loginData.index);
 	if (playerClient)
 	{
-		new(playerClient) PlayerClient(loadPKey.index);
+		new(playerClient) PlayerClient(loginData.index);
 	}
 	else
 	{
-		playerClient = new PlayerClient(loadPKey.index);
+		playerClient = new PlayerClient(loginData.index);
 	}
-	playerClient->SetID(userId);
-	m_PlayerClientVec[loadPKey.index] = playerClient;
+
+	playerClient->SetID(loginData.userId);
+	playerClient->SetAnimalid(loginData.roleid);
+	playerClient->SetRefreshTime(10);
+	playerClient->SetLived(true);
+	playerClient->SetAnimaltype((HeroType)loginData.roleType);
+	playerClient->SetAnimalname(loginData.roleName);
+
+	m_PlayerClientVec[loginData.index] = playerClient;
 
 	playerClient->LoadMysql();
 	playerClient->CalAttrs();
@@ -177,10 +172,10 @@ void PlayerCenter::HandlerPlayerThread()
 }
 
 // ´´½¨½ÇÉ«
-void PlayerCenter::CreatePlayer(unsigned int index, std::string& id, std::string& pw)
+void PlayerCenter::CreatePlayer(LoginData& loginData)
 {
 	m_cond.GetMutex().lock();
-	m_LoadPlayerList.push_back(LoadPlayerKey(index, id, pw));
+	m_LoadPlayerList.push_back(loginData);
 	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();

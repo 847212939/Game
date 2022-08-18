@@ -21,6 +21,16 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 
 	switch (uAssistantID)
 	{
+	case LoginSysMsgCmd::cs_verification_account:
+	{
+		VerificationAccount(is, playerInfo);
+		break;
+	}
+	case LoginSysMsgCmd::cs_select_role:
+	{
+		SelectRole(is, playerInfo);
+		break;
+	}
 	case LoginSysMsgCmd::cs_login:
 	{
 		LoginIn(is, playerInfo);
@@ -31,62 +41,160 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
+// 检查密码
+bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 {
-	std::string id, pw;
-	is >> id >> pw;
-
-	DPPC->CreatePlayer(playerInfo->pMsg->uIndex, id, pw);
-
-	return true;
-}
-
-bool LoginSys::LoginIn(std::string& id, std::string& passwaed, uint64_t& userId)
-{
-	if (id.empty() || passwaed.empty())
+	if (!playerInfo)
 	{
-		// 账号不存在
-		COUT_LOG(LOG_CINFO, "id or passworld is empty");
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
 		return false;
 	}
 
-	// 数据库查询
+	std::string id, pw;
+	is >> id >> pw;
+
+	if (id.empty() || pw.empty())
+	{
+		return false;
+	}
+
 	std::string data;
 	DPPC->LoadOneSql(id, "useraccount", data);
 
-	if (data.empty())
+	LoginData loginData;
+	loginData.index = playerInfo->pMsg->uIndex;
+	loginData.id = id;
+	loginData.pw = pw;
+
+	if (!data.empty())
 	{
-		userId = DUtil->CreateUserId();
+		std::string passwaed;
 
-		Cos os;
-		os << passwaed << userId;
-
-		DPPC->SaveReplaceSQL("useraccount", id, os);
-
-		return true;
-	}
-	else
-	{
-		std::string pw;
 		Cis is(data);
-		is >> pw >> userId;
-		
+		is >> passwaed;
+
 		if (pw != passwaed)
 		{
 			// 密码不正确
-			COUT_LOG(LOG_CINFO, "passworld is error");
 			return false;
 		}
-		else
+
+		// 检查玩家是否在线
+		uint64_t userid = 0;
+		is >> userid;
+
+		if (userid <= 0)
 		{
-			if (userId == 0)
-			{
-				COUT_LOG(LOG_CERROR, "账户存在异常");
-				return false;
-			}
+			return false;
 		}
+		if (DPCC->GetPlayerClientByUserid(userid))
+		{
+			// 玩家在线
+			return false;
+		}
+		loginData.userId = userid;
 	}
+
+	AddLoginInMap(loginData);
+	return true;
+}
+
+// 选角
+bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	int heroid = 0;
+	is >> heroid;
+
+	const CHeroList* pCHeroList = CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
+	if (!pCHeroList)
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+
+	pLoginData->roleid = heroid;
+	pLoginData->roleType = pCHeroList->heroType;
+	pLoginData->roleName = pCHeroList->heroName;
 
 	return true;
 }
 
+bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+	if (pLoginData->userId <= 0)
+	{
+		pLoginData->userId = DUtil->CreateUserId();
+	}
+
+	DPPC->CreatePlayer(*pLoginData);
+
+	Save(pLoginData->id, pLoginData->pw, pLoginData->userId);
+	DelLoginInMap(playerInfo->pMsg->uIndex);
+	return true;
+}
+
+void LoginSys::AddLoginInMap(LoginData key)
+{
+	m_LoginInMap.insert({ key.index , key });
+}
+
+void LoginSys::DelLoginInMap(UINT index)
+{
+	LoginInMap::iterator it = m_LoginInMap.find(index);
+	if (it == m_LoginInMap.end())
+	{
+		return;
+	}
+
+	m_LoginInMap.erase(it);
+}
+
+LoginData* LoginSys::GetLoginInMap(UINT index)
+{
+	LoginInMap::iterator it = m_LoginInMap.find(index);
+	if (it == m_LoginInMap.end())
+	{
+		return nullptr;
+	}
+	return &it->second;
+}
+
+void LoginSys::Save(std::string& id, std::string& pw, uint64_t userid)
+{
+	Cos os;
+	os << pw << userid;
+	DPPC->SaveReplaceSQL("useraccount", id, os);
+}
