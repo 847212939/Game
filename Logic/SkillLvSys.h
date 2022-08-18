@@ -1,21 +1,21 @@
 #pragma once
 class PlayerClient;
 
-enum class SkillLevelSysCmd
+enum class SkillLvSysCmd
 {
 	cs_lv = 1,			// Éý¼¶
 };
 
-class SkillLevelSys
+class SkillLvSys
 {
 public:
-	SkillLevelSys(PlayerClient* playerClient);
-	~SkillLevelSys();
+	SkillLvSys(PlayerClient* playerClient);
+	~SkillLvSys();
 
 private:
-	void LoadMysql(std::string& data);
 	void CalAttrs();
 	void EnterScene();
+	void LoadMysql(std::string& data);
 	void NetWork(PlayerInfo* playerInfo);
 	void Exit(SocketCloseLine* socketCloseLine);
 

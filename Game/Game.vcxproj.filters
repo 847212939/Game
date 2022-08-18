@@ -166,7 +166,7 @@
     <ClCompile Include="..\Logic\SkillSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\SkillLevelSys.cpp">
+    <ClCompile Include="..\Logic\SkillLvSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
     <ClCompile Include="table.cpp">
@@ -288,7 +288,7 @@
     <ClInclude Include="..\Logic\SkillSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logic\SkillLevelSys.h">
+    <ClInclude Include="..\Logic\SkillLvSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
   </ItemGroup>

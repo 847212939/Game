@@ -172,7 +172,7 @@
     <ClCompile Include="..\Logic\ActivityHallCfg.cpp" />
     <ClCompile Include="..\Logic\ActivityHallSys.cpp" />
     <ClCompile Include="..\Logic\Animal.cpp" />
-    <ClCompile Include="..\Logic\SkillLevelSys.cpp" />
+    <ClCompile Include="..\Logic\SkillLvSys.cpp" />
     <ClCompile Include="..\Logic\SkillSys.cpp" />
     <ClCompile Include="..\Logic\LoginSys.cpp" />
     <ClCompile Include="..\Logic\Monster.cpp" />
@@ -212,7 +212,7 @@
     <ClInclude Include="..\Logic\ActivityHallCfg.h" />
     <ClInclude Include="..\Logic\ActivityHallSys.h" />
     <ClInclude Include="..\Logic\Animal.h" />
-    <ClInclude Include="..\Logic\SkillLevelSys.h" />
+    <ClInclude Include="..\Logic\SkillLvSys.h" />
     <ClInclude Include="..\Logic\SkillSys.h" />
     <ClInclude Include="..\Logic\LoginSys.h" />
     <ClInclude Include="..\Logic\Monster.h" />
