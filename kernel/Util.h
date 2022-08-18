@@ -19,24 +19,29 @@ public:
 	static unsigned int GetRandNum();
 	static int GetRandRange(int iMin, int iMax);
 
+public:
 	static void Exit(bool& run);
 	static long long GetSysMilliseconds();
 
+public:
 	// 对称加密
 	static uint8_t* Encrypt(uint8_t* content, int length);
 	static uint8_t* Decrypt(uint8_t* content, int length);
 
+public:
 	// 配置转化成秒
 	static uint64_t GetSysSecond();
 	static uint64_t GetCfgSecond(const IntVector& vec);
 	static uint64_t GetCfgSecondEnd(const IntVector& vec);
 
+public:
 	// 获取开服时间
 	static int GetServiceDays();
 	static uint64_t GetOpenServerTime();
 	static const struct tm& GetOpenServerTimeTM();
 	static bool InitTime();
 
+public:
 	// 生产怪
 	static Animal* CreatAnimal(AnimalType type, int mid = 0);
 
