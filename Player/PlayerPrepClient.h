@@ -14,6 +14,10 @@ public:
 	SceneClient* GetSceneClient();
 
 private:
+	// 建立数据库
+	void InitMysqlTable();
+
+private:
 	SceneClient	m_SceneClient;
 
 public:

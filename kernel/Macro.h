@@ -42,6 +42,10 @@ private:
 #define Min_(x,y) ((x)>(y)?(y):(x))
 #define Max_(x,y) ((x)>(y)?(x):(y))
 
+// 注册创建数据库
+#define RegisterCreat(name) this->CreateTableI(name);
+#define RegisterCreatS(name) this->CreateTableS(name);
+
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 
@@ -49,29 +53,13 @@ private:
 #define RegisterNetType(obj, name, cmd) obj->AddNetTypeCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)))
 
 // 注册活动
-#define RegisterActive(obj, name, cmd) obj->AddActiveCallback(cmd, std::move(std::bind(&name, obj, std::placeholders::_1)));
+#define RegisterActive(name, cmd) this->AddActiveCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));
 
 // 注册活动进入
-#define RegisterActiveEnter(pobj, obj, name, cmd)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddActiveEnterCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));\
-}
+#define RegisterActiveEnter(name, cmd, obj) this->AddActiveEnterCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));
 
 // 注册活动退出
-#define RegisterActiveExit(pobj, obj, name, cmd)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddActiveExitCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));\
-}
+#define RegisterActiveExit(name, cmd, obj) this->AddActiveExitCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));
 
 // 安全删除指针
 #define SafeDelete(pData)\
@@ -182,27 +170,6 @@ if (!pobj)\
 else\
 {\
 	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, obj, std::placeholders::_1)));\
-}
-
-// 注册创建数据库
-#define RegisterCreat(pobj, name)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->CreateTableI(name);\
-}
-
-#define RegisterCreatS(pobj, name)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->CreateTableS(name);\
 }
 
 // 注册定时器

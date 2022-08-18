@@ -5,9 +5,7 @@ PlayerPrepClient::PlayerPrepClient() :
 	m_SceneClient(this),
 	m_LoginSys(this)
 {
-	RegisterCreat(this, "move");
-	RegisterCreatS(this, "useraccount");
-	RegisterCreatS(this, "skilllevel");
+	InitMysqlTable();
 }
 
 PlayerPrepClient::~PlayerPrepClient()

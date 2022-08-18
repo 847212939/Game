@@ -192,6 +192,7 @@
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\SceneClient.cpp" />
     <ClCompile Include="..\Player\ServerTimer.cpp" />
+    <ClCompile Include="table.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

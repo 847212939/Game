@@ -6,21 +6,21 @@ ActivityHallSys::ActivityHallSys(PlayerPrepClient* ppc) :
 	m_ActiveService(ppc),
 	m_ActiveTime(ppc)
 {
-	RegisterActive(this, ActivityHallSys::AtSectionOpen, ActType::at_section_open);
-	RegisterActiveEnter(this, m_ActiveSection, ActiveSection::Enter, ActType::at_section_open);
-	RegisterActiveExit(this, m_ActiveSection, ActiveSection::Exit, ActType::at_section_open);
+	RegisterActive(ActivityHallSys::AtSectionOpen, ActType::at_section_open);
+	RegisterActiveEnter(ActiveSection::Enter, ActType::at_section_open, m_ActiveSection);
+	RegisterActiveExit(ActiveSection::Exit, ActType::at_section_open, m_ActiveSection);
 
-	RegisterActive(this, ActivityHallSys::AtAlwaysOpen, ActType::at_always_open);
-	RegisterActiveEnter(this, m_ActiveAlways, ActiveAlways::Enter, ActType::at_always_open);
-	RegisterActiveExit(this, m_ActiveAlways, ActiveAlways::Exit, ActType::at_always_open);
+	RegisterActive(ActivityHallSys::AtAlwaysOpen, ActType::at_always_open);
+	RegisterActiveEnter(ActiveAlways::Enter, ActType::at_always_open, m_ActiveAlways);
+	RegisterActiveExit(ActiveAlways::Exit, ActType::at_always_open, m_ActiveAlways);
 
-	RegisterActive(this, ActivityHallSys::AtServiceOpen, ActType::at_service_open);
-	RegisterActiveEnter(this, m_ActiveService, ActiveService::Enter, ActType::at_service_open);
-	RegisterActiveExit(this, m_ActiveService, ActiveService::Exit, ActType::at_service_open);
+	RegisterActive(ActivityHallSys::AtServiceOpen, ActType::at_service_open);
+	RegisterActiveEnter(ActiveService::Enter, ActType::at_service_open, m_ActiveService);
+	RegisterActiveExit(ActiveService::Exit, ActType::at_service_open, m_ActiveService);
 
-	RegisterActive(this, ActivityHallSys::AtTimedOpen, ActType::at_timed_open);
-	RegisterActiveEnter(this, m_ActiveTime, ActiveTime::Enter, ActType::at_timed_open);
-	RegisterActiveExit(this, m_ActiveTime, ActiveTime::Exit, ActType::at_timed_open);
+	RegisterActive(ActivityHallSys::AtTimedOpen, ActType::at_timed_open);
+	RegisterActiveEnter(ActiveTime::Enter, ActType::at_timed_open, m_ActiveTime);
+	RegisterActiveExit(ActiveTime::Exit, ActType::at_timed_open, m_ActiveTime);
 
 	RegisterTimer(ppc, this, ActivityHallSys::TimerCallback, TimerCmd::TimerCmd_Active, 300, SERVERTIMER_TYPE_PERISIST);
 }

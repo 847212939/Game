@@ -169,6 +169,9 @@
     <ClCompile Include="..\Logic\SkillLevelSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
+    <ClCompile Include="table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
