@@ -22,7 +22,8 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 		return;
 	}
 
-	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
+	LoginSysMsgCmd uAssistantID = 
+		(LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
 	Cis is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
@@ -107,7 +108,8 @@ bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 	AddLoginInMap(loginData);
 
 	DTCPC->SendData(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login, 
-		(int)LoginSysMsgCmd::cs_verification_account, 0, playerInfo->pMsg->pBufferevent, 0);
+		(int)LoginSysMsgCmd::cs_verification_account, 0, 
+		playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }
@@ -148,7 +150,8 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	pLoginData->roleName = pCHeroList->heroName;
 
 	DTCPC->SendData(pLoginData->index, nullptr, 0, MsgCmd::MsgCmd_Login,
-		(int)LoginSysMsgCmd::cs_verification_account, 0, playerInfo->pMsg->pBufferevent, 0);
+		(int)LoginSysMsgCmd::cs_verification_account, 
+		0, playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }

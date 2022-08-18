@@ -139,7 +139,8 @@ void CTCPSocketManage::ThreadAcceptThread()
 	sin.sin_addr.s_addr = strlen(m_bindIP) == 0 ? INADDR_ANY : inet_addr(m_bindIP);
 
 	listener = evconnlistener_new_bind(m_listenerBase, ListenerCB, (void*)this, 
-		LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE, -1, (struct sockaddr*)&sin, sizeof(sin));
+		LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE,
+		-1, (struct sockaddr*)&sin, sizeof(sin));
 
 	if (!listener)
 	{
@@ -157,7 +158,11 @@ void CTCPSocketManage::ThreadAcceptThread()
 	}
 
 	// 初始工作线程信息
-	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount], [](RecvThreadParam* p) { SafeDeleteArray(p); });
+	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount], 
+	[](RecvThreadParam* p) 
+	{ 
+		SafeDeleteArray(p); 
+	});
 	int socketPairBufSize = sizeof(PlatformSocketInfo) * MAX_POST_CONNECTED_COUNT;
 	for (int i = 0; i < workBaseCount; i++)
 	{
@@ -186,7 +191,8 @@ void CTCPSocketManage::ThreadAcceptThread()
 			return;
 		}
 
-		workInfo.event = event_new(workInfo.base, workInfo.read_fd, EV_READ, ThreadLibeventProcess, (void*)&uniqueParam[i]);
+		workInfo.event = event_new(workInfo.base, workInfo.read_fd, EV_READ, 
+			ThreadLibeventProcess, (void*)&uniqueParam[i]);
 		if (!workInfo.event)
 		{
 			COUT_LOG(LOG_CERROR, "TCP Could not create event!");
@@ -254,7 +260,8 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 
 	if (pThis->GetCurSocketSize() >= pThis->m_uMaxSocketSize)
 	{
-		COUT_LOG(LOG_CERROR, "服务器已经满：fd=%d [ip:%s %d][人数：%u/%u]", fd, tcpInfo.ip, tcpInfo.port, pThis->GetCurSocketSize(), pThis->m_uMaxSocketSize);
+		COUT_LOG(LOG_CERROR, "服务器已经满：fd=%d [ip:%s %d][人数：%u/%u]", fd, 
+			tcpInfo.ip, tcpInfo.port, pThis->GetCurSocketSize(), pThis->m_uMaxSocketSize);
 
 		// 分配失败
 		NetMessageHead netHead;
@@ -279,7 +286,8 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 	lastThreadIndex = lastThreadIndex % pThis->m_workBaseVec.size();
 
 	// 投递到接收线程
-	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd, (const char*)(&tcpInfo), sizeof(tcpInfo), 0) < sizeof(tcpInfo))
+	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd, 
+		(const char*)(&tcpInfo), sizeof(tcpInfo), 0) < sizeof(tcpInfo))
 	{
 		COUT_LOG(LOG_CERROR, "投递连接消息失败,fd=%d", fd);
 	}
@@ -307,7 +315,8 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	RecvThreadParam* param = (RecvThreadParam*)arg;
 	CTCPSocketManage* pThis = param->pThis;
 	int threadIndex = param->index;
-	if (threadIndex < 0 || threadIndex >= pThis->m_workBaseVec.size() || readfd != pThis->m_workBaseVec[threadIndex].read_fd)
+	if (threadIndex < 0 || threadIndex >= pThis->m_workBaseVec.size() 
+		|| readfd != pThis->m_workBaseVec[threadIndex].read_fd)
 	{
 		COUT_LOG(LOG_CERROR, "######  threadIndex = %d", threadIndex);
 		return;
@@ -318,7 +327,8 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	int realAllSize = recv(readfd, buf, sizeof(buf), 0);
 	if (realAllSize < sizeof(PlatformSocketInfo) || realAllSize % sizeof(PlatformSocketInfo) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "#### ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld  ######", realAllSize, sizeof(PlatformSocketInfo));
+		COUT_LOG(LOG_CERROR, "ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld", 
+			realAllSize, sizeof(PlatformSocketInfo));
 		event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 		return;
 	}
@@ -418,7 +428,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	// 发送连接成功消息
 	SendData(index, nullptr, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
 
-	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]", 
+		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
