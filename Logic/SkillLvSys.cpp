@@ -30,11 +30,6 @@ void SkillLvSys::EnterScene()
 
 void SkillLvSys::NetWork(PlayerInfo* playerInfo)
 {
-	if (!m_PlayerClient)
-	{
-		COUT_LOG(LOG_CERROR, "sub player is null");
-		return;
-	}
 	if (!playerInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Player Info is null");
