@@ -105,6 +105,10 @@ bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 	}
 
 	AddLoginInMap(loginData);
+
+	DTCPC->SendData(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login, 
+		(int)LoginSysMsgCmd::cs_verification_account, 0, playerInfo->pMsg->pBufferevent, 0);
+
 	return true;
 }
 
@@ -119,7 +123,7 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-
+	
 	int heroid = 0;
 	is >> heroid;
 
@@ -140,6 +144,9 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	pLoginData->roleid = heroid;
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
+
+	DTCPC->SendData(pLoginData->index, nullptr, 0, MsgCmd::MsgCmd_Login,
+		(int)LoginSysMsgCmd::cs_verification_account, 0, playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }
