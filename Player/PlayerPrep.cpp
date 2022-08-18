@@ -166,7 +166,7 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
@@ -215,7 +215,7 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
 //设定定时器
