@@ -76,7 +76,10 @@ uint64_t IDGen::GenerateUID()
 		m_addID = 0;
 	}
 
-	return ((uint64_t)m_serverType << 59) + ((uint64_t)m_serverID << 52) + ((uint64_t)curSecond << 20) + ((uint64_t)m_addID++);
+	return ((uint64_t)m_serverType << 59) + 
+		((uint64_t)m_serverID << 52) + 
+		((uint64_t)curSecond << 20) + 
+		((uint64_t)m_addID++);
 }
 
 void Util::Exit(bool& run)
