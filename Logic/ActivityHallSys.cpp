@@ -338,69 +338,6 @@ bool ActivityHallSys::AtSectionOpen(CActivityList* cfg)
 	return false;
 }
 
-// 全天开启
-bool ActivityHallSys::AtAlwaysOpen(CActivityList* cfg)
-{
-	if (!cfg)
-	{
-		return false;
-	}
-	uint64_t endSecond = Util::GetCfgSecond(cfg->endTime);
-	uint64_t beginSecond = Util::GetCfgSecond(cfg->beginTime);
-	if (endSecond == beginSecond)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-// 开服活动
-bool ActivityHallSys::AtServiceOpen(CActivityList* cfg)
-{
-	if (!cfg)
-	{
-		return false;
-	}
-	if (cfg->openServerTime.size() < 4)
-	{
-		return false;
-	}
-
-	uint64_t openServerTime = Util::GetCfgSecond(cfg->openServerTime);
-	uint64_t curTime = ::time(nullptr) - Util::GetOpenServerTime();
-
-	if (curTime <= 0)
-	{
-		return false;
-	}
-
-	if (curTime >= openServerTime && curTime < openServerTime + cfg->openServerTime[3] * 60)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-// 固定时间开启
-bool ActivityHallSys::AtTimedOpen(CActivityList* cfg)
-{
-	if (!cfg)
-	{
-		return false;
-	}
-	uint64_t sysSecond = Util::GetSysSecond();
-	uint64_t solidSecond = Util::GetCfgSecond(cfg->solidTime);
-
-	if (sysSecond == solidSecond)
-	{
-		return true;
-	}
-
-	return false;
-}
-
 int ActivityHallSys::GetBrushMonsterId(const CActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
 	pr.first = pConfig->dayBreakdown - pConfig->hourBreakdown > 0 ? 1 : 2;
@@ -519,4 +456,68 @@ bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 	}
 
 	return true;
+}
+
+
+// 全天开启
+bool ActivityHallSys::AtAlwaysOpen(CActivityList* cfg)
+{
+	if (!cfg)
+	{
+		return false;
+	}
+	uint64_t endSecond = Util::GetCfgSecond(cfg->endTime);
+	uint64_t beginSecond = Util::GetCfgSecond(cfg->beginTime);
+	if (endSecond == beginSecond)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// 开服活动
+bool ActivityHallSys::AtServiceOpen(CActivityList* cfg)
+{
+	if (!cfg)
+	{
+		return false;
+	}
+	if (cfg->openServerTime.size() < 4)
+	{
+		return false;
+	}
+
+	uint64_t openServerTime = Util::GetCfgSecond(cfg->openServerTime);
+	uint64_t curTime = ::time(nullptr) - Util::GetOpenServerTime();
+
+	if (curTime <= 0)
+	{
+		return false;
+	}
+
+	if (curTime >= openServerTime && curTime < openServerTime + cfg->openServerTime[3] * 60)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// 固定时间开启
+bool ActivityHallSys::AtTimedOpen(CActivityList* cfg)
+{
+	if (!cfg)
+	{
+		return false;
+	}
+	uint64_t sysSecond = Util::GetSysSecond();
+	uint64_t solidSecond = Util::GetCfgSecond(cfg->solidTime);
+
+	if (sysSecond == solidSecond)
+	{
+		return true;
+	}
+
+	return false;
 }
