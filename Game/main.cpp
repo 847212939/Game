@@ -27,9 +27,9 @@ int main()
 		return -1;
 	}
 
-	LogMgr->Init(run);
+	LogMgr->Init(std::ref(run));
 
-	Util::Exit(run);
+	Util::Exit(std::ref(run));
 
 	return 0;
 }
