@@ -42,7 +42,7 @@ void MoveSys::CalAttrs()
 
 void MoveSys::EnterScene()
 {
-	COUT_LOG(LOG_CINFO, "场景回调函数");
+
 }
 
 void MoveSys::NetWork(PlayerInfo* playerInfo)
