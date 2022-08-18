@@ -138,6 +138,7 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	playerClient->SetLived(true);
 	playerClient->SetAnimaltype((HeroType)loginData.roleType);
 	playerClient->SetAnimalname(loginData.roleName);
+	playerClient->SetPlayername(loginData.netName);
 
 	m_PlayerClientVec[loginData.index] = playerClient;
 

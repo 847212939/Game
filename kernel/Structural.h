@@ -266,7 +266,8 @@ struct LoginData
 	std::string				pw;
 	int						roleid;
 	int						roleType;
-	std::string				roleName;
+	std::string				roleName;	// Ó¢ĞÛÃû
+	std::string				netName;	// ÓÎÏ·Ãû
 	uint64_t				userId;
 
 	LoginData(int nIndex, std::string& sId, std::string& sPw) : index(nIndex), id(sId), pw(sPw), roleid(0), userId(0) {}

@@ -154,8 +154,8 @@ function ReadSkillCfg()
                 config.heroId = value.heroId or 0
                 config.heroType = value.heroType or 0
                 config.heroName = value.heroName or 0
-                if SkillCfg.HeroList.skillId then
-                    for _,v in ipairs(SkillCfg.HeroList.skillId) do
+                if value.skillId then
+                    for _,v in ipairs(value.skillId) do
                         config:AddskillId(v)
                     end
                 end

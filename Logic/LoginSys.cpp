@@ -125,7 +125,8 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	}
 	
 	int heroid = 0;
-	is >> heroid;
+	std::string netname;
+	is >> heroid >> netname;
 
 	const CHeroList* pCHeroList = CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
 	if (!pCHeroList)
@@ -142,6 +143,7 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	}
 
 	pLoginData->roleid = heroid;
+	pLoginData->netName = netname;
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
 
