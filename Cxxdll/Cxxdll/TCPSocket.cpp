@@ -462,6 +462,7 @@ void CTCPSocketManage::ThreadSendMsgThread(bool& run)
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
+		run = false;
 		COUT_LOG(LOG_CERROR, "send list is null");
 		return;
 	}
