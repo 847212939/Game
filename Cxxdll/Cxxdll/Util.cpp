@@ -3,7 +3,7 @@
 void Util::InitCxxnet()
 {
 	bool run = true;
-	ServiceType type = ServiceType::SERVICE_TYPE_GAMECENTER;
+	ServiceType type = ServiceType::SERVICE_TYPE_CLIENT;
 
 	LogMgr->SetLogFileType(type);
 

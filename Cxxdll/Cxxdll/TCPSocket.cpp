@@ -111,258 +111,36 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	m_iServiceType = serverType;
 
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAcceptThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this));
 
 	return true;
 }
 
-void CTCPSocketManage::ThreadAcceptThread()
+void CTCPSocketManage::ConnectServerThread()
 {
-	struct sockaddr_in sin;
-	struct evconnlistener* listener;
-
-	//m_listenerBase = event_base_new();
-	m_listenerBase = event_base_new_with_config(m_eventBaseCfg);
+	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
 
-	if (!m_listenerBase)
+	if (!m_ConnectServerBase)
 	{
 		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
 		return;
 	}
 
-	memset(&sin, 0, sizeof(sin));
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(m_port);
-	sin.sin_addr.s_addr = strlen(m_bindIP) == 0 ? INADDR_ANY : inet_addr(m_bindIP);
-
-	listener = evconnlistener_new_bind(m_listenerBase, ListenerCB, (void*)this,
-		LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE,
-		-1, (struct sockaddr*)&sin, sizeof(sin));
-
-	if (!listener)
-	{
-		COUT_LOG(LOG_INFO, "Could not create a listener! 尝试换个端口或者稍等一会。");
-		return;
-	}
-
-	evconnlistener_set_error_cb(listener, AcceptErrorCB);
-
-	// 获取接收线程池数量
-	int workBaseCount = BaseCfgMgr.GetThreadCnt();
-	if (workBaseCount <= 1)
-	{
-		workBaseCount = 8;
-	}
-
-	// 初始工作线程信息
-	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount],
-		[](RecvThreadParam* p)
-		{
-			SafeDeleteArray(p);
-		});
-	int socketPairBufSize = sizeof(PlatformSocketInfo) * MAX_POST_CONNECTED_COUNT;
-	for (int i = 0; i < workBaseCount; i++)
-	{
-		uniqueParam[i].index = i;
-		uniqueParam[i].pThis = this;
-
-		WorkThreadInfo workInfo;
-		SOCKET fd[2];
-		if (Socketpair(AF_INET, SOCK_STREAM, 0, fd) < 0)
-		{
-			COUT_LOG(LOG_CERROR, "Socketpair");
-			return;
-		}
-
-		workInfo.read_fd = fd[0];
-		workInfo.write_fd = fd[1];
-
-		SetTcpRcvSndBUF(workInfo.read_fd, socketPairBufSize, socketPairBufSize);
-		SetTcpRcvSndBUF(workInfo.write_fd, socketPairBufSize, socketPairBufSize);
-
-		workInfo.base = event_base_new();
-		//workInfo.base = event_base_new_with_config(m_eventBaseCfg);
-		if (!workInfo.base)
-		{
-			COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
-			return;
-		}
-
-		workInfo.event = event_new(workInfo.base, workInfo.read_fd, EV_READ,
-			ThreadLibeventProcess, (void*)&uniqueParam[i]);
-		if (!workInfo.event)
-		{
-			COUT_LOG(LOG_CERROR, "TCP Could not create event!");
-			return;
-		}
-
-		if (event_add(workInfo.event, nullptr) < 0)
-		{
-			COUT_LOG(LOG_CERROR, "TCP event_add ERROR");
-			return;
-		}
-
-		m_workBaseVec.push_back(workInfo);
-	}
-
-	std::vector<std::thread> threadVev;
-	// 开辟工作线程池
-	for (int i = 0; i < workBaseCount; i++)
-	{
-		threadVev.push_back(std::thread(ThreadRSSocketThread, (void*)&uniqueParam[i]));
-	}
-
-	event_base_dispatch(m_listenerBase);
-
-	evconnlistener_free(listener);
-	event_base_free(m_listenerBase);
-	//event_config_free(m_eventBaseCfg);
-
-	for (int i = 0; i < workBaseCount; i++)
-	{
-		threadVev[i].join();
-
-		WorkThreadInfo& workInfo = m_workBaseVec[i];
-
-		closesocket(workInfo.read_fd);
-		closesocket(workInfo.write_fd);
-
-		if (workInfo.base)
-		{
-			event_base_free(workInfo.base);
-		}
-		if (workInfo.event)
-		{
-			// 不知道为什么退出时发生崩溃
-			//event_free(workInfo.event);
-		}
-	}
-
-	COUT_LOG(LOG_CINFO, "accept thread end");
-
-	return;
-}
-
-void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)
-{
-	CTCPSocketManage* pThis = (CTCPSocketManage*)data;
-
-	// 获取连接信息
-	struct sockaddr_in* addrClient = (struct sockaddr_in*)sa;
-	PlatformSocketInfo tcpInfo;
-	tcpInfo.acceptMsgTime = time(nullptr);
-	strcpy(tcpInfo.ip, inet_ntoa(addrClient->sin_addr));
-	tcpInfo.port = ntohs(addrClient->sin_port);
-	tcpInfo.acceptFd = fd;	//服务器accept返回套接字用来和客户端通信
-
-	if (pThis->GetCurSocketSize() >= pThis->m_uMaxSocketSize)
-	{
-		COUT_LOG(LOG_CERROR, "服务器已经满：fd=%d [ip:%s %d][人数：%u/%u]", fd,
-			tcpInfo.ip, tcpInfo.port, pThis->GetCurSocketSize(), pThis->m_uMaxSocketSize);
-
-		// 分配失败
-		NetMessageHead netHead;
-
-		netHead.uMainID = 100;
-		netHead.uAssistantID = 3;
-		netHead.uHandleCode = ERROR_SERVICE_FULL;//服务器人数已满
-		netHead.uMessageSize = sizeof(NetMessageHead);
-
-		sendto(fd, (char*)&netHead, sizeof(NetMessageHead), 0, (sockaddr*)&sa, sizeof(sockaddr_in));
-
-		closesocket(fd);
-
-		return;
-	}
-
-	// 设置底层收发缓冲区
-	SetTcpRcvSndBUF(fd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
-
-	// memcached中线程负载均衡算法
-	static int lastThreadIndex = 0;
-	lastThreadIndex = lastThreadIndex % pThis->m_workBaseVec.size();
-
-	// 投递到接收线程
-	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd,
-		(const char*)(&tcpInfo), sizeof(tcpInfo), 0) < sizeof(tcpInfo))
-	{
-		COUT_LOG(LOG_CERROR, "投递连接消息失败,fd=%d", fd);
-	}
-
-	lastThreadIndex++;
-}
-
-void CTCPSocketManage::ThreadRSSocketThread(void* pThreadData)
-{
-	RecvThreadParam* param = (RecvThreadParam*)pThreadData;
-	if (!param)
-	{
-		COUT_LOG(LOG_CERROR, "thread param is null");
-		return;
-	}
-
-	// 处于监听状态
-	event_base_dispatch(param->pThis->m_workBaseVec[param->index].base);
-
-	return;
-}
-
-void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg)
-{
-	RecvThreadParam* param = (RecvThreadParam*)arg;
-	CTCPSocketManage* pThis = param->pThis;
-	int threadIndex = param->index;
-	if (threadIndex < 0 || threadIndex >= pThis->m_workBaseVec.size()
-		|| readfd != pThis->m_workBaseVec[threadIndex].read_fd)
-	{
-		COUT_LOG(LOG_CERROR, "######  threadIndex = %d", threadIndex);
-		return;
-	}
-
-	char buf[sizeof(PlatformSocketInfo) * MAX_POST_CONNECTED_COUNT] = "";
-
-	int realAllSize = recv(readfd, buf, sizeof(buf), 0);
-	if (realAllSize < sizeof(PlatformSocketInfo) || realAllSize % sizeof(PlatformSocketInfo) != 0)
-	{
-		COUT_LOG(LOG_CERROR, "ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld",
-			realAllSize, sizeof(PlatformSocketInfo));
-		event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
-		return;
-	}
-
-	int countAcceptCount = realAllSize / sizeof(PlatformSocketInfo);
-	for (int i = 0; i < countAcceptCount; i++)
-	{
-		PlatformSocketInfo* pTCPSocketInfo = (PlatformSocketInfo*)(buf + i * sizeof(PlatformSocketInfo));
-
-		// 处理连接
-		pThis->AddTCPSocketInfo(threadIndex, pTCPSocketInfo);
-	}
-
-	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
-}
-
-void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
-{
-	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
-	SOCKET fd = pTCPSocketInfo->acceptFd;
 
 	// 分配索引算法
 	int index = GetSocketIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
+		COUT_LOG(LOG_CERROR, "分配索引失败");
 		return;
 	}
 
-	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	bev = bufferevent_socket_new(m_ConnectServerBase, -1, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
-		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
+		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!");
 		return;
 	}
 
@@ -378,8 +156,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
+		COUT_LOG(LOG_CERROR, "add event fail!!!");
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
 		return;
@@ -394,40 +171,28 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
 
-	// 保存信息
-	TCPSocketInfo tcpInfo;
-	memcpy(tcpInfo.ip, pTCPSocketInfo->ip, sizeof(tcpInfo.ip));
-	tcpInfo.acceptFd = pTCPSocketInfo->acceptFd;
-	tcpInfo.acceptMsgTime = pTCPSocketInfo->acceptMsgTime;
-	tcpInfo.bev = bev;
-	tcpInfo.isConnect = true;
-	tcpInfo.port = pTCPSocketInfo->port;
-	if (!tcpInfo.lock)
-	{
-		tcpInfo.lock = new std::mutex;
-	}
-	tcpInfo.bHandleAccptMsg = false;
+	const CLogicCfg& logicCfg = CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
 
-	m_ConditionVariable.GetMutex().lock();	//加锁
-	if (m_socketInfoVec[index].isConnect)
+	//struct sockaddr_in6 sin6; ipv6
+	struct sockaddr_in sin;
+	memset(&sin, 0, sizeof(sin));
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(logicCfg.port);
+	evutil_inet_pton(sin.sin_family, logicCfg.ip.c_str(), (void*)&sin.sin_addr);
+
+	if (0 != bufferevent_socket_connect(bev, (struct sockaddr*)&sin, sizeof(sin)))
 	{
-		m_ConditionVariable.GetMutex().unlock(); //解锁
-		COUT_LOG(LOG_CERROR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
+		COUT_LOG(LOG_CERROR, "Could not bufferevent_socket_connect!");
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
 		return;
 	}
-	m_socketInfoVec[index] = tcpInfo;
-	m_heartBeatSocketSet.insert((unsigned int)index);
-	m_uCurSocketSize++;
-	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	// 发送连接成功消息
-	SendData(index, nullptr, 0, MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
+	COUT_LOG(LOG_CINFO, "初始化完成");
 
-	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
-		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+	event_base_dispatch(m_listenerBase);
+
+	event_base_free(m_listenerBase);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
@@ -790,209 +555,6 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	}
 
 	pThis->RemoveTCPSocketStatus(index, true);
-}
-
-void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
-{
-	COUT_LOG(LOG_CERROR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
-}
-
-int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
-{
-	if (!addr_info)
-	{
-		return -1;
-	}
-
-	SOCKET listener, client, server;
-	int opt = 1;
-
-	listener = server = client = INVALID_SOCKET;
-	listener = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //创建服务器socket并进行绑定监听等
-	if (INVALID_SOCKET == listener)
-	{
-		goto fail;
-	}
-
-	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
-
-	if (SOCKET_ERROR == ::bind(listener, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == getsockname(listener, addr_info->ai_addr, (int*)&addr_info->ai_addrlen))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == listen(listener, 5))
-	{
-		goto fail;
-	}
-
-	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //创建客户端socket，并连接服务器
-
-	if (INVALID_SOCKET == client)
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == connect(client, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
-	{
-		goto fail;
-	}
-
-	server = accept(listener, 0, 0);
-
-	if (INVALID_SOCKET == server)
-	{
-		goto fail;
-	}
-
-	closesocket(listener);
-
-	sock[0] = client;
-	sock[1] = server;
-
-	return 0;
-fail:
-	if (INVALID_SOCKET != listener)
-	{
-		closesocket(listener);
-	}
-	if (INVALID_SOCKET != client)
-	{
-		closesocket(client);
-	}
-	return -1;
-}
-
-int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
-{
-	if (!addr_info)
-	{
-		return -1;
-	}
-	SOCKET client, server;
-	struct addrinfo addr, * result = nullptr;
-	const char* address;
-	int opt = 1;
-
-	server = client = INVALID_SOCKET;
-
-	server = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol);
-	if (INVALID_SOCKET == server)
-	{
-		goto fail;
-	}
-
-	setsockopt(server, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
-
-	if (SOCKET_ERROR == ::bind(server, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == getsockname(server, addr_info->ai_addr, (int*)&addr_info->ai_addrlen))
-	{
-		goto fail;
-	}
-
-	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol);
-
-	if (INVALID_SOCKET == client)
-	{
-		goto fail;
-	}
-
-	memset(&addr, 0, sizeof(addr));
-	addr.ai_family = addr_info->ai_family;
-	addr.ai_socktype = addr_info->ai_socktype;
-	addr.ai_protocol = addr_info->ai_protocol;
-
-	if (AF_INET6 == addr.ai_family)
-	{
-		address = "0:0:0:0:0:0:0:1";
-	}
-	else
-	{
-		address = "127.0.0.1";
-	}
-	if (getaddrinfo(address, "0", &addr, &result))
-	{
-		goto fail;
-	}
-
-	setsockopt(client, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
-
-	if (SOCKET_ERROR == ::bind(client, result->ai_addr, static_cast<int>(result->ai_addrlen)))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == getsockname(client, result->ai_addr, (int*)&result->ai_addrlen))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == connect(server, result->ai_addr, static_cast<int>(result->ai_addrlen)))
-	{
-		goto fail;
-	}
-	if (SOCKET_ERROR == connect(client, addr_info->ai_addr, static_cast<int>(addr_info->ai_addrlen)))
-	{
-		goto fail;
-	}
-
-	freeaddrinfo(result);
-	sock[0] = client;
-	sock[1] = server;
-	return 0;
-
-fail:
-	if (INVALID_SOCKET != client)
-	{
-		closesocket(client);
-	}
-	if (INVALID_SOCKET != server)
-	{
-		closesocket(server);
-	}
-	if (result)
-	{
-		freeaddrinfo(result);
-	}
-
-	return -1;
-}
-
-int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKET recv[2])
-{
-	const char* address;
-	struct addrinfo addr_info, * p_addrinfo;
-	int result = -1;
-
-	memset(&addr_info, 0, sizeof(addr_info));
-	addr_info.ai_family = family;
-	addr_info.ai_socktype = type;
-	addr_info.ai_protocol = protocol;
-	if (AF_INET6 == family)
-	{
-		address = "0:0:0:0:0:0:0:1";
-	}
-	else
-	{
-		address = "127.0.0.1";
-	}
-
-	if (0 == getaddrinfo(address, "0", &addr_info, &p_addrinfo))
-	{
-		if (SOCK_STREAM == type)
-		{
-			result = StreamSocketpair(p_addrinfo, recv);   //use for tcp
-		}
-		else if (SOCK_DGRAM == type)
-		{
-			result = DgramSocketpair(p_addrinfo, recv);    //use for udp
-		}
-		freeaddrinfo(p_addrinfo);
-	}
-	return result;
 }
 
 bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)

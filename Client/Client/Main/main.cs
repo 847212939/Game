@@ -8,7 +8,7 @@ namespace Client.Main
 {
     internal class Program
     {
-        [DllImport("..\\..\\..\\..\\..\\x64\\Release\\Cxxdll.dll")]
+        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll")]
         private static extern void InitCxxnet();
 
         static void Main(string[] args)

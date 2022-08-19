@@ -45,29 +45,25 @@ private:
 private:
 	int GetSocketIndex();
 	bool RecvData(bufferevent* bev, int index);
+	bool SendData(bufferevent* bev, int index);
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
 	// 线程入口
-	void ThreadAcceptThread();
+	void ConnectServerThread();
 	void ThreadSendMsgThread();
 	void HandleSendData(ListItemData* pListItem);
-	static void ThreadRSSocketThread(void* pThreadData);
 
 private:
 	// 静态回调方法
+	static void WriteCB(struct bufferevent*, void*);
 	static void ReadCB(struct bufferevent*, void*);
 	static void EventCB(struct bufferevent*, short, void*);
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
-
-private:
-	static int DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
-	static int StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
-	static int Socketpair(int family, int type, int protocol, SOCKET recv[2]);
 
 private:
 	unsigned short              m_port;
@@ -87,4 +83,5 @@ private:
 	std::vector<std::thread*>   m_socketThread;
 	std::vector<TCPSocketInfo>  m_socketInfoVec;
 	std::vector<WorkThreadInfo> m_workBaseVec;
+	event_base*					m_ConnectServerBase;
 };

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-TCPClient::TCPClient()
+TCPClient::TCPClient() : CTCPSocketManage()
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 }

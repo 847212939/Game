@@ -138,6 +138,10 @@ void CGameLogManage::SetLogFileType(ServiceType serviceType)
 	{
 		nameStr += "GameCenterServer";
 	}
+	else if (serviceType == ServiceType::SERVICE_TYPE_CLIENT)
+	{
+		nameStr += "Client";
+	}
 
 	m_serviceType = serviceType;
 	m_LogFilesMap.emplace(serviceType, nameStr);
