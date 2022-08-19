@@ -56,8 +56,6 @@ extern "C"
 #include "TCPSocket.h"
 #include "TCpClien.h"
 #include "Util.h"
-#include "LogManager.h"
-
 #include "ServerTimer.h"
 
 #include "BaseCfgMgr.h"	

@@ -12,7 +12,7 @@ protected:
 
 public:
 	// 日志打印
-	void CoutLog(int level, const char* log);
+	void CoutLog(const char* log);
 
 public:
 	// 基础配置

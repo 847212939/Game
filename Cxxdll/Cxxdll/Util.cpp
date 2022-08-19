@@ -5,16 +5,14 @@ void Util::InitCxxnet()
 	bool run = true;
 	ServiceType type = ServiceType::SERVICE_TYPE_CLIENT;
 
-	LogMgr->SetLogFileType(type);
-
 	if (!LuaMgr->InitCfgMgr())
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		std::cout << "main exit" << std::endl;
 		return;
 	}
 	if (!DUtil->InitTime())
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		std::cout << "main exit" << std::endl;
 		return;
 	}
 	IDGen& idGen = DUtil->GetIDGen();
@@ -22,11 +20,9 @@ void Util::InitCxxnet()
 
 	if (!DTCPC->Init(std::ref(run)))
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		std::cout << "main exit" << std::endl;
 		return;
 	}
-
-	LogMgr->Init(std::ref(run));
 
 	Util::Exit(std::ref(run));
 

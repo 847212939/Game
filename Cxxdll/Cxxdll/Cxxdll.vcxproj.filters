@@ -56,9 +56,6 @@
     <ClInclude Include="ConditionVariable.h">
       <Filter>网络架构</Filter>
     </ClInclude>
-    <ClInclude Include="LogManager.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
     <ClInclude Include="ServerTimer.h">
       <Filter>网络架构</Filter>
     </ClInclude>
@@ -92,9 +89,6 @@
       <Filter>网络架构</Filter>
     </ClCompile>
     <ClCompile Include="DataLine.cpp">
-      <Filter>网络架构</Filter>
-    </ClCompile>
-    <ClCompile Include="LogManager.cpp">
       <Filter>网络架构</Filter>
     </ClCompile>
     <ClCompile Include="ServerTimer.cpp">

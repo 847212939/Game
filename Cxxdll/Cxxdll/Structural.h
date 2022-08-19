@@ -34,18 +34,6 @@ enum class SysMsgCmd
 	HD_PLATFORM_SOCKET_READ		= 5,											// 中心服读取事件处理
 };
 
-// 日志等级
-enum LogLevel
-{
-	LOG_INFO = 0,																//info
-	LOG_WARN,																	//warnning
-	LOG_ERROR,																	//error
-	LOG_CINFO,																	//info Console tip
-	LOG_CERROR,																	//error Console
-	LOG_ERROR_SYS,																//error system
-	LOG_END,
-};
-
 // 服务器类型
 enum class ServiceType
 {
@@ -71,17 +59,6 @@ enum SERVERTIMER_TYPE
 {
 	SERVERTIMER_TYPE_PERISIST   = 0,											// 持久定时器
 	SERVERTIMER_TYPE_SINGLE     = 1,											// 一次性定时器
-};
-
-/**
-* @brief 定义字段类型，
-* DB_INT:数字类型
-* DB_STR:字符串类型
-*/
-enum class FT
-{
-	DB_INT,
-	DB_STR,
 };
 
 // 场景内类型
@@ -363,7 +340,6 @@ using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
 using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
-using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
@@ -372,7 +348,3 @@ using MonsterMap			= std::map<int, MonsterKVMap>;
 using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
-
-using LogLevelNames			= const std::array<const char*, LOG_END>;
-
-LogLevelNames levelNames = { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };

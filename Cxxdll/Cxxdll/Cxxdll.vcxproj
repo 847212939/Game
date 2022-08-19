@@ -149,7 +149,6 @@
     <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="ConfigMgr.h" />
     <ClInclude Include="DataLine.h" />
-    <ClInclude Include="LogManager.h" />
     <ClInclude Include="LuaMgr.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="MessageCmd.h" />
@@ -166,7 +165,6 @@
     <ClCompile Include="ConfigMgr.cpp" />
     <ClCompile Include="DataLine.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="LuaCfgMgr.cpp" />
     <ClCompile Include="LuaMgr.cpp" />
     <ClCompile Include="pch.cpp">

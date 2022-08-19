@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Network\" />
+    <Compile Remove="Network\**" />
+    <Compile Remove="x64\**" />
+    <EmbeddedResource Remove="Network\**" />
+    <EmbeddedResource Remove="x64\**" />
+    <None Remove="Network\**" />
+    <None Remove="x64\**" />
   </ItemGroup>
 
 </Project>

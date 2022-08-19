@@ -17,7 +17,7 @@ bool TCPClient::Init(bool& run)
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
-	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
+	std::cout << "Server initialization succeeded" << std::endl;
 	return true;
 }
 
@@ -62,7 +62,7 @@ void TCPClient::HandlerRecvDataListThread()
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == nullptr");
+		std::cout << "CDataLine error pDataLine == nullptr" << std::endl;
 		return;
 	}
 	while (run)
@@ -78,7 +78,7 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "recv data thread end");
+	std::cout << "recv data thread end" << std::endl;
 
 	return;
 }
@@ -91,12 +91,12 @@ void TCPClient::NotifyAll()
 	CDataLine* SendDataLine = GetSendDataLine();
 	if (!RecvDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "RecvDataLine = null");
+		std::cout << "RecvDataLine = null" << std::endl;
 		return;
 	}
 	if (!SendDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "SendDataLine = null");
+		std::cout << "SendDataLine = null" << std::endl;
 		return;
 	}
 	
@@ -115,7 +115,7 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	std::cout << "There is already a callback for this message. Please check the code cmd=" << (int)cmd << std::endl;
 }
 
 bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
@@ -123,7 +123,7 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		std::cout << "No corresponding callback function found cmd=" << (int)cmd << std::endl;
 		return false;
 	}
 

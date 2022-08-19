@@ -14,19 +14,19 @@ CTCPSocketManage::CTCPSocketManage() :
 	GetSystemInfo(&si);
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Init socket dll err");
+		std::cout << "Init socket dll err" << std::endl;
 	}
 	if (event_config_set_flag(m_eventBaseCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
 	{
-		COUT_LOG(LOG_CERROR, "Init iocp is err");
+		std::cout << "Init iocp is err" << std::endl;
 	}
 	if (evthread_use_windows_threads() != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Init iocp thread is err");
+		std::cout << "Init iocp thread is err" << std::endl;
 	}
 	if (event_config_set_num_cpus_hint(m_eventBaseCfg, si.dwNumberOfProcessors) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
+		std::cout << "Set the number of CPU is err" << std::endl;
 	}
 }
 
@@ -37,11 +37,11 @@ CTCPSocketManage::~CTCPSocketManage()
 
 bool CTCPSocketManage::Stop()
 {
-	COUT_LOG(LOG_CINFO, "service tcp stop begin");
+	std::cout << "service tcp stop begin" << std::endl;
 
 	if (!m_running)
 	{
-		COUT_LOG(LOG_CERROR, "TCPSocketManage is not running");
+		std::cout << "TCPSocketManage is not running" << std::endl;
 		return false;
 	}
 
@@ -49,7 +49,7 @@ bool CTCPSocketManage::Stop()
 
 	event_base_loopbreak(m_ConnectServerBase);
 	
-	COUT_LOG(LOG_INFO, "service tcp stop end");
+	std::cout << "service tcp stop end" << std::endl;
 
 	return true;
 }
@@ -58,7 +58,7 @@ bool CTCPSocketManage::Start(bool& run)
 {
 	if (m_running == true)
 	{
-		COUT_LOG(LOG_CERROR, "service tcp already have been running");
+		std::cout << "service tcp already have been running" << std::endl;
 		return false;
 	}
 	m_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -160,7 +160,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 {
 	if (bev == nullptr)
 	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		std::cout << "RecvData error bev == nullptr" << std::endl;
 		return false;
 	}
 
@@ -186,7 +186,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
 		// 消息格式不正确
-		COUT_LOG(LOG_CERROR, "消息格式不正确");
+		std::cout << "消息格式不正确" << std::endl;
 		return false;
 	}
 
@@ -197,7 +197,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
 			// 消息格式不正确
-			COUT_LOG(LOG_CERROR, "消息格式不正确");
+			std::cout << "消息格式不正确" << std::endl;
 			return false;
 		}
 
@@ -205,7 +205,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 		if (realSize < 0)
 		{
 			// 数据包不够包头
-			COUT_LOG(LOG_CERROR, "数据包不够包头");
+			std::cout << "数据包不够包头" << std::endl;
 			return false;
 		}
 
@@ -355,13 +355,13 @@ bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCm
 {
 	if (!pBufferevent)
 	{
-		COUT_LOG(LOG_CERROR, "!pBufferevent");
+		std::cout << "!pBufferevent" << std::endl;
 		return false;
 	}
 
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
-		COUT_LOG(LOG_CERROR, "invalid message size size=%lld", size);
+		std::cout << "invalid message size size = " << size << std::endl;
 		return false;
 	}
 
@@ -394,7 +394,7 @@ bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCm
 
 		if (addBytes == 0)
 		{
-			COUT_LOG(LOG_CERROR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+			std::cout << "投递消息失败,assistID" << assistID << std::endl;
 			return false;
 		}
 	}
@@ -449,7 +449,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 		}
 		if (bufferevent_write(m_socketInfo.bev, pData, size) < 0)
 		{
-			COUT_LOG(LOG_CERROR, "发送数据失败");
+			std::cout << "发送数据失败" << std::endl;
 		}
 	}
 	SafeDeleteArray(pListItem->pData);
@@ -463,7 +463,7 @@ void CTCPSocketManage::ThreadSendMsgThread(bool& run)
 	if (!pDataLine)
 	{
 		run = false;
-		COUT_LOG(LOG_CERROR, "send list is null");
+		std::cout << "send list is null" << std::endl;
 		return;
 	}
 	while (m_running)
@@ -479,7 +479,7 @@ void CTCPSocketManage::ThreadSendMsgThread(bool& run)
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "send data thread end");
+	std::cout << "send data thread end" << std::endl;
 
 	return;
 }
