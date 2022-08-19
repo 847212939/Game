@@ -7,7 +7,7 @@ namespace Client.Utils
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct REvent
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2048)]
         public string data;
 
     };
@@ -15,9 +15,9 @@ namespace Client.Utils
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void CBEventHandle(REvent eve/*, [MarshalAs(UnmanagedType.LPStr)]StringBuilder source*/);
 
-    internal class Socketcb
+    internal class SocketMgr
     {
-        public Socketcb()
+        public SocketMgr()
         {
             m_CallBackFunc = new CBEventHandle(CallBackFunc);
             RegisterCallBack(m_CallBackFunc);
@@ -25,6 +25,8 @@ namespace Client.Utils
 
         [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll",CallingConvention = CallingConvention.Cdecl)]
         extern static void RegisterCallBack(CBEventHandle func);
+        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitCxxnet();
 
         private void CallBackFunc(REvent eve)
         {

@@ -88,8 +88,7 @@ enum class HurtSysMsgCmd;
 
 struct REvent
 {
-	char m_Source[1024];
-
+	char m_Source[2048];
 	REvent() { memset(this, 0, sizeof(REvent)); }
 };
 

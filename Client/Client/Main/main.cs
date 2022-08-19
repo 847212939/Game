@@ -8,14 +8,11 @@ namespace Client.Main
 {
     internal class Program
     {
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void InitCxxnet();
-
         static void Main(string[] args)
         {
-            Socketcb socketcb = new Socketcb();
+            SocketMgr socketcb = new SocketMgr();
+            SocketMgr.InitCxxnet();
 
-            InitCxxnet();
             Console.ReadKey();
         }
     }
