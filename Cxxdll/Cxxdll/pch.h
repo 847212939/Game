@@ -43,7 +43,23 @@ extern "C"
 }
 #include "tolua++.h"
 
+#include "Macro.h"
+#include "MessageCmd.h"	
+#include "Structural.h"
+
+#include "ConditionVariable.h"
+#include "DataLine.h"
+
+#include "TCPSocket.h"
 #include "TCpClien.h"
-#include "NTCpClien.h"
+#include "TCpClienN.h"
+#include "Util.h"
+#include "LogManager.h"
+
+#include "ServerTimer.h"
+
+#include "BaseCfgMgr.h"	
+#include "ConfigMgr.h"	
+#include "LuaMgr.h"	
 
 #endif //PCH_H

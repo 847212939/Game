@@ -1,15 +1,35 @@
 #pragma once
 
-class TCPClient
+class PlayerPrepClient;
+class TCPClient : public CTCPSocketManage
 {
-private:
+public:
 	TCPClient();
 	virtual ~TCPClient();
 
-public:
-	static TCPClient* Instance();
+protected:
+	TCPClient(const TCPClient& my);
+	TCPClient& operator=(const TCPClient& my);
 
 public:
-	int Add(int n1, int n2);
-	int Sub(int n1, int n2);
+	bool Init(ServiceType serverType);
+	void NotifyAll();
+
+public:
+	PlayerPrepClient* GetPlayerPrepClient();
+
+private:
+	void TimerCallback(void* pDataLineHead);
+	void SocketCallback(void* pDataLineHead);
+	void CloseSocketCallback(void* pDataLineHead);
+	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
+	void AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun);
+
+private:
+	void HandlerRecvDataListThread();
+	void HandleRecvData(ListItemData* pListItem);
+
+private:
+	TypeFunMap			m_TypeFunMap;
+	PlayerPrepClient* m_PlayerPrepClient;
 };

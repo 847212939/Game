@@ -12,16 +12,61 @@
     <Filter Include="网络架构">
       <UniqueIdentifier>{2fcc18a0-2643-4aab-9c8f-f36d9d71377e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="工具接口">
+      <UniqueIdentifier>{c50d57d3-d981-4040-ab91-307c2407e17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理">
+      <UniqueIdentifier>{ba3d8e81-4407-4289-a788-eba959631920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理\配置管理">
+      <UniqueIdentifier>{0c422153-79fb-46fa-8c7c-99f0a97f379e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="NTCpClien.h">
+    <ClInclude Include="TCpClienN.h">
       <Filter>网络架构</Filter>
     </ClInclude>
     <ClInclude Include="TCpClien.h">
       <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Structural.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageCmd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLine.h">
+      <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionVariable.h">
+      <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
+      <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerTimer.h">
+      <Filter>网络架构</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>工具接口</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCfgMgr.h">
+      <Filter>配置管理\配置管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -31,11 +76,35 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="NTCpClien.cpp">
+    <ClCompile Include="TCpClienN.cpp">
       <Filter>网络架构</Filter>
     </ClCompile>
     <ClCompile Include="TCpClien.cpp">
       <Filter>网络架构</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>网络架构</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLine.cpp">
+      <Filter>网络架构</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>网络架构</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerTimer.cpp">
+      <Filter>网络架构</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>工具接口</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
