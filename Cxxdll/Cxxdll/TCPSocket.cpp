@@ -6,7 +6,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
 	m_iServiceType(ServiceType::SERVICE_TYPE_END),
-	m_ConnectServerBase(nullptr)
+	m_ConnectServerBase(nullptr),
+	m_socket(INVALID_SOCKET)
 {
 	WSADATA wsa;
 	SYSTEM_INFO si;
@@ -60,30 +61,48 @@ bool CTCPSocketManage::Start(bool& run)
 		COUT_LOG(LOG_CERROR, "service tcp already have been running");
 		return false;
 	}
+	m_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if (m_socket < 0)
+	{
+		std::cout << "socket is err" << std::endl;
+		return false;
+	}
+
+	const CLogicCfg& logicCfg = CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
+
+	sockaddr_in sin;
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(logicCfg.port);
+	sin.sin_addr.S_un.S_addr = inet_addr(logicCfg.ip.c_str());
+	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
+	{
+		std::cout << "connect is err" << std::endl;
+		return false;
+	}
 
 	m_running = run;
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this, std::ref(run)));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(run)));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(run), std::ref(m_socket)));
 
 	return true;
 }
 
-bool CTCPSocketManage::ConnectServer()
+bool CTCPSocketManage::ConnectServer(SOCKET& fd)
 {
 	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
 
 	if (!m_ConnectServerBase)
 	{
-		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
+		std::cout << "TCP Could not initialize libevent!" << std::endl;
 		return false;
 	}
-	struct bufferevent* bev = bufferevent_socket_new(m_ConnectServerBase, -1, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
+	struct bufferevent* bev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
-		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!");
+		std::cout << "Error constructing bufferevent!" << std::endl;
 		return false;
 	}
 
@@ -92,9 +111,9 @@ bool CTCPSocketManage::ConnectServer()
 
 	// 添加事件，并设置好回调函数
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)this);
-	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
+	if (bufferevent_enable(bev, EV_READ | EV_WRITE) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "add event fail!!!");
+		std::cout << "add event fail!!!" << std::endl;
 		bufferevent_free(bev);
 		return false;
 	}
@@ -107,23 +126,7 @@ bool CTCPSocketManage::ConnectServer()
 		tvRead.tv_usec = 0;
 		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
-
-	const CLogicCfg& logicCfg = CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
-
-	//struct sockaddr_in6 sin6; ipv6
-	struct sockaddr_in sin;
-	memset(&sin, 0, sizeof(sin));
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(logicCfg.port);
-	evutil_inet_pton(sin.sin_family, logicCfg.ip.c_str(), (void*)&sin.sin_addr);
-
-	if (0 != bufferevent_socket_connect(bev, (struct sockaddr*)&sin, sizeof(sin)))
-	{
-		COUT_LOG(LOG_CERROR, "Could not bufferevent_socket_connect!");
-		bufferevent_free(bev);
-		return false;
-	}
-
+	
 	// 保存信息
 	m_socketInfo.bev = bev;
 	m_socketInfo.isConnect = true;
@@ -132,32 +135,19 @@ bool CTCPSocketManage::ConnectServer()
 		m_socketInfo.lock = new std::mutex;
 	}
 
-	m_ConditionVariable.GetMutex().lock();	//加锁
-	if (m_socketInfo.isConnect)
-	{
-		m_ConditionVariable.GetMutex().unlock(); //解锁
-		COUT_LOG(LOG_CERROR, "分配索引失败");
-		bufferevent_free(bev);
-		return false;
-	}
-	m_ConditionVariable.GetMutex().unlock(); //解锁
-
+	std::cout << "Socket connection succeeded" << std::endl;
 	return true;
 }
 
-void CTCPSocketManage::ConnectServerThread(bool& run)
+void CTCPSocketManage::ConnectServerThread(bool& run, SOCKET& fd)
 {
-	
-	if (!ConnectServer())
+	if (!ConnectServer(std::ref(m_socket)))
 	{
 		run = false;
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "初始化完成");
-
 	event_base_dispatch(m_ConnectServerBase);
-
 	event_base_free(m_ConnectServerBase);
 }
 
@@ -347,7 +337,7 @@ void CTCPSocketManage::SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize
 {
 	if (bufferevent_get_max_single_read(bev) < rcvBufSize && bufferevent_set_max_single_read(bev, rcvBufSize) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "bufferevent_set_max_single_read fail,bev=%p", bev);
+		std::cout << "bufferevent_set_max_single_read fail" << std::endl;
 	}
 
 	/*if (bufferevent_set_max_single_write(bev, sndBufSize) < 0)
