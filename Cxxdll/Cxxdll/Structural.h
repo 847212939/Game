@@ -155,13 +155,8 @@ struct WorkThreadInfo
 struct TCPSocketInfo
 {
 	bool			isConnect;
-	time_t			acceptMsgTime;
-	char			ip[MAX_NUM_IP_ADDR_SIZE];
-	unsigned short	port;
-	SOCKET			acceptFd;													//自己的socket
 	bufferevent*	bev;
 	std::mutex*		lock;
-	bool			bHandleAccptMsg;											//是否处理了握手消息，websocket使用
 
 	TCPSocketInfo() { memset(this, 0, sizeof(TCPSocketInfo)); }
 };
@@ -193,10 +188,7 @@ struct SocketReadLine
 	DataLineHead						LineHead;								//队列头
 	NetMessageHead						netMessageHead;							//数据包头
 	unsigned int						uHandleSize;							//数据包处理大小
-	unsigned int						uIndex;									//SOCKET 索引
-	unsigned long int					uAccessIP;								//SOCKET IP
 	void*								pBufferevent;							//bufferevent
-	SocketType							socketType;								//socket类型 enum SocketType
 
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
@@ -243,12 +235,11 @@ struct ServerTimerInfo
 // 玩家信息
 struct PlayerInfo
 {
-	SocketReadLine*			pMsg;					// SOCKET读取通知结构定义
+	SocketReadLine*			pMsg;				// SOCKET读取通知结构定义
 	void*					pData;				// 玩家发送过来的数据
-	ServiceType				uSrverType;			// 服务器类型
 	uint64_t				userId;				// 玩家id
 
-	PlayerInfo() : pMsg(nullptr), pData(nullptr), uSrverType(ServiceType::SERVICE_TYPE_LOGIC), userId(0) {}
+	PlayerInfo() : pMsg(nullptr), pData(nullptr), userId(0) {}
 	~PlayerInfo() {}
 };
 

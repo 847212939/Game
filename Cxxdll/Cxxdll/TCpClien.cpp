@@ -10,10 +10,6 @@ bool TCPClient::Init(ServiceType serverType)
 	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
-	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str()))
-	{
-		return false;
-	}
 	if (!Start(serverType))
 	{
 		return false;
@@ -141,19 +137,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
 	void* pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
 
-	unsigned int index = pMsg->uIndex;
 	unsigned int size = pMsg->uHandleSize;
-	const std::vector<TCPSocketInfo>& socketInfoVec = GetSocketVector();
 
-	if (index >= 0 && index < socketInfoVec.size())
-	{
-		PlayerInfo Info;
-		Info.pMsg = pMsg;
-		Info.pData = pData;
-		Info.uSrverType = GetServerType();
-	}
-	else
-	{
-		COUT_LOG(LOG_CERROR, "Failed to process data£¬index=%d Out of range", index);
-	}
+	
 }
