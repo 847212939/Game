@@ -21,6 +21,9 @@
     <Filter Include="配置管理\配置管理">
       <UniqueIdentifier>{0c422153-79fb-46fa-8c7c-99f0a97f379e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="配置管理\配置脚本">
+      <UniqueIdentifier>{36cbde31-4857-4ae8-b7e4-e84253d4f248}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TCpClienN.h">
@@ -106,5 +109,16 @@
     <ClCompile Include="BaseCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
+    <ClCompile Include="LuaCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config.pkg">
+      <Filter>配置管理\配置脚本</Filter>
+    </None>
+    <None Include="LoadScript.lua">
+      <Filter>配置管理\配置脚本</Filter>
+    </None>
   </ItemGroup>
 </Project>

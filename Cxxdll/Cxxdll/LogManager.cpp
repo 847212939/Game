@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "pch.h"
 
 void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, const char* pFuncName, const char* pBuf, ...)

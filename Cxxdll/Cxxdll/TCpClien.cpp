@@ -1,10 +1,8 @@
 #include "pch.h"
 
-TCPClient::TCPClient() : m_PlayerPrepClient(new PlayerPrepClient)
+TCPClient::TCPClient()
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
-	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
-	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 
 bool TCPClient::Init(ServiceType serverType)
@@ -20,8 +18,6 @@ bool TCPClient::Init(ServiceType serverType)
 	{
 		return false;
 	}
-
-	m_PlayerPrepClient->Init();
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -42,10 +38,6 @@ TCPClient::~TCPClient()
 		}
 
 		threadVec.erase(it);
-	}
-	if (m_PlayerPrepClient)
-	{
-		SafeDelete(m_PlayerPrepClient);
 	}
 }
 
@@ -95,11 +87,6 @@ void TCPClient::HandlerRecvDataListThread()
 	return;
 }
 
-PlayerPrepClient* TCPClient::GetPlayerPrepClient()
-{
-	return m_PlayerPrepClient;
-}
-
 void TCPClient::NotifyAll()
 {
 	GetConditionVariable().NotifyAll();
@@ -116,23 +103,11 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "SendDataLine = null");
 		return;
 	}
-	CServerTimer* pCServerTimer = DPPC->GetCServerTimer();
-	if (!pCServerTimer)
-	{
-		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
-		return;
-	}
+	
 	int timerCnt = BaseCfgMgr.GetTimerCnt();
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	DPPC->GetConditionVariable().NotifyAll();
-	DPCC->GetConditionVariable().NotifyAll();
-
-	for (int i = 0; i < timerCnt; i++)
-	{
-		pCServerTimer[i].SetTimerRun(false);
-	}
 }
 
 void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
@@ -160,19 +135,6 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 	return true;
 }
 
-void TCPClient::TimerCallback(void* pDataLineHead)
-{
-	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
-	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
-	{
-		m_PlayerPrepClient->CallBackFun((TimerCmd)WindowTimer->uTimerID);
-	}
-	else
-	{
-		COUT_LOG(LOG_CERROR, "Timer message error");
-	}
-}
-
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
 	//处理数据
@@ -189,26 +151,9 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		Info.pMsg = pMsg;
 		Info.pData = pData;
 		Info.uSrverType = GetServerType();
-		m_PlayerPrepClient->MessageDispatch(&Info);
 	}
 	else
 	{
 		COUT_LOG(LOG_CERROR, "Failed to process data，index=%d Out of range", index);
 	}
-}
-
-void TCPClient::CloseSocketCallback(void* pDataLineHead)
-{
-	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
-
-	PlayerClient* playerClient = DPCC->GetPlayerClientByIndex(pSocketClose->uIndex);
-	if (!playerClient)
-	{
-		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
-		return;
-	}
-
-	playerClient->ExitGame(pSocketClose);
-
-	SafeDelete(playerClient);
 }

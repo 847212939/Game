@@ -1,5 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include "pch.h"
+﻿#include "pch.h"
 
 // 方法类
 std::mt19937		Util::m_mt(m_rd());

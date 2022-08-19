@@ -167,6 +167,7 @@
     <ClCompile Include="DataLine.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="LogManager.cpp" />
+    <ClCompile Include="LuaCfgMgr.cpp" />
     <ClCompile Include="LuaMgr.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -179,6 +180,10 @@
     <ClCompile Include="TCpClienN.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config.pkg" />
+    <None Include="LoadScript.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
