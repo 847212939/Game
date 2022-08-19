@@ -1,5 +1,39 @@
 ﻿#include "pch.h"
 
+void Util::InitCxxnet()
+{
+	bool run = true;
+	ServiceType type = ServiceType::SERVICE_TYPE_GAMECENTER;
+
+	LogMgr->SetLogFileType(type);
+
+	if (!LuaMgr->InitCfgMgr())
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return;
+	}
+	if (!DUtil->InitTime())
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return;
+	}
+	IDGen& idGen = DUtil->GetIDGen();
+	idGen.Init((int)type, BaseCfgMgr.GetServerId());
+
+	if (!DTCPC->Init(type))
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return;
+	}
+
+	LogMgr->Init(std::ref(run));
+
+	Util::Exit(std::ref(run));
+
+	return;
+}
+
+
 // 方法类
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;

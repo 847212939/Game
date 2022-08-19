@@ -6,6 +6,9 @@ class Util
 public:
 	static Util* Instance();
 
+public:
+	static void InitCxxnet();
+
 private:
 	Util();
 	virtual~Util();

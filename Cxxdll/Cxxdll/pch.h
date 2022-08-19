@@ -55,7 +55,6 @@ extern "C"
 
 #include "TCPSocket.h"
 #include "TCpClien.h"
-#include "TCpClienN.h"
 #include "Util.h"
 #include "LogManager.h"
 
@@ -64,5 +63,6 @@ extern "C"
 #include "BaseCfgMgr.h"	
 #include "ConfigMgr.h"	
 #include "LuaMgr.h"	
+#include "MainNameSpace.h"
 
 #endif //PCH_H

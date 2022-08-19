@@ -1,4 +1,4 @@
-package.path = ";;../Data/Config/?.lua"
+package.path = ";;../../../../../Cxxdll/Cxxdll/?.lua"
 ConfigMgrFnTable = {}
 ConfigMgr = ConfigMgr:new()
 

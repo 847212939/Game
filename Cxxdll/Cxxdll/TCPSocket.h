@@ -76,10 +76,10 @@ private:
 	unsigned int                m_uMaxSocketSize;
 	unsigned int                m_uCurSocketSize;
 	unsigned int                m_uCurSocketIndex;
-	CDataLine* m_pRecvDataLine;
-	CDataLine* m_pSendDataLine;
-	event_config* m_eventBaseCfg;
-	event_base* m_listenerBase;
+	CDataLine*					m_pRecvDataLine;
+	CDataLine*					m_pSendDataLine;
+	event_config*				m_eventBaseCfg;
+	event_base*					m_listenerBase;
 	SocketType                  m_socketType;
 	ServiceType                 m_iServiceType;
 	ConditionVariable           m_ConditionVariable;

@@ -50,7 +50,7 @@ bool CLuaMgr::InitCfgMgr()
 
     luaL_openlibs(m_pLua);
     tolua_Config_open(m_pLua);
-    luaL_dofile(m_pLua, "../Lua/LoadScript.lua");
+    luaL_dofile(m_pLua, "../../../../../Cxxdll/Cxxdll/LoadScript.lua");
 
     lua_getglobal(m_pLua, "LoadConfig");
     int iRet = lua_pcall(m_pLua, 0, 1, 0);

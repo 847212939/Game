@@ -157,7 +157,7 @@
     <ClInclude Include="ServerTimer.h" />
     <ClInclude Include="Structural.h" />
     <ClInclude Include="TCpClien.h" />
-    <ClInclude Include="TCpClienN.h" />
+    <ClInclude Include="MainNameSpace.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
@@ -177,11 +177,12 @@
     </ClCompile>
     <ClCompile Include="ServerTimer.cpp" />
     <ClCompile Include="TCpClien.cpp" />
-    <ClCompile Include="TCpClienN.cpp" />
+    <ClCompile Include="MainNameSpace.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BaseCfg.lua" />
     <None Include="Config.pkg" />
     <None Include="LoadScript.lua" />
   </ItemGroup>
