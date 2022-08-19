@@ -10,9 +10,14 @@ namespace MainNameSpace
         g_callbackfunc = pfCallBackEvent;
     }
 
-    void __stdcall InitCxxnet()
+    void InitCxxnet()
     {
         Util::InitCxxnet(g_callbackfunc);
     }
 
+    void SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
+    {
+        TCPClient* pTcpClient = g_pUtil->GetTCPClient();
+        pTcpClient->SendData((const char*)pData, (size_t)size, (MsgCmd)mainID, assistID, 0, pTcpClient->GetTCPSocketInfo().bev, (unsigned int)uIdentification);
+    }
 }

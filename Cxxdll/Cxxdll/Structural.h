@@ -159,7 +159,6 @@ struct PlatformSocketInfo
 struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;										//队列头
-	int						socketIndex;										//socket索引或者文件描述符
 	void*					pBufferevent;										//bufferevent	
 
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }

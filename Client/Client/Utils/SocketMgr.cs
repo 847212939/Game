@@ -26,6 +26,8 @@ namespace Client.Utils
         extern static void RegisterCallBack(CBEventHandle func);
         [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitCxxnet();
+        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
 
         private void CallBackFunc(REvent eve)
         {
@@ -43,6 +45,12 @@ namespace Client.Utils
             string str = cis.ReadString();
             Console.WriteLine(str.Length);
             Console.WriteLine(str);
+
+            Util cos = new Util();
+            cos.WriteString("888");
+            cos.WriteString("888");
+           
+            SendData(cos.Data, cos.Length, 7, 1, 3);
         }
 
         private CBEventHandle m_CallBackFunc;

@@ -15,7 +15,7 @@ public:
 	bool Start(bool& run);
 
 public:
-	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:

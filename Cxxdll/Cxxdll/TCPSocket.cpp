@@ -347,7 +347,7 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	((CTCPSocketManage*)data)->RemoveTCPSocketStatus(true);
 }
 
-bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
@@ -383,7 +383,6 @@ bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCm
 	{
 		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
 		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
-		pLineHead->socketIndex = index;
 		pLineHead->pBufferevent = pBufferevent;
 
 		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
@@ -430,7 +429,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	}
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
-	int index = pSocketSend->socketIndex;
 	void* pData = pListItem->pData + sizeof(SendDataLineHead);
 
 	if (!m_socketInfo.lock)
