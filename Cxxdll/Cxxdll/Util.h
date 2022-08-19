@@ -7,7 +7,7 @@ public:
 	static Util* Instance();
 
 public:
-	static void InitCxxnet();
+	static void InitCxxnet(pfCallBackEvent func);
 
 private:
 	Util();

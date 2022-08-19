@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-void Util::InitCxxnet()
+void Util::InitCxxnet(pfCallBackEvent func)
 {
 	bool run = true;
 	ServiceType type = ServiceType::SERVICE_TYPE_CLIENT;
@@ -18,7 +18,7 @@ void Util::InitCxxnet()
 	IDGen& idGen = DUtil->GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 
-	if (!DTCPC->Init(std::ref(run)))
+	if (!DTCPC->Init(std::ref(run), func))
 	{
 		std::cout << "main exit" << std::endl;
 		return;

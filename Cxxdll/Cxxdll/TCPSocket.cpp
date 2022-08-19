@@ -239,10 +239,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	{
 		return true;
 	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //²âÊÔÁ¬½Ó°ü
-	{
-		return true;
-	}
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{

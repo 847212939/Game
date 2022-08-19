@@ -11,7 +11,7 @@ protected:
 	TCPClient& operator=(const TCPClient& my);
 
 public:
-	bool Init(bool& run);
+	bool Init(bool& run, pfCallBackEvent func);
 	void NotifyAll();
 
 private:
@@ -25,4 +25,5 @@ private:
 
 private:
 	TypeFunMap			m_TypeFunMap;
+	pfCallBackEvent		m_CallBackFunc;
 };

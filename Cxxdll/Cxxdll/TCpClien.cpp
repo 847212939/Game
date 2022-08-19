@@ -1,12 +1,14 @@
 #include "pch.h"
 
-TCPClient::TCPClient() : CTCPSocketManage()
+TCPClient::TCPClient() : 
+	CTCPSocketManage()
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 }
 
-bool TCPClient::Init(bool& run)
+bool TCPClient::Init(bool& run, pfCallBackEvent func)
 {
+	m_CallBackFunc = func;
 	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
@@ -17,7 +19,6 @@ bool TCPClient::Init(bool& run)
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
-	std::cout << "Server initialization succeeded" << std::endl;
 	return true;
 }
 
@@ -133,11 +134,19 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
+	REvent eve;
 	//处理数据
 	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
-	void* pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
+	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
 
-	unsigned int size = pMsg->uHandleSize;
+	Cos os;
+	os	<< pMsg->netMessageHead.uMainID 
+		<< pMsg->netMessageHead.uAssistantID
+		<< pMsg->netMessageHead.uIdentification 
+		<< pMsg->uHandleSize 
+		<< pData.c_str();
 
-	
+	memcpy(eve.m_Source, os.str().c_str(), os.str().size());
+
+	m_CallBackFunc(eve);
 }

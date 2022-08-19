@@ -17,5 +17,5 @@ enum class MsgCmd
 	MsgCmd_Hurt							= 10,	// 伤害系统
 	MsgCmd_Skill						= 11,	// 技能系统
 
-	MsgCmd_End                               // 消息结束                      
+	MsgCmd_End									// 消息结束                      
 };

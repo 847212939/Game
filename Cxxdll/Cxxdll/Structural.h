@@ -86,6 +86,13 @@ struct CActivityList;
 class CTCPSocketManage;
 enum class HurtSysMsgCmd;
 
+struct REvent
+{
+	char m_Source[1024];
+
+	REvent() { memset(this, 0, sizeof(REvent)); }
+};
+
 #pragma pack(1)
 
 //数据队列信息头
@@ -214,9 +221,8 @@ struct PlayerInfo
 {
 	SocketReadLine*			pMsg;				// SOCKET读取通知结构定义
 	void*					pData;				// 玩家发送过来的数据
-	uint64_t				userId;				// 玩家id
 
-	PlayerInfo() : pMsg(nullptr), pData(nullptr), userId(0) {}
+	PlayerInfo() : pMsg(nullptr), pData(nullptr) {}
 	~PlayerInfo() {}
 };
 
@@ -348,3 +354,5 @@ using MonsterMap			= std::map<int, MonsterKVMap>;
 using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
+
+typedef void (*pfCallBackEvent)(REvent eve/*, char m_Source[]*/);
