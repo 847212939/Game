@@ -9,7 +9,6 @@ namespace Client.Utils
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2048)]
         public string data;
-
     };
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
