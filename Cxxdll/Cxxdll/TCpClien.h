@@ -11,7 +11,7 @@ protected:
 	TCPClient& operator=(const TCPClient& my);
 
 public:
-	bool Init(ServiceType serverType);
+	bool Init(bool& run);
 	void NotifyAll();
 
 private:

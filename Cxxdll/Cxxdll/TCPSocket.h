@@ -12,20 +12,23 @@ protected:
 
 public:
 	bool Stop();
-	bool Start(ServiceType serverType);
+	bool Start(bool& run);
 
 public:
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
 	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:
+	bool& GetRuninged();
 	CDataLine* GetRecvDataLine();
 	CDataLine* GetSendDataLine();
 	ConditionVariable& GetConditionVariable();
 	std::vector<std::thread*>& GetSockeThreadVec();
 	TCPSocketInfo& GetTCPSocketInfo();
 
-	bool& GetRuninged();
+private:
+	bool ConnectServer();
+
 private:
 	static void SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize);
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
@@ -36,9 +39,8 @@ private:
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
-	// 线程入口
-	void ConnectServerThread();
-	void ThreadSendMsgThread();
+	void ConnectServerThread(bool& run);
+	void ThreadSendMsgThread(bool& run);
 	void HandleSendData(ListItemData* pListItem);
 
 private:

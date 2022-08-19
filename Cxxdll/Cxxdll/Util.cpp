@@ -20,7 +20,7 @@ void Util::InitCxxnet()
 	IDGen& idGen = DUtil->GetIDGen();
 	idGen.Init((int)type, BaseCfgMgr.GetServerId());
 
-	if (!DTCPC->Init(type))
+	if (!DTCPC->Init(std::ref(run)))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return;

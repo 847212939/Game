@@ -53,7 +53,7 @@ bool CTCPSocketManage::Stop()
 	return true;
 }
 
-bool CTCPSocketManage::Start(ServiceType serverType)
+bool CTCPSocketManage::Start(bool& run)
 {
 	if (m_running == true)
 	{
@@ -61,16 +61,16 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 		return false;
 	}
 
-	m_running = true;
-	m_iServiceType = serverType;
+	m_running = run;
+	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this, std::ref(run)));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(run)));
 
 	return true;
 }
 
-void CTCPSocketManage::ConnectServerThread()
+bool CTCPSocketManage::ConnectServer()
 {
 	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
@@ -78,16 +78,13 @@ void CTCPSocketManage::ConnectServerThread()
 	if (!m_ConnectServerBase)
 	{
 		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
-		return;
+		return false;
 	}
-
-	struct bufferevent* bev = nullptr;
-
-	bev = bufferevent_socket_new(m_ConnectServerBase, -1, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
+	struct bufferevent* bev = bufferevent_socket_new(m_ConnectServerBase, -1, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
 		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!");
-		return;
+		return false;
 	}
 
 	// 设置应用层收发数据包，单次大小
@@ -99,7 +96,7 @@ void CTCPSocketManage::ConnectServerThread()
 	{
 		COUT_LOG(LOG_CERROR, "add event fail!!!");
 		bufferevent_free(bev);
-		return;
+		return false;
 	}
 
 	// 设置读超时，当做心跳。网关服务器才需要
@@ -124,7 +121,7 @@ void CTCPSocketManage::ConnectServerThread()
 	{
 		COUT_LOG(LOG_CERROR, "Could not bufferevent_socket_connect!");
 		bufferevent_free(bev);
-		return;
+		return false;
 	}
 
 	// 保存信息
@@ -141,9 +138,21 @@ void CTCPSocketManage::ConnectServerThread()
 		m_ConditionVariable.GetMutex().unlock(); //解锁
 		COUT_LOG(LOG_CERROR, "分配索引失败");
 		bufferevent_free(bev);
-		return;
+		return false;
 	}
 	m_ConditionVariable.GetMutex().unlock(); //解锁
+
+	return true;
+}
+
+void CTCPSocketManage::ConnectServerThread(bool& run)
+{
+	
+	if (!ConnectServer())
+	{
+		run = false;
+		return;
+	}
 
 	COUT_LOG(LOG_CINFO, "初始化完成");
 
@@ -154,10 +163,7 @@ void CTCPSocketManage::ConnectServerThread()
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 {
-	CTCPSocketManage* pThis = (CTCPSocketManage*)data;
-
-	// 处理数据，包头解析
-	pThis->RecvData(bev);
+	((CTCPSocketManage*)data)->RecvData(bev);
 }
 
 bool CTCPSocketManage::RecvData(bufferevent* bev)
@@ -247,7 +253,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	{
 		return true;
 	}
-
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
@@ -255,7 +260,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	}
 
 	SocketReadLine msg;
-
 	msg.uHandleSize = size;
 	msg.pBufferevent = pBufferevent;
 	msg.netMessageHead = *pHead;
@@ -264,9 +268,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
 	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
 
-	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
-
-	if (addBytes == 0)
+	if (pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ) == 0)
 	{
 		return false;
 	}
@@ -299,19 +301,14 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 {
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
-
-	// 重复调用
 	if (!m_socketInfo.isConnect)
 	{
 		return;
 	}
-
-	// 如果锁没有分配内存，就分配
 	if (!m_socketInfo.lock)
 	{
 		m_socketInfo.lock = new std::mutex;
 	}
-
 	// 和发送线程相关的锁
 	m_socketInfo.lock->lock();
 
@@ -469,7 +466,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	SafeDelete(pListItem);
 }
 
-void CTCPSocketManage::ThreadSendMsgThread()
+void CTCPSocketManage::ThreadSendMsgThread(bool& run)
 {
 	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetSendDataLine();

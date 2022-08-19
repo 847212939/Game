@@ -5,12 +5,12 @@ TCPClient::TCPClient() : CTCPSocketManage()
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 }
 
-bool TCPClient::Init(ServiceType serverType)
+bool TCPClient::Init(bool& run)
 {
 	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
-	if (!Start(serverType))
+	if (!Start(std::ref(run)))
 	{
 		return false;
 	}
