@@ -623,19 +623,9 @@ bool& CTCPSocketManage::GetRuninged()
 	return m_running;
 }
 
-ServiceType CTCPSocketManage::GetServerType()
-{
-	return m_iServiceType;
-}
-
 ConditionVariable& CTCPSocketManage::GetConditionVariable()
 {
 	return m_ConditionVariable;
-}
-
-event_base* CTCPSocketManage::GetEventBase()
-{
-	return m_listenerBase;
 }
 
 void CTCPSocketManage::HandleSendData(ListItemData* pListItem)

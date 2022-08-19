@@ -21,8 +21,6 @@ public:
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 
 public:
-	event_base* GetEventBase();
-	ServiceType GetServerType();
 	CDataLine* GetRecvDataLine();
 	CDataLine* GetSendDataLine();
 	ConditionVariable& GetConditionVariable();
@@ -45,8 +43,6 @@ private:
 private:
 	int GetSocketIndex();
 	bool RecvData(bufferevent* bev, int index);
-	bool SendData(bufferevent* bev, int index);
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
@@ -57,13 +53,8 @@ private:
 	void HandleSendData(ListItemData* pListItem);
 
 private:
-	// 静态回调方法
-	static void WriteCB(struct bufferevent*, void*);
 	static void ReadCB(struct bufferevent*, void*);
 	static void EventCB(struct bufferevent*, short, void*);
-	static void AcceptErrorCB(struct evconnlistener* listener, void*);
-	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
-	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
 	unsigned short              m_port;
