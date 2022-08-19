@@ -258,15 +258,6 @@ struct LoginData
 	~LoginData() {}
 };
 
-//接收线程参数
-struct RecvThreadParam
-{
-	CTCPSocketManage*		pThis;
-	int						index;
-
-	RecvThreadParam() :pThis(nullptr), index(0) {}
-};
-
 struct Position
 {
 	int x;

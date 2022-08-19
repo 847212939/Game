@@ -4,7 +4,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_running(false),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new())
+	m_eventBaseCfg(event_config_new()),
+	m_iServiceType(ServiceType::SERVICE_TYPE_END),
+	m_ConnectServerBase(nullptr)
 {
 	WSADATA wsa;
 	SYSTEM_INFO si;
@@ -91,18 +93,12 @@ void CTCPSocketManage::ConnectServerThread()
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
-	// 生成回调函数参数，调用bufferevent_free要释放内存，否则内存泄露
-	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
-	pRecvThreadParam->pThis = this;
-	pRecvThreadParam->index = 1;
-
 	// 添加事件，并设置好回调函数
-	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
+	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)this);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
 		COUT_LOG(LOG_CERROR, "add event fail!!!");
 		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
 		return;
 	}
 
@@ -128,7 +124,6 @@ void CTCPSocketManage::ConnectServerThread()
 	{
 		COUT_LOG(LOG_CERROR, "Could not bufferevent_socket_connect!");
 		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
 		return;
 	}
 
@@ -146,7 +141,6 @@ void CTCPSocketManage::ConnectServerThread()
 		m_ConditionVariable.GetMutex().unlock(); //解锁
 		COUT_LOG(LOG_CERROR, "分配索引失败");
 		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
 		return;
 	}
 	m_ConditionVariable.GetMutex().unlock(); //解锁
@@ -160,15 +154,13 @@ void CTCPSocketManage::ConnectServerThread()
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 {
-	RecvThreadParam* param = (RecvThreadParam*)data;
-	CTCPSocketManage* pThis = param->pThis;
-	int index = param->index;
+	CTCPSocketManage* pThis = (CTCPSocketManage*)data;
 
 	// 处理数据，包头解析
-	pThis->RecvData(bev, index);
+	pThis->RecvData(bev);
 }
 
-bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
+bool CTCPSocketManage::RecvData(bufferevent* bev)
 {
 	if (bev == nullptr)
 	{
@@ -198,8 +190,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
 		// 消息格式不正确
-		CloseSocket(index);
-		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
+		COUT_LOG(LOG_CERROR, "消息格式不正确");
 		return false;
 	}
 
@@ -210,7 +201,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
 			// 消息格式不正确
-			CloseSocket(index);
 			COUT_LOG(LOG_CERROR, "消息格式不正确");
 			return false;
 		}
@@ -219,7 +209,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		if (realSize < 0)
 		{
 			// 数据包不够包头
-			CloseSocket(index);
 			COUT_LOG(LOG_CERROR, "数据包不够包头");
 			return false;
 		}
@@ -232,7 +221,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		}
 
 		// 派发数据
-		DispatchPacket(bev, index, pNetHead, pData, realSize);
+		DispatchPacket(bev, pNetHead, pData, realSize);
 
 		handleRemainSize -= messageSize;
 
@@ -244,7 +233,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	return true;
 }
 
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size)
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead, void* pData, int size)
 {
 	if (!pBufferevent || !pHead)
 	{
@@ -296,13 +285,6 @@ bool CTCPSocketManage::OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uCo
 	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 
-bool CTCPSocketManage::CloseSocket(int index)
-{
-	RemoveTCPSocketStatus(index);
-
-	return true;
-}
-
 CDataLine* CTCPSocketManage::GetRecvDataLine()
 {
 	return m_pRecvDataLine;
@@ -313,7 +295,7 @@ CDataLine* CTCPSocketManage::GetSendDataLine()
 	return m_pSendDataLine;
 }
 
-void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/* = false*/)
+void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 {
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
@@ -329,20 +311,6 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	{
 		m_socketInfo.lock = new std::mutex;
 	}
-
-	// 释放参数内存
-	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
-	bufferevent_getcb(m_socketInfo.bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
-	if (pRecvThreadParam)
-	{
-		SafeDelete(pRecvThreadParam);
-	}
-
-	//// 服务器主动发起FIN包
-	//if (!isClientAutoClose)
-	//{
-	//	closesocket(tcpInfo.acceptFd);
-	//}
 
 	// 和发送线程相关的锁
 	m_socketInfo.lock->lock();
@@ -393,11 +361,7 @@ void CTCPSocketManage::SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize
 
 void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 {
-	RecvThreadParam* param = (RecvThreadParam*)data;
-	CTCPSocketManage* pThis = param->pThis;
-	int index = param->index;
-
-	pThis->RemoveTCPSocketStatus(index, true);
+	((CTCPSocketManage*)data)->RemoveTCPSocketStatus(true);
 }
 
 bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)

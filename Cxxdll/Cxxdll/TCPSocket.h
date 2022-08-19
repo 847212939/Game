@@ -15,9 +15,8 @@ public:
 	bool Start(ServiceType serverType);
 
 public:
-	bool CloseSocket(int index);
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
-	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
+	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:
 	CDataLine* GetRecvDataLine();
@@ -32,8 +31,8 @@ private:
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
-	bool RecvData(bufferevent* bev, int index);
-	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
+	bool RecvData(bufferevent* bev);
+	bool DispatchPacket(void* pBufferevent, NetMessageHead* pHead, void* pData, int size);
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
