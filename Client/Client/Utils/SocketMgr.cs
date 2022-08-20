@@ -26,6 +26,8 @@ namespace Client.Utils
         public extern static void InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
         [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
+        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void SetIpAndPort(string ip, int port);
 
         public SocketMgr()
         {
@@ -36,6 +38,7 @@ namespace Client.Utils
         
         public void Init()
         {
+            SetIpAndPort("127.0.0.1", 8888);
             InitCxxnet(m_CallBackFunc, m_CBTimerHandle);
             RegisterTimers(1, 300);
         }

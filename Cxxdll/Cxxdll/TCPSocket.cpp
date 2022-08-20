@@ -56,6 +56,20 @@ bool CTCPSocketManage::Stop()
 	return true;
 }
 
+
+bool CTCPSocketManage::SetIpAndPort(char* ip, int port)
+{
+	m_port = port;
+
+	if (ip && strlen(ip) < sizeof(m_ip))
+	{
+		strcpy(m_ip, ip);
+	}
+
+	return true;
+}
+
+
 bool CTCPSocketManage::Start()
 {
 	if (m_running == true)

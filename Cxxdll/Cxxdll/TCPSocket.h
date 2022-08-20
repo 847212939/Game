@@ -13,6 +13,7 @@ protected:
 public:
 	bool Stop();
 	bool Start();
+	bool SetIpAndPort(char* ip, int port);
 
 public:
 	bool SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);

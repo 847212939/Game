@@ -20,7 +20,7 @@
 
         public void MessageDispatch(NetWorkMsg msg)
         {
-            if(m_NetworkDictionary.ContainsKey(msg.uMainID))
+            if (m_NetworkDictionary.ContainsKey(msg.uMainID))
             {
                 m_NetworkDictionary[msg.uMainID](msg);
             }
