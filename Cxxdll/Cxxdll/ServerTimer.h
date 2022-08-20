@@ -13,7 +13,7 @@ protected:
 public:
 	bool Start(int timeonce = 100);
 	bool Stop();
-	bool SetTimer(unsigned int uTimerID, unsigned int uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST); //uElapse是毫秒单位，大于100ms
+	bool SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType = SERVERTIMER_TYPE_PERISIST); //uElapse是毫秒单位，大于100ms
 	bool KillTimer(unsigned int uTimerID);
 	bool ExistsTimer(unsigned int uTimerID);
 

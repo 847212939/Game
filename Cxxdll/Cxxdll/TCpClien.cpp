@@ -154,7 +154,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 
 
 //设定定时器
-bool TCPClient::SetTimer(int uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+bool TCPClient::SetTimer(int uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
 	{

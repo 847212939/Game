@@ -106,8 +106,8 @@ struct DataLineHead
 //定时器消息结构定义
 struct ServerTimerLine
 {
-	UINT uMainID;																//定时器 ID
-	UINT uTimerID;																//定时器 ID
+	unsigned int uMainID;																//定时器 ID
+	unsigned int uTimerID;																//定时器 ID
 	ServerTimerLine() { memset(this, 0, sizeof(ServerTimerLine)); }
 };
 
@@ -178,11 +178,11 @@ struct SocketReadLine
 //SOCKET关闭通知结构定义
 struct SocketCloseLine
 {
-	DataLineHead						LineHead;								//队列头
-	UINT								uIndex;									//SOCKT 索引
-	ULONG								uAccessIP;								//SOCKET IP
-	UINT								uConnectTime;							//连接时间
-	BYTE								socketType;								//socket类型 enum SocketType
+	DataLineHead								LineHead;								//队列头
+	unsigned int								uIndex;									//SOCKT 索引
+	unsigned long								uAccessIP;								//SOCKET IP
+	unsigned int								uConnectTime;							//连接时间
+	unsigned char								socketType;								//socket类型 enum SocketType
 
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };
@@ -209,120 +209,9 @@ struct ServerTimerInfo
 {
 	unsigned int	elapse;														// 定时器间隔（单位毫秒）
 	long long		starttime;													// 起始时间（单位毫秒）
-	BYTE			timertype;													// 定时器类型 SERVERTIMER_TYPE
+	unsigned char	timertype;													// 定时器类型 SERVERTIMER_TYPE
 
 	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
-};
-
-// 玩家信息
-struct PlayerInfo
-{
-	SocketReadLine*			pMsg;				// SOCKET读取通知结构定义
-	void*					pData;				// 玩家发送过来的数据
-
-	PlayerInfo() : pMsg(nullptr), pData(nullptr) {}
-	~PlayerInfo() {}
-};
-
-struct LoginData
-{
-	unsigned int			index;
-	std::string				id;
-	std::string				pw;
-	std::string				roleName;	// 英雄名
-	std::string				netName;	// 游戏名
-	uint64_t				userId;
-	int						roleid;
-	int						roleType;
-
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0) {}
-	~LoginData() {}
-};
-
-struct Position
-{
-	int x;
-	int y;
-	int z;
-	Position() : x(0), y(0), z(0) {}
-	~Position() {}
-};
-
-struct Rotation
-{
-	int x;
-	int y;
-	int z;
-	Rotation() : x(0), y(0), z(0) {}
-	~Rotation() {}
-};
-
-struct Scale
-{
-	int x;
-	int y;
-	int z;
-	Scale() : x(0), y(0), z(0) {}
-	~Scale() {}
-};
-
-struct Transform
-{
-	Position	position;
-	Rotation	rotation;
-	Scale		scale;
-
-	Transform() {}
-	Transform(int x, int y)
-	{
-		position.x = x;
-		position.y = y;
-	}
-
-	~Transform() {}
-};
-
-struct RefMonsterKey
-{
-	int mid;
-	int x;
-	int y;
-	~RefMonsterKey(){}
-	RefMonsterKey() : mid(0), x(0), y(0) {}
-	RefMonsterKey(int mId, int X, int Y) : mid(mId), x(X), y(Y) {}
-	bool operator < (const RefMonsterKey& other) const
-	{
-		if (mid != other.mid) { return mid < other.mid; }
-		if (x != other.x) { return x < other.x; }
-		if (y != other.y) { return y < other.y; }
-		return false;
-	}
-};
-
-struct ActtiveOpen
-{
-	int id;
-	bool open;
-	ActtiveOpen() : id(0), open(false) {}
-	ActtiveOpen(int nId, bool isOpen) : id(nId), open(isOpen) {}
-	~ActtiveOpen() {}
-};
-
-struct SkillData
-{
-	bool cd;
-	int level;
-};
-
-struct SkillCDData
-{
-	HurtSysMsgCmd type;
-	int id;
-	int cnt;
-	Animal* animal;
-
-	SkillCDData(HurtSysMsgCmd cmd, int nid, int ncnt, Animal* ani) : type(cmd), id(nid), cnt(ncnt), animal(ani) {}
-	~SkillCDData() {}
 };
 
 typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
@@ -335,10 +224,9 @@ using CfgVector				= std::vector<T>;
 template<typename T>
 using CfgMap				= std::map<int, CfgVector<T>>;
 using IntVector				= std::vector<int>;
-using TimerList				= std::list<UINT>;
+using TimerList				= std::list<unsigned int>;
 using OnLinePlayerSet		= std::set<unsigned int>;
 using SqlList				= std::list<std::string>;
-using LoadPlayerList		= std::list<LoginData>;
 using PlayerClientVec		= std::vector<PlayerClient*>;
 using SqlKeyDataMap			= std::map<std::string, std::string>;
 using AttrsFunMap			= std::vector<std::function<void()>>;
@@ -349,10 +237,5 @@ using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
-using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
-using MonsterMap			= std::map<int, MonsterKVMap>;
-using SkillCDList			= std::list<SkillCDData>;
-using SkillDataMap 			= std::map<int, SkillData>;
-using LoginInMap			= std::map<UINT, LoginData>;
 using TimerFunMap			= std::map<int, TimerCallBackFunc>;
 

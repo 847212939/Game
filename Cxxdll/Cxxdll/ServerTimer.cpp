@@ -23,11 +23,9 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 		return false;
 	}
 
-	std::cout << "CServerTimer" << std::endl;
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	std::cout << "CServerTimer::Start" << std::endl;
 	DUtil->GetTCPClient()->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 
 	return true;
@@ -35,7 +33,6 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 
 void CServerTimer::ThreadCheckTimer()
 {
-	std::cout << "ThreadCheckTimer" << std::endl;
 	struct event timeout;
 	struct event_base* base;
 
@@ -128,7 +125,7 @@ bool CServerTimer::Stop()
 	return true;
 }
 
-bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, BYTE timerType /*= SERVERTIMER_TYPE_PERISIST*/)
+bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType /*= SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (uElapse < (unsigned int)m_timeOnce)
 	{
