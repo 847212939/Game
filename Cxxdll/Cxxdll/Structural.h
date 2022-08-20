@@ -339,7 +339,6 @@ using LoadPlayerList		= std::list<LoginData>;
 using PlayerClientVec		= std::vector<PlayerClient*>;
 using SqlKeyDataMap			= std::map<std::string, std::string>;
 using AttrsFunMap			= std::vector<std::function<void()>>;
-using NetFunMap				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;

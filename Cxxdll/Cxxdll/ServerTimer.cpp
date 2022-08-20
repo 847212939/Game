@@ -101,7 +101,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
 		{
 			ServerTimerLine WindowTimer;
-			WindowTimer.uMainID = (unsigned int)MsgCmd::MsgCmd_Timer;
+			WindowTimer.uMainID = 6;
 			WindowTimer.uTimerID = iter->first;
 			pCDataLine->AddData(&WindowTimer, sizeof(ServerTimerLine), SysMsgCmd::HD_TIMER_MESSAGE);
 

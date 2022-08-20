@@ -243,7 +243,7 @@ void TCPClient::DelTimerCallback(int cmd)
 void TCPClient::TimerCallback(void* pDataLineHead)
 {
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
-	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
+	if (WindowTimer->uMainID == 6)
 	{
 		CallBackFun((int)WindowTimer->uTimerID);
 	}

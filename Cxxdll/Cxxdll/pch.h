@@ -47,7 +47,6 @@ extern "C"
 #include "tolua++.h"
 
 #include "Macro.h"
-#include "MessageCmd.h"	
 #include "Structural.h"
 
 #include "ConditionVariable.h"

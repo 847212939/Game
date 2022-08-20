@@ -16,4 +16,8 @@
     <None Remove="x64\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Include\" />
+  </ItemGroup>
+
 </Project>

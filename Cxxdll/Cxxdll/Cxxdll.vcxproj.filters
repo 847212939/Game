@@ -47,9 +47,6 @@
     <ClInclude Include="Macro.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MessageCmd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DataLine.h">
       <Filter>网络架构</Filter>
     </ClInclude>

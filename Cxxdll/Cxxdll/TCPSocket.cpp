@@ -234,7 +234,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	{
 		return false;
 	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
+	if (pHead->uMainID == 1) //心跳包
 	{
 		return true;
 	}
@@ -346,7 +346,7 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	((CTCPSocketManage*)data)->RemoveTCPSocketStatus(true);
 }
 
-bool CTCPSocketManage::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
