@@ -5,50 +5,40 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="网络架构">
-      <UniqueIdentifier>{2fcc18a0-2643-4aab-9c8f-f36d9d71377e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="工具接口">
-      <UniqueIdentifier>{c50d57d3-d981-4040-ab91-307c2407e17e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="外部接口">
       <UniqueIdentifier>{47be262e-6358-4e76-9e84-782356671420}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TCpClien.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPSocket.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Structural.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Macro.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DataLine.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
-    <ClInclude Include="ConditionVariable.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerTimer.h">
-      <Filter>网络架构</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>工具接口</Filter>
-    </ClInclude>
     <ClInclude Include="MainNameSpace.h">
       <Filter>外部接口</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionVariable.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLine.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerTimer.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Structural.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TCpClien.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,23 +48,23 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TCpClien.cpp">
-      <Filter>网络架构</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPSocket.cpp">
-      <Filter>网络架构</Filter>
-    </ClCompile>
-    <ClCompile Include="DataLine.cpp">
-      <Filter>网络架构</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerTimer.cpp">
-      <Filter>网络架构</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.cpp">
-      <Filter>工具接口</Filter>
-    </ClCompile>
     <ClCompile Include="MainNameSpace.cpp">
       <Filter>外部接口</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TCpClien.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
