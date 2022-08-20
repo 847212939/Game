@@ -1,25 +1,28 @@
 #include "pch.h"
 
 TCPClient::TCPClient() : 
-	CTCPSocketManage()
+	CTCPSocketManage(),
+	m_pServerTimer(nullptr)
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
 }
 
-bool TCPClient::Init(pfCallBackEvent func)
+bool TCPClient::Init(NetworkCallBackFunc func)
 {
-	m_CallBackFunc = func;
-
 	if (!Start())
 	{
 		return false;
 	}
-	/*int timerCnt = BaseCfgMgr.GetTimerCnt();
+
+	m_NetworkCallBackFunc = func;
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
+	m_pServerTimer = new CServerTimer[timerCnt];
+
 	for (int i = 0; i < timerCnt; i++)
 	{
 		m_pServerTimer[i].Start();
-	}*/
+	}
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -152,7 +155,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 
 	memcpy(eve.m_Source, os.str().c_str(), os.str().size());
 
-	m_CallBackFunc(eve);
+	m_NetworkCallBackFunc(eve);
 }
 
 
@@ -239,7 +242,6 @@ void TCPClient::DelTimerCallback(int cmd)
 
 void TCPClient::TimerCallback(void* pDataLineHead)
 {
-	std::cout << "TimerCallback" << std::endl;
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
 	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
 	{

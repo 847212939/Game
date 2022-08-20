@@ -11,7 +11,7 @@ protected:
 	TCPClient& operator=(const TCPClient& my);
 
 public:
-	bool Init(pfCallBackEvent func);
+	bool Init(NetworkCallBackFunc func);
 	void NotifyAll();
 
 private:
@@ -33,7 +33,7 @@ public:
 
 private:
 	TypeFunMap			m_TypeFunMap;
-	pfCallBackEvent		m_CallBackFunc;
 	CServerTimer*		m_pServerTimer;
 	TimerFunMap			m_TimerFunMap;
+	NetworkCallBackFunc	m_NetworkCallBackFunc;
 };

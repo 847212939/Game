@@ -1,6 +1,25 @@
 ﻿#include "pch.h"
 
-void Util::InitCxxnet(pfCallBackEvent func)
+Util* Util::Instance()
+{
+	static Util g_mgr;
+	return &g_mgr;
+}
+
+Util::Util() : m_TCPClient(nullptr)
+{
+	m_TCPClient = new TCPClient;
+}
+
+Util::~Util()
+{
+	if (m_TCPClient)
+	{
+		SafeDelete(m_TCPClient);
+	}
+}
+
+void Util::InitCxxnet(NetworkCallBackFunc func)
 {
 	if (!LuaMgr->InitCfgMgr())
 	{
@@ -14,21 +33,6 @@ void Util::InitCxxnet(pfCallBackEvent func)
 	}
 
 	return;
-}
-
-Util* Util::Instance()
-{
-	static Util g_mgr;
-	return &g_mgr;
-}
-
-Util::Util() : m_TCPClient(new TCPClient)
-{
-}
-
-Util::~Util() 
-{
-
 }
 
 TCPClient* Util::GetTCPClient()

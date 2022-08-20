@@ -354,5 +354,5 @@ using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
 using TimerFunMap			= std::map<int, std::function<void()>>;
 
-typedef void (*pfCallBackEvent)(REvent eve/*, char m_Source[]*/);
+typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
 typedef void (*pCallBackTimer)();
