@@ -15,20 +15,8 @@
     <Filter Include="工具接口">
       <UniqueIdentifier>{c50d57d3-d981-4040-ab91-307c2407e17e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="配置管理">
-      <UniqueIdentifier>{ba3d8e81-4407-4289-a788-eba959631920}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="配置管理\配置管理">
-      <UniqueIdentifier>{0c422153-79fb-46fa-8c7c-99f0a97f379e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="配置管理\配置脚本">
-      <UniqueIdentifier>{36cbde31-4857-4ae8-b7e4-e84253d4f248}</UniqueIdentifier>
-    </Filter>
     <Filter Include="外部接口">
       <UniqueIdentifier>{47be262e-6358-4e76-9e84-782356671420}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="配置管理\配置文件">
-      <UniqueIdentifier>{9bf858ae-ee4d-4a0c-8477-fbcb329d4158}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,15 +47,6 @@
     <ClInclude Include="Util.h">
       <Filter>工具接口</Filter>
     </ClInclude>
-    <ClInclude Include="LuaMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseCfgMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
     <ClInclude Include="MainNameSpace.h">
       <Filter>外部接口</Filter>
     </ClInclude>
@@ -94,31 +73,8 @@
     <ClCompile Include="Util.cpp">
       <Filter>工具接口</Filter>
     </ClCompile>
-    <ClCompile Include="LuaMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfigMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="LuaCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
     <ClCompile Include="MainNameSpace.cpp">
       <Filter>外部接口</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config.pkg">
-      <Filter>配置管理\配置脚本</Filter>
-    </None>
-    <None Include="LoadScript.lua">
-      <Filter>配置管理\配置脚本</Filter>
-    </None>
-    <None Include="BaseCfg.lua">
-      <Filter>配置管理\配置文件</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -7,7 +7,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_eventBaseCfg(event_config_new()),
 	m_iServiceType(ServiceType::SERVICE_TYPE_END),
 	m_ConnectServerBase(nullptr),
-	m_socket(INVALID_SOCKET)
+	m_socket(INVALID_SOCKET),
+	m_port(0),
+	m_ip("")
 {
 	WSADATA wsa;
 	SYSTEM_INFO si;
@@ -68,12 +70,10 @@ bool CTCPSocketManage::Start()
 		return false;
 	}
 
-	const CLogicCfg& logicCfg = CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
-
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(logicCfg.port);
-	sin.sin_addr.S_un.S_addr = inet_addr(logicCfg.ip.c_str());
+	sin.sin_port = htons(m_port);
+	sin.sin_addr.S_un.S_addr = inet_addr(m_ip);
 	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
 		std::cout << "connect is err" << std::endl;

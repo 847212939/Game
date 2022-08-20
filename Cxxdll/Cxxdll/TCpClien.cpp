@@ -17,13 +17,8 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 
 	m_NetworkCallBackFunc = netFunc;
 	m_TimerCallBackFunc = timerFunc;
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-	m_pServerTimer = new CServerTimer[timerCnt];
-
-	for (int i = 0; i < timerCnt; i++)
-	{
-		m_pServerTimer[i].Start();
-	}
+	m_pServerTimer = new CServerTimer;
+	m_pServerTimer->Start();
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -109,8 +104,6 @@ void TCPClient::NotifyAll()
 		return;
 	}
 	
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
 }
@@ -169,15 +162,7 @@ bool TCPClient::SetTimer(int uTimerID, UINT uElapse, BYTE timerType/* = SERVERTI
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
-	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
-	{
-		std::cout << "timer error" << std::endl;
-		return false;
-	}
-
-	m_pServerTimer[(int)uTimerID % timerCnt].SetTimer((unsigned int)uTimerID, uElapse, timerType);
+	m_pServerTimer[(int)uTimerID % 1].SetTimer((unsigned int)uTimerID, uElapse, timerType);
 
 	return true;
 }
@@ -191,15 +176,7 @@ bool TCPClient::KillTimer(int uTimerID)
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
-	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
-	{
-		std::cout << "timer error" << std::endl;
-		return false;
-	}
-
-	m_pServerTimer[(int)uTimerID % timerCnt].KillTimer((unsigned int)uTimerID);
+	m_pServerTimer[(int)uTimerID % 1].KillTimer((unsigned int)uTimerID);
 
 	return true;
 }

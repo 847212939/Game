@@ -37,15 +37,6 @@
 #include <mysql.h>
 #include <time.h>
 
-// lua
-extern "C"
-{
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-}
-#include "tolua++.h"
-
 #include "Macro.h"
 #include "Structural.h"
 
@@ -57,9 +48,6 @@ extern "C"
 #include "TCpClien.h"
 #include "Util.h"
 
-#include "BaseCfgMgr.h"	
-#include "ConfigMgr.h"	
-#include "LuaMgr.h"	
 #include "MainNameSpace.h"
 
 #endif //PCH_H

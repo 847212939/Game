@@ -48,6 +48,8 @@ private:
 	static void EventCB(struct bufferevent*, short, void*);
 
 private:
+	int							m_port;
+	char						m_ip[64];
 	bool                        m_running;
 	CDataLine*					m_pRecvDataLine;
 	CDataLine*					m_pSendDataLine;

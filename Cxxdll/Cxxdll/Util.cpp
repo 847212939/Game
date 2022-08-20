@@ -21,11 +21,6 @@ Util::~Util()
 
 void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
-	if (!LuaMgr->InitCfgMgr())
-	{
-		std::cout << "InitCxxnet exit" << std::endl;
-		return;
-	}
 	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
@@ -194,26 +189,4 @@ Cis& Cis::operator >> (unsigned char* pBuf)
 
 	++m_cnt;
 	return *this;
-}
-
-uint8_t* Util::Encrypt(uint8_t* content, int length)
-{
-	std::string sKey = BaseCfgMgr.GetKey();
-
-	for (size_t i = 0; i < length; i++)
-	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
-	}
-	return content;
-}
-
-uint8_t* Util::Decrypt(uint8_t* content, int length)
-{
-	std::string sKey = BaseCfgMgr.GetKey();
-
-	for (size_t i = 0; i < length; i++)
-	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
-	}
-	return content;
 }
