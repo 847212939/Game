@@ -11,8 +11,7 @@ namespace Client.Main
         static void Main(string[] args)
         {
             SocketMgr socketcb = new SocketMgr();
-            SocketMgr.InitCxxnet();
-
+            socketcb.Init();
             Console.ReadKey();
         }
     }

@@ -23,16 +23,19 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 		return false;
 	}
 
+	std::cout << "CServerTimer" << std::endl;
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	DTCPC->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	std::cout << "CServerTimer::Start" << std::endl;
+	DUtil->GetTCPClient()->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 
 	return true;
 }
 
 void CServerTimer::ThreadCheckTimer()
 {
+	std::cout << "ThreadCheckTimer" << std::endl;
 	struct event timeout;
 	struct event_base* base;
 
@@ -76,7 +79,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 		std::cout << "base ²ÎÊýÎª¿Õ" << std::endl;
 		return;
 	}
-	CDataLine* pCDataLine = DTCPC->GetRecvDataLine();
+	CDataLine* pCDataLine = DUtil->GetTCPClient()->GetRecvDataLine();
 	if (!pCDataLine)
 	{
 		std::cout << "pDataLine == nullptr" << std::endl;

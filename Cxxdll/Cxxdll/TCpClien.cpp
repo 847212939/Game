@@ -4,18 +4,22 @@ TCPClient::TCPClient() :
 	CTCPSocketManage()
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
+	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
 }
 
-bool TCPClient::Init(bool& run, pfCallBackEvent func)
+bool TCPClient::Init(pfCallBackEvent func)
 {
 	m_CallBackFunc = func;
-	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
-	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
 
-	if (!Start(std::ref(run)))
+	if (!Start())
 	{
 		return false;
 	}
+	/*int timerCnt = BaseCfgMgr.GetTimerCnt();
+	for (int i = 0; i < timerCnt; i++)
+	{
+		m_pServerTimer[i].Start();
+	}*/
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -150,3 +154,101 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 
 	m_CallBackFunc(eve);
 }
+
+
+//设定定时器
+bool TCPClient::SetTimer(int uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+{
+	if (!m_pServerTimer)
+	{
+		std::cout << "no timer run" <<std::endl;
+		return false;
+	}
+
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
+
+	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	{
+		std::cout << "timer error" << std::endl;
+		return false;
+	}
+
+	m_pServerTimer[(int)uTimerID % timerCnt].SetTimer((unsigned int)uTimerID, uElapse, timerType);
+
+	return true;
+}
+
+//清除定时器
+bool TCPClient::KillTimer(int uTimerID)
+{
+	if (!m_pServerTimer)
+	{
+		std::cout << "no timer run" << std::endl;
+		return false;
+	}
+
+	int timerCnt = BaseCfgMgr.GetTimerCnt();
+
+	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	{
+		std::cout << "timer error" << std::endl;
+		return false;
+	}
+
+	m_pServerTimer[(int)uTimerID % timerCnt].KillTimer((unsigned int)uTimerID);
+
+	return true;
+}
+
+void TCPClient::AddTimerCallback(int cmd, std::function<void()>&& fun)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		m_TimerFunMap.insert(std::make_pair(cmd, fun));
+		return;
+	}
+
+	std::cout << "There is already a callback for this message. Please check the code cmd=" << cmd << std::endl;
+}
+
+
+bool TCPClient::CallBackFun(int cmd)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		std::cout << "No corresponding callback function found cmd=" << cmd << std::endl;
+		return false;
+	}
+
+	it->second();
+	return true;
+}
+
+void TCPClient::DelTimerCallback(int cmd)
+{
+	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	if (it == m_TimerFunMap.end())
+	{
+		return;
+	}
+
+	m_TimerFunMap.erase(it);
+}
+
+void TCPClient::TimerCallback(void* pDataLineHead)
+{
+	std::cout << "TimerCallback" << std::endl;
+	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
+	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
+	{
+		CallBackFun((int)WindowTimer->uTimerID);
+	}
+	else
+	{
+		std::cout << "Timer message error"  << std::endl;
+	}
+}
+
+

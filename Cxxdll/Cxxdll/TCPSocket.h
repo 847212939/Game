@@ -12,7 +12,7 @@ protected:
 
 public:
 	bool Stop();
-	bool Start(bool& run);
+	bool Start();
 
 public:
 	bool SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
@@ -39,8 +39,8 @@ private:
 	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
 
 private:
-	void ConnectServerThread(bool& run, SOCKET& fd);
-	void ThreadSendMsgThread(bool& run);
+	void ConnectServerThread(SOCKET& fd);
+	void ThreadSendMsgThread();
 	void HandleSendData(ListItemData* pListItem);
 
 private:

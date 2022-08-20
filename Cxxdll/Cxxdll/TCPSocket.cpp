@@ -54,7 +54,7 @@ bool CTCPSocketManage::Stop()
 	return true;
 }
 
-bool CTCPSocketManage::Start(bool& run)
+bool CTCPSocketManage::Start()
 {
 	if (m_running == true)
 	{
@@ -80,11 +80,11 @@ bool CTCPSocketManage::Start(bool& run)
 		return false;
 	}
 
-	m_running = run;
+	m_running = true;
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this, std::ref(run)));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(run), std::ref(m_socket)));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket)));
 
 	return true;
 }
@@ -139,11 +139,10 @@ bool CTCPSocketManage::ConnectServer(SOCKET& fd)
 	return true;
 }
 
-void CTCPSocketManage::ConnectServerThread(bool& run, SOCKET& fd)
+void CTCPSocketManage::ConnectServerThread(SOCKET& fd)
 {
 	if (!ConnectServer(std::ref(m_socket)))
 	{
-		run = false;
 		return;
 	}
 
@@ -450,13 +449,12 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	SafeDelete(pListItem);
 }
 
-void CTCPSocketManage::ThreadSendMsgThread(bool& run)
+void CTCPSocketManage::ThreadSendMsgThread()
 {
 	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
-		run = false;
 		std::cout << "send list is null" << std::endl;
 		return;
 	}

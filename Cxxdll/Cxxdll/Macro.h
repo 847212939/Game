@@ -5,8 +5,6 @@
 #define CfgMgr		LuaMgr->GetConfigMgr()
 #define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
-#define DTCPC		DUtil->GetTCPClient()
-
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\
@@ -98,50 +96,28 @@ private:
 		}\
 		catch(...)\
 		{\
-			CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+			std::cout << "DELETE ERR" << std::endl;\
 		}\
 		pData = nullptr;\
 	}\
-}
-
-// 注册游戏进入回调
-#define RegisterAttrs(pobj, name)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
 }
 
 // 注册网络协议
 #define RegisterNetwk(pobj, name, cmd)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\
 	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
 
-// 注册数据库回调
-#define RegisterMysql(pobj, name, sql)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, this, std::placeholders::_1)));\
-}
-
 // 注册定时器
 #define RegisterTimer(pobj, name, cmd, uElapse, timerType)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\
@@ -153,44 +129,10 @@ else\
 #define UnRegisterTimer(pobj, cmd)\
 if (!pobj)\
 {\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\
 	pobj->KillTimer(cmd);\
 	pobj->DelTimerCallback(cmd);\
 }
-
-// 添加属性
-#define AddAttributes(pobj, attrs)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
-}\
-else\
-{\
-	pobj->AdditionAttributes(attrs);\
-}
-
-// 进入场景
-#define RegisterEnter(pobj, name)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
-}
-
-// 注册游戏退出
-#define RegisterLgout(pobj, name)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
-}
-
