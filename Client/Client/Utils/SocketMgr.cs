@@ -18,15 +18,15 @@ namespace Client.Utils
 
     internal class SocketMgr
     {
-        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitNetwork(string ip, int port, int timerCnt);
-        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
-        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         extern static void RegisterTimers(int timerid, int uElapse);
-        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         extern static void UnRegisterTimers(int timerid);
-        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
         
         public SocketMgr()
