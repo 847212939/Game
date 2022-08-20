@@ -325,6 +325,9 @@ struct SkillCDData
 	~SkillCDData() {}
 };
 
+typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
+typedef void (*TimerCallBackFunc)(int timer);
+
 template<typename T>
 using CfgSet				= std::set<T>;
 template<typename T>
@@ -351,7 +354,5 @@ using MonsterMap			= std::map<int, MonsterKVMap>;
 using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
-using TimerFunMap			= std::map<int, std::function<void()>>;
+using TimerFunMap			= std::map<int, TimerCallBackFunc>;
 
-typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
-typedef void (*pCallBackTimer)();

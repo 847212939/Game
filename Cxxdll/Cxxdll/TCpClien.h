@@ -11,7 +11,7 @@ protected:
 	TCPClient& operator=(const TCPClient& my);
 
 public:
-	bool Init(NetworkCallBackFunc func);
+	bool Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
 	void NotifyAll();
 
 private:
@@ -25,7 +25,7 @@ private:
 	void HandleRecvData(ListItemData* pListItem);
 
 public:
-	void AddTimerCallback(int cmd, std::function<void()>&& fun);
+	void AddTimerCallback(int cmd);
 	bool CallBackFun(int cmd);
 	void DelTimerCallback(int cmd);
 	bool SetTimer(int uTimerID, UINT uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST);
@@ -36,4 +36,5 @@ private:
 	CServerTimer*		m_pServerTimer;
 	TimerFunMap			m_TimerFunMap;
 	NetworkCallBackFunc	m_NetworkCallBackFunc;
+	TimerCallBackFunc	m_TimerCallBackFunc;
 };

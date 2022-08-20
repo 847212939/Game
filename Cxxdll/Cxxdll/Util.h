@@ -13,7 +13,7 @@ protected:
 public:
 	static Util* Instance();
 	TCPClient* GetTCPClient();
-	void InitCxxnet(NetworkCallBackFunc func);
+	void InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
 
 public:
 	// ∂‘≥∆º”√‹

@@ -8,14 +8,15 @@ TCPClient::TCPClient() :
 	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
 }
 
-bool TCPClient::Init(NetworkCallBackFunc func)
+bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
 	if (!Start())
 	{
 		return false;
 	}
 
-	m_NetworkCallBackFunc = func;
+	m_NetworkCallBackFunc = netFunc;
+	m_TimerCallBackFunc = timerFunc;
 	int timerCnt = BaseCfgMgr.GetTimerCnt();
 	m_pServerTimer = new CServerTimer[timerCnt];
 
@@ -203,12 +204,12 @@ bool TCPClient::KillTimer(int uTimerID)
 	return true;
 }
 
-void TCPClient::AddTimerCallback(int cmd, std::function<void()>&& fun)
+void TCPClient::AddTimerCallback(int cmd)
 {
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
-		m_TimerFunMap.insert(std::make_pair(cmd, fun));
+		m_TimerFunMap.insert(std::make_pair(cmd, m_TimerCallBackFunc));
 		return;
 	}
 
@@ -225,7 +226,7 @@ bool TCPClient::CallBackFun(int cmd)
 		return false;
 	}
 
-	it->second();
+	it->second(cmd);
 	return true;
 }
 

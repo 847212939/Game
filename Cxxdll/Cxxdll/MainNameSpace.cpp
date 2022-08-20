@@ -2,9 +2,9 @@
 
 namespace MainNameSpace
 {
-    void InitCxxnet(NetworkCallBackFunc func)
+    void InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
     {
-        Util::Instance()->InitCxxnet(func);
+        Util::Instance()->InitCxxnet(netFunc, timerFunc);
     }
 
     void SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
@@ -13,11 +13,11 @@ namespace MainNameSpace
         pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0, pTcpClient->GetTCPSocketInfo().bev, (unsigned int)uIdentification);
     }
 
-    void RegisterTimers(int timerid, int uElapse, pCallBackTimer func)
+    void RegisterTimers(int timerid, int uElapse)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
         pTcpClient->SetTimer(timerid, uElapse, SERVERTIMER_TYPE_PERISIST);
-        pTcpClient->AddTimerCallback(timerid, std::move(std::bind(func)));
+        pTcpClient->AddTimerCallback(timerid);
     }
 
     void UnRegisterTimers(int timerid)

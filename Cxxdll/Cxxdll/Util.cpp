@@ -19,14 +19,14 @@ Util::~Util()
 	}
 }
 
-void Util::InitCxxnet(NetworkCallBackFunc func)
+void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
 	if (!LuaMgr->InitCfgMgr())
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
 		return;
 	}
-	if (!m_TCPClient->Init(func))
+	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
 		return;
