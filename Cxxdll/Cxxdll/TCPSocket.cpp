@@ -68,7 +68,7 @@ bool CTCPSocketManage::InitNetwork(char* ip, int port, int timerCnt)
 	m_port = port;
 	m_timerCnt = timerCnt;
 
-	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	if (timerCnt < 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
 		m_timerCnt = 1;
 	}

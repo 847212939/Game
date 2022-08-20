@@ -18,11 +18,14 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 	m_NetworkCallBackFunc = netFunc;
 	m_TimerCallBackFunc = timerFunc;
 
-	m_pServerTimer = new CServerTimer[GetTimerCnt()];
-
-	for (int i = 0; i < GetTimerCnt(); i++)
+	if (GetTimerCnt() > 0)
 	{
-		m_pServerTimer[i].Start();
+		m_pServerTimer = new CServerTimer[GetTimerCnt()];
+
+		for (int i = 0; i < GetTimerCnt(); i++)
+		{
+			m_pServerTimer[i].Start();
+		}
 	}
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
@@ -163,7 +166,6 @@ bool TCPClient::SetTimer(int uTimerID, unsigned int uElapse, unsigned char timer
 {
 	if (!m_pServerTimer)
 	{
-		std::cout << "no timer run" <<std::endl;
 		return false;
 	}
 
@@ -177,7 +179,6 @@ bool TCPClient::KillTimer(int uTimerID)
 {
 	if (!m_pServerTimer)
 	{
-		std::cout << "no timer run" << std::endl;
 		return false;
 	}
 

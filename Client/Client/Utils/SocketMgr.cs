@@ -38,7 +38,7 @@ namespace Client.Utils
         
         public void Init()
         {
-            InitNetwork("127.0.0.1", 8888, 0);
+            InitNetwork("127.0.0.1", 8888, 1);
             InitCxxnet(m_CallBackFunc, m_CBTimerHandle);
             RegisterTimers(1, 300);
         }
@@ -64,7 +64,6 @@ namespace Client.Utils
 
         private void TimerCallBackFunc(int timer)
         {
-            Console.WriteLine(timer);
             m_NetworkMgr.TimerDispatch(timer);
         }
 
