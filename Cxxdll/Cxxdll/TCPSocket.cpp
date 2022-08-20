@@ -9,7 +9,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_ConnectServerBase(nullptr),
 	m_socket(INVALID_SOCKET),
 	m_port(0),
-	m_ip("")
+	m_ip(""),
+	m_timerCnt(0)
 {
 	WSADATA wsa;
 	SYSTEM_INFO si;
@@ -56,11 +57,21 @@ bool CTCPSocketManage::Stop()
 	return true;
 }
 
+int CTCPSocketManage::GetTimerCnt()
+{
+	return m_timerCnt;
+}
 
-bool CTCPSocketManage::SetIpAndPort(char* ip, int port)
+
+bool CTCPSocketManage::InitNetwork(char* ip, int port, int timerCnt)
 {
 	m_port = port;
+	m_timerCnt = timerCnt;
 
+	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
+	{
+		m_timerCnt = 1;
+	}
 	if (ip && strlen(ip) < sizeof(m_ip))
 	{
 		strcpy(m_ip, ip);

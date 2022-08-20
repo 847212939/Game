@@ -18,16 +18,17 @@ namespace Client.Utils
 
     internal class SocketMgr
     {
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        // ..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll
+        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         extern static void RegisterTimers(int timerid, int uElapse);
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         extern static void UnRegisterTimers(int timerid);
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
-        [DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SetIpAndPort(string ip, int port);
+        [DllImport("Cxxdll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void InitNetwork(string ip, int port, int timerCnt);
 
         public SocketMgr()
         {
@@ -38,7 +39,7 @@ namespace Client.Utils
         
         public void Init()
         {
-            SetIpAndPort("127.0.0.1", 8888);
+            InitNetwork("127.0.0.1", 8888, 0);
             InitCxxnet(m_CallBackFunc, m_CBTimerHandle);
             RegisterTimers(1, 300);
         }
@@ -64,6 +65,7 @@ namespace Client.Utils
 
         private void TimerCallBackFunc(int timer)
         {
+            Console.WriteLine(timer);
             m_NetworkMgr.TimerDispatch(timer);
         }
 

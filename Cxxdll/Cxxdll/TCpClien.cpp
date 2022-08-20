@@ -17,8 +17,13 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 
 	m_NetworkCallBackFunc = netFunc;
 	m_TimerCallBackFunc = timerFunc;
-	m_pServerTimer = new CServerTimer;
-	m_pServerTimer->Start();
+
+	m_pServerTimer = new CServerTimer[GetTimerCnt()];
+
+	for (int i = 0; i < GetTimerCnt(); i++)
+	{
+		m_pServerTimer[i].Start();
+	}
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
@@ -162,7 +167,7 @@ bool TCPClient::SetTimer(int uTimerID, unsigned int uElapse, unsigned char timer
 		return false;
 	}
 
-	m_pServerTimer[(int)uTimerID % 1].SetTimer((unsigned int)uTimerID, uElapse, timerType);
+	m_pServerTimer[(int)uTimerID % GetTimerCnt()].SetTimer((unsigned int)uTimerID, uElapse, timerType);
 
 	return true;
 }
@@ -176,7 +181,7 @@ bool TCPClient::KillTimer(int uTimerID)
 		return false;
 	}
 
-	m_pServerTimer[(int)uTimerID % 1].KillTimer((unsigned int)uTimerID);
+	m_pServerTimer[(int)uTimerID % GetTimerCnt()].KillTimer((unsigned int)uTimerID);
 
 	return true;
 }

@@ -2,10 +2,10 @@
 
 namespace MainNameSpace
 {
-    void SetIpAndPort(char* ip, int port)
+    void InitNetwork(char* ip, int port, int timerCnt)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
-        pTcpClient->SetIpAndPort(ip, port);
+        pTcpClient->InitNetwork(ip, port, timerCnt);
     }
 
     void InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
