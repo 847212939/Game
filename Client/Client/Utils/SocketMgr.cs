@@ -39,7 +39,12 @@ namespace Client.Utils
             m_CallBackFunc = new CBEventHandle(NetworkCallBackFunc);
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
-        
+
+        public void SendMsg(string pData, int size, int mainID, int assistID, int uIdentification)
+        {
+            SendData(pData, size, mainID, assistID, uIdentification);
+        }
+
         public bool InitSocket(string ip, int port, int timerCnt)
         {
             InitNetwork(ip, port, timerCnt);
@@ -50,19 +55,26 @@ namespace Client.Utils
             return true;
         }
 
-        public void RegisterTimer(int timerid, int uElapse)
+        public void RegisterNetwork(UInt32 cmd, Action<NetWorkMsg> ac)
+        {
+            m_NetworkMgr.AddNetworkDictionary(cmd, ac);
+        }
+
+        public void UnRegisterNetwork(UInt32 cmd)
+        {
+            m_NetworkMgr.DelNetworkDictionary(cmd);
+        }
+
+        public void RegisterTimer(int timerid, int uElapse, Action<int> ac)
         {
             RegisterTimers(timerid, uElapse);
+            m_NetworkMgr.AddTimerDictionary(timerid, ac);
         }
 
         public void UnRegisterTimer(int timerid)
         {
             UnRegisterTimers(timerid);
-        }
-
-        public NetworkMgr GetNetworkMgr()
-        {
-            return m_NetworkMgr;
+            m_NetworkMgr.DelTimerDictionary(timerid);
         }
 
         private void NetworkCallBackFunc(REvent eve)

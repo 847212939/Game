@@ -13,8 +13,8 @@
     internal class NetworkMgr
     {
 
-        private Dictionary<int, Action<int>> m_TimerDictionary;
-        private Dictionary<UInt32, Action<NetWorkMsg>> m_NetworkDictionary;
+        private Dictionary<int, Action<int>>            m_TimerDictionary;
+        private Dictionary<UInt32, Action<NetWorkMsg>>  m_NetworkDictionary;
 
         public NetworkMgr()
         {
@@ -28,7 +28,22 @@
             {
                 m_NetworkDictionary[msg.uMainID](msg);
             }
-            Console.WriteLine("网络消息回调成功");
+        }
+
+        public void AddNetworkDictionary(UInt32 cmd, Action<NetWorkMsg> ac)
+        {
+            if (!m_NetworkDictionary.ContainsKey(cmd))
+            {
+                m_NetworkDictionary.Add(cmd, ac);
+            }
+        }
+
+        public void DelNetworkDictionary(UInt32 cmd)
+        {
+            if (m_NetworkDictionary.ContainsKey(cmd))
+            {
+                m_NetworkDictionary.Remove(cmd);
+            }
         }
 
         public void TimerDispatch(int timer)
@@ -37,17 +52,22 @@
             {
                 m_TimerDictionary[timer](timer);
             }
-            Console.WriteLine("定时器回调成功");
         }
 
-        public Dictionary<UInt32, Action<NetWorkMsg>> GetNetworkDictionary()
+        public void AddTimerDictionary(int timer, Action<int> ac)
         {
-            return m_NetworkDictionary;
+            if (!m_TimerDictionary.ContainsKey(timer))
+            {
+                m_TimerDictionary.Add(timer, ac);
+            }
         }
 
-        public Dictionary<int, Action<int>> GetTimerDictionary()
+        public void DelTimerDictionary(int timer)
         {
-            return m_TimerDictionary;
+            if (m_TimerDictionary.ContainsKey(timer))
+            {
+                m_TimerDictionary.Remove(timer);
+            }
         }
     }
 }
