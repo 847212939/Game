@@ -69,7 +69,6 @@ int CTCPSocketManage::GetTimerCnt()
 	return m_timerCnt;
 }
 
-
 bool CTCPSocketManage::InitNetwork(char* ip, int port, int timerCnt)
 {
 	m_port = port;
