@@ -7,7 +7,11 @@ namespace Client.Main
         static void Main(string[] args)
         {
             SocketMgr socketMgr = SocketMgr.GetInstance();
-            socketMgr.InitSocket("107.0.0.1", 888, 1);
+            if (!socketMgr.InitSocket("127.0.0.1", 8888, 1))
+            {
+                Console.WriteLine("初始化网络失败");
+                return;
+            }
 
             LoginMgr loginMgr = new LoginMgr();
 
