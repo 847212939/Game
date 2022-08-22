@@ -24,7 +24,7 @@ namespace Client.Network
         private CBEventHandle       m_CallBackFunc;
 
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void InitNetwork(string ip, int port, int timerCnt);
+        public extern static bool InitNetwork(string ip, int port, int timerCnt);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
@@ -58,7 +58,10 @@ namespace Client.Network
 
         public bool InitSocket(string ip, int port, int timerCnt)
         {
-            InitNetwork(ip, port, timerCnt);
+            if (!InitNetwork(ip, port, timerCnt))
+            {
+                return false;
+            }
             if (!InitCxxnet(m_CallBackFunc, m_CBTimerHandle))
             {
                 return false;

@@ -2,14 +2,18 @@
 
 namespace MainNameSpace
 {
-    void InitNetwork(char* ip, int port, int timerCnt)
+    bool InitNetwork(char* ip, int port, int timerCnt)
     {
+        if (!ip)
+        {
+            return false;
+        }
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
         if (!pTcpClient)
         {
-            return;
+            return false;
         }
-        pTcpClient->InitNetwork(ip, port, timerCnt);
+        return pTcpClient->InitNetwork(ip, port, timerCnt);
     }
 
     bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
