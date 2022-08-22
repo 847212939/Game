@@ -38,6 +38,8 @@ namespace Client.Utils
             m_NetworkMgr = new NetworkMgr();
             m_CallBackFunc = new CBEventHandle(NetworkCallBackFunc);
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
+
+            InitSocket("127.0.0.1", 8888, 1);
         }
 
         public void SendMsg(string pData, int size, int mainID, int assistID, int uIdentification)
