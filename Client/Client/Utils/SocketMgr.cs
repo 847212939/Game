@@ -36,7 +36,7 @@ namespace Client.Utils
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
         
-        public bool InitSocketMgr(string ip, int port, int timerCnt)
+        public bool InitSocket(string ip, int port, int timerCnt)
         {
             InitNetwork(ip, port, timerCnt);
             if (!InitCxxnet(m_CallBackFunc, m_CBTimerHandle))
