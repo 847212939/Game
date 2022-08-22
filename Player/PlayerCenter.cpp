@@ -1,4 +1,3 @@
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "../Game/stdafx.h"
 
 PlayerCenter::PlayerCenter()

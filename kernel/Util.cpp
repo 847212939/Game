@@ -1,5 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include "../Game/stdafx.h"
+﻿#include "../Game/stdafx.h"
 
 // 方法类
 std::mt19937		Util::m_mt(m_rd());

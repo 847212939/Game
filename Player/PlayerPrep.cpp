@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "../Game/stdafx.h"
 
 char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("

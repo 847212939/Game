@@ -1,12 +1,17 @@
 ﻿#ifndef PCH_H
 #define PCH_H
 
+// 添加要在此处预编译的标头
+#ifdef _WIN32
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
-// 添加要在此处预编译的标头
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#elif linux
+#endif
+
 #include <iomanip>
 #include <random>
 #include <fcntl.h>
