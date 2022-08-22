@@ -11,11 +11,13 @@ namespace Client.Main
         static void Main(string[] args)
         {
             SocketMgr socketcb = new SocketMgr();
-            bool ret = socketcb.InitSocket("127.0.0.1", 8888, 0);
-            if (!ret)
+            if (!socketcb.InitSocket("127.0.0.1", 8888, 1))
             {
                 return;
             }
+
+            socketcb.RegisterTimer(1, 500);
+
             Console.ReadKey();
         }
     }

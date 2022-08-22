@@ -28,6 +28,7 @@
             {
                 m_NetworkDictionary[msg.uMainID](msg);
             }
+            Console.WriteLine("网络消息回调成功");
         }
 
         public void TimerDispatch(int timer)
@@ -36,6 +37,7 @@
             {
                 m_TimerDictionary[timer](timer);
             }
+            Console.WriteLine("定时器回调成功");
         }
 
         public Dictionary<UInt32, Action<NetWorkMsg>> GetNetworkDictionary()
