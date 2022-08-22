@@ -18,9 +18,10 @@ namespace Client.Utils
 
     internal class SocketMgr
     {
-        private NetworkMgr      m_NetworkMgr;
-        private CBTimerHandle   m_CBTimerHandle;
-        private CBEventHandle   m_CallBackFunc;
+        private static SocketMgr    m_SocketMgr = null!;
+        private NetworkMgr          m_NetworkMgr;
+        private CBTimerHandle       m_CBTimerHandle;
+        private CBEventHandle       m_CallBackFunc;
 
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitNetwork(string ip, int port, int timerCnt);
@@ -32,14 +33,22 @@ namespace Client.Utils
         extern static void UnRegisterTimers(int timerid);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
-        
-        public SocketMgr()
+
+        public static SocketMgr GetInstance()
+        {
+            if (m_SocketMgr == null)
+            {
+                m_SocketMgr = new SocketMgr();
+            }
+
+            return m_SocketMgr;
+        }
+
+        private SocketMgr()
         {
             m_NetworkMgr = new NetworkMgr();
             m_CallBackFunc = new CBEventHandle(NetworkCallBackFunc);
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
-
-            InitSocket("127.0.0.1", 8888, 1);
         }
 
         public void SendMsg(string pData, int size, int mainID, int assistID, int uIdentification)

@@ -4,21 +4,13 @@ namespace Client.Main
 {
     internal class Program
     {
-        private static SocketMgr socketMgr = new SocketMgr();
-        private LoginMgr loginMgr;
-
-        public Program()
-        {
-            loginMgr = new LoginMgr();
-        }
-
-        public static SocketMgr GetSocketMgr()
-        {
-            return socketMgr;
-        }
-
         static void Main(string[] args)
         {
+            SocketMgr socketMgr = SocketMgr.GetInstance();
+            socketMgr.InitSocket("107.0.0.1", 888, 1);
+
+            LoginMgr loginMgr = new LoginMgr();
+
             Util cos = new Util();
             cos.WriteString("8888");
             cos.WriteString("8888");
