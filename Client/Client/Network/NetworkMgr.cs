@@ -54,12 +54,14 @@
             }
         }
 
-        public void AddTimerDictionary(int timer, Action<int> ac)
+        public bool AddTimerDictionary(int timer, Action<int> ac)
         {
             if (!m_TimerDictionary.ContainsKey(timer))
             {
                 m_TimerDictionary.Add(timer, ac);
+                return true;
             }
+            return false;
         }
 
         public void DelTimerDictionary(int timer)

@@ -78,8 +78,10 @@ namespace Client.Utils
 
         public void RegisterTimer(int timerid, int uElapse, Action<int> ac)
         {
-            RegisterTimers(timerid, uElapse);
-            m_NetworkMgr.AddTimerDictionary(timerid, ac);
+            if (m_NetworkMgr.AddTimerDictionary(timerid, ac))
+            {
+                RegisterTimers(timerid, uElapse);
+            }
         }
 
         public void UnRegisterTimer(int timerid)
