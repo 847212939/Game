@@ -12,6 +12,10 @@
 
     internal class NetworkMgr
     {
+
+        private Dictionary<int, Action<int>> m_TimerDictionary;
+        private Dictionary<UInt32, Action<NetWorkMsg>> m_NetworkDictionary;
+
         public NetworkMgr()
         {
             m_TimerDictionary = new Dictionary<int, Action<int>>();
@@ -43,8 +47,5 @@
         {
             return m_TimerDictionary;
         }
-
-        private Dictionary<int, Action<int>>            m_TimerDictionary;
-        private Dictionary<UInt32, Action<NetWorkMsg>>  m_NetworkDictionary;
     }
 }

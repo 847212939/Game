@@ -18,6 +18,10 @@ namespace Client.Utils
 
     internal class SocketMgr
     {
+        private NetworkMgr m_NetworkMgr;
+        private CBTimerHandle m_CBTimerHandle;
+        private CBEventHandle m_CallBackFunc;
+
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitNetwork(string ip, int port, int timerCnt);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
@@ -70,9 +74,5 @@ namespace Client.Utils
         {
             m_NetworkMgr.TimerDispatch(timer);
         }
-
-        private NetworkMgr      m_NetworkMgr;
-        private CBTimerHandle   m_CBTimerHandle;
-        private CBEventHandle   m_CallBackFunc;
     }
 }
