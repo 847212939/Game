@@ -5,6 +5,10 @@ namespace MainNameSpace
     void InitNetwork(char* ip, int port, int timerCnt)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        if (!pTcpClient)
+        {
+            return;
+        }
         pTcpClient->InitNetwork(ip, port, timerCnt);
     }
 
@@ -16,6 +20,10 @@ namespace MainNameSpace
     void SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        if (!pTcpClient)
+        {
+            return;
+        }
         pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0, 
             pTcpClient->GetTCPSocketInfo().bev, (unsigned int)uIdentification);
     }
@@ -23,6 +31,10 @@ namespace MainNameSpace
     void RegisterTimers(int timerid, int uElapse)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        if (!pTcpClient)
+        {
+            return;
+        }
         pTcpClient->SetTimer(timerid, uElapse, SERVERTIMER_TYPE_PERISIST);
         pTcpClient->AddTimerCallback(timerid);
     }
@@ -30,6 +42,10 @@ namespace MainNameSpace
     void UnRegisterTimers(int timerid)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        if (!pTcpClient)
+        {
+            return;
+        }
         pTcpClient->KillTimer(timerid);
         pTcpClient->DelTimerCallback(timerid);
     }
