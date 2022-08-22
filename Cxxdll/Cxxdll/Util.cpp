@@ -20,10 +20,6 @@ Util::~Util()
 
 void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
-	if (!m_TCPClient)
-	{
-		m_TCPClient = new TCPClient;
-	}
 	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
@@ -42,6 +38,10 @@ void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 
 TCPClient* Util::GetTCPClient()
 {
+	if (!m_TCPClient)
+	{
+		m_TCPClient = new TCPClient;
+	}
 	return m_TCPClient;
 }
 

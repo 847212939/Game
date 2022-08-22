@@ -18,6 +18,7 @@ namespace Client.Utils
 
     internal class SocketMgr
     {
+        //[DllImport("..\\..\\..\\..\\..\\x64\\Debug\\Cxxdll.dll",CallingConvention = CallingConvention.Cdecl)]
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitNetwork(string ip, int port, int timerCnt);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
