@@ -7,7 +7,7 @@ namespace Client.Utils
         public LoginMgr()
         {
             SocketMgr socketMgr = SocketMgr.GetInstance();
-            socketMgr.RegisterTimer(2, 500, LoginTimer);
+            socketMgr.RegisterTimer(2, 1000, LoginTimer);
             socketMgr.RegisterNetwork(7, Network);
         }
 
