@@ -18,22 +18,22 @@ Util::~Util()
 	}
 }
 
-void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
+bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
 	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
 		SafeDelete(m_TCPClient);
-		return;
+		return false;
 	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	if (!m_TCPClient->GetRuninged())
 	{
 		SafeDelete(m_TCPClient);
-		return;
+		return false;
 	}
 
-	return;
+	return true;
 }
 
 TCPClient* Util::GetTCPClient()

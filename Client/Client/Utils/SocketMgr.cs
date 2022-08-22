@@ -21,7 +21,7 @@ namespace Client.Utils
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void InitNetwork(string ip, int port, int timerCnt);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
+        public extern static bool InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         extern static void RegisterTimers(int timerid, int uElapse);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
@@ -36,11 +36,16 @@ namespace Client.Utils
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
         
-        public void InitSocketMgr()
+        public bool InitSocketMgr()
         {
             InitNetwork("127.0.0.1", 8888, 1);
-            InitCxxnet(m_CallBackFunc, m_CBTimerHandle);
+            if (!InitCxxnet(m_CallBackFunc, m_CBTimerHandle))
+            {
+                return false;
+            }
             RegisterTimers(1, 300);
+
+            return true;
         }
 
         public NetworkMgr GetNetworkMgr()

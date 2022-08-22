@@ -8,9 +8,9 @@ namespace MainNameSpace
         pTcpClient->InitNetwork(ip, port, timerCnt);
     }
 
-    void InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
+    bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
     {
-        Util::Instance()->InitCxxnet(netFunc, timerFunc);
+        return Util::Instance()->InitCxxnet(netFunc, timerFunc);
     }
 
     void SendData(char* pData, int size, int mainID, int assistID, int uIdentification)

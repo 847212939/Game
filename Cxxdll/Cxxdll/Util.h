@@ -13,7 +13,7 @@ protected:
 public:
 	static Util* Instance();
 	TCPClient* GetTCPClient();
-	void InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
+	bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
 	static long long GetSysMilliseconds();
 
 private:
