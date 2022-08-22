@@ -14,6 +14,7 @@ namespace Client.Main
             }
 
             LoginMgr loginMgr = new LoginMgr();
+            loginMgr.Initialize();
 
             Netmsg cin = new Netmsg();
             cin.WriteString("8888");
