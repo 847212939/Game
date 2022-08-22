@@ -16,12 +16,12 @@ namespace Client.Network
 
         public void LoginTimer(int timer)
         {
-            Console.WriteLine("定时器" + timer + "回调了");
+            Console.WriteLine("收到了 " + timer + " 定时器");
         }
 
         public void Network(NetWorkMsg msg)
         {
-            Console.WriteLine("Network 回调了");
+            Console.WriteLine("收到了 "+ msg.uMainID + " 协议");
         }
     }
 }
