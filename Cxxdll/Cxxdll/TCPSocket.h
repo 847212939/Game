@@ -29,10 +29,10 @@ public:
 	TCPSocketInfo& GetTCPSocketInfo();
 
 private:
-	bool ConnectServer(SOCKET& fd);
+	bool ConnectServer(SOCKFD& fd);
 
 private:
-	static void SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize);
+	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
@@ -41,7 +41,7 @@ private:
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType);
 
 private:
-	void ConnectServerThread(SOCKET& fd);
+	void ConnectServerThread(SOCKFD& fd);
 	void ThreadSendMsgThread();
 	void HandleSendData(ListItemData* pListItem);
 
@@ -62,5 +62,5 @@ private:
 	std::vector<std::thread*>   m_socketThread;
 	TCPSocketInfo				m_socketInfo;
 	event_base*					m_ConnectServerBase;
-	SOCKET						m_socket;
+	SOCKFD						m_socket;
 };

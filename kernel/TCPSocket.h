@@ -39,7 +39,7 @@ public:
 	unsigned int GetCurSocketSize();
 
 private:
-	static void SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize);
+	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
@@ -65,9 +65,9 @@ private:
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
-	static int DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
-	static int StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2]);
-	static int Socketpair(int family, int type, int protocol, SOCKET recv[2]);
+	static int DgramSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
+	static int StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
+	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
 	unsigned short              m_port;

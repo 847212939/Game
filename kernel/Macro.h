@@ -11,6 +11,12 @@
 #define DSC			DPPC->GetSceneClient()
 #define DPCC		DSC->GetPlayerCenterClient()
 
+#ifdef _WIN32
+#define SOCKFD SOCKET
+#elif linux
+#define SOCKFD int
+#endif
+
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\

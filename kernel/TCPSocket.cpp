@@ -14,6 +14,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_eventBaseCfg(event_config_new()),
 	m_socketType(SocketType::SOCKET_TYPE_TCP)
 {
+#ifdef _WIN32
 	WSADATA wsa;
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -33,6 +34,12 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
 	}
+#elif linux 
+	if (evthread_use_pthreads() != 0)
+	{
+		COUT_LOG(LOG_CERROR, "Init thread is err");
+	}
+#endif
 }
 
 CTCPSocketManage::~CTCPSocketManage()
@@ -170,7 +177,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 		uniqueParam[i].pThis = this;
 
 		WorkThreadInfo workInfo;
-		SOCKET fd[2];
+		SOCKFD fd[2];
 		if (Socketpair(AF_INET, SOCK_STREAM, 0, fd) < 0)
 		{
 			COUT_LOG(LOG_CERROR, "Socketpair");
@@ -349,7 +356,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
-	SOCKET fd = pTCPSocketInfo->acceptFd;
+	SOCKFD fd = pTCPSocketInfo->acceptFd;
 
 	// ∑÷≈‰À˜“˝À„∑®
 	int index = GetSocketIndex();
@@ -738,7 +745,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
 }
 
-void CTCPSocketManage::SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize)
+void CTCPSocketManage::SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize)
 {
 	int optval = 0;
 	int optLen = sizeof(int);
@@ -802,14 +809,14 @@ void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 	COUT_LOG(LOG_CERROR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
 }
 
-int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
+int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2])
 {
 	if (!addr_info)
 	{
 		return -1;
 	}
 
-	SOCKET listener, client, server;
+	SOCKFD listener, client, server;
 	int opt = 1;
 
 	listener = server = client = INVALID_SOCKET;
@@ -870,13 +877,13 @@ fail:
 	return -1;
 }
 
-int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKET sock[2])
+int CTCPSocketManage::DgramSocketpair(struct addrinfo* addr_info, SOCKFD sock[2])
 {
 	if (!addr_info)
 	{
 		return -1;
 	}
-	SOCKET client, server;
+	SOCKFD client, server;
 	struct addrinfo addr, * result = nullptr;
 	const char* address;
 	int opt = 1;
@@ -966,7 +973,7 @@ fail:
 	return -1;
 }
 
-int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKET recv[2])
+int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKFD recv[2])
 {
 	const char* address;
 	struct addrinfo addr_info, * p_addrinfo;

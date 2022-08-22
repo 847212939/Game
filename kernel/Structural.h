@@ -27,8 +27,8 @@ const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//ÈÕ×ÓÎÄ¼şµÄ×î´óµÄ³¤¶È£¬³
 enum class SysMsgCmd
 {
 	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
-	HD_SOCKET_READ				= 1,											// SOCKET ¶ÁÈ¡ÊÂ¼ş´¦Àí
-	HD_SOCKET_CLOSE				= 2,											// SOCKET ¹Ø±ÕÊÂ¼ş´¦Àí
+	HD_SOCKET_READ				= 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼ş´¦Àí
+	HD_SOCKET_CLOSE				= 2,											// SOCKFD ¹Ø±ÕÊÂ¼ş´¦Àí
 	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
 	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
 	HD_PLATFORM_SOCKET_READ		= 5,											// ÖĞĞÄ·ş¶ÁÈ¡ÊÂ¼ş´¦Àí
@@ -144,8 +144,8 @@ struct WorkThreadInfo
 {
 	struct event_base*	base;
 	struct event*		event;													//read_fdµÄ¶ÁÊÂ¼ş
-	SOCKET				read_fd;
-	SOCKET				write_fd;
+	SOCKFD				read_fd;
+	SOCKFD				write_fd;
 
 	WorkThreadInfo() { memset(this, 0, sizeof(WorkThreadInfo)); }
 };
@@ -157,7 +157,7 @@ struct TCPSocketInfo
 	time_t			acceptMsgTime;
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
-	SOCKET			acceptFd;													//×Ô¼ºµÄsocket
+	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
 	bufferevent*	bev;
 	std::mutex*		lock;
 	bool			bHandleAccptMsg;											//ÊÇ·ñ´¦ÀíÁËÎÕÊÖÏûÏ¢£¬websocketÊ¹ÓÃ
@@ -171,7 +171,7 @@ struct PlatformSocketInfo
 	time_t			acceptMsgTime;
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
-	SOCKET			acceptFd;													//×Ô¼ºµÄsocket
+	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
 
 	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
@@ -186,26 +186,26 @@ struct SendDataLineHead
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
 
-// SOCKET¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
 struct SocketReadLine
 {
 	DataLineHead						LineHead;								//¶ÓÁĞÍ·
 	NetMessageHead						netMessageHead;							//Êı¾İ°üÍ·
 	unsigned int						uHandleSize;							//Êı¾İ°ü´¦Àí´óĞ¡
-	unsigned int						uIndex;									//SOCKET Ë÷Òı
-	unsigned long int					uAccessIP;								//SOCKET IP
+	unsigned int						uIndex;									//SOCKFD Ë÷Òı
+	unsigned long int					uAccessIP;								//SOCKFD IP
 	void*								pBufferevent;							//bufferevent
 	SocketType							socketType;								//socketÀàĞÍ enum SocketType
 
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
 
-//SOCKET¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
+//SOCKFD¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
 struct SocketCloseLine
 {
 	DataLineHead						LineHead;								//¶ÓÁĞÍ·
 	UINT								uIndex;									//SOCKT Ë÷Òı
-	ULONG								uAccessIP;								//SOCKET IP
+	ULONG								uAccessIP;								//SOCKFD IP
 	UINT								uConnectTime;							//Á¬½ÓÊ±¼ä
 	BYTE								socketType;								//socketÀàĞÍ enum SocketType
 
@@ -242,7 +242,7 @@ struct ServerTimerInfo
 // Íæ¼ÒĞÅÏ¢
 struct PlayerInfo
 {
-	SocketReadLine*			pMsg;					// SOCKET¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+	SocketReadLine*			pMsg;					// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
 	void*					pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
 	ServiceType				uSrverType;			// ·şÎñÆ÷ÀàĞÍ
 	uint64_t				userId;				// Íæ¼Òid

@@ -5,6 +5,12 @@
 #define CfgMgr		LuaMgr->GetConfigMgr()
 #define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
+#ifdef _WIN32
+#define SOCKFD SOCKET
+#elif linux
+#define SOCKFD int
+#endif
+
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\

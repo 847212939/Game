@@ -27,8 +27,8 @@ const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//ÈÕ×ÓÎÄ¼þµÄ×î´óµÄ³¤¶È£¬³
 enum class SysMsgCmd
 {
 	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
-	HD_SOCKET_READ				= 1,											// SOCKET ¶ÁÈ¡ÊÂ¼þ´¦Àí
-	HD_SOCKET_CLOSE				= 2,											// SOCKET ¹Ø±ÕÊÂ¼þ´¦Àí
+	HD_SOCKET_READ				= 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼þ´¦Àí
+	HD_SOCKET_CLOSE				= 2,											// SOCKFD ¹Ø±ÕÊÂ¼þ´¦Àí
 	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
 	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
 	HD_PLATFORM_SOCKET_READ		= 5,											// ÖÐÐÄ·þ¶ÁÈ¡ÊÂ¼þ´¦Àí
@@ -128,8 +128,8 @@ struct WorkThreadInfo
 {
 	struct event_base*	base;
 	struct event*		event;													//read_fdµÄ¶ÁÊÂ¼þ
-	SOCKET				read_fd;
-	SOCKET				write_fd;
+	SOCKFD				read_fd;
+	SOCKFD				write_fd;
 
 	WorkThreadInfo() { memset(this, 0, sizeof(WorkThreadInfo)); }
 };
@@ -150,7 +150,7 @@ struct PlatformSocketInfo
 	time_t			acceptMsgTime;
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
-	SOCKET			acceptFd;													//×Ô¼ºµÄsocket
+	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
 
 	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
@@ -164,7 +164,7 @@ struct SendDataLineHead
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
 
-// SOCKET¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
 struct SocketReadLine
 {
 	DataLineHead						LineHead;								//¶ÓÁÐÍ·
@@ -175,12 +175,12 @@ struct SocketReadLine
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
 
-//SOCKET¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
+//SOCKFD¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
 struct SocketCloseLine
 {
 	DataLineHead								LineHead;								//¶ÓÁÐÍ·
 	unsigned int								uIndex;									//SOCKT Ë÷Òý
-	unsigned long								uAccessIP;								//SOCKET IP
+	unsigned long								uAccessIP;								//SOCKFD IP
 	unsigned int								uConnectTime;							//Á¬½ÓÊ±¼ä
 	unsigned char								socketType;								//socketÀàÐÍ enum SocketType
 

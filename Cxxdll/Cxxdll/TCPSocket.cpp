@@ -12,6 +12,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_ip(""),
 	m_timerCnt(0)
 {
+#ifdef _WIN32
 	WSADATA wsa;
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -31,6 +32,12 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		std::cout << "Set the number of CPU is err" << std::endl;
 	}
+#elif linux 
+	if (evthread_use_pthreads() != 0)
+	{
+		std::cout << "Init iocp thread is err" << std::endl;
+	}
+#endif
 }
 
 CTCPSocketManage::~CTCPSocketManage()
@@ -114,7 +121,7 @@ bool CTCPSocketManage::Start()
 	return true;
 }
 
-bool CTCPSocketManage::ConnectServer(SOCKET& fd)
+bool CTCPSocketManage::ConnectServer(SOCKFD& fd)
 {
 	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
@@ -164,7 +171,7 @@ bool CTCPSocketManage::ConnectServer(SOCKET& fd)
 	return true;
 }
 
-void CTCPSocketManage::ConnectServerThread(SOCKET& fd)
+void CTCPSocketManage::ConnectServerThread(SOCKFD& fd)
 {
 	if (!ConnectServer(std::ref(m_socket)))
 	{
@@ -338,7 +345,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 	m_ConditionVariable.GetMutex().unlock();
 }
 
-void CTCPSocketManage::SetTcpRcvSndBUF(SOCKET fd, int rcvBufSize, int sndBufSize)
+void CTCPSocketManage::SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize)
 {
 	int optval = 0;
 	int optLen = sizeof(int);
