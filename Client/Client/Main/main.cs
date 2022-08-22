@@ -11,7 +11,7 @@ namespace Client.Main
         static void Main(string[] args)
         {
             SocketMgr socketcb = new SocketMgr();
-            bool ret = socketcb.InitSocketMgr();
+            bool ret = socketcb.InitSocketMgr("127.0.0.1", 8888, 0);
             if (!ret)
             {
                 return;
