@@ -26,7 +26,7 @@ bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 		SafeDelete(m_TCPClient);
 		return false;
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (!m_TCPClient->GetRuninged())
 	{
 		SafeDelete(m_TCPClient);
