@@ -15,11 +15,11 @@ namespace Client.Main
 
             LoginMgr loginMgr = new LoginMgr();
 
-            Util cos = new Util();
-            cos.WriteString("8888");
-            cos.WriteString("8888");
+            Netmsg cin = new Netmsg();
+            cin.WriteString("8888");
+            cin.WriteString("8888");
 
-            socketMgr.SendMsg(cos.Data, cos.Length, 7, 1, 3);
+            socketMgr.SendMsg(cin.Data, cin.Length, 7, 1, 3);
 
             Console.ReadKey();
         }

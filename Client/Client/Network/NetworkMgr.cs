@@ -12,7 +12,6 @@
 
     internal class NetworkMgr
     {
-
         private Dictionary<int, Action<int>>            m_TimerDictionary;
         private Dictionary<UInt32, Action<NetWorkMsg>>  m_NetworkDictionary;
 
@@ -30,6 +29,14 @@
             }
         }
 
+        public void TimerDispatch(int timer)
+        {
+            if (m_TimerDictionary.ContainsKey(timer))
+            {
+                m_TimerDictionary[timer](timer);
+            }
+        }
+
         public void AddNetworkDictionary(UInt32 cmd, Action<NetWorkMsg> ac)
         {
             if (!m_NetworkDictionary.ContainsKey(cmd))
@@ -43,14 +50,6 @@
             if (m_NetworkDictionary.ContainsKey(cmd))
             {
                 m_NetworkDictionary.Remove(cmd);
-            }
-        }
-
-        public void TimerDispatch(int timer)
-        {
-            if (m_TimerDictionary.ContainsKey(timer))
-            {
-                m_TimerDictionary[timer](timer);
             }
         }
 

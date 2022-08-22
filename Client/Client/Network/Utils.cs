@@ -1,16 +1,16 @@
 ﻿namespace Client.Utils
 {
-    internal class Util
+    internal class Netmsg
     {
-        public Util()
+        public Netmsg()
         {
             m_data = "";
         }
-        public Util(string data)
+        public Netmsg(string data)
         {
             m_data = data;
         }
-        ~Util()
+        ~Netmsg()
         {
             m_data = "";
         }

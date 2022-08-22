@@ -92,14 +92,14 @@ namespace Client.Utils
 
         private void NetworkCallBackFunc(REvent eve)
         {
-            Util cis = new Util(eve.data);
+            Netmsg cout = new Netmsg(eve.data);
             NetWorkMsg msg = new NetWorkMsg();
 
-            msg.uMainID = cis.ReadUInt32();
-            msg.uAssistantID = cis.ReadUInt32();
-            msg.uIdentification = cis.ReadUInt32();
-            msg.uMessageSize = cis.ReadUInt32();
-            msg.data = cis.ReadString();
+            msg.uMainID = cout.ReadUInt32();
+            msg.uAssistantID = cout.ReadUInt32();
+            msg.uIdentification = cout.ReadUInt32();
+            msg.uMessageSize = cout.ReadUInt32();
+            msg.data = cout.ReadString();
 
             m_NetworkMgr.MessageDispatch(msg);
         }
