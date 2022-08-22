@@ -16,7 +16,8 @@ namespace MainNameSpace
     void SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
     {
         TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
-        pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0, pTcpClient->GetTCPSocketInfo().bev, (unsigned int)uIdentification);
+        pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0, 
+            pTcpClient->GetTCPSocketInfo().bev, (unsigned int)uIdentification);
     }
 
     void RegisterTimers(int timerid, int uElapse)
