@@ -12,6 +12,7 @@ namespace MainNameSpace
 		__declspec(dllexport) void __stdcall SendData(char* pData, int size, int mainID, int assistID, int uIdentification);
 		// 注册定时器
 		__declspec(dllexport) void __stdcall RegisterTimers(int timerid, int uElapse);
+		// 反注册定时器
 		__declspec(dllexport) void __stdcall UnRegisterTimers(int timerid);
 	}
 }
