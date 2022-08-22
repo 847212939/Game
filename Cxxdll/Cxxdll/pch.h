@@ -24,8 +24,6 @@
 #include <map>
 #include <list>
 #include <vector>
-#include <array>
-#include <atomic>
 #include <chrono>
 #include <thread>
 #include <mutex>
@@ -39,7 +37,6 @@
 #include <event2/event.h>
 #include <event2/thread.h>
 #include <event2/event_struct.h>
-#include <mysql.h>
 #include <time.h>
 
 #include "Macro.h"
