@@ -33,6 +33,11 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 		VerificationAccount(is, playerInfo);
 		break;
 	}
+	case LoginSysMsgCmd::cs_select_server:
+	{
+		SelectServer(is, playerInfo);
+		break;
+	}
 	case LoginSysMsgCmd::cs_select_role:
 	{
 		SelectRole(is, playerInfo);
@@ -107,6 +112,45 @@ bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 	DTCPC->SendData(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login, 
 		(int)LoginSysMsgCmd::cs_verification_account, 0, 
 		playerInfo->pMsg->pBufferevent, 0);
+
+	return true;
+}
+
+// Ñ¡Ôñ·şÎñÆ÷
+bool LoginSys::SelectServer(Cis& is, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	int serverid = 0;
+	is >> serverid;
+
+	if (serverid <= 0)
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+	if (serverid != BaseCfgMgr.GetServerId())
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		DelLoginInMap(playerInfo->pMsg->uIndex);
+		return false;
+	}
+
+	DTCPC->SendData(pLoginData->index, nullptr, 0, MsgCmd::MsgCmd_Login,
+		(int)LoginSysMsgCmd::cs_select_server,
+		0, playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }
