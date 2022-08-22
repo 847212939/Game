@@ -8,9 +8,8 @@ namespace Client.Network
             
         }
 
-        public void Initialize()
+        public void Initialize(SocketMgr socketMgr)
         {
-            SocketMgr socketMgr = SocketMgr.GetInstance();
             socketMgr.RegisterTimer(TimerCmd.TimerCmd_Test, 1000, LoginTimer);
             socketMgr.RegisterNetwork(MsgCmd.MsgCmd_Login, Network);
         }
