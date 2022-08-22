@@ -74,6 +74,7 @@ void TCPClient::HandlerRecvDataListThread()
 	if (!pDataLine)
 	{
 		std::cout << "CDataLine error pDataLine == nullptr" << std::endl;
+		run = false;
 		return;
 	}
 	while (run)

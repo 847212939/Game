@@ -36,15 +36,14 @@ namespace Client.Utils
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
         
-        public bool InitSocketMgr()
+        public bool InitSocketMgr(string ip, int port, int timerCnt)
         {
-            InitNetwork("127.0.0.1", 8888, 1);
+            InitNetwork(ip, port, timerCnt);
             if (!InitCxxnet(m_CallBackFunc, m_CBTimerHandle))
             {
                 return false;
             }
             RegisterTimers(1, 300);
-
             return true;
         }
 
