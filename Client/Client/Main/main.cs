@@ -1,4 +1,4 @@
-﻿using Client.Utils;
+﻿using Client.Network;
 
 namespace Client.Main
 {

@@ -1,14 +1,13 @@
-﻿using Client.Main;
-
-namespace Client.Utils
+﻿
+namespace Client.Network
 {
     internal class LoginMgr
     {
         public LoginMgr()
         {
             SocketMgr socketMgr = SocketMgr.GetInstance();
-            socketMgr.RegisterTimer(2, 1000, LoginTimer);
-            socketMgr.RegisterNetwork(7, Network);
+            socketMgr.RegisterTimer(TimerCmd.TimerCmd_Test, 1000, LoginTimer);
+            socketMgr.RegisterNetwork(MsgCmd.MsgCmd_Login, Network);
         }
 
         public void LoginTimer(int timer)

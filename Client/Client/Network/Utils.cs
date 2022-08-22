@@ -1,4 +1,4 @@
-﻿namespace Client.Utils
+﻿namespace Client.Network
 {
     internal class Netmsg
     {

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Client.Utils
+namespace Client.Network
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void CBTimerHandle(int timer);
@@ -66,28 +66,28 @@ namespace Client.Utils
             return true;
         }
 
-        public void RegisterNetwork(UInt32 cmd, Action<NetWorkMsg> ac)
+        public void RegisterNetwork(MsgCmd cmd, Action<NetWorkMsg> ac)
         {
-            m_NetworkMgr.AddNetworkDictionary(cmd, ac);
+            m_NetworkMgr.AddNetworkDictionary((UInt32)cmd, ac);
         }
 
-        public void UnRegisterNetwork(UInt32 cmd)
+        public void UnRegisterNetwork(MsgCmd cmd)
         {
-            m_NetworkMgr.DelNetworkDictionary(cmd);
+            m_NetworkMgr.DelNetworkDictionary((UInt32)cmd);
         }
 
-        public void RegisterTimer(int timerid, int uElapse, Action<int> ac)
+        public void RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
         {
-            if (m_NetworkMgr.AddTimerDictionary(timerid, ac))
+            if (m_NetworkMgr.AddTimerDictionary((int)timerid, ac))
             {
-                RegisterTimers(timerid, uElapse);
+                RegisterTimers((int)timerid, uElapse);
             }
         }
 
-        public void UnRegisterTimer(int timerid)
+        public void UnRegisterTimer(TimerCmd timerid)
         {
-            UnRegisterTimers(timerid);
-            m_NetworkMgr.DelTimerDictionary(timerid);
+            UnRegisterTimers((int)timerid);
+            m_NetworkMgr.DelTimerDictionary((int)timerid);
         }
 
         private void NetworkCallBackFunc(REvent eve)
