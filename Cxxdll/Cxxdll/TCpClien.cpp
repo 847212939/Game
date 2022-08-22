@@ -21,7 +21,6 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 	if (GetTimerCnt() > 0)
 	{
 		m_pServerTimer = new CServerTimer[GetTimerCnt()];
-
 		for (int i = 0; i < GetTimerCnt(); i++)
 		{
 			m_pServerTimer[i].Start();

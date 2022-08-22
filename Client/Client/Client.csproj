@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Network\**" />
     <Compile Remove="x64\**" />
-    <EmbeddedResource Remove="Network\**" />
     <EmbeddedResource Remove="x64\**" />
-    <None Remove="Network\**" />
     <None Remove="x64\**" />
   </ItemGroup>
 

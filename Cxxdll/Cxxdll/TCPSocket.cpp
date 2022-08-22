@@ -105,8 +105,8 @@ bool CTCPSocketManage::Start()
 		return false;
 	}
 
-	m_running = true;
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
+	m_running = true;
 
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket)));
@@ -168,6 +168,7 @@ void CTCPSocketManage::ConnectServerThread(SOCKET& fd)
 {
 	if (!ConnectServer(std::ref(m_socket)))
 	{
+		m_running = false;
 		return;
 	}
 
@@ -177,6 +178,10 @@ void CTCPSocketManage::ConnectServerThread(SOCKET& fd)
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 {
+	if (!data || !bev)
+	{
+		return;
+	}
 	((CTCPSocketManage*)data)->RecvData(bev);
 }
 
@@ -481,6 +486,7 @@ void CTCPSocketManage::ThreadSendMsgThread()
 	if (!pDataLine)
 	{
 		std::cout << "send list is null" << std::endl;
+		m_running = false;
 		return;
 	}
 	while (m_running)

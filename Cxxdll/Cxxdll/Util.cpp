@@ -8,7 +8,6 @@ Util* Util::Instance()
 
 Util::Util() : m_TCPClient(nullptr)
 {
-	m_TCPClient = new TCPClient;
 }
 
 Util::~Util()
@@ -21,9 +20,20 @@ Util::~Util()
 
 void Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
+	if (!m_TCPClient)
+	{
+		m_TCPClient = new TCPClient;
+	}
 	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
 		std::cout << "InitCxxnet exit" << std::endl;
+		SafeDelete(m_TCPClient);
+		return;
+	}
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	if (!m_TCPClient->GetRuninged())
+	{
+		SafeDelete(m_TCPClient);
 		return;
 	}
 
