@@ -51,9 +51,9 @@ namespace Client.Network
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
 
-        public void SendMsg(string pData, int size, int mainID, int assistID, int uIdentification)
+        public void SendMsg(string pData, int size, MsgCmd mainID, int assistID, MsgCmd uIdentification)
         {
-            SendData(pData, size, mainID, assistID, uIdentification);
+            SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
         }
 
         public bool InitSocket(string ip, int port, int timerCnt)

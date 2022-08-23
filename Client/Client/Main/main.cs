@@ -20,7 +20,7 @@ namespace Client.Main
             cin.WriteString("8888");
             cin.WriteString("8888");
 
-            socketMgr.SendMsg(cin.Data, cin.Length, 7, 1, 3);
+            socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
 
             Console.ReadKey();
         }
