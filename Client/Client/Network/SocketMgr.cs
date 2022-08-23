@@ -25,15 +25,15 @@ namespace Client.Network
         private int                 m_TimerCnt;
 
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool InitNetwork(string ip, int port, int timerCnt);
+        private extern static bool InitNetwork(string ip, int port, int timerCnt);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
+        private extern static bool InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        extern static void RegisterTimers(int timerid, int uElapse);
+        private extern static void RegisterTimers(int timerid, int uElapse);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        extern static void UnRegisterTimers(int timerid);
+        private extern static void UnRegisterTimers(int timerid);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
+        private extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
 
         public static SocketMgr GetInstance()
         {
