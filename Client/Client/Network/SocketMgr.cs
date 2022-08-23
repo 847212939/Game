@@ -22,6 +22,7 @@ namespace Client.Network
         private NetworkMgr          m_NetworkMgr;
         private CBTimerHandle       m_CBTimerHandle;
         private CBEventHandle       m_CallBackFunc;
+        private int                 m_TimerCnt;
 
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool InitNetwork(string ip, int port, int timerCnt);
@@ -46,6 +47,7 @@ namespace Client.Network
 
         private SocketMgr()
         {
+            m_TimerCnt = 0;
             m_NetworkMgr = new NetworkMgr();
             m_CallBackFunc = new CBEventHandle(NetworkCallBackFunc);
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
@@ -66,6 +68,8 @@ namespace Client.Network
             {
                 return false;
             }
+            m_TimerCnt = timerCnt;
+
             return true;
         }
 
@@ -81,6 +85,10 @@ namespace Client.Network
 
         public void RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
         {
+            if (m_TimerCnt <= 0)
+            {
+                return;
+            }
             if (m_NetworkMgr.AddTimerDictionary((int)timerid, ac))
             {
                 RegisterTimers((int)timerid, uElapse);
@@ -89,6 +97,10 @@ namespace Client.Network
 
         public void UnRegisterTimer(TimerCmd timerid)
         {
+            if (m_TimerCnt <= 0)
+            {
+                return;
+            }
             UnRegisterTimers((int)timerid);
             m_NetworkMgr.DelTimerDictionary((int)timerid);
         }
