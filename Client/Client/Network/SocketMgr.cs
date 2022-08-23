@@ -55,6 +55,13 @@ namespace Client.Network
 
         public void SendMsg(string pData, int size, MsgCmd mainID, int assistID, MsgCmd uIdentification)
         {
+            if (mainID <= MsgCmd.MsgCmd_Begin ||
+                mainID >= MsgCmd.MsgCmd_End ||
+                uIdentification <= MsgCmd.MsgCmd_Begin ||
+                uIdentification >= MsgCmd.MsgCmd_End)
+            {
+                return;
+            }
             SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
         }
 
@@ -75,17 +82,29 @@ namespace Client.Network
 
         public void RegisterNetwork(MsgCmd cmd, Action<NetWorkMsg> ac)
         {
+            if (cmd <= MsgCmd.MsgCmd_Begin || 
+                cmd >= MsgCmd.MsgCmd_End)
+            {
+                return;
+            }
             m_NetworkMgr.AddNetworkDictionary((UInt32)cmd, ac);
         }
 
         public void UnRegisterNetwork(MsgCmd cmd)
         {
+            if (cmd <= MsgCmd.MsgCmd_Begin || 
+                cmd >= MsgCmd.MsgCmd_End)
+            {
+                return;
+            }
             m_NetworkMgr.DelNetworkDictionary((UInt32)cmd);
         }
 
         public void RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
         {
-            if (m_TimerCnt <= 0)
+            if (timerid <= TimerCmd.TimerCmd_Begin || 
+                timerid >= TimerCmd.TimerCmd_End ||
+                m_TimerCnt <= 0)
             {
                 return;
             }
@@ -97,7 +116,9 @@ namespace Client.Network
 
         public void UnRegisterTimer(TimerCmd timerid)
         {
-            if (m_TimerCnt <= 0)
+            if (timerid <= TimerCmd.TimerCmd_Begin || 
+                timerid >= TimerCmd.TimerCmd_End ||
+                m_TimerCnt <= 0)
             {
                 return;
             }
@@ -111,16 +132,25 @@ namespace Client.Network
             NetWorkMsg msg = new NetWorkMsg();
 
             msg.uMainID = cout.ReadUInt32();
+            if ((MsgCmd)msg.uMainID <= MsgCmd.MsgCmd_Begin ||
+                (MsgCmd)msg.uMainID >= MsgCmd.MsgCmd_End)
+            {
+                return;
+            }
             msg.uAssistantID = cout.ReadUInt32();
             msg.uIdentification = cout.ReadUInt32();
             msg.uMessageSize = cout.ReadUInt32();
             msg.data = cout.ReadString();
-
             m_NetworkMgr.MessageDispatch(msg);
         }
 
         private void TimerCallBackFunc(int timer)
         {
+            if ((TimerCmd)timer <= TimerCmd.TimerCmd_Begin ||
+                (TimerCmd)timer >= TimerCmd.TimerCmd_End)
+            {
+                return;
+            }
             m_NetworkMgr.TimerDispatch(timer);
         }
     }
