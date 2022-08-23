@@ -142,7 +142,7 @@ bool CTCPSocketManage::ConnectServer(SOCKFD& fd)
 
 	// 添加事件，并设置好回调函数
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)this);
-	if (bufferevent_enable(bev, EV_READ | EV_WRITE) < 0)
+	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
 		std::cout << "add event fail!!!" << std::endl;
 		bufferevent_free(bev);
