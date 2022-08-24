@@ -14,7 +14,7 @@ namespace Client.Main
             }
 
             LoginMgr loginMgr = new LoginMgr();
-            loginMgr.Initialize(socketMgr);
+            loginMgr.Initialize(SocketMgr.GetInstance());
 
             Netmsg cin = new Netmsg();
             cin.WriteString("8888");
