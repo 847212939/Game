@@ -42,7 +42,9 @@ CTCPSocketManage::CTCPSocketManage() :
 
 CTCPSocketManage::~CTCPSocketManage()
 {
+#ifdef _WIN32
 	WSACleanup();
+#endif
 }
 
 bool CTCPSocketManage::Stop()
