@@ -1,6 +1,45 @@
 #pragma once
 #include <string.h>
 #include <mutex>
+#include <map>
+#include <list>
+#include <vector>
+#include <thread>
+#include <unordered_map>
+#include <functional>
+
+#ifdef _WIN32
+//define something for Windows (32-bit and 64-bit, this part is common)
+#ifdef _WIN64
+   //define something for Windows (64-bit only)
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define EXPORT_DLL __declspec(dllexport) //导出dll声明
+#define SOCKFD SOCKET
+#else
+   //define something for Windows (32-bit only)
+#endif
+#elif __APPLE__
+#if TARGET_IPHONE_SIMULATOR
+// iOS Simulator
+#elif TARGET_OS_IPHONE
+// iOS device
+#elif TARGET_OS_MAC
+// Other kinds of Mac OS
+#elif __ANDROID__
+// android
+#elif __linux__
+// linux
+#define EXPORT_DLL 
+#define SOCKFD int
+#elif __unix__ // all unices not caught above
+// Unix
+#elif defined(_POSIX_VERSION)
+// POSIX
+#else
+#   error "Unknown"
+#endif
+#endif
 
 const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
 const int					LOG_BUF_LEN = 20 * 1024;							// 日志打印缓存

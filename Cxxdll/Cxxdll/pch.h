@@ -146,7 +146,6 @@ else\
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-#define SOCKFD SOCKET
 #define EXPORT_DLL __declspec(dllexport) //导出dll声明
 #else
    //define something for Windows (32-bit only)
@@ -166,7 +165,6 @@ else\
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#define SOCKFD int
 #define EXPORT_DLL 
 #elif __unix__ // all unices not caught above
 // Unix
@@ -186,12 +184,6 @@ else\
 #include <iostream>
 #include <string>
 #include <set>
-#include <map>
-#include <list>
-#include <vector>
-#include <thread>
-#include <unordered_map>
-#include <functional>
 #include <event2/bufferevent.h>
 #include <event2/buffer.h>
 #include <event2/listener.h>
