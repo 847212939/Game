@@ -11,10 +11,10 @@ namespace MainNameSpace
 		// 初始化网络库
 		EXPORT_DLL bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
 		// 发送网络消息
-		EXPORT_DLL void SendData(char* pData, int size, int mainID, int assistID, int uIdentification);
+		EXPORT_DLL bool SendData(char* pData, int size, int mainID, int assistID, int uIdentification);
 		// 注册定时器
-		EXPORT_DLL void RegisterTimers(int timerid, int uElapse);
+		EXPORT_DLL bool RegisterTimers(int timerid, int uElapse);
 		// 反注册定时器
-		EXPORT_DLL void UnRegisterTimers(int timerid);
+		EXPORT_DLL bool UnRegisterTimers(int timerid);
 	}
 }

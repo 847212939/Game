@@ -29,11 +29,11 @@ namespace Client.Network
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
         private extern static bool InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        private extern static void RegisterTimers(int timerid, int uElapse);
+        private extern static bool RegisterTimers(int timerid, int uElapse);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        private extern static void UnRegisterTimers(int timerid);
+        private extern static bool UnRegisterTimers(int timerid);
         [DllImport("Cxxdll", CallingConvention = CallingConvention.Cdecl)]
-        private extern static void SendData(string pData, int size, int mainID, int assistID, int uIdentification);
+        private extern static bool SendData(string pData, int size, int mainID, int assistID, int uIdentification);
 
         public static SocketMgr GetInstance()
         {
@@ -53,16 +53,17 @@ namespace Client.Network
             m_CBTimerHandle = new CBTimerHandle(TimerCallBackFunc);
         }
 
-        public void SendMsg(string pData, int size, MsgCmd mainID, int assistID, MsgCmd uIdentification)
+        public bool SendMsg(string pData, int size, MsgCmd mainID, int assistID, MsgCmd uIdentification)
         {
             if (mainID <= MsgCmd.MsgCmd_Begin ||
                 mainID >= MsgCmd.MsgCmd_End ||
                 uIdentification <= MsgCmd.MsgCmd_Begin ||
                 uIdentification >= MsgCmd.MsgCmd_End)
             {
-                return;
+                return false;
             }
-            SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
+
+            return SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
         }
 
         public bool InitSocket(string ip, int port, int timerCnt)
@@ -100,30 +101,36 @@ namespace Client.Network
             m_NetworkMgr.DelNetworkDictionary((UInt32)cmd);
         }
 
-        public void RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
+        public bool RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
         {
             if (timerid <= TimerCmd.TimerCmd_Begin || 
                 timerid >= TimerCmd.TimerCmd_End ||
                 m_TimerCnt <= 0)
             {
-                return;
+                return false;
             }
             if (m_NetworkMgr.AddTimerDictionary((int)timerid, ac))
             {
-                RegisterTimers((int)timerid, uElapse);
+                return RegisterTimers((int)timerid, uElapse);
             }
+
+            return true;
         }
 
-        public void UnRegisterTimer(TimerCmd timerid)
+        public bool UnRegisterTimer(TimerCmd timerid)
         {
             if (timerid <= TimerCmd.TimerCmd_Begin || 
                 timerid >= TimerCmd.TimerCmd_End ||
                 m_TimerCnt <= 0)
             {
-                return;
+                return false;
             }
-            UnRegisterTimers((int)timerid);
-            m_NetworkMgr.DelTimerDictionary((int)timerid);
+            if (!UnRegisterTimers((int)timerid))
+            {
+                return false;
+            }
+
+            return m_NetworkMgr.DelTimerDictionary((int)timerid);
         }
 
         private void NetworkCallBackFunc(REvent eve)

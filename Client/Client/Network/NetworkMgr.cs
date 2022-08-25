@@ -63,12 +63,15 @@
             return false;
         }
 
-        public void DelTimerDictionary(int timer)
+        public bool DelTimerDictionary(int timer)
         {
             if (m_TimerDictionary.ContainsKey(timer))
             {
                 m_TimerDictionary.Remove(timer);
+                return true;
             }
+
+            return false;
         }
     }
 }
