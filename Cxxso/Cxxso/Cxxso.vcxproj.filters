@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainNameSpace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TCpClien.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mian.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConditionVariable.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLine.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainNameSpace.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerTimer.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Structural.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TCpClien.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
