@@ -22,9 +22,6 @@
     <ClInclude Include="DataLine.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Macro.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="ServerTimer.h">
       <Filter>源文件</Filter>
     </ClInclude>

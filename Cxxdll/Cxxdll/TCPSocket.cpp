@@ -13,6 +13,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_timerCnt(0)
 {
 #ifdef _WIN32
+	//define something for Windows (32-bit and 64-bit, this part is common)
+#ifdef _WIN64
+   //define something for Windows (64-bit only)
 	WSADATA wsa;
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -32,18 +35,62 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		std::cout << "Set the number of CPU is err" << std::endl;
 	}
-#elif linux 
+#else
+   //define something for Windows (32-bit only)
+#endif
+#elif __APPLE__
+#if TARGET_IPHONE_SIMULATOR
+	// iOS Simulator
+#elif TARGET_OS_IPHONE
+	// iOS device
+#elif TARGET_OS_MAC
+	// Other kinds of Mac OS
+#elif __ANDROID__
+	// android
+#elif __linux__
+	// linux
 	if (evthread_use_pthreads() != 0)
 	{
 		std::cout << "Init iocp thread is err" << std::endl;
 	}
+#elif __unix__ // all unices not caught above
+	// Unix
+#elif defined(_POSIX_VERSION)
+	// POSIX
+#else
+#   error "Unknown"
+#endif
 #endif
 }
 
 CTCPSocketManage::~CTCPSocketManage()
 {
 #ifdef _WIN32
+	//define something for Windows (32-bit and 64-bit, this part is common)
+#ifdef _WIN64
+   //define something for Windows (64-bit only)
 	WSACleanup();
+#else
+   //define something for Windows (32-bit only)
+#endif
+#elif __APPLE__
+#if TARGET_IPHONE_SIMULATOR
+	// iOS Simulator
+#elif TARGET_OS_IPHONE
+	// iOS device
+#elif TARGET_OS_MAC
+	// Other kinds of Mac OS
+#elif __ANDROID__
+	// android
+#elif __linux__
+	// linux
+#elif __unix__ // all unices not caught above
+	// Unix
+#elif defined(_POSIX_VERSION)
+	// POSIX
+#else
+#   error "Unknown"
+#endif
 #endif
 }
 

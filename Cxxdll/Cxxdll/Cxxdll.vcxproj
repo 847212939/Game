@@ -147,7 +147,6 @@
   <ItemGroup>
     <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="DataLine.h" />
-    <ClInclude Include="Macro.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerTimer.h" />
     <ClInclude Include="Structural.h" />
