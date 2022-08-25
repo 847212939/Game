@@ -52,14 +52,6 @@ public:
 	{
 		m_cond.wait_for(uniqLock, milSec);
 	}
-	/*
-	* @brief 阻塞等通知唤醒或者多长时间后被唤醒
-	* @@param _Abs_time 到一定的时间唤醒
-	*/
-	void Wait_until(std::unique_lock<std::mutex>& uniqLock, const xtime* absTime)
-	{
-		m_cond.wait_until(uniqLock, absTime);
-	}
 private:
 	std::mutex m_mutex;
 	std::condition_variable m_cond;
