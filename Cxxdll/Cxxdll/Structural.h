@@ -16,7 +16,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define EXPORT_DLL __declspec(dllexport) //µ¼³ödllÉùÃ÷
-#define SOCKFD SOCKET
+#define FD SOCKET
 #else
    //define something for Windows (32-bit only)
 #endif
@@ -32,7 +32,7 @@
 #elif __linux__
 // linux
 #define EXPORT_DLL 
-#define SOCKFD int
+#define FD int
 #elif __unix__ // all unices not caught above
 // Unix
 #elif defined(_POSIX_VERSION)
@@ -69,8 +69,8 @@ const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//ÈÕ×ÓÎÄ¼þµÄ×î´óµÄ³¤¶È£¬³
 enum class SysMsgCmd
 {
 	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
-	HD_SOCKET_READ				= 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼þ´¦Àí
-	HD_SOCKET_CLOSE				= 2,											// SOCKFD ¹Ø±ÕÊÂ¼þ´¦Àí
+	HD_SOCKET_READ				= 1,											// FD ¶ÁÈ¡ÊÂ¼þ´¦Àí
+	HD_SOCKET_CLOSE				= 2,											// FD ¹Ø±ÕÊÂ¼þ´¦Àí
 	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
 	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
 	HD_PLATFORM_SOCKET_READ		= 5,											// ÖÐÐÄ·þ¶ÁÈ¡ÊÂ¼þ´¦Àí
@@ -170,8 +170,8 @@ struct WorkThreadInfo
 {
 	struct event_base*	base;
 	struct event*		event;													//read_fdµÄ¶ÁÊÂ¼þ
-	SOCKFD				read_fd;
-	SOCKFD				write_fd;
+	FD				read_fd;
+	FD				write_fd;
 
 	WorkThreadInfo() { memset(this, 0, sizeof(WorkThreadInfo)); }
 };
@@ -192,7 +192,7 @@ struct PlatformSocketInfo
 	time_t			acceptMsgTime;
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
-	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
+	FD			acceptFd;													//×Ô¼ºµÄsocket
 
 	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
@@ -206,7 +206,7 @@ struct SendDataLineHead
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
 
-// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+// FD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
 struct SocketReadLine
 {
 	DataLineHead						LineHead;								//¶ÓÁÐÍ·
@@ -217,12 +217,12 @@ struct SocketReadLine
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };
 
-//SOCKFD¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
+//FD¹Ø±ÕÍ¨Öª½á¹¹¶¨Òå
 struct SocketCloseLine
 {
 	DataLineHead								LineHead;								//¶ÓÁÐÍ·
 	unsigned int								uIndex;									//SOCKT Ë÷Òý
-	unsigned long								uAccessIP;								//SOCKFD IP
+	unsigned long								uAccessIP;								//FD IP
 	unsigned int								uConnectTime;							//Á¬½ÓÊ±¼ä
 	unsigned char								socketType;								//socketÀàÐÍ enum SocketType
 
