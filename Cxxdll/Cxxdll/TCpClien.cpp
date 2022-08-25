@@ -73,7 +73,6 @@ void TCPClient::HandlerRecvDataListThread()
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
-		std::cout << "CDataLine error pDataLine == nullptr" << std::endl;
 		run = false;
 		return;
 	}
@@ -90,8 +89,6 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	std::cout << "recv data thread end" << std::endl;
-
 	return;
 }
 
@@ -103,12 +100,10 @@ void TCPClient::NotifyAll()
 	CDataLine* SendDataLine = GetSendDataLine();
 	if (!RecvDataLine)
 	{
-		std::cout << "RecvDataLine = null" << std::endl;
 		return;
 	}
 	if (!SendDataLine)
 	{
-		std::cout << "SendDataLine = null" << std::endl;
 		return;
 	}
 	
@@ -124,8 +119,6 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 		m_TypeFunMap.insert(std::make_pair(cmd, fun));
 		return;
 	}
-
-	std::cout << "There is already a callback for this message. Please check the code cmd=" << (int)cmd << std::endl;
 }
 
 bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
@@ -133,7 +126,6 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
-		std::cout << "No corresponding callback function found cmd=" << (int)cmd << std::endl;
 		return false;
 	}
 
@@ -195,8 +187,6 @@ void TCPClient::AddTimerCallback(int cmd)
 		m_TimerFunMap.insert(std::make_pair(cmd, m_TimerCallBackFunc));
 		return;
 	}
-
-	std::cout << "There is already a callback for this message. Please check the code cmd=" << cmd << std::endl;
 }
 
 
@@ -205,7 +195,6 @@ bool TCPClient::CallBackFun(int cmd)
 	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
-		std::cout << "No corresponding callback function found cmd=" << cmd << std::endl;
 		return false;
 	}
 
@@ -230,10 +219,6 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	if (WindowTimer->uMainID == 6)
 	{
 		CallBackFun((int)WindowTimer->uTimerID);
-	}
-	else
-	{
-		std::cout << "Timer message error"  << std::endl;
 	}
 }
 

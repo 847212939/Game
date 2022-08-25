@@ -65,7 +65,6 @@ private:
 	}\
 	catch (...)\
 	{\
-		std::cout << "DELETE ERR" << std::endl;\
 	}\
 	pData = nullptr;\
 } 
@@ -81,7 +80,6 @@ private:
 		}\
 		catch (...)\
 		{\
-			std::cout << "DELETE ERR" << std::endl;\
 		}\
 	}\
 }
@@ -97,7 +95,6 @@ private:
 		}\
 		catch(...)\
 		{\
-			std::cout << "DELETE ERR" << std::endl;\
 		}\
 		pData = nullptr;\
 	}\
@@ -107,7 +104,6 @@ private:
 #define RegisterNetwk(pobj, name, cmd)\
 if (!pobj)\
 {\
-	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\
@@ -118,7 +114,6 @@ else\
 #define RegisterTimer(pobj, name, cmd, uElapse, timerType)\
 if (!pobj)\
 {\
-	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\
@@ -130,7 +125,6 @@ else\
 #define UnRegisterTimer(pobj, cmd)\
 if (!pobj)\
 {\
-	std::cout << "注册消息失败 请检查写法" << std::endl;\
 }\
 else\
 {\

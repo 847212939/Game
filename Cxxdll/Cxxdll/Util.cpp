@@ -22,7 +22,6 @@ bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 {
 	if (!m_TCPClient->Init(netFunc, timerFunc))
 	{
-		std::cout << "InitCxxnet exit" << std::endl;
 		SafeDelete(m_TCPClient);
 		return false;
 	}

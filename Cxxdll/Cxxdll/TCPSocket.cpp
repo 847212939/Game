@@ -18,25 +18,20 @@ CTCPSocketManage::CTCPSocketManage() :
 	GetSystemInfo(&si);
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
-		std::cout << "Init socket dll err" << std::endl;
 	}
 	if (event_config_set_flag(m_eventBaseCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
 	{
-		std::cout << "Init iocp is err" << std::endl;
 	}
 	if (evthread_use_windows_threads() != 0)
 	{
-		std::cout << "Init iocp thread is err" << std::endl;
 	}
 	if (event_config_set_num_cpus_hint(m_eventBaseCfg, si.dwNumberOfProcessors) != 0)
 	{
-		std::cout << "Set the number of CPU is err" << std::endl;
 	}
 #elif defined(_WIN64)
 #elif defined(__linux__)
 	if (evthread_use_pthreads() != 0)
 	{
-		std::cout << "Init iocp thread is err" << std::endl;
 	}
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
@@ -58,19 +53,12 @@ CTCPSocketManage::~CTCPSocketManage()
 
 bool CTCPSocketManage::Stop()
 {
-	std::cout << "service tcp stop begin" << std::endl;
-
 	if (!m_running)
 	{
-		std::cout << "TCPSocketManage is not running" << std::endl;
 		return false;
 	}
-
 	m_running = false;
-
 	event_base_loopbreak(m_ConnectServerBase);
-	
-	std::cout << "service tcp stop end" << std::endl;
 
 	return true;
 }
@@ -102,13 +90,11 @@ bool CTCPSocketManage::Start()
 {
 	if (m_running == true)
 	{
-		std::cout << "service tcp already have been running" << std::endl;
 		return false;
 	}
 	m_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_socket < 0)
 	{
-		std::cout << "socket is err" << std::endl;
 		return false;
 	}
 
@@ -128,7 +114,6 @@ bool CTCPSocketManage::Start()
 
 	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		std::cout << "connect is err" << std::endl;
 		return false;
 	}
 
@@ -148,13 +133,11 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 
 	if (!m_ConnectServerBase)
 	{
-		std::cout << "TCP Could not initialize libevent!" << std::endl;
 		return false;
 	}
 	struct bufferevent* bev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
-		std::cout << "Error constructing bufferevent!" << std::endl;
 		return false;
 	}
 
@@ -165,7 +148,6 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)this);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
-		std::cout << "add event fail!!!" << std::endl;
 		bufferevent_free(bev);
 		return false;
 	}
@@ -187,7 +169,6 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 		m_socketInfo.lock = new std::mutex;
 	}
 
-	std::cout << "Socket connection succeeded" << std::endl;
 	return true;
 }
 
@@ -216,7 +197,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 {
 	if (bev == nullptr)
 	{
-		std::cout << "RecvData error bev == nullptr" << std::endl;
 		return false;
 	}
 
@@ -242,7 +222,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
 		// 消息格式不正确
-		std::cout << "消息格式不正确" << std::endl;
 		return false;
 	}
 
@@ -253,7 +232,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
 			// 消息格式不正确
-			std::cout << "消息格式不正确" << std::endl;
 			return false;
 		}
 
@@ -261,7 +239,6 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 		if (realSize < 0)
 		{
 			// 数据包不够包头
-			std::cout << "数据包不够包头" << std::endl;
 			return false;
 		}
 
@@ -397,7 +374,6 @@ void CTCPSocketManage::SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize
 {
 	if (bufferevent_get_max_single_read(bev) < rcvBufSize && bufferevent_set_max_single_read(bev, rcvBufSize) < 0)
 	{
-		std::cout << "bufferevent_set_max_single_read fail" << std::endl;
 	}
 
 	/*if (bufferevent_set_max_single_write(bev, sndBufSize) < 0)
@@ -415,13 +391,11 @@ bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int 
 {
 	if (!pBufferevent)
 	{
-		std::cout << "!pBufferevent" << std::endl;
 		return false;
 	}
 
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
-		std::cout << "invalid message size size = " << size << std::endl;
 		return false;
 	}
 
@@ -453,7 +427,6 @@ bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int 
 
 		if (addBytes == 0)
 		{
-			std::cout << "投递消息失败,assistID" << assistID << std::endl;
 			return false;
 		}
 	}
@@ -507,7 +480,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 		}
 		if (bufferevent_write(m_socketInfo.bev, pData, size) < 0)
 		{
-			std::cout << "发送数据失败" << std::endl;
 		}
 	}
 	SafeDeleteArray(pListItem->pData);
@@ -520,7 +492,6 @@ void CTCPSocketManage::ThreadSendMsgThread()
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
-		std::cout << "send list is null" << std::endl;
 		m_running = false;
 		return;
 	}
@@ -536,8 +507,6 @@ void CTCPSocketManage::ThreadSendMsgThread()
 			dataList.pop_front();
 		}
 	}
-
-	std::cout << "send data thread end" << std::endl;
 
 	return;
 }

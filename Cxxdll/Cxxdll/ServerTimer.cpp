@@ -19,7 +19,6 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 {
 	if (timeonce != 100 && timeonce != 1000)
 	{
-		std::cout << "timeonce=%d 不满足要求" << timeonce << std::endl;
 		return false;
 	}
 
@@ -61,25 +60,21 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	struct TimerParam* param = (struct TimerParam*)arg;
 	if (param == nullptr)
 	{
-		std::cout << "TimeoutCB 参数为空" << std::endl;
 		return;
 	}
 	CServerTimer* pCServerTimer = param->pCServerTimer;
 	if (!pCServerTimer)
 	{
-		std::cout << "pCServerTimer 参数为空" << std::endl;
 		return;
 	}
 	struct event_base* base = param->base;
 	if (!base)
 	{
-		std::cout << "base 参数为空" << std::endl;
 		return;
 	}
 	CDataLine* pCDataLine = DUtil->GetTCPClient()->GetRecvDataLine();
 	if (!pCDataLine)
 	{
-		std::cout << "pDataLine == nullptr" << std::endl;
 		return;
 	}
 	if (!pCServerTimer->m_bRun)
@@ -117,8 +112,6 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 
 bool CServerTimer::Stop()
 {
-	std::cout << "CServerTimer thread exit." << std::endl;
-
 	m_bRun = false;
 	m_timerMap.clear();
 

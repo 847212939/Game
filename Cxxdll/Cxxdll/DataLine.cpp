@@ -29,7 +29,6 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 	}
 	if (m_dataListSize > MAX_DATALINE_LEN)
 	{
-		std::cout << "¶ÓÁÐÒÑÂú" << MAX_DATALINE_LEN << std::endl;
 		return 0;
 	}
 	ListItemData* pListItem = new ListItemData;
