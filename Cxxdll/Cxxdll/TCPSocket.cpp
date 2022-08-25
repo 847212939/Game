@@ -7,7 +7,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_eventBaseCfg(event_config_new()),
 	m_iServiceType(ServiceType::SERVICE_TYPE_END),
 	m_ConnectServerBase(nullptr),
-	m_socket(INVALID_SOCKET),
+	m_socket(0),
 	m_port(0),
 	m_ip(""),
 	m_timerCnt(0)
@@ -113,7 +113,16 @@ bool CTCPSocketManage::Start()
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(m_port);
+
+#if defined(_WIN32)
 	sin.sin_addr.S_un.S_addr = inet_addr(m_ip);
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	sin.sin_addr.s_addr = inet_addr(m_ip);
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#endif
+
 	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
 		std::cout << "connect is err" << std::endl;
@@ -356,7 +365,14 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 void CTCPSocketManage::SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize)
 {
 	int optval = 0;
+#if defined(_WIN32)
 	int optLen = sizeof(int);
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	socklen_t optLen = sizeof(int);
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#endif
 
 	getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (char*)&optval, &optLen);
 	if (optval < rcvBufSize * 2)
