@@ -1,6 +1,7 @@
 #pragma once
 #include <string.h>
 #include <mutex>
+#include <set>
 #include <map>
 #include <list>
 #include <vector>
