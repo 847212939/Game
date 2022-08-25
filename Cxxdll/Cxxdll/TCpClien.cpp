@@ -13,11 +13,9 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 {
 	if (!Start())
 	{
-		std::cout << "!Start()" << std::endl;
 		return false;
 	}
 
-	std::cout << "m_NetworkCallBackFunc = netFunc;" << std::endl;
 	m_NetworkCallBackFunc = netFunc;
 	m_TimerCallBackFunc = timerFunc;
 	m_CloseCallBackFunc = closeFunc;
@@ -41,24 +39,18 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 
 TCPClient::~TCPClient()
 {
-	std::cout << "~TCPClient() begin" << std::endl;
 	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
 	while (!threadVec.empty())
 	{
-		std::cout << "threadVec.size()" << threadVec.size() << std::endl;
 		std::vector<std::thread*>::iterator it = threadVec.begin();
 		if (*it)
 		{
-			std::cout << "(*it)->join();" << std::endl;
 			(*it)->join();
 			SafeDelete(*it);
-			std::cout << "SafeDelete(*it);" << std::endl;
 		}
 
-		std::cout << "threadVec.erase(it);" << std::endl;
 		threadVec.erase(it);
 	}
-	std::cout << "~TCPClient() end" << std::endl;
 
 	if (m_pServerTimer)
 	{

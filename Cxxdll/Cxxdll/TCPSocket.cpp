@@ -70,12 +70,9 @@ int CTCPSocketManage::GetTimerCnt()
 
 bool CTCPSocketManage::InitNetwork(char* ip, int port, int timerCnt)
 {
-	std::cout << m_ip << std::endl;
 	m_port = port;
 	m_timerCnt = timerCnt;
 	m_ip = ip;
-
-	std::cout << m_ip << std::endl;
 
 	if (timerCnt < 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{

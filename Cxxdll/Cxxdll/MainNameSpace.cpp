@@ -19,11 +19,8 @@ namespace MainNameSpace
         {
             return -1;
         }
-        std::cout << "!pTcpClient->InitNetwork(ip, port, timerCnt)" << std::endl;
-        std::cout << g_Util << std::endl;
         if (!pTcpClient->InitNetwork(ip, port, timerCnt))
         {
-            std::cout << "InitNetwork" << std::endl;
             return -1;
         }
         
@@ -32,7 +29,6 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
     {
-        std::cout << "InitCxxnet" << g_Util << std::endl;
         if (!g_Util->InitCxxnet(netFunc, timerFunc, closeFunc))
         {
             return -1;
@@ -45,7 +41,6 @@ namespace MainNameSpace
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
-            std::cout << "!pTcpClient" << std::endl;
             return -1;
         }
 
