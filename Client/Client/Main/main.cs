@@ -22,6 +22,7 @@ namespace Client.Main
 
             socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
 
+            // 短线重连
             while (true)
             {
                 if (!socketMgr.GetConnected())
