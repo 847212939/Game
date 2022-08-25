@@ -147,6 +147,7 @@ else\
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #define SOCKFD SOCKET
+#define EXPORT_DLL __declspec(dllexport) //导出dll声明
 #else
    //define something for Windows (32-bit only)
 #endif
@@ -167,6 +168,7 @@ else\
 #include <netinet/in.h>
 #include<string.h>
 #define SOCKFD int
+#define EXPORT_DLL 
 #elif __unix__ // all unices not caught above
 // Unix
 #elif defined(_POSIX_VERSION)
