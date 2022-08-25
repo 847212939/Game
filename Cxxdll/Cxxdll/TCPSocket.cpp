@@ -9,9 +9,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_ConnectServerBase(nullptr),
 	m_socket(0),
 	m_port(0),
-	m_timerCnt(0)
+	m_timerCnt(0),
+	m_ip("")
 {
-	memset(m_ip, 0, 64);
 #if defined(_WIN32)
 	WSADATA wsa;
 	SYSTEM_INFO si;
@@ -70,16 +70,20 @@ int CTCPSocketManage::GetTimerCnt()
 
 bool CTCPSocketManage::InitNetwork(char* ip, int port, int timerCnt)
 {
+	std::cout << m_ip << std::endl;
 	m_port = port;
 	m_timerCnt = timerCnt;
+	m_ip = ip;
+
+	std::cout << m_ip << std::endl;
 
 	if (timerCnt < 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
 		m_timerCnt = 1;
 	}
-	if (ip && strlen(ip) < sizeof(m_ip))
+	if (m_ip.empty())
 	{
-		strcpy(m_ip, ip);
+		return false;
 	}
 
 	return true;
@@ -102,27 +106,20 @@ bool CTCPSocketManage::Start()
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(m_port);
 
-	std::cout << "sin.sin_port = htons(m_port);" << std::endl;
-
 #if defined(_WIN32)
-	sin.sin_addr.S_un.S_addr = inet_addr(m_ip);
+	sin.sin_addr.S_un.S_addr = inet_addr(m_ip.c_str());
 #elif defined(_WIN64)
 #elif defined(__linux__)
-	sin.sin_addr.s_addr = inet_addr(m_ip);
+	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
 #elif defined(__APPLE__)
 #endif
 
-	std::cout << "if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)" << std::endl;
-
 	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		std::cout << "connect" << std::endl;
 		return false;
 	}
-
-	std::cout << "m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;" << std::endl;
 
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 	m_running = true;
@@ -344,6 +341,11 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
+
+	if (m_socketInfo.lock)
+	{
+		SafeDelete(m_socketInfo.lock);
+	}
 
 	OnSocketCloseEvent(0);
 }

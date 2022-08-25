@@ -2,19 +2,28 @@
 
 namespace MainNameSpace
 {
+    Util* g_Util = nullptr;
+
     EXPORT_DLL int EXPORT_STDCALL InitNetwork(char* ip, int port, int timerCnt)
     {
+        if (!g_Util)
+        {
+            g_Util = Util::Instance();
+        }
         if (!ip || port <= 0)
         {
             return -1;
         }
-        TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             return -1;
         }
+        std::cout << "!pTcpClient->InitNetwork(ip, port, timerCnt)" << std::endl;
+        std::cout << g_Util << std::endl;
         if (!pTcpClient->InitNetwork(ip, port, timerCnt))
         {
+            std::cout << "InitNetwork" << std::endl;
             return -1;
         }
         
@@ -23,7 +32,8 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
     {
-        if (!Util::Instance()->InitCxxnet(netFunc, timerFunc, closeFunc))
+        std::cout << "InitCxxnet" << g_Util << std::endl;
+        if (!g_Util->InitCxxnet(netFunc, timerFunc, closeFunc))
         {
             return -1;
         }
@@ -32,23 +42,19 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL UnInitCxxnet()
     {
-        TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             std::cout << "!pTcpClient" << std::endl;
             return -1;
         }
 
-        std::cout << "SafeDelete(pTcpClient);" << std::endl;
-
-        SafeDelete(pTcpClient);
-
         return 0;
     }
 
     EXPORT_DLL int EXPORT_STDCALL SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
     {
-        TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             return -1;
@@ -63,7 +69,7 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL RegisterTimers(int timerid, int uElapse)
     {
-        TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             return -1;
@@ -79,7 +85,7 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL UnRegisterTimers(int timerid)
     {
-        TCPClient* pTcpClient = Util::Instance()->GetTCPClient();
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             return -1;

@@ -37,8 +37,10 @@ bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, 
 
 TCPClient* Util::GetTCPClient()
 {
+	std::cout << "m_TCPClient" << std::endl;
 	if (!m_TCPClient)
 	{
+		std::cout << "m_TCPClient = new TCPClient;" << std::endl;
 		m_TCPClient = new TCPClient;
 	}
 	return m_TCPClient;

@@ -54,7 +54,7 @@ private:
 private:
 	int							m_timerCnt;
 	int							m_port;
-	char						m_ip[64];
+	std::string					m_ip;
 	bool                        m_running;
 	CDataLine*					m_pRecvDataLine;
 	CDataLine*					m_pSendDataLine;

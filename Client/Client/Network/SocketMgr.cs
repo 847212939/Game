@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Client.Network
 {
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void CBTimerHandle(int timer);
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void CBEventHandle(REvent eve);
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void CBCloseHandle();
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct REvent
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2048)]
@@ -28,17 +28,17 @@ namespace Client.Network
         private int                 m_TimerCnt;
         private bool                m_Connected;
 
-        [DllImport("Cxxdll", EntryPoint = "InitNetwork", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int InitNetwork(string ip, int port, int timerCnt);
-        [DllImport("Cxxdll", EntryPoint = "InitCxxnet", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc, CBCloseHandle closeFunc);
-        [DllImport("Cxxdll", EntryPoint = "RegisterTimers", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int RegisterTimers(int timerid, int uElapse);
-        [DllImport("Cxxdll", EntryPoint = "UnRegisterTimers", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int UnRegisterTimers(int timerid);
-        [DllImport("Cxxdll", EntryPoint = "SendData", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int SendData(string pData, int size, int mainID, int assistID, int uIdentification);
-        [DllImport("Cxxdll", EntryPoint = "UnInitCxxnet", CharSet = CharSet.Unicode)]
+        [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int UnInitCxxnet();
 
         public bool GetConnected()
