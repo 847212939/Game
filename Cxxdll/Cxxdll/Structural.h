@@ -1,4 +1,6 @@
 #pragma once
+#include <string.h>
+#include <mutex>
 
 const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
 const int					LOG_BUF_LEN = 20 * 1024;							// 日志打印缓存

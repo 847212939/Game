@@ -1,4 +1,5 @@
 #pragma once
+#include "Structural.h"
 
 namespace MainNameSpace
 {

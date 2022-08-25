@@ -1,4 +1,7 @@
 #pragma once
+#include <mutex>
+#include <chrono>
+#include <condition_variable>
 
 class ConditionVariable
 {
