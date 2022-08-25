@@ -10,12 +10,12 @@ namespace MainNameSpace
         {
             g_Util = Util::Instance();
         }
-        if (!ip || port <= 0)
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
+        if (!pTcpClient)
         {
             return -1;
         }
-        TCPClient* pTcpClient = g_Util->GetTCPClient();
-        if (!pTcpClient)
+        if (!ip || port <= 0)
         {
             return -1;
         }

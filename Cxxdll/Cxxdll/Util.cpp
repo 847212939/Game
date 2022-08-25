@@ -12,22 +12,16 @@ Util::Util() : m_TCPClient(nullptr)
 
 Util::~Util()
 {
-	if (m_TCPClient)
-	{
-		SafeDelete(m_TCPClient);
-	}
 }
 
 bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
 {
 	if (!m_TCPClient->Init(netFunc, timerFunc, closeFunc))
 	{
-		SafeDelete(m_TCPClient);
 		return false;
 	}
 	if (!m_TCPClient->GetRuninged())
 	{
-		SafeDelete(m_TCPClient);
 		return false;
 	}
 

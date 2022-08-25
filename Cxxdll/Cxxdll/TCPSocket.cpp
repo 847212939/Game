@@ -129,8 +129,13 @@ bool CTCPSocketManage::Start()
 
 bool CTCPSocketManage::ConnectServer(SockFd& fd)
 {
+	if (!m_eventBaseCfg)
+	{
+		m_eventBaseCfg = event_config_new();
+	}
 	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
+	m_eventBaseCfg = nullptr;
 
 	if (!m_ConnectServerBase)
 	{
