@@ -1,4 +1,6 @@
 #pragma once
+#include "Structural.h"
+#include "ConditionVariable.h"
 
 class CTCPSocketManage
 {

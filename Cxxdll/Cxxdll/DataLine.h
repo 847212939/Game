@@ -1,4 +1,6 @@
 #pragma 
+#include "Structural.h"
+#include "ConditionVariable.h"
 
 class CDataLine
 {
