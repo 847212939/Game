@@ -27,7 +27,10 @@ namespace Client.Main
                 if (!socketMgr.GetConnected())
                 {
                     socketMgr.UnInitSocket();
-                    socketMgr.InitSocket("127.0.0.1", 8888, 1);
+                    if (socketMgr.InitSocket("127.0.0.1", 8888, 1) != 0)
+                    {
+                        Console.WriteLine("初始化网络失败");
+                    }
                 }
 
                 Thread.Sleep(1000);
