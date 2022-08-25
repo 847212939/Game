@@ -3,13 +3,16 @@
 #define __DEBUG__
 
 #ifdef _WIN32
-
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
-
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-#elif linux
+#elif
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include<string.h>
 #endif
 
 #include <iomanip>

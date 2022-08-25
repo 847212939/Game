@@ -32,7 +32,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
 	}
-#elif linux 
+#elif
 	if (evthread_use_pthreads() != 0)
 	{
 		COUT_LOG(LOG_CERROR, "Init thread is err");
@@ -42,7 +42,9 @@ CTCPSocketManage::CTCPSocketManage() :
 
 CTCPSocketManage::~CTCPSocketManage()
 {
+#ifdef _WIN32
 	WSACleanup();
+#endif
 }
 
 bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, SocketType socketType)

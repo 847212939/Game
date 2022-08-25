@@ -13,7 +13,7 @@
 
 #ifdef _WIN32
 #define SOCKFD SOCKET
-#elif linux
+#elif
 #define SOCKFD int
 #endif
 
