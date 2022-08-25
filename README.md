@@ -21,7 +21,7 @@
 3.不写Makefile是因为实在用不到  
 
 # Data
-1.配置文件
-2.tolua++
-3.lua调用c++读取配置
-4.根据pkg和exe生成接口供lua调用
+1.配置文件  
+2.tolua++  
+3.lua调用c++读取配置  
+4.根据pkg和exe生成接口供lua调用  
