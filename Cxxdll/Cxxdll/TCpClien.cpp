@@ -78,6 +78,7 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 
 void TCPClient::HandlerRecvDataListThread()
 {
+	std::cout << "TCPClient::HandlerRecvDataListThread()" << std::endl;
 	bool& run = GetRuninged();
 	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetRecvDataLine();

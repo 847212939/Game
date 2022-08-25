@@ -32,6 +32,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 
 void CServerTimer::ThreadCheckTimer()
 {
+	std::cout << "CServerTimer::ThreadCheckTimer()" << std::endl;
 	struct event timeout;
 	struct event_base* base;
 
