@@ -19,3 +19,9 @@
 1.是在linux下编译动态库so用的  
 2.g++ -shared -fpic -lm -ldl -levent -lpthread -std=c++11 -O3 -o Cxxdll.so *.cpp  
 3.不写Makefile是因为实在用不到  
+
+# Data
+1.配置文件
+2.tolua++
+3.lua调用c++读取配置
+4.根据pkg和exe生成接口供lua调用
