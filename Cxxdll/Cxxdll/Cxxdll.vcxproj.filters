@@ -5,16 +5,10 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="外部接口">
-      <UniqueIdentifier>{47be262e-6358-4e76-9e84-782356671420}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MainNameSpace.h">
-      <Filter>外部接口</Filter>
     </ClInclude>
     <ClInclude Include="ConditionVariable.h">
       <Filter>源文件</Filter>
@@ -37,6 +31,9 @@
     <ClInclude Include="Util.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="MainNameSpace.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -44,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MainNameSpace.cpp">
-      <Filter>外部接口</Filter>
     </ClCompile>
     <ClCompile Include="DataLine.cpp">
       <Filter>源文件</Filter>
@@ -61,6 +55,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainNameSpace.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
