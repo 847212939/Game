@@ -185,8 +185,6 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 
 void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 {
-	std::cout << "CTCPSocketManage::ConnectServerThread(SockFd& fd)" << std::endl;
-
 	if (!ConnectServer(std::ref(m_socket)))
 	{
 		m_running = false;
@@ -505,7 +503,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 
 void CTCPSocketManage::ThreadSendMsgThread()
 {
-	std::cout << "CTCPSocketManage::ThreadSendMsgThread()" << std::endl;
 	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
