@@ -135,7 +135,7 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
-	REvent eve;
+	static REvent eve;
 	//处理数据
 	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
 	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
