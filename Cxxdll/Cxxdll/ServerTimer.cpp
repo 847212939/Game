@@ -25,7 +25,9 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	DUtil->GetTCPClient()->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	//DUtil->GetTCPClient()->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	std::thread threadCheckTimer(&CServerTimer::ThreadCheckTimer, this);
+	threadCheckTimer.detach();
 
 	return true;
 }

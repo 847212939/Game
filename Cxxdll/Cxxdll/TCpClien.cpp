@@ -32,7 +32,9 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 		}
 	}
 
-	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	//GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	std::thread handlerRecvDataListThread(&TCPClient::HandlerRecvDataListThread, this);
+	handlerRecvDataListThread.detach();
 
 	return true;
 }

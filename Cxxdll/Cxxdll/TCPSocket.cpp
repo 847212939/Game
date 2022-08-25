@@ -121,8 +121,13 @@ bool CTCPSocketManage::Start()
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 	m_running = true;
 
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket)));
+	//m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
+	//m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket)));
+	std::thread threadSendMsgThread(&CTCPSocketManage::ThreadSendMsgThread, this);
+	threadSendMsgThread.detach();
+
+	std::thread connectServerThread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket));
+	connectServerThread.detach();
 
 	return true;
 }
