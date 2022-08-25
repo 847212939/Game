@@ -10,7 +10,7 @@ BaseCfg=
     TimerCnt = 1,
 
     --日志打印时间秒
-    LogPrintfTime = 30,
+    LogPrintfTime = 1,
 
     --程序退出
     Exit = "exit",

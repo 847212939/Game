@@ -13,10 +13,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define EXPORT_DLL __declspec(dllexport) //导出dll声明
+#define EXPORT_STDCALL __stdcall
 #define SockFd SOCKET
 #elif defined(_WIN64)
 #elif defined(__linux__)
-#define EXPORT_DLL 
+#define EXPORT_DLL
+#define EXPORT_STDCALL
 #define SockFd int
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
@@ -201,12 +203,7 @@ struct SocketReadLine
 //SockFd关闭通知结构定义
 struct SocketCloseLine
 {
-	DataLineHead								LineHead;								//队列头
 	unsigned int								uIndex;									//SOCKT 索引
-	unsigned long								uAccessIP;								//SockFd IP
-	unsigned int								uConnectTime;							//连接时间
-	unsigned char								socketType;								//socket类型 enum SocketType
-
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };
 
@@ -239,6 +236,7 @@ struct ServerTimerInfo
 
 typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
 typedef void (*TimerCallBackFunc)(int timer);
+typedef void (*CloseCallBackFunc)();
 
 template<typename T>
 using CfgSet				= std::set<T>;

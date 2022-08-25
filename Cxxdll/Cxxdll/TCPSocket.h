@@ -40,7 +40,7 @@ private:
 private:
 	bool RecvData(bufferevent* bev);
 	bool DispatchPacket(void* pBufferevent, NetMessageHead* pHead, void* pData, int size);
-	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType);
+	bool OnSocketCloseEvent(unsigned int uIndex);
 
 private:
 	void ConnectServerThread(SockFd& fd);

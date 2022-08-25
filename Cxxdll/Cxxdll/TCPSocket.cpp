@@ -102,6 +102,8 @@ bool CTCPSocketManage::Start()
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(m_port);
 
+	std::cout << "sin.sin_port = htons(m_port);" << std::endl;
+
 #if defined(_WIN32)
 	sin.sin_addr.S_un.S_addr = inet_addr(m_ip);
 #elif defined(_WIN64)
@@ -112,10 +114,15 @@ bool CTCPSocketManage::Start()
 #elif defined(__APPLE__)
 #endif
 
+	std::cout << "if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)" << std::endl;
+
 	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
+		std::cout << "connect" << std::endl;
 		return false;
 	}
+
+	std::cout << "m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;" << std::endl;
 
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 	m_running = true;
@@ -296,13 +303,10 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 }
 
 //网络关闭处理
-bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType)
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned int uIndex)
 {
 	SocketCloseLine SocketClose;
-	SocketClose.uConnectTime = uConnectTime;
 	SocketClose.uIndex = uIndex;
-	SocketClose.uAccessIP = uAccessIP;
-	SocketClose.socketType = socketType;
 	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 
@@ -340,6 +344,8 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
+
+	OnSocketCloseEvent(0);
 }
 
 void CTCPSocketManage::SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize)

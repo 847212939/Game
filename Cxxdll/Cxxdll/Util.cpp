@@ -18,13 +18,14 @@ Util::~Util()
 	}
 }
 
-bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
+bool Util::InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
 {
-	if (!m_TCPClient->Init(netFunc, timerFunc))
+	if (!m_TCPClient->Init(netFunc, timerFunc, closeFunc))
 	{
 		SafeDelete(m_TCPClient);
 		return false;
 	}
+	std::cout << "!m_TCPClient->GetRuninged()" << std::endl;
 	if (!m_TCPClient->GetRuninged())
 	{
 		SafeDelete(m_TCPClient);

@@ -13,12 +13,13 @@ protected:
 	TCPClient& operator=(const TCPClient& my);
 
 public:
-	bool Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc);
+	bool Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);
 	void NotifyAll();
 
 private:
 	void TimerCallback(void* pDataLineHead);
 	void SocketCallback(void* pDataLineHead);
+	void CloseSocketCallback(void* pDataLineHead);
 	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
 	void AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun);
 
@@ -39,4 +40,5 @@ private:
 	TimerFunMap			m_TimerFunMap;
 	NetworkCallBackFunc	m_NetworkCallBackFunc;
 	TimerCallBackFunc	m_TimerCallBackFunc;
+	CloseCallBackFunc	m_CloseCallBackFunc;
 };

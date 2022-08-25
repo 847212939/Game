@@ -6,21 +6,28 @@ TCPClient::TCPClient() :
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
+	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 
-bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
+bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
 {
 	if (!Start())
 	{
+		std::cout << "!Start()" << std::endl;
 		return false;
 	}
 
+	std::cout << "m_NetworkCallBackFunc = netFunc;" << std::endl;
 	m_NetworkCallBackFunc = netFunc;
 	m_TimerCallBackFunc = timerFunc;
+	m_CloseCallBackFunc = closeFunc;
 
 	if (GetTimerCnt() > 0)
 	{
-		m_pServerTimer = new CServerTimer[GetTimerCnt()];
+		if (!m_pServerTimer)
+		{
+			m_pServerTimer = new CServerTimer[GetTimerCnt()];
+		}
 		for (int i = 0; i < GetTimerCnt(); i++)
 		{
 			m_pServerTimer[i].Start();
@@ -34,17 +41,28 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc)
 
 TCPClient::~TCPClient()
 {
+	std::cout << "~TCPClient() begin" << std::endl;
 	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
 	while (!threadVec.empty())
 	{
+		std::cout << "threadVec.size()" << threadVec.size() << std::endl;
 		std::vector<std::thread*>::iterator it = threadVec.begin();
 		if (*it)
 		{
+			std::cout << "(*it)->join();" << std::endl;
 			(*it)->join();
 			SafeDelete(*it);
+			std::cout << "SafeDelete(*it);" << std::endl;
 		}
 
+		std::cout << "threadVec.erase(it);" << std::endl;
 		threadVec.erase(it);
+	}
+	std::cout << "~TCPClient() end" << std::endl;
+
+	if (m_pServerTimer)
+	{
+		SafeDeleteArray(m_pServerTimer);
 	}
 }
 
@@ -94,6 +112,8 @@ void TCPClient::HandlerRecvDataListThread()
 
 void TCPClient::NotifyAll()
 {
+	Stop();
+
 	GetConditionVariable().NotifyAll();
 
 	CDataLine* RecvDataLine = GetRecvDataLine();
@@ -109,6 +129,11 @@ void TCPClient::NotifyAll()
 	
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
+
+	for (int i = 0; i < GetTimerCnt(); i++)
+	{
+		m_pServerTimer[i].SetTimerRun(false);
+	}
 }
 
 void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
@@ -132,26 +157,6 @@ bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 	it->second(pDataLineHead);
 	return true;
 }
-
-void TCPClient::SocketCallback(void* pDataLineHead)
-{
-	static REvent eve;
-	//处理数据
-	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
-	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
-
-	Cos os;
-	os	<< pMsg->netMessageHead.uMainID 
-		<< pMsg->netMessageHead.uAssistantID
-		<< pMsg->netMessageHead.uIdentification 
-		<< pMsg->uHandleSize 
-		<< pData.c_str();
-
-	memcpy(eve.m_Source, os.str().c_str(), os.str().size());
-
-	m_NetworkCallBackFunc(eve);
-}
-
 
 //设定定时器
 bool TCPClient::SetTimer(int uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
@@ -213,6 +218,25 @@ void TCPClient::DelTimerCallback(int cmd)
 	m_TimerFunMap.erase(it);
 }
 
+void TCPClient::SocketCallback(void* pDataLineHead)
+{
+	static REvent eve;
+	//处理数据
+	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
+	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
+
+	Cos os;
+	os << pMsg->netMessageHead.uMainID
+		<< pMsg->netMessageHead.uAssistantID
+		<< pMsg->netMessageHead.uIdentification
+		<< pMsg->uHandleSize
+		<< pData.c_str();
+
+	memcpy(eve.m_Source, os.str().c_str(), os.str().size());
+
+	m_NetworkCallBackFunc(eve);
+}
+
 void TCPClient::TimerCallback(void* pDataLineHead)
 {
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
@@ -222,4 +246,8 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	}
 }
 
-
+void TCPClient::CloseSocketCallback(void* pDataLineHead)
+{
+	NotifyAll();
+	m_CloseCallBackFunc();
+}

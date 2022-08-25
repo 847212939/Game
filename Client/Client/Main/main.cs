@@ -6,8 +6,10 @@ namespace Client.Main
     {
         static void Main(string[] args)
         {
+            int prot = 8888;
+
             SocketMgr socketMgr = SocketMgr.GetInstance();
-            if (!socketMgr.InitSocket("127.0.0.1", 8888, 1))
+            if (socketMgr.InitSocket("127.0.0.1", prot, 1) != 0)
             {
                 Console.WriteLine("初始化网络失败");
                 return;
@@ -22,7 +24,17 @@ namespace Client.Main
 
             socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
 
-            Console.ReadKey();
+            while (true)
+            {
+                if (!socketMgr.GetConnected())
+                {
+                    prot += 1;
+                    socketMgr.UnInitSocket();
+                    socketMgr.InitSocket("127.0.0.1", prot, 1);
+                }
+
+                Thread.Sleep(1000);
+            }
         }
     }
 }
