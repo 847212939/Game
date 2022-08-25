@@ -169,7 +169,7 @@ bool CTCPSocketManage::Start()
 	return true;
 }
 
-bool CTCPSocketManage::ConnectServer(FD& fd)
+bool CTCPSocketManage::ConnectServer(SockFd& fd)
 {
 	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	event_config_free(m_eventBaseCfg);
@@ -219,7 +219,7 @@ bool CTCPSocketManage::ConnectServer(FD& fd)
 	return true;
 }
 
-void CTCPSocketManage::ConnectServerThread(FD& fd)
+void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 {
 	if (!ConnectServer(std::ref(m_socket)))
 	{
@@ -393,7 +393,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 	m_ConditionVariable.GetMutex().unlock();
 }
 
-void CTCPSocketManage::SetTcpRcvSndBUF(FD fd, int rcvBufSize, int sndBufSize)
+void CTCPSocketManage::SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize)
 {
 	int optval = 0;
 	int optLen = sizeof(int);
