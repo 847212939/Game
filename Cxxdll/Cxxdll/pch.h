@@ -151,6 +151,7 @@ else\
 #include <netinet/in.h>
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 
 #include <iomanip>

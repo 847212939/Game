@@ -21,6 +21,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 #elif defined(__linux__)
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 
 

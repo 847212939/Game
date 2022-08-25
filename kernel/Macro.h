@@ -18,6 +18,7 @@
 #define SOCKFD int
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 
 // Get Set mem

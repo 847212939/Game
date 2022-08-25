@@ -40,6 +40,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	}
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 }
 
@@ -51,6 +52,7 @@ CTCPSocketManage::~CTCPSocketManage()
 #elif defined(__linux__)
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 }
 
@@ -762,6 +764,7 @@ void CTCPSocketManage::SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize
 	socklen_t optLen = sizeof(int);
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 
 	getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (char*)&optval, &optLen);

@@ -20,6 +20,7 @@
 #define SockFd int
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
+#elif defined(__APPLE__)
 #endif
 
 const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
