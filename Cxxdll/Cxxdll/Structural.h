@@ -9,37 +9,17 @@
 #include <unordered_map>
 #include <functional>
 
-#ifdef _WIN32
-//define something for Windows (32-bit and 64-bit, this part is common)
-#ifdef _WIN64
-   //define something for Windows (64-bit only)
+#if defined(_WIN32)
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define EXPORT_DLL __declspec(dllexport) //导出dll声明
 #define SockFd SOCKET
-#else
-   //define something for Windows (32-bit only)
-#endif
-#elif __APPLE__
-#if TARGET_IPHONE_SIMULATOR
-// iOS Simulator
-#elif TARGET_OS_IPHONE
-// iOS device
-#elif TARGET_OS_MAC
-// Other kinds of Mac OS
-#elif __ANDROID__
-// android
-#elif __linux__
-// linux
+#elif defined(_WIN64)
+#elif defined(__linux__)
 #define EXPORT_DLL 
 #define SockFd int
-#elif __unix__ // all unices not caught above
-// Unix
-#elif defined(_POSIX_VERSION)
-// POSIX
-#else
-#   error "Unknown"
-#endif
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
 #endif
 
 const int					CREATE_TABLE_LEN = 512;								// 创建数据库语句长度
