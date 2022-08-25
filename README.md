@@ -16,9 +16,10 @@
 2.是在vs2022下编译动态库dll用的  
 3.windows IOCP   
 4.是在linux下编译动态库so用的  
-5.g++ -shared -fpic -lm -ldl -levent -lpthread -std=c++11 -O3 -o Cxxdll.so *.cpp  
-6.不写Makefile是因为实在用不到  
-7.在Android用
+5.linux epoll
+6.g++ -shared -fpic -lm -ldl -levent -lpthread -std=c++11 -O3 -o Cxxdll.so *.cpp  
+7.不写Makefile是因为实在用不到  
+8.在Android用
 
 # Data
 1.配置文件  
