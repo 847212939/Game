@@ -39,7 +39,10 @@ namespace MainNameSpace
         {
             return false;
         }
-        pTcpClient->SetTimer(timerid, uElapse, SERVERTIMER_TYPE_PERISIST);
+        if (!pTcpClient->SetTimer(timerid, uElapse, SERVERTIMER_TYPE_PERISIST))
+        {
+            return false;
+        }
         pTcpClient->AddTimerCallback(timerid);
 
         return true;
@@ -52,7 +55,10 @@ namespace MainNameSpace
         {
             return false;
         }
-        pTcpClient->KillTimer(timerid);
+        if (!pTcpClient->KillTimer(timerid))
+        {
+            return false;
+        }
         pTcpClient->DelTimerCallback(timerid);
 
         return true;
