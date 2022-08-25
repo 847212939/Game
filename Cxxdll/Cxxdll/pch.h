@@ -6,12 +6,6 @@
 #define CfgMgr		LuaMgr->GetConfigMgr()
 #define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
-#ifdef _WIN32
-#define SOCKFD SOCKET
-#elif linux
-#define SOCKFD int
-#endif
-
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\
@@ -152,6 +146,7 @@ else\
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#define SOCKFD SOCKET
 #else
    //define something for Windows (32-bit only)
 #endif
@@ -171,6 +166,7 @@ else\
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include<string.h>
+#define SOCKFD int
 #elif __unix__ // all unices not caught above
 // Unix
 #elif defined(_POSIX_VERSION)
