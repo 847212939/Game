@@ -1,6 +1,7 @@
 #pragma once
 #include "Structural.h"
 
+// g++ -shared -fpic -lm -ldl -levent -lpthread -std=c++11 -O3 -o Cxxdll.so *.cpp
 namespace MainNameSpace
 {
 	extern "C"
