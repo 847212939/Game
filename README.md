@@ -14,11 +14,13 @@
 # Cxxdll  
 1.是在vs2022下编译动态库dll用的  
 2.windows IOCP  
+3.在pc端用  
 
 # Cxxso   
 1.是在linux下编译动态库so用的  
 2.g++ -shared -fpic -lm -ldl -levent -lpthread -std=c++11 -O3 -o Cxxdll.so *.cpp  
 3.不写Makefile是因为实在用不到  
+4.在Android用
 
 # Data
 1.配置文件  
