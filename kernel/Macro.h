@@ -11,10 +11,13 @@
 #define DSC			DPPC->GetSceneClient()
 #define DPCC		DSC->GetPlayerCenterClient()
 
-#ifdef _WIN32
+#if defined(_WIN32)
 #define SOCKFD SOCKET
-#elif
+#elif defined(_WIN64)
+#elif defined(__linux__)
 #define SOCKFD int
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
 #endif
 
 // Get Set mem

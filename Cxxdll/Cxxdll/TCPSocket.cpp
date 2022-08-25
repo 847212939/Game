@@ -9,9 +9,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_ConnectServerBase(nullptr),
 	m_socket(0),
 	m_port(0),
-	m_ip(""),
 	m_timerCnt(0)
 {
+	memset(m_ip, 0, 64);
 #if defined(_WIN32)
 	WSADATA wsa;
 	SYSTEM_INFO si;

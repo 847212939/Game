@@ -12,7 +12,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_eventBaseCfg(event_config_new()),
 	m_socketType(SocketType::SOCKET_TYPE_TCP)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
 	WSADATA wsa;
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -32,18 +32,25 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
 	}
-#elif
+#elif defined(_WIN64)
+#elif defined(__linux__)
 	if (evthread_use_pthreads() != 0)
 	{
 		COUT_LOG(LOG_CERROR, "Init thread is err");
 	}
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
 #endif
 }
 
 CTCPSocketManage::~CTCPSocketManage()
 {
-#ifdef _WIN32
+#if defined(_WIN32)
 	WSACleanup();
+#elif defined(_WIN64)
+#elif defined(__linux__)
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
 #endif
 }
 
@@ -748,7 +755,14 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 void CTCPSocketManage::SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize)
 {
 	int optval = 0;
+#if defined(_WIN32)
 	int optLen = sizeof(int);
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	socklen_t optLen = sizeof(int);
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#endif
 
 	getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (char*)&optval, &optLen);
 	if (optval < rcvBufSize * 2)

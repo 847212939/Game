@@ -2,17 +2,20 @@
 
 #define __DEBUG__
 
-#ifdef _WIN32
+#if defined(_WIN32)
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-#elif
+#elif defined(_WIN64)
+#elif defined(__linux__)
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include<string.h>
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
 #endif
 
 #include <iomanip>
