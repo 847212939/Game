@@ -21,7 +21,14 @@ namespace Client.Main
                 cin.WriteString("8888");
                 cin.WriteString("8888");
 
-                socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
+                if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
+                {
+                    Console.WriteLine("SendMsg失败");
+                }
+                else
+                {
+                    Console.WriteLine("SendMsg成功");
+                }
             }
 
             // 短线重连
@@ -36,21 +43,6 @@ namespace Client.Main
                     else
                     {
                         Thread.Sleep(10);
-                        {
-                            Netmsg cin = new Netmsg();
-                            cin.WriteString("8888");
-                            cin.WriteString("8888");
-
-                            if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
-                            {
-                                Console.WriteLine("SendMsg失败");
-                            }
-                            else
-                            {
-                                Console.WriteLine("SendMsg成功");
-                            }
-                        }
-
                         {
                             Netmsg cin = new Netmsg();
                             cin.WriteString("8888");
