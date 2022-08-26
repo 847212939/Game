@@ -1,10 +1,5 @@
 #include "pch.h"
 
-struct TimerParam
-{
-	CServerTimer* pCServerTimer;
-};
-
 CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100), m_base(nullptr)
 {
 }
@@ -38,10 +33,7 @@ void CServerTimer::ThreadCheckTimer()
 		m_base = event_base_new();
 	}
 
-	TimerParam param;
-	param.pCServerTimer = this;
-
-	event_assign(&timeout, m_base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)&param);
+	event_assign(&timeout, m_base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)this);
 
 	struct timeval tv;
 	tv.tv_sec = 0;
@@ -51,20 +43,9 @@ void CServerTimer::ThreadCheckTimer()
 	event_base_dispatch(m_base);
 }
 
-void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
+void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)
 {
-	struct TimerParam* param = (struct TimerParam*)arg;
-	if (param == nullptr)
-	{
-		return;
-	}
-	CServerTimer* pCServerTimer = param->pCServerTimer;
-	if (!pCServerTimer)
-	{
-		return;
-	}
-	struct event_base* base = pCServerTimer->GetBase();
-	if (!base)
+	if (!m_base)
 	{
 		return;
 	}
@@ -73,37 +54,47 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	{
 		return;
 	}
-	if (!pCServerTimer->m_bRun)
+	if (!m_bRun)
 	{
-		event_base_loopbreak(base);
+		event_base_loopbreak(m_base);
 	}
 
-	long long currTime = Util::GetSysMilliseconds() / pCServerTimer->m_timeOnce * pCServerTimer->m_timeOnce;
+	long long currTime = Util::GetSysMilliseconds() / m_timeOnce * m_timeOnce;
 
-	ServerTimerInfomap& timerMap = pCServerTimer->m_timerMap;
 	// lock
-	pCServerTimer->m_cond.GetMutex().lock();
-
-	for (ServerTimerInfomap::iterator iter = timerMap.begin(); iter != timerMap.end();)
 	{
-		if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
+		m_cond.GetMutex().lock();
+		for (ServerTimerInfomap::iterator iter = m_timerMap.begin(); iter != m_timerMap.end();)
 		{
-			ServerTimerLine WindowTimer;
-			WindowTimer.uMainID = 6;
-			WindowTimer.uTimerID = iter->first;
-			pCDataLine->AddData(&WindowTimer, sizeof(ServerTimerLine), SysMsgCmd::HD_TIMER_MESSAGE);
-
-			if (iter->second.timertype == SERVERTIMER_TYPE_SINGLE)
+			if ((currTime >= iter->second.starttime) && 
+				(currTime - iter->second.starttime) % iter->second.elapse == 0)
 			{
-				timerMap.erase(iter++);
-				continue;
+				ServerTimerLine WindowTimer;
+				WindowTimer.uMainID = 6;
+				WindowTimer.uTimerID = iter->first;
+				pCDataLine->AddData(&WindowTimer, sizeof(ServerTimerLine), SysMsgCmd::HD_TIMER_MESSAGE);
+
+				if (iter->second.timertype == SERVERTIMER_TYPE_SINGLE)
+				{
+					m_timerMap.erase(iter++);
+					continue;
+				}
 			}
+
+			iter++;
 		}
-
-		iter++;
+		m_cond.GetMutex().unlock();
 	}
+}
 
-	pCServerTimer->m_cond.GetMutex().unlock();
+void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
+{
+	CServerTimer* pCServerTimer = (CServerTimer*)arg;
+	if (!pCServerTimer)
+	{
+		return;
+	}
+	pCServerTimer->TimeoutCB(fd, event);
 }
 
 bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType /*= SERVERTIMER_TYPE_PERISIST*/)

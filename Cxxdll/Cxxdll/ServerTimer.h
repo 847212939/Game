@@ -25,6 +25,7 @@ public:
 private:
 	void ThreadCheckTimer();
 	static void TimeoutCB(evutil_socket_t fd, short event, void* arg);
+	void TimeoutCB(evutil_socket_t fd, short event);
 
 private:
 	int					m_timeOnce;
