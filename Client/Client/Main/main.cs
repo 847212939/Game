@@ -31,7 +31,7 @@ namespace Client.Main
                 {
                     if (socketMgr.InitSocket("127.0.0.1", 8888, 1) != 0)
                     {
-                        Console.WriteLine("初始化网络失败");
+                        Console.WriteLine("接连失败");
                     }
                     else
                     {
@@ -45,11 +45,9 @@ namespace Client.Main
                                 Console.WriteLine("SendMsg失败");
                             }
                         }
-
-                        Console.WriteLine("初始化网络成功");
                     }
                 }
-
+                
                 Thread.Sleep(2000);
             }
         }

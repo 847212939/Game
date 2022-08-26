@@ -28,6 +28,11 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 void CServerTimer::ThreadCheckTimer()
 {
 	struct event timeout;
+	if (m_base)
+	{
+		event_base_free(m_base);
+		m_base = nullptr;
+	}
 	if (!m_base)
 	{
 		m_base = event_base_new();
@@ -41,8 +46,6 @@ void CServerTimer::ThreadCheckTimer()
 	event_add(&timeout, &tv);
 
 	event_base_dispatch(m_base);
-	event_base_free(m_base);
-	m_base = nullptr;
 }
 
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)

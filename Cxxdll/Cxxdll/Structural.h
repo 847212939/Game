@@ -148,7 +148,6 @@ struct WorkThreadInfo
 struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;										//队列头
-	void*					pBufferevent;										//bufferevent	
 
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
@@ -159,7 +158,6 @@ struct SocketReadLine
 	DataLineHead						LineHead;								//队列头
 	NetMessageHead						netMessageHead;							//数据包头
 	unsigned int						uHandleSize;							//数据包处理大小
-	void*								pBufferevent;							//bufferevent
 
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
 };

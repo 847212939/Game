@@ -138,17 +138,26 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	{
 		m_eventBaseCfg = event_config_new();
 	}
+	if (m_ConnectServerBase)
+	{
+		event_base_free(m_ConnectServerBase);
+		m_ConnectServerBase = nullptr;
+	}
 	if (!m_ConnectServerBase)
 	{
 		m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
 	}
-	event_config_free(m_eventBaseCfg);
-	m_eventBaseCfg = nullptr;
+	if (m_Socketbev)
+	{
+		bufferevent_free(m_Socketbev);
+		m_Socketbev = nullptr;
+	}
 	if (!m_Socketbev)
 	{
 		m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	}
-
+	event_config_free(m_eventBaseCfg);
+	m_eventBaseCfg = nullptr;
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
@@ -183,8 +192,6 @@ void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 	}
 
 	event_base_dispatch(m_ConnectServerBase);
-	event_base_free(m_ConnectServerBase);
-	m_ConnectServerBase = nullptr;
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
@@ -283,7 +290,6 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 
 	SocketReadLine msg;
 	msg.uHandleSize = size;
-	msg.pBufferevent = pBufferevent;
 	msg.netMessageHead = *pHead;
 
 	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
@@ -325,10 +331,6 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 	m_Connected = false;
 
 	OnSocketCloseEvent(0);
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	bufferevent_free(m_Socketbev);
-	m_Socketbev = nullptr;
 }
 
 void CTCPSocketManage::SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize)
@@ -378,11 +380,6 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 
 bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
-	if (!m_Socketbev)
-	{
-		return false;
-	}
-
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
 		return false;
@@ -410,7 +407,6 @@ bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int 
 	{
 		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
 		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
-		pLineHead->pBufferevent = m_Socketbev;
 
 		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
 
