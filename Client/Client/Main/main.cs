@@ -59,8 +59,22 @@ namespace Client.Main
                         }
                     }
                 }
-                
-                Thread.Sleep(2000);
+
+                {
+                    Netmsg cin = new Netmsg();
+                    cin.WriteString("8888");
+                    cin.WriteString("8888");
+
+                    if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
+                    {
+                        Console.WriteLine("SendMsg失败");
+                    }
+                    else
+                    {
+                        Console.WriteLine("SendMsg成功");
+                    }
+                }
+                Thread.Sleep(100);
             }
         }
     }
