@@ -41,6 +41,8 @@ void CServerTimer::ThreadCheckTimer()
 	event_add(&timeout, &tv);
 
 	event_base_dispatch(m_base);
+	event_base_free(m_base);
+	m_base = nullptr;
 }
 
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)

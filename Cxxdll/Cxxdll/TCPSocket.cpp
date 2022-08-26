@@ -141,9 +141,9 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	if (!m_ConnectServerBase)
 	{
 		m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
-		event_config_free(m_eventBaseCfg);
-		m_eventBaseCfg = nullptr;
 	}
+	event_config_free(m_eventBaseCfg);
+	m_eventBaseCfg = nullptr;
 	if (!m_Socketbev)
 	{
 		m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
@@ -183,6 +183,8 @@ void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 	}
 
 	event_base_dispatch(m_ConnectServerBase);
+	event_base_free(m_ConnectServerBase);
+	m_ConnectServerBase = nullptr;
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
@@ -323,6 +325,10 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 	m_Connected = false;
 
 	OnSocketCloseEvent(0);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	bufferevent_free(m_Socketbev);
+	m_Socketbev = nullptr;
 }
 
 void CTCPSocketManage::SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize)
