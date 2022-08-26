@@ -21,14 +21,8 @@ namespace Client.Main
                 cin.WriteString("8888");
                 cin.WriteString("8888");
 
-                if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
-                {
-                    Console.WriteLine("SendMsg失败");
-                }
-                else
-                {
-                    Console.WriteLine("SendMsg成功");
-                }
+                socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
+                
             }
 
             // 短线重连
@@ -48,14 +42,7 @@ namespace Client.Main
                             cin.WriteString("8888");
                             cin.WriteString("8888");
 
-                            if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
-                            {
-                                Console.WriteLine("SendMsg失败");
-                            }
-                            else
-                            {
-                                Console.WriteLine("SendMsg成功");
-                            }
+                            socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                         }
                     }
                 }
@@ -65,14 +52,7 @@ namespace Client.Main
                     cin.WriteString("8888");
                     cin.WriteString("8888");
 
-                    if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
-                    {
-                        Console.WriteLine("SendMsg失败");
-                    }
-                    else
-                    {
-                        Console.WriteLine("SendMsg成功");
-                    }
+                    socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                 }
                 Thread.Sleep(100);
             }
