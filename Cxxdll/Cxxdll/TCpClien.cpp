@@ -15,11 +15,18 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 	{
 		return false;
 	}
-
-	m_NetworkCallBackFunc = netFunc;
-	m_TimerCallBackFunc = timerFunc;
-	m_CloseCallBackFunc = closeFunc;
-
+	if (!m_NetworkCallBackFunc)
+	{
+		m_NetworkCallBackFunc = netFunc;
+	}
+	if (!m_TimerCallBackFunc)
+	{
+		m_TimerCallBackFunc = timerFunc;
+	}
+	if (!m_CloseCallBackFunc)
+	{
+		m_CloseCallBackFunc = closeFunc;
+	}
 	if (GetTimerCnt() > 0)
 	{
 		if (!m_pServerTimer)

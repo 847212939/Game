@@ -10,7 +10,7 @@ namespace Client.Network
 
         public void Initialize(SocketMgr socketMgr)
         {
-            socketMgr.RegisterTimer(TimerCmd.TimerCmd_Test, 1000, LoginTimer);
+            socketMgr.RegisterTimer(TimerCmd.TimerCmd_Test, 2000, LoginTimer);
             socketMgr.RegisterNetwork(MsgCmd.MsgCmd_Login, Network);
         }
 

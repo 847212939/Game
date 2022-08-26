@@ -378,7 +378,7 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 
 bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
-	if (!pBufferevent)
+	if (!m_Socketbev)
 	{
 		return false;
 	}
@@ -410,7 +410,7 @@ bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int 
 	{
 		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
 		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
-		pLineHead->pBufferevent = pBufferevent;
+		pLineHead->pBufferevent = m_Socketbev;
 
 		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
 

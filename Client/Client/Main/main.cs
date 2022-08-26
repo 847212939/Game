@@ -16,11 +16,13 @@ namespace Client.Main
             LoginMgr loginMgr = new LoginMgr();
             loginMgr.Initialize(SocketMgr.GetInstance());
 
-            Netmsg cin = new Netmsg();
-            cin.WriteString("8888");
-            cin.WriteString("8888");
+            {
+                Netmsg cin = new Netmsg();
+                cin.WriteString("8888");
+                cin.WriteString("8888");
 
-            socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
+                socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
+            }
 
             // 短线重连
             while (true)
@@ -31,9 +33,24 @@ namespace Client.Main
                     {
                         Console.WriteLine("初始化网络失败");
                     }
+                    else
+                    {
+                        {
+                            Netmsg cin = new Netmsg();
+                            cin.WriteString("8888");
+                            cin.WriteString("8888");
+
+                            if (socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces) != 0)
+                            {
+                                Console.WriteLine("SendMsg失败");
+                            }
+                        }
+
+                        Console.WriteLine("初始化网络成功");
+                    }
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
         }
     }
