@@ -14,13 +14,13 @@ protected:
 
 public:
 	bool Start(int timeonce = 100);
-	bool Stop();
 	bool SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType = SERVERTIMER_TYPE_PERISIST); //uElapse是毫秒单位，大于100ms
 	bool KillTimer(unsigned int uTimerID);
 	bool ExistsTimer(unsigned int uTimerID);
 
 public:
 	void SetTimerRun(bool run);
+	struct event_base* GetBase();
 
 private:
 	void ThreadCheckTimer();
@@ -31,4 +31,5 @@ private:
 	volatile bool		m_bRun;
 	ConditionVariable	m_cond;
 	ServerTimerInfomap  m_timerMap;
+	struct event_base*  m_base;
 };

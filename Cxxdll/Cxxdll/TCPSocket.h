@@ -26,9 +26,7 @@ public:
 	bool& GetRuninged();
 	CDataLine* GetRecvDataLine();
 	CDataLine* GetSendDataLine();
-	ConditionVariable& GetConditionVariable();
-	std::vector<std::thread*>& GetSockeThreadVec();
-	TCPSocketInfo& GetTCPSocketInfo();
+	struct bufferevent* GetScoketbev();
 
 private:
 	bool ConnectServer(SockFd& fd);
@@ -56,13 +54,12 @@ private:
 	int							m_port;
 	std::string					m_ip;
 	bool                        m_running;
+	bool						m_Connected;
 	CDataLine*					m_pRecvDataLine;
 	CDataLine*					m_pSendDataLine;
 	event_config*				m_eventBaseCfg;
 	ServiceType                 m_iServiceType;
-	ConditionVariable           m_ConditionVariable;
-	std::vector<std::thread*>   m_socketThread;
-	TCPSocketInfo				m_socketInfo;
 	event_base*					m_ConnectServerBase;
+	struct bufferevent*			m_Socketbev;
 	SockFd						m_socket;
 };

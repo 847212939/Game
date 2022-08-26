@@ -62,13 +62,14 @@ enum class SysMsgCmd
 // 服务器类型
 enum class ServiceType
 {
-	SERVICE_TYPE_BEGIN          = 0,
-	SERVICE_TYPE_LOGIC          = 1,											// 逻辑服务器
-	SERVICE_TYPE_DB             = 2,											// DB服务器
-	SERVICE_TYPE_GATA           = 3,											// 网关服务器
-	SERVICE_TYPE_GAMECENTER     = 4,											// GameCenter
-	SERVICE_TYPE_LOGON			= 5,											// LOGON
-	SERVICE_TYPE_CLIENT         = 6,											// Client
+	SERVICE_TYPE_BEGIN				= 0,
+	SERVICE_TYPE_LOGIC				= 1,											// 逻辑服务器
+	SERVICE_TYPE_DB					= 2,											// DB服务器
+	SERVICE_TYPE_GATA				= 3,											// 网关服务器
+	SERVICE_TYPE_GAMECENTER			= 4,											// GameCenter
+	SERVICE_TYPE_LOGON				= 5,											// LOGON
+	SERVICE_TYPE_CLIENT				= 6,											// Client
+	SERVICE_TYPE_CLIENT_HEARTBEAT   = 7,											// ClientHeartbeat
 	SERVICE_TYPE_END,
 };
 
@@ -86,23 +87,6 @@ enum SERVERTIMER_TYPE
 	SERVERTIMER_TYPE_SINGLE     = 1,											// 一次性定时器
 };
 
-// 场景内类型
-enum class AnimalType
-{
-	at_player		= 1,														// 玩家
-	at_monster		= 2,														// 怪物
-};
-
-// 场景内类型
-enum class HeroType
-{
-	ht_shooter		= 1,														// 射手
-	ht_warrior		= 2,														// 战士
-	ht_master		= 3,														// 法师
-	ht_meat			= 4,														// 肉
-	ht_wild			= 5,														// 打野
-};
-
 class Animal;
 class PlayerClient;
 enum class ActType;
@@ -111,13 +95,14 @@ struct CActivityList;
 class CTCPSocketManage;
 enum class HurtSysMsgCmd;
 
+
+#pragma pack(1)
+
 struct REvent
 {
 	char m_Source[2048];
 	REvent() { memset(this, 0, sizeof(REvent)); }
 };
-
-#pragma pack(1)
 
 //数据队列信息头
 struct DataLineHead
@@ -157,27 +142,6 @@ struct WorkThreadInfo
 	SockFd				write_fd;
 
 	WorkThreadInfo() { memset(this, 0, sizeof(WorkThreadInfo)); }
-};
-
-// TCP信息
-struct TCPSocketInfo
-{
-	bool			isConnect;
-	bufferevent*	bev;
-	std::mutex*		lock;
-
-	TCPSocketInfo() { memset(this, 0, sizeof(TCPSocketInfo)); }
-};
-
-// 投递soket
-struct PlatformSocketInfo
-{
-	time_t			acceptMsgTime;
-	char			ip[MAX_NUM_IP_ADDR_SIZE];
-	unsigned short	port;
-	SockFd			acceptFd;													//自己的socket
-
-	PlatformSocketInfo() { memset(this, 0, sizeof(PlatformSocketInfo)); }
 };
 
 // 发送数据队列包头

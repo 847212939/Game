@@ -32,7 +32,6 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 		}
 	}
 
-	//GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 	std::thread handlerRecvDataListThread(&TCPClient::HandlerRecvDataListThread, this);
 	handlerRecvDataListThread.detach();
 
@@ -41,19 +40,6 @@ bool TCPClient::Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, C
 
 TCPClient::~TCPClient()
 {
-	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	while (!threadVec.empty())
-	{
-		std::vector<std::thread*>::iterator it = threadVec.begin();
-		if (*it)
-		{
-			(*it)->join();
-			SafeDelete(*it);
-		}
-
-		threadVec.erase(it);
-	}
-
 	if (m_pServerTimer)
 	{
 		SafeDeleteArray(m_pServerTimer);
@@ -88,7 +74,7 @@ void TCPClient::HandlerRecvDataListThread()
 		run = false;
 		return;
 	}
-	while (run)
+	while (true)
 	{
 		if (!pDataLine->SwapDataList(dataList, run))
 		{
@@ -107,22 +93,6 @@ void TCPClient::HandlerRecvDataListThread()
 void TCPClient::NotifyAll()
 {
 	Stop();
-
-	GetConditionVariable().NotifyAll();
-
-	CDataLine* RecvDataLine = GetRecvDataLine();
-	CDataLine* SendDataLine = GetSendDataLine();
-	if (!RecvDataLine)
-	{
-		return;
-	}
-	if (!SendDataLine)
-	{
-		return;
-	}
-	
-	RecvDataLine->GetConditionVariable().NotifyAll();
-	SendDataLine->GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < GetTimerCnt(); i++)
 	{

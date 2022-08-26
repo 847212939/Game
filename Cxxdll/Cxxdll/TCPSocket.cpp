@@ -10,7 +10,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_socket(0),
 	m_port(0),
 	m_timerCnt(0),
-	m_ip("")
+	m_ip(""),
+	m_Socketbev(nullptr),
+	m_Connected(false)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -121,8 +123,6 @@ bool CTCPSocketManage::Start()
 	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT;
 	m_running = true;
 
-	//m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
-	//m_socketThread.push_back(new std::thread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket)));
 	std::thread threadSendMsgThread(&CTCPSocketManage::ThreadSendMsgThread, this);
 	threadSendMsgThread.detach();
 
@@ -138,47 +138,38 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	{
 		m_eventBaseCfg = event_config_new();
 	}
-	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
-	event_config_free(m_eventBaseCfg);
-	m_eventBaseCfg = nullptr;
-
 	if (!m_ConnectServerBase)
 	{
-		return false;
+		m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
+		event_config_free(m_eventBaseCfg);
+		m_eventBaseCfg = nullptr;
 	}
-	struct bufferevent* bev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
-	if (!bev)
+	if (!m_Socketbev)
 	{
-		return false;
+		m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	}
 
 	// 设置应用层收发数据包，单次大小
-	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
+	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
 	// 添加事件，并设置好回调函数
-	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)this);
-	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
+	bufferevent_setcb(m_Socketbev, ReadCB, nullptr, EventCB, (void*)this);
+	if (bufferevent_enable(m_Socketbev, EV_READ | EV_ET) < 0)
 	{
-		bufferevent_free(bev);
+		bufferevent_free(m_Socketbev);
 		return false;
 	}
 
-	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC)
+	// 设置读超时，当做心跳。
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_CLIENT_HEARTBEAT)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
 		tvRead.tv_usec = 0;
-		bufferevent_set_timeouts(bev, &tvRead, nullptr);
+		bufferevent_set_timeouts(m_Socketbev, &tvRead, nullptr);
 	}
 	
-	// 保存信息
-	m_socketInfo.bev = bev;
-	m_socketInfo.isConnect = true;
-	if (!m_socketInfo.lock)
-	{
-		m_socketInfo.lock = new std::mutex;
-	}
+	m_Connected = true;
 
 	return true;
 }
@@ -192,7 +183,6 @@ void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 	}
 
 	event_base_dispatch(m_ConnectServerBase);
-	event_base_free(m_ConnectServerBase);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
@@ -326,33 +316,11 @@ CDataLine* CTCPSocketManage::GetSendDataLine()
 
 void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 {
-	// 加锁
-	m_ConditionVariable.GetMutex().lock();
-	if (!m_socketInfo.isConnect)
+	if (!m_Connected)
 	{
 		return;
 	}
-	if (!m_socketInfo.lock)
-	{
-		m_socketInfo.lock = new std::mutex;
-	}
-	// 和发送线程相关的锁
-	m_socketInfo.lock->lock();
-
-	m_socketInfo.isConnect = false;
-	bufferevent_free(m_socketInfo.bev);
-	m_socketInfo.bev = nullptr;
-
-	// 解锁发送线程
-	m_socketInfo.lock->unlock();
-
-	// 解锁多线程
-	m_ConditionVariable.GetMutex().unlock();
-
-	if (m_socketInfo.lock)
-	{
-		SafeDelete(m_socketInfo.lock);
-	}
+	m_Connected = false;
 
 	OnSocketCloseEvent(0);
 }
@@ -449,24 +417,14 @@ bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int 
 	return true;
 }
 
-TCPSocketInfo& CTCPSocketManage::GetTCPSocketInfo()
+struct bufferevent* CTCPSocketManage::GetScoketbev()
 {
-	return m_socketInfo;
-}
-
-std::vector<std::thread*>& CTCPSocketManage::GetSockeThreadVec()
-{
-	return m_socketThread;
+	return m_Socketbev;
 }
 
 bool& CTCPSocketManage::GetRuninged()
 {
 	return m_running;
-}
-
-ConditionVariable& CTCPSocketManage::GetConditionVariable()
-{
-	return m_ConditionVariable;
 }
 
 void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
@@ -482,20 +440,13 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
 	void* pData = pListItem->pData + sizeof(SendDataLineHead);
-
-	if (!m_socketInfo.lock)
+	
+	if (!m_Connected || !m_Socketbev)
 	{
 		return;
 	}
+	if (bufferevent_write(m_Socketbev, pData, size) < 0)
 	{
-		std::lock_guard<std::mutex> guard(*m_socketInfo.lock);
-		if (!m_socketInfo.isConnect || !m_socketInfo.bev)
-		{
-			return;
-		}
-		if (bufferevent_write(m_socketInfo.bev, pData, size) < 0)
-		{
-		}
 	}
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
@@ -510,7 +461,7 @@ void CTCPSocketManage::ThreadSendMsgThread()
 		m_running = false;
 		return;
 	}
-	while (m_running)
+	while (true)
 	{
 		if (!pDataLine->SwapDataList(dataList, m_running))
 		{

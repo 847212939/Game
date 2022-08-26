@@ -3,10 +3,9 @@
 struct TimerParam
 {
 	CServerTimer* pCServerTimer;
-	struct event_base* base;
 };
 
-CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100)
+CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100), m_base(nullptr)
 {
 }
 
@@ -25,7 +24,6 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	//DUtil->GetTCPClient()->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 	std::thread threadCheckTimer(&CServerTimer::ThreadCheckTimer, this);
 	threadCheckTimer.detach();
 
@@ -35,26 +33,22 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 void CServerTimer::ThreadCheckTimer()
 {
 	struct event timeout;
-	struct event_base* base;
-
-	/* Initialize the event library */
-	base = event_base_new();
+	if (!m_base)
+	{
+		m_base = event_base_new();
+	}
 
 	TimerParam param;
-	param.base = base;
 	param.pCServerTimer = this;
 
-	/* Initialize one event */
-	event_assign(&timeout, base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)&param);
+	event_assign(&timeout, m_base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)&param);
 
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = m_timeOnce * 1000;
 	event_add(&timeout, &tv);
 
-	event_base_dispatch(base);
-
-	event_base_free(base);
+	event_base_dispatch(m_base);
 }
 
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
@@ -69,7 +63,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	{
 		return;
 	}
-	struct event_base* base = param->base;
+	struct event_base* base = pCServerTimer->GetBase();
 	if (!base)
 	{
 		return;
@@ -110,14 +104,6 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	}
 
 	pCServerTimer->m_cond.GetMutex().unlock();
-}
-
-bool CServerTimer::Stop()
-{
-	m_bRun = false;
-	m_timerMap.clear();
-
-	return true;
 }
 
 bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType /*= SERVERTIMER_TYPE_PERISIST*/)
@@ -174,4 +160,9 @@ bool CServerTimer::ExistsTimer(unsigned int uTimerID)
 void CServerTimer::SetTimerRun(bool run)
 {
 	m_bRun = run;
+}
+
+struct event_base* CServerTimer::GetBase()
+{
+	return m_base;
 }
