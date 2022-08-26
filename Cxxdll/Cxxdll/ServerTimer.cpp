@@ -28,18 +28,16 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 void CServerTimer::ThreadCheckTimer()
 {
 	struct event timeout;
-	struct event_base* pBase = event_base_new();
+	m_base = event_base_new();
 
-	m_base = pBase;
-
-	event_assign(&timeout, pBase, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)this);
+	event_assign(&timeout, m_base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)this);
 
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = m_timeOnce * 1000;
 	event_add(&timeout, &tv);
 
-	event_base_dispatch(pBase);
+	event_base_dispatch(m_base);
 	event_base_free(m_base);
 }
 

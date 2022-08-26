@@ -4,7 +4,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_running(false),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(NULL),
+	m_eventBaseCfg(event_config_new()),
 	m_iServiceType(ServiceType::SERVICE_TYPE_END),
 	m_ConnectServerBase(NULL),
 	m_socket(0),
@@ -134,35 +134,17 @@ bool CTCPSocketManage::Start()
 
 bool CTCPSocketManage::ConnectServer(SockFd& fd)
 {
-	if (m_Socketbev)
-	{
-		bufferevent_free(m_Socketbev);
-	}
-	if (m_ConnectServerBase)
-	{
-		event_base_free(m_ConnectServerBase);
-	}
-	if (m_eventBaseCfg)
-	{
-		event_config_free(m_eventBaseCfg);
-	}
-
-	event_config* pEventBaseCfg = event_config_new();
-	event_base* pConnectServerBase = event_base_new_with_config(pEventBaseCfg);
-	struct bufferevent* pSocketbev = bufferevent_socket_new(pConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
-
-	m_eventBaseCfg = pEventBaseCfg;
-	m_ConnectServerBase = pConnectServerBase;
-	m_Socketbev = pSocketbev;
+	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
+	m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 
 	// 设置应用层收发数据包，单次大小
-	SetMaxSingleReadAndWrite(pSocketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
+	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
 	// 添加事件，并设置好回调函数
-	bufferevent_setcb(pSocketbev, ReadCB, nullptr, EventCB, (void*)this);
-	if (bufferevent_enable(pSocketbev, EV_READ | EV_ET) < 0)
+	bufferevent_setcb(m_Socketbev, ReadCB, nullptr, EventCB, (void*)this);
+	if (bufferevent_enable(m_Socketbev, EV_READ | EV_ET) < 0)
 	{
-		bufferevent_free(pSocketbev);
+		bufferevent_free(m_Socketbev);
 		return false;
 	}
 
@@ -172,7 +154,7 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
 		tvRead.tv_usec = 0;
-		bufferevent_set_timeouts(pSocketbev, &tvRead, nullptr);
+		bufferevent_set_timeouts(m_Socketbev, &tvRead, nullptr);
 	}
 	
 	m_Connected = true;
@@ -189,6 +171,8 @@ void CTCPSocketManage::ConnectServerThread(SockFd& fd)
 	}
 
 	event_base_dispatch(m_ConnectServerBase);
+	bufferevent_free(m_Socketbev);
+	event_base_free(m_ConnectServerBase);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)

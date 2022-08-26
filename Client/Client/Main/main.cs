@@ -44,6 +44,10 @@ namespace Client.Main
                             {
                                 Console.WriteLine("SendMsg失败");
                             }
+                            else
+                            {
+                                Console.WriteLine("SendMsg成功");
+                            }
                         }
                     }
                 }
