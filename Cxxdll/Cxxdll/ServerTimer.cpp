@@ -1,6 +1,6 @@
 #include "pch.h"
 
-CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100), m_base(nullptr)
+CServerTimer::CServerTimer() : m_bRun(false), m_timeOnce(100), m_base(NULL)
 {
 }
 
@@ -28,24 +28,19 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 void CServerTimer::ThreadCheckTimer()
 {
 	struct event timeout;
-	if (m_base)
-	{
-		event_base_free(m_base);
-		m_base = nullptr;
-	}
-	if (!m_base)
-	{
-		m_base = event_base_new();
-	}
+	struct event_base* pBase = event_base_new();
 
-	event_assign(&timeout, m_base, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)this);
+	m_base = pBase;
+
+	event_assign(&timeout, pBase, -1, EV_PERSIST, CServerTimer::TimeoutCB, (void*)this);
 
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = m_timeOnce * 1000;
 	event_add(&timeout, &tv);
 
-	event_base_dispatch(m_base);
+	event_base_dispatch(pBase);
+	event_base_free(m_base);
 }
 
 void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)
