@@ -1,4 +1,4 @@
-﻿namespace Client.Network
+﻿namespace Client.Util
 {
     internal class Netmsg
     {
@@ -18,27 +18,27 @@
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteInt16(Int16 value)
+        public void WriteInt16(short value)
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteInt32(Int32 value)
+        public void WriteInt32(int value)
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteInt64(Int64 value)
+        public void WriteInt64(long value)
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteUInt16(UInt16 value)
+        public void WriteUInt16(ushort value)
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteUInt32(UInt32 value)
+        public void WriteUInt32(uint value)
         {
             m_data += value.ToString() + "\n";
         }
-        public void WriteUInt64(UInt64 value)
+        public void WriteUInt64(ulong value)
         {
             m_data += value.ToString() + "\n";
         }
@@ -78,7 +78,7 @@
         {
             return GetSubString();
         }
-        public Int16 ReadInt16()
+        public short ReadInt16()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -86,9 +86,9 @@
                 return 0;
             }
 
-            return Int16.Parse(str);
+            return short.Parse(str);
         }
-        public Int32 ReadInt32()
+        public int ReadInt32()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -96,9 +96,9 @@
                 return 0;
             }
 
-            return Int32.Parse(str);
+            return int.Parse(str);
         }
-        public Int64 ReadInt64()
+        public long ReadInt64()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -106,9 +106,9 @@
                 return 0;
             }
 
-            return Int64.Parse(str);
+            return long.Parse(str);
         }
-        public UInt16 ReadUInt16()
+        public ushort ReadUInt16()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -116,9 +116,9 @@
                 return 0;
             }
 
-            return UInt16.Parse(str);
+            return ushort.Parse(str);
         }
-        public UInt32 ReadUInt32()
+        public uint ReadUInt32()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -126,9 +126,9 @@
                 return 0;
             }
 
-            return UInt32.Parse(str);
+            return uint.Parse(str);
         }
-        public UInt64 ReadUInt64()
+        public ulong ReadUInt64()
         {
             string str = GetSubString();
             if (str.Length <= 0)
@@ -136,7 +136,7 @@
                 return 0;
             }
 
-            return UInt64.Parse(str);
+            return ulong.Parse(str);
         }
         public char ReadChar()
         {
