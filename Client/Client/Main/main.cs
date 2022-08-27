@@ -54,7 +54,7 @@ namespace Client.Main
 
                     socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
         }
     }
