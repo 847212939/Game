@@ -25,7 +25,7 @@ namespace Client.Main
                 
             }
 
-            // 短线重连
+            // 断线重连机制
             while (true)
             {
                 if (!socketMgr.GetConnected())
