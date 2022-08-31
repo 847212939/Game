@@ -11,6 +11,11 @@ protected:
 	Util& operator=(const Util& my);
 
 public:
+	// ∂‘≥∆º”√‹
+	static uint8_t* Encrypt(uint8_t* content, int length);
+	static uint8_t* Decrypt(uint8_t* content, int length);
+
+public:
 	static Util* Instance();
 	TCPClient* GetTCPClient();
 	bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);

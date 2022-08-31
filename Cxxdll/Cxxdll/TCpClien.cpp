@@ -192,7 +192,7 @@ void TCPClient::DelTimerCallback(int cmd)
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
 	static REvent eve;
-	//处理数据
+
 	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
 	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
 
@@ -211,7 +211,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 void TCPClient::TimerCallback(void* pDataLineHead)
 {
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
-	if (WindowTimer->uMainID == 6)
+	if (WindowTimer->uMainID == MsgCmd_Timer)
 	{
 		CallBackFun((int)WindowTimer->uTimerID);
 	}

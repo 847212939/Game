@@ -140,5 +140,5 @@ private:
 	int         m_serverType;
 	int	        m_serverID;
 	time_t      m_lastSecond;
-	uint64_t   m_addID;
+	uint64_t	m_addID;
 };

@@ -1,6 +1,10 @@
 ﻿#ifndef PCH_H
 #define PCH_H
 
+#define MsgCmd_HeartBeat	1	// 心跳
+#define MsgCmd_Testlink		2	// 连接测试
+#define MsgCmd_Timer		6	// 定时器
+
 #define DUtil		Util::Instance()
 #define LuaMgr		CLuaMgr::Instance()
 #define CfgMgr		LuaMgr->GetConfigMgr()
@@ -131,6 +135,8 @@ else\
 	pobj->KillTimer(cmd);\
 	pobj->DelTimerCallback(cmd);\
 }
+
+const char key[] = "LiuDaNaoDai";
 
 #if defined(_WIN32)
 #define _CRT_SECURE_NO_WARNINGS

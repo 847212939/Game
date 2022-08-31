@@ -258,22 +258,18 @@ long long Util::GetSysMilliseconds()
 
 uint8_t* Util::Encrypt(uint8_t* content, int length)
 {
-	std::string sKey = BaseCfgMgr.GetKey();
-
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+		content[i] ^= key[i % (sizeof(key) - 1)];
 	}
 	return content;
 }
 
 uint8_t* Util::Decrypt(uint8_t* content, int length)
 {
-	std::string sKey = BaseCfgMgr.GetKey();
-
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+		content[i] ^= key[i % (sizeof(key) - 1)];
 	}
 	return content;
 }

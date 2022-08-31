@@ -44,6 +44,25 @@ long long Util::GetSysMilliseconds()
 	return duration_in_ms.count();
 }
 
+uint8_t* Util::Encrypt(uint8_t* content, int length)
+{
+	for (size_t i = 0; i < length; i++)
+	{
+		content[i] ^= key[i % (sizeof(key) - 1)];
+	}
+	return content;
+}
+
+uint8_t* Util::Decrypt(uint8_t* content, int length)
+{
+	for (size_t i = 0; i < length; i++)
+	{
+		content[i] ^= key[i % (sizeof(key) - 1)];
+	}
+	return content;
+}
+
+
 Cos::Cos()
 {
 }

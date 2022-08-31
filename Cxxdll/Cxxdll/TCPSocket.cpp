@@ -259,7 +259,11 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	{
 		return false;
 	}
-	if (pHead->uMainID == 1) //心跳包
+	if (pHead->uMainID == MsgCmd_HeartBeat) //心跳包
+	{
+		return true;
+	}
+	if (pHead->uMainID == MsgCmd_Testlink) //测试包
 	{
 		return true;
 	}
