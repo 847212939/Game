@@ -22,7 +22,7 @@ BaseCfg=
     OpenServerTime = "2022-08-18 19:00:35",
     
     --对称加密
-    Skey = "nishishabima",
+    Skey = "LiuDaNaoDai",
 
     LogicCfg =
     {
