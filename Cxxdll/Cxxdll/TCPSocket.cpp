@@ -297,6 +297,8 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	{
 		if (!VerifyConnection((char*)pData))
 		{
+			dynamic_cast<TCPClient*>(this)->
+				CloseSocketCallback(nullptr);
 			return false;
 		}
 

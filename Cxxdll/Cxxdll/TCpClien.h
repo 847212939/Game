@@ -15,11 +15,11 @@ protected:
 public:
 	bool Init(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);
 	void NotifyAll();
+	void CloseSocketCallback(void* pDataLineHead);
 
 private:
 	void TimerCallback(void* pDataLineHead);
 	void SocketCallback(void* pDataLineHead);
-	void CloseSocketCallback(void* pDataLineHead);
 	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
 	void AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun);
 
