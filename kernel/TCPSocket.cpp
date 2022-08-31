@@ -560,11 +560,11 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 		return false;
 	}
 
-#ifdef __DEBUG__
 	auto& tcpInfo = m_socketInfoVec[index];
+	tcpInfo.link = (int)MsgCmd::MsgCmd_Testlink;
+
 	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
-#endif // __DEBUG__
 
 	return true;
 }
