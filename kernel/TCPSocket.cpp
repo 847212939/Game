@@ -10,7 +10,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
-	m_socketType(SocketType::SOCKET_TYPE_TCP)
+	m_socketType(SocketType::SOCKET_TYPE_TCP),
+	m_KeyTime(0)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -441,13 +442,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	// 发送连接成功消息
-	Cos os;
-	os << "MsgCmd::MsgCmd_Testlink";
-	SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 1, 0, tcpInfo.bev);
+	m_KeyTime = ::time(nullptr);
 
-	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
-		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+	Cos os;
+	os << m_KeyTime;
+	SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
@@ -536,6 +535,40 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	return true;
 }
 
+// 测试连接
+bool CTCPSocketManage::VerifyConnection(int index, char* data)
+{
+	if (!data)
+	{
+		return false;
+	}
+	Cis is(data);
+	std::string str;
+	is >> str;
+	if (str.empty())
+	{
+		return false;
+	}
+	std::string keyEncrypt = Util::Decrypt((char*)str.c_str(), str.size());
+	if (keyEncrypt.empty())
+	{
+		return false;
+	}
+	std::string keyStr = std::to_string(m_KeyTime);
+	if (keyStr != keyEncrypt)
+	{
+		return false;
+	}
+
+#ifdef __DEBUG__
+	auto& tcpInfo = m_socketInfoVec[index];
+	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
+		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+#endif // __DEBUG__
+
+	return true;
+}
+
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size)
 {
 	if (!pBufferevent || !pHead)
@@ -548,6 +581,10 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
 	{
+		if (!VerifyConnection(index, (char*)pData))
+		{
+			RemoveTCPSocketStatus(index);
+		}
 		return true;
 	}
 
