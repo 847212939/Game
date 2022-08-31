@@ -161,7 +161,7 @@ struct TCPSocketInfo
 	bufferevent*	bev;
 	std::mutex*		lock;
 	bool			bHandleAccptMsg;											//是否处理了握手消息，websocket使用
-	int				link;														//测试连接是否成功
+	uint64_t		link;														//测试连接是否成功
 
 	TCPSocketInfo() { memset(this, 0, sizeof(TCPSocketInfo)); }
 };

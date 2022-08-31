@@ -10,8 +10,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
-	m_socketType(SocketType::SOCKET_TYPE_TCP),
-	m_KeyTime(0)
+	m_socketType(SocketType::SOCKET_TYPE_TCP)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -421,6 +420,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	tcpInfo.bev = bev;
 	tcpInfo.isConnect = true;
 	tcpInfo.port = pTCPSocketInfo->port;
+	tcpInfo.link = DUtil->CreateUserId() + (uint64_t)Util::GetRandNum();
 	if (!tcpInfo.lock)
 	{
 		tcpInfo.lock = new std::mutex;
@@ -442,10 +442,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //½âËø
 
-	m_KeyTime = DUtil->CreateUserId() + Util::GetRandNum();
-
 	Cos os;
-	os << m_KeyTime;
+	os << tcpInfo.link;
 	SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 }
 
@@ -549,14 +547,14 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	{
 		return false;
 	}
+	auto& tcpInfo = m_socketInfoVec[index];
 	Util::Decrypt((char*)str.c_str(), str.size());
-	if (std::to_string(m_KeyTime) != str)
+	if (std::to_string(tcpInfo.link) != str)
 	{
 		return false;
 	}
-
-	auto& tcpInfo = m_socketInfoVec[index];
-	tcpInfo.link = (int)MsgCmd::MsgCmd_Testlink;
+	
+	tcpInfo.link = (uint64_t)MsgCmd::MsgCmd_Testlink;
 
 	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);

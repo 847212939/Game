@@ -93,9 +93,9 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "!tcpInfo");
 		return;
 	}
-	if (tcpInfo->link != (int)MsgCmd::MsgCmd_Testlink)
+	if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 	{
-		COUT_LOG(LOG_CERROR, "!tcpInfo->link != (int)MsgCmd::MsgCmd_Testlink");
+		COUT_LOG(LOG_CERROR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
 		return;
 	}
 	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;

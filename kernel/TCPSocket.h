@@ -73,7 +73,6 @@ private:
 	bool VerifyConnection(int index, char* data);
 
 private:
-	uint64_t					m_KeyTime;
 	unsigned short              m_port;
 	bool                        m_running;
 	char                        m_bindIP[48];
