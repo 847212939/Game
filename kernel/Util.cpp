@@ -261,7 +261,7 @@ char* Util::Encrypt(char* content, size_t length)
 	std::string sKey = BaseCfgMgr.GetKey();
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+		content[i] ^= sKey[i % (sKey.size() - 1)];
 	}
 	return content;
 }
@@ -271,7 +271,7 @@ char* Util::Decrypt(char* content, size_t length)
 	std::string sKey = BaseCfgMgr.GetKey();
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= sKey[i % (sizeof(sKey) - 1)];
+		content[i] ^= sKey[i % (sKey.size() - 1)];
 	}
 	return content;
 }

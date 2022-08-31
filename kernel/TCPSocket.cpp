@@ -442,7 +442,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //½âËø
 
-	m_KeyTime = ::time(nullptr);
+	m_KeyTime = DUtil->CreateUserId() + Util::GetRandNum();
 
 	Cos os;
 	os << m_KeyTime;
@@ -549,13 +549,8 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	{
 		return false;
 	}
-	std::string keyEncrypt = Util::Decrypt((char*)str.c_str(), str.size());
-	if (keyEncrypt.empty())
-	{
-		return false;
-	}
-	std::string keyStr = std::to_string(m_KeyTime);
-	if (keyStr != keyEncrypt)
+	Util::Decrypt((char*)str.c_str(), str.size());
+	if (std::to_string(m_KeyTime) != str)
 	{
 		return false;
 	}

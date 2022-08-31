@@ -46,18 +46,22 @@ long long Util::GetSysMilliseconds()
 
 char* Util::Encrypt(char* content, size_t length)
 {
+	std::string key = "LiuDaNaoDai";
+
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= key[i % (sizeof(key) - 1)];
+		content[i] ^= key[i % (key.size() - 1)];
 	}
 	return content;
 }
 
 char* Util::Decrypt(char* content, size_t length)
 {
+	std::string key = "LiuDaNaoDai";
+
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= key[i % (sizeof(key) - 1)];
+		content[i] ^= key[i % (key.size() - 1)];
 	}
 	return content;
 }
