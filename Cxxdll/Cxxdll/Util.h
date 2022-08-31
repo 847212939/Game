@@ -12,8 +12,8 @@ protected:
 
 public:
 	// ∂‘≥∆º”√‹
-	static uint8_t* Encrypt(uint8_t* content, int length);
-	static uint8_t* Decrypt(uint8_t* content, int length);
+	static char* Encrypt(char* content, size_t length);
+	static char* Decrypt(char* content, size_t length);
 
 public:
 	static Util* Instance();

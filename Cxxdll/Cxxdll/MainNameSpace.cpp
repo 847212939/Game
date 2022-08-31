@@ -55,7 +55,7 @@ namespace MainNameSpace
             return -1;
         }
         if (!pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0,
-            nullptr, (unsigned int)uIdentification))
+            (unsigned int)uIdentification))
         {
             return -1;
         }

@@ -253,6 +253,36 @@ bool CTCPSocketManage::RecvData(bufferevent* bev)
 	return true;
 }
 
+// ²âÊÔÁ¬½Ó
+bool CTCPSocketManage::VerifyConnection(char* data)
+{
+	if (!data)
+	{
+		return false;
+	}
+	Cis is(data);
+	std::string str;
+	is >> str;
+	if (str.empty())
+	{
+		return false;
+	}
+	char* pEncrypt = Util::Encrypt((char*)str.c_str(), str.size());
+	if (!pEncrypt)
+	{
+		return false;
+	}
+	Cos os;
+	os << pEncrypt;
+
+	if (!SendData(os.str().c_str(), os.str().size(), MsgCmd_Testlink, 0, 0))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead, void* pData, int size)
 {
 	if (!pBufferevent || !pHead)
@@ -265,6 +295,11 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, NetMessageHead* pHead,
 	}
 	if (pHead->uMainID == MsgCmd_Testlink) //²âÊÔ°ü
 	{
+		if (!VerifyConnection((char*)pData))
+		{
+			return false;
+		}
+
 		return true;
 	}
 	CDataLine* pDataLine = GetRecvDataLine();
@@ -363,7 +398,7 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	((CTCPSocketManage*)data)->RemoveTCPSocketStatus(true);
 }
 
-bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
 {
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{

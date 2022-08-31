@@ -44,7 +44,7 @@ long long Util::GetSysMilliseconds()
 	return duration_in_ms.count();
 }
 
-uint8_t* Util::Encrypt(uint8_t* content, int length)
+char* Util::Encrypt(char* content, size_t length)
 {
 	for (size_t i = 0; i < length; i++)
 	{
@@ -53,7 +53,7 @@ uint8_t* Util::Encrypt(uint8_t* content, int length)
 	return content;
 }
 
-uint8_t* Util::Decrypt(uint8_t* content, int length)
+char* Util::Decrypt(char* content, size_t length)
 {
 	for (size_t i = 0; i < length; i++)
 	{

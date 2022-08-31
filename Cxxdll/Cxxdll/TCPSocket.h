@@ -19,7 +19,7 @@ public:
 	int GetTimerCnt();
 
 public:
-	bool SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
 	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:
@@ -48,6 +48,9 @@ private:
 private:
 	static void ReadCB(struct bufferevent*, void*);
 	static void EventCB(struct bufferevent*, short, void*);
+
+private:
+	bool VerifyConnection(char* data);
 
 private:
 	int							m_timerCnt;
