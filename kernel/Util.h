@@ -53,7 +53,6 @@ public:
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
-	static int					m_day;
 	IDGen*						m_IDGen;
 	TCPClient*					m_TCPClient;
 	static time_t				m_OpenServerTimeSecond;

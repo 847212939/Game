@@ -4,7 +4,6 @@
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
 time_t				Util::m_OpenServerTimeSecond = 0;
-int					Util::m_day = 0;
 
 Util* Util::Instance()
 {
@@ -316,7 +315,12 @@ uint64_t Util::GetOpenServerTime()
 
 int Util::GetServiceDays()
 {
-	return m_day;
+	// 开服天数
+	return (int)(
+		(::time(nullptr) 
+		- m_OpenServerTimeSecond) 
+		/ (60 * 60 * 24)) 
+		+ 1;
 }
 
 bool Util::InitTime()
@@ -337,9 +341,6 @@ bool Util::InitTime()
 	tm.tm_mday = tm1.tm_mday;
 
 	m_OpenServerTimeSecond = mktime(&tm);
-
-	// 开服天数
-	m_day = (int)((::time(nullptr) - m_OpenServerTimeSecond) / (60 * 60 * 24)) + 1;
 
 	return true;
 }
