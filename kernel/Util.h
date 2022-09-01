@@ -38,7 +38,6 @@ public:
 	// 获取开服时间
 	static int GetServiceDays();
 	static uint64_t GetOpenServerTime();
-	static const struct tm& GetOpenServerTimeTM();
 	static bool InitTime();
 
 public:
@@ -54,11 +53,10 @@ public:
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
-	static struct tm			m_tm;
-	static time_t				m_OpenServerTimeSecond;
 	static int					m_day;
 	IDGen*						m_IDGen;
 	TCPClient*					m_TCPClient;
+	static time_t				m_OpenServerTimeSecond;
 };
 
 class Cos

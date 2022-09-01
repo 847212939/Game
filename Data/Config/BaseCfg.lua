@@ -19,7 +19,7 @@ BaseCfg=
     maxSocketCnt = 24576,
 
     --开服时间
-    OpenServerTime = "2022-08-18 19:00:35",
+    OpenServerTime = "2022-09-01 10:38:35",
     
     --对称加密
     Skey = "LiuDaNaoDai",

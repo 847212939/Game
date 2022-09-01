@@ -4,7 +4,6 @@
 std::mt19937		Util::m_mt(m_rd());
 std::random_device	Util::m_rd;
 time_t				Util::m_OpenServerTimeSecond = 0;
-struct tm			Util::m_tm = tm();
 int					Util::m_day = 0;
 
 Util* Util::Instance()
@@ -315,11 +314,6 @@ uint64_t Util::GetOpenServerTime()
 	return m_OpenServerTimeSecond;
 }
 
-const struct tm& Util::GetOpenServerTimeTM()
-{
-	return m_tm;
-}
-
 int Util::GetServiceDays()
 {
 	return m_day;
@@ -336,21 +330,16 @@ bool Util::InitTime()
 		return false;
 	}
 
-	// 开服时间时间戳
-	m_tm = tm1;
-	m_tm.tm_wday = 0;
-	m_tm.tm_yday = 0;
-	m_tm.tm_isdst = -1;
-	tm1.tm_year -= 1900;
-	tm1.tm_mon--;
-	tm1.tm_isdst = -1;
-	m_OpenServerTimeSecond = mktime(&tm1);
+	struct tm tm;
+	tm = tm1;
+	tm.tm_year = tm1.tm_year - 1900;
+	tm.tm_mon = tm1.tm_mon - 1;
+	tm.tm_mday = tm1.tm_mday;
+
+	m_OpenServerTimeSecond = mktime(&tm);
 
 	// 开服天数
-	time_t tick2 = ::time(nullptr);
-	struct tm tm2;
-	tm2 = *localtime(&tick2);
-	m_day = tm2.tm_mday - m_tm.tm_mday + 1;
+	m_day = (int)((::time(nullptr) - m_OpenServerTimeSecond) / (60 * 60 * 24)) + 1;
 
 	return true;
 }
