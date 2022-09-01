@@ -16,13 +16,22 @@ public:
 	static char* Decrypt(char* content, size_t length);
 
 public:
-	static Util* Instance();
-	TCPClient* GetTCPClient();
-	bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);
 	static long long GetSysMilliseconds();
+
+public:
+	static Util* Instance();
+	static std::string& GetEncryptKey();
+	static void SetEncryptKey(std::string key);
+
+public:
+	TCPClient* GetTCPClient();
+
+public:
+	bool InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);
 
 private:
 	TCPClient*	m_TCPClient;
+	static std::string m_key;
 };
 
 class Cos

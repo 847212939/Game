@@ -7,7 +7,7 @@ namespace MainNameSpace
 	extern "C"
 	{
 		// 设置服务器ip端口
-		EXPORT_DLL int EXPORT_STDCALL InitNetwork(char* ip, int port, int timerCnt);
+		EXPORT_DLL int EXPORT_STDCALL InitNetwork(char* ip, int port, int timerCnt, char* key);
 		// 初始化网络库
 		EXPORT_DLL int EXPORT_STDCALL InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc);
 		// 反初始化网络库

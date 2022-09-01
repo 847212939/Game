@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 
+std::string Util::m_key = "";
+
 Util* Util::Instance()
 {
 	static Util g_mgr;
@@ -37,6 +39,16 @@ TCPClient* Util::GetTCPClient()
 	return m_TCPClient;
 }
 
+std::string& Util::GetEncryptKey()
+{
+	return m_key;
+}
+
+void Util::SetEncryptKey(std::string key)
+{
+	m_key = key;
+}
+
 long long Util::GetSysMilliseconds()
 {
 	auto time_now = std::chrono::system_clock::now();
@@ -46,22 +58,18 @@ long long Util::GetSysMilliseconds()
 
 char* Util::Encrypt(char* content, size_t length)
 {
-	std::string key = "LiuDaNaoDai";
-
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= key[i % (key.size() - 1)];
+		content[i] ^= m_key[i % (m_key.size() - 1)];
 	}
 	return content;
 }
 
 char* Util::Decrypt(char* content, size_t length)
 {
-	std::string key = "LiuDaNaoDai";
-
 	for (size_t i = 0; i < length; i++)
 	{
-		content[i] ^= key[i % (key.size() - 1)];
+		content[i] ^= m_key[i % (m_key.size() - 1)];
 	}
 	return content;
 }

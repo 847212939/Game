@@ -21,7 +21,6 @@ public:
 
 public:
 	static void Exit(bool& run);
-	static long long GetSysMilliseconds();
 
 public:
 	// 对称加密
@@ -31,6 +30,7 @@ public:
 public:
 	// 配置转化成秒
 	static uint64_t GetSysSecond();
+	static long long GetSysMilliseconds();
 	static uint64_t GetCfgSecond(const IntVector& vec);
 	static uint64_t GetCfgSecondEnd(const IntVector& vec);
 

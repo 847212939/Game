@@ -28,7 +28,7 @@ namespace Client.Network
         private bool                m_Connected;
 
         [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
-        private extern static int InitNetwork(string ip, int port, int timerCnt);
+        private extern static int InitNetwork(string ip, int port, int timerCnt, string key);
         [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
         private extern static int InitCxxnet(CBEventHandle netFunc, CBTimerHandle timerFunc, CBCloseHandle closeFunc);
         [DllImport("Cxxdll", CharSet = CharSet.Ansi)]
@@ -82,13 +82,13 @@ namespace Client.Network
             return SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
         }
 
-        public int InitSocket(string ip, int port, int timerCnt)
+        public int InitSocket(string ip, int port, int timerCnt = 1, string key = "LiuDaNaoDai")
         {
             if (m_Connected)
             {
                 return -1;
             }
-            if (InitNetwork(ip, port, timerCnt) != 0)
+            if (InitNetwork(ip, port, timerCnt, key) != 0)
             {
                 return -1;
             }
