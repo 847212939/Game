@@ -82,7 +82,7 @@ namespace Client.Network
             return SendData(pData, size, (int)mainID, assistID, (int)uIdentification);
         }
 
-        public int InitSocket(string ip, int port, int timerCnt = 1, string key = "LiuDaNaoDai")
+        public int InitSocket(string ip = "127.0.0.1", int port = 8888, int timerCnt = 1, string key = "LiuDaNaoDai")
         {
             if (m_Connected)
             {

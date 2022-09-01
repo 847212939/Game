@@ -8,7 +8,7 @@ namespace Client.Main
         static void Main(string[] args)
         {
             SocketMgr socketMgr = SocketMgr.GetInstance();
-            if (socketMgr.InitSocket("127.0.0.1", 8888, 1) != 0)
+            if (socketMgr.InitSocket() != 0)
             {
                 Console.WriteLine("初始化网络失败");
                 return;
@@ -31,7 +31,7 @@ namespace Client.Main
             {
                 if (!socketMgr.GetConnected())
                 {
-                    if (socketMgr.InitSocket("127.0.0.1", 8888, 1) != 0)
+                    if (socketMgr.InitSocket() != 0)
                     {
                         Console.WriteLine("接连失败");
                     }
