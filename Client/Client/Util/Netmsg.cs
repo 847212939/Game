@@ -21,6 +21,14 @@ namespace Client.Util
         ~Netmsg()
         {
         }
+        public string Data
+        {
+            get => m_StringBuilder.ToString();
+        }
+        public int Length
+        {
+            get => m_StringBuilder.Length;
+        }
         public void Write<T>(T value) 
         {
             m_StringBuilder.Append(value);
@@ -162,14 +170,6 @@ namespace Client.Util
             }
 
             return char.Parse(m_dataArray[m_cnt++]);
-        }
-        public string Data
-        {
-            get => m_StringBuilder.ToString();
-        }
-        public int Length
-        {
-            get => m_StringBuilder.Length;
         }
     }
 }
