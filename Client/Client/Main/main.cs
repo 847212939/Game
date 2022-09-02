@@ -19,8 +19,8 @@ namespace Client.Main
 
             {
                 Netmsg cin = new Netmsg();
-                cin.WriteString("8888");
-                cin.WriteString("8888");
+                cin.Write("8888");
+                cin.Write("8888");
 
                 socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                 
@@ -40,8 +40,8 @@ namespace Client.Main
                         Thread.Sleep(10);
                         {
                             Netmsg cin = new Netmsg();
-                            cin.WriteString("8888");
-                            cin.WriteString("8888");
+                            cin.Write("8888");
+                            cin.Write("8888");
 
                             socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                         }
@@ -50,8 +50,8 @@ namespace Client.Main
 
                 {
                     Netmsg cin = new Netmsg();
-                    cin.WriteString("8888");
-                    cin.WriteString("8888");
+                    cin.Write("8888");
+                    cin.Write("8888");
 
                     socketMgr.SendMsg(cin.Data, cin.Length, MsgCmd.MsgCmd_Login, 1, MsgCmd.MsgCmd_PlayerPreproces);
                 }
