@@ -185,10 +185,12 @@ namespace Client.Network
             {
                 return;
             }
-            Netmsg cout = new Netmsg(eve.data);
-            NetWorkMsg msg = new NetWorkMsg();
+            Netmsg cout = new(eve.data);
+            NetWorkMsg msg = new()
+            {
+               uMainID = cout.Read<uint>()
+            };
 
-            msg.uMainID = cout.Read<uint>();
             if ((MsgCmd)msg.uMainID <= MsgCmd.MsgCmd_Begin ||
                 (MsgCmd)msg.uMainID >= MsgCmd.MsgCmd_End)
             {
