@@ -118,7 +118,7 @@ namespace Client.Network
             {
                 return;
             }
-            m_NetworkMgr.AddNetworkDictionary((UInt32)cmd, ac);
+            m_NetworkMgr.AddNetworkDictionary((uint)cmd, ac);
         }
 
         public void UnRegisterNetwork(MsgCmd cmd)
@@ -132,7 +132,7 @@ namespace Client.Network
             {
                 return;
             }
-            m_NetworkMgr.DelNetworkDictionary((UInt32)cmd);
+            m_NetworkMgr.DelNetworkDictionary((uint)cmd);
         }
 
         public int RegisterTimer(TimerCmd timerid, int uElapse, Action<int> ac)
@@ -188,16 +188,16 @@ namespace Client.Network
             Netmsg cout = new Netmsg(eve.data);
             NetWorkMsg msg = new NetWorkMsg();
 
-            msg.uMainID = cout.ReadUInt32();
+            msg.uMainID = cout.Read<uint>();
             if ((MsgCmd)msg.uMainID <= MsgCmd.MsgCmd_Begin ||
                 (MsgCmd)msg.uMainID >= MsgCmd.MsgCmd_End)
             {
                 return;
             }
-            msg.uAssistantID = cout.ReadUInt32();
-            msg.uIdentification = cout.ReadUInt32();
-            msg.uMessageSize = cout.ReadUInt32();
-            msg.data = cout.ReadString();
+            msg.uAssistantID = cout.Read<uint>();
+            msg.uIdentification = cout.Read<uint>();
+            msg.uMessageSize = cout.Read<uint>();
+            msg.data = cout.Read<string>();
             m_NetworkMgr.MessageDispatch(msg);
         }
 

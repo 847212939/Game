@@ -26,7 +26,55 @@ namespace Client.Util
             m_StringBuilder.Append(value);
             m_StringBuilder.Append('\n');
         }
-        public float ReadFloat()
+        public T Read<T>()
+        {
+            Type t = typeof(T);
+            if (t == typeof(float))
+            {
+                return (T)(ReadFloat());
+            }
+            if (t == typeof(double))
+            {
+                return (T)(ReadDouble());
+            }
+            if (t == typeof(string))
+            {
+                return (T)(ReadString());
+            }
+            if (t == typeof(short))
+            {
+                return (T)(ReadInt16());
+            }
+            if (t == typeof(int))
+            {
+                return (T)(ReadInt32());
+            }
+            if (t == typeof(long))
+            {
+                return (T)(ReadInt64());
+            }
+            if (t == typeof(ushort))
+            {
+                return (T)(ReadUInt16());
+            }
+            if (t == typeof(uint))
+            {
+                return (T)(ReadUInt32());
+            }
+            if (t == typeof(ulong))
+            {
+                return (T)(ReadUInt64());
+            }
+            if (t == typeof(char))
+            {
+                return (T)(ReadChar());
+            }
+            else
+            {
+                return (T)(ReadString());
+            }
+        }
+        public object ReadFloat()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -35,7 +83,7 @@ namespace Client.Util
 
             return float.Parse(m_dataArray[m_cnt++]);
         }
-        public double ReadDouble()
+        public object ReadDouble()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -44,7 +92,7 @@ namespace Client.Util
 
             return double.Parse(m_dataArray[m_cnt++]);
         }
-        public string ReadString()
+        public object ReadString()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -52,7 +100,7 @@ namespace Client.Util
             }
             return m_dataArray[m_cnt++];
         }
-        public short ReadInt16()
+        public object ReadInt16()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -61,7 +109,7 @@ namespace Client.Util
 
             return short.Parse(m_dataArray[m_cnt++]);
         }
-        public int ReadInt32()
+        public object ReadInt32()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -70,7 +118,7 @@ namespace Client.Util
 
             return int.Parse(m_dataArray[m_cnt++]);
         }
-        public long ReadInt64()
+        public object ReadInt64()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -79,7 +127,7 @@ namespace Client.Util
 
             return long.Parse(m_dataArray[m_cnt++]);
         }
-        public ushort ReadUInt16()
+        public object ReadUInt16()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -88,7 +136,7 @@ namespace Client.Util
 
             return ushort.Parse(m_dataArray[m_cnt++]);
         }
-        public uint ReadUInt32()
+        public object ReadUInt32()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -97,7 +145,7 @@ namespace Client.Util
 
             return uint.Parse(m_dataArray[m_cnt++]);
         }
-        public ulong ReadUInt64()
+        public object ReadUInt64()
         {
             if (m_dataArray.Length < m_cnt)
             {
@@ -106,7 +154,7 @@ namespace Client.Util
 
             return ulong.Parse(m_dataArray[m_cnt++]);
         }
-        public char ReadChar()
+        public object ReadChar()
         {
             if (m_dataArray.Length < m_cnt)
             {

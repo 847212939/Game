@@ -2,10 +2,10 @@
 {
     public struct NetWorkMsg
     {
-        public UInt32 uMainID;              // 处理主类型
-        public UInt32 uAssistantID;         // 辅助处理类型 ID
-        public UInt32 uIdentification;      // 身份标识（不同的协议里面有不同的含义）
-        public UInt32 uMessageSize;		    // 数据包大小
+        public uint uMainID;              // 处理主类型
+        public uint uAssistantID;         // 辅助处理类型 ID
+        public uint uIdentification;      // 身份标识（不同的协议里面有不同的含义）
+        public uint uMessageSize;		    // 数据包大小
 
         public string data;                 // 数据
     }
@@ -13,12 +13,12 @@
     internal class NetworkMgr
     {
         private Dictionary<int, Action<int>>            m_TimerDictionary;
-        private Dictionary<UInt32, Action<NetWorkMsg>>  m_NetworkDictionary;
+        private Dictionary<uint, Action<NetWorkMsg>>  m_NetworkDictionary;
 
         public NetworkMgr()
         {
             m_TimerDictionary = new Dictionary<int, Action<int>>();
-            m_NetworkDictionary = new Dictionary<UInt32, Action<NetWorkMsg>>();
+            m_NetworkDictionary = new Dictionary<uint, Action<NetWorkMsg>>();
         }
 
         public void MessageDispatch(NetWorkMsg msg)
@@ -37,7 +37,7 @@
             }
         }
 
-        public void AddNetworkDictionary(UInt32 cmd, Action<NetWorkMsg> ac)
+        public void AddNetworkDictionary(uint cmd, Action<NetWorkMsg> ac)
         {
             if (!m_NetworkDictionary.ContainsKey(cmd))
             {
@@ -45,7 +45,7 @@
             }
         }
 
-        public void DelNetworkDictionary(UInt32 cmd)
+        public void DelNetworkDictionary(uint cmd)
         {
             if (m_NetworkDictionary.ContainsKey(cmd))
             {
