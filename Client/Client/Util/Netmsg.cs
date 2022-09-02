@@ -24,52 +24,52 @@ namespace Client.Util
         public void WriteChar(char value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteInt16(short value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteInt32(int value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteInt64(long value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteUInt16(ushort value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteUInt32(uint value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteUInt64(ulong value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteFloat(float value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteDouble(double value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public void WriteString(string value)
         {
             m_StringBuilder.Append(value);
-            m_StringBuilder.Append("\n");
+            m_StringBuilder.Append('\n');
         }
         public float ReadFloat()
         {
