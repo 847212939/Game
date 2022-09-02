@@ -1,180 +1,172 @@
-﻿namespace Client.Util
+﻿using System.Text;
+
+namespace Client.Util
 {
     internal class Netmsg
     {
+        int m_cnt;
+        string[] m_dataArray = null!;
+        StringBuilder m_StringBuilder = null!;
+
         public Netmsg()
         {
-            m_data = "";
+            m_cnt = 0;
+            m_StringBuilder = new StringBuilder();
         }
         public Netmsg(string data)
         {
-            m_data = data;
+            m_cnt = 0;
+            m_dataArray = data.Split("\n");
         }
         ~Netmsg()
         {
-            m_data = "";
         }
         public void WriteChar(char value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteInt16(short value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteInt32(int value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteInt64(long value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteUInt16(ushort value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteUInt32(uint value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteUInt64(ulong value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteFloat(float value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteDouble(double value)
         {
-            m_data += value.ToString() + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public void WriteString(string value)
         {
-            m_data += value + "\n";
+            m_StringBuilder.Append(value);
+            m_StringBuilder.Append("\n");
         }
         public float ReadFloat()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return float.Parse(str);
+            return float.Parse(m_dataArray[m_cnt++]);
         }
         public double ReadDouble()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return double.Parse(str);
+            return double.Parse(m_dataArray[m_cnt++]);
         }
         public string ReadString()
         {
-            return GetSubString();
+            if (m_dataArray.Length < m_cnt)
+            {
+                return "";
+            }
+            return m_dataArray[m_cnt++];
         }
         public short ReadInt16()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return short.Parse(str);
+            return short.Parse(m_dataArray[m_cnt++]);
         }
         public int ReadInt32()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return int.Parse(str);
+            return int.Parse(m_dataArray[m_cnt++]);
         }
         public long ReadInt64()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return long.Parse(str);
+            return long.Parse(m_dataArray[m_cnt++]);
         }
         public ushort ReadUInt16()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return ushort.Parse(str);
+            return ushort.Parse(m_dataArray[m_cnt++]);
         }
         public uint ReadUInt32()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return uint.Parse(str);
+            return uint.Parse(m_dataArray[m_cnt++]);
         }
         public ulong ReadUInt64()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return 0;
             }
 
-            return ulong.Parse(str);
+            return ulong.Parse(m_dataArray[m_cnt++]);
         }
         public char ReadChar()
         {
-            string str = GetSubString();
-            if (str.Length <= 0)
+            if (m_dataArray.Length < m_cnt)
             {
                 return '0';
             }
 
-            return char.Parse(str);
+            return char.Parse(m_dataArray[m_cnt++]);
         }
         public string Data
         {
-            get => m_data;
+            get => m_StringBuilder.ToString();
         }
         public int Length
         {
-            get => m_data.Length;
+            get => m_StringBuilder.Length;
         }
-        private string GetSubString()
-        {
-            if (Length <= 0)
-            {
-                return "";
-            }
-            int cnt = m_data.IndexOf("\n");
-            if (cnt <= 0)
-            {
-                return "";
-            }
-            string sub = m_data.Substring(0, cnt);
-
-            ++cnt;
-            m_data = m_data.Substring(cnt, m_data.Length - cnt);
-
-            return sub;
-        }
-
-        string m_data;
     }
 }
