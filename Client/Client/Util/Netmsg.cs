@@ -41,39 +41,39 @@ namespace Client.Util
             {
                 return (T)(ReadFloat());
             }
-            if (t == typeof(double))
+            else if (t == typeof(double))
             {
                 return (T)(ReadDouble());
             }
-            if (t == typeof(string))
+            else if (t == typeof(string))
             {
                 return (T)(ReadString());
             }
-            if (t == typeof(short))
+            else if (t == typeof(short))
             {
                 return (T)(ReadInt16());
             }
-            if (t == typeof(int))
+            else if (t == typeof(int))
             {
                 return (T)(ReadInt32());
             }
-            if (t == typeof(long))
+            else if (t == typeof(long))
             {
                 return (T)(ReadInt64());
             }
-            if (t == typeof(ushort))
+            else if (t == typeof(ushort))
             {
                 return (T)(ReadUInt16());
             }
-            if (t == typeof(uint))
+            else if (t == typeof(uint))
             {
                 return (T)(ReadUInt32());
             }
-            if (t == typeof(ulong))
+            else if (t == typeof(ulong))
             {
                 return (T)(ReadUInt64());
             }
-            if (t == typeof(char))
+            else if (t == typeof(char))
             {
                 return (T)(ReadChar());
             }
