@@ -221,4 +221,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	NotifyAll();
 	m_CloseCallBackFunc();
+
+	const SockFd& fd = GetSocket();
+	closesocket(fd);
 }

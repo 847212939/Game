@@ -451,6 +451,11 @@ bool& CTCPSocketManage::GetRuninged()
 	return m_running;
 }
 
+const SockFd& CTCPSocketManage::GetSocket() const
+{
+	return m_socket;
+}
+
 void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 {
 	if (!pListItem)

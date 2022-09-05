@@ -23,6 +23,7 @@ public:
 	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:
+	const SockFd& GetSocket() const;
 	bool& GetRuninged();
 	CDataLine* GetRecvDataLine();
 	CDataLine* GetSendDataLine();
