@@ -39,19 +39,50 @@ namespace Client.Util
         {
             if (m_dataArray.Length > m_cnt)
             {
-                if (typeof(T) == typeof(char)) return (T)((object)char.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(short)) return (T)((object)short.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(ushort)) return (T)((object)ushort.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(int)) return (T)((object)int.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(uint)) return (T)((object)uint.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(string)) return (T)((object)m_dataArray[m_cnt++]);
-                else if (typeof(T) == typeof(long)) return (T)((object)long.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(ulong)) return (T)((object)ulong.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(float)) return (T)((object)float.Parse(m_dataArray[m_cnt++]));
-                else if (typeof(T) == typeof(double)) return (T)((object)double.Parse(m_dataArray[m_cnt++]));
+                Type type = typeof(T);
+                if (type == typeof(int))
+                {
+                    return (T)(int.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(uint))
+                {
+                    return (T)(uint.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(char))
+                {
+                    return (T)(char.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(short))
+                {
+                    return (T)(short.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(ushort))
+                {
+                    return (T)(ushort.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(string))
+                {
+                    return (T)(m_dataArray[m_cnt++] as object);
+                }
+                else if (type == typeof(long))
+                {
+                    return (T)(long.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(ulong))
+                {
+                    return (T)(ulong.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(float))
+                {
+                    return (T)(float.Parse(m_dataArray[m_cnt++]) as object);
+                }
+                else if (type == typeof(double))
+                {
+                    return (T)(double.Parse(m_dataArray[m_cnt++]) as object);
+                }
             }
 
-            return (T)((object)0);
+            return (T)(0 as object);
         }
     }
 }
