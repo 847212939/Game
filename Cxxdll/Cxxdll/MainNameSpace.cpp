@@ -49,6 +49,8 @@ namespace MainNameSpace
             return -1;
         }
 
+        pTcpClient->CloseSocketCallback(nullptr);
+
         return 0;
     }
 
