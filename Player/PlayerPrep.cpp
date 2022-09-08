@@ -392,7 +392,7 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";
-	sprintf(sql, "select * from %s where userid=%s", sqlName.c_str(), userId.c_str());
+	sprintf(sql, "select * from %s where userid='%s'", sqlName.c_str(), userId.c_str());
 
 	CMysqlHelper::MysqlData data;
 	try
