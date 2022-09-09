@@ -223,5 +223,14 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	m_CloseCallBackFunc();
 
 	const SockFd& fd = GetSocket();
+
+#if defined(_WIN32)
 	closesocket(fd);
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	close(fd);
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#elif defined(__APPLE__)
+#endif
 }
