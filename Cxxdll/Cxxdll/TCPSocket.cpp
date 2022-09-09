@@ -352,6 +352,16 @@ void CTCPSocketManage::RemoveTCPSocketStatus(bool isClientAutoClose/* = false*/)
 	}
 	m_Connected = false;
 
+#if defined(_WIN32)
+	closesocket(m_socket);
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	close(m_socket);
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#elif defined(__APPLE__)
+#endif
+
 	OnSocketCloseEvent(0);
 }
 
