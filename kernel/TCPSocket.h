@@ -70,6 +70,7 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
+	void SendHeartbeat(void* pBufferevent, int index);
 	bool VerifyConnection(int index, char* data);
 
 private:

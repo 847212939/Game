@@ -18,6 +18,7 @@ public:
 	void CloseSocketCallback(void* pDataLineHead);
 
 private:
+	void HeartbeatTimer();
 	void TimerCallback(void* pDataLineHead);
 	void SocketCallback(void* pDataLineHead);
 	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);

@@ -532,6 +532,11 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	return true;
 }
 
+void CTCPSocketManage::SendHeartbeat(void* pBufferevent, int index)
+{
+	SendData(index, "", 0, MsgCmd::MsgCmd_HeartBeat, 0, 0, pBufferevent);
+}
+
 // 测试连接
 bool CTCPSocketManage::VerifyConnection(int index, char* data)
 {
@@ -569,6 +574,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
 	{
+		SendHeartbeat(pBufferevent, index);
 		return true;
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包

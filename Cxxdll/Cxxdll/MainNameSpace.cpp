@@ -38,6 +38,10 @@ namespace MainNameSpace
         {
             return -1;
         }
+        if (RegisterTimers(MsgCmd_HeartBeat, 15000) != 0)
+        {
+            return -1;
+        }
         return 0;
     }
 

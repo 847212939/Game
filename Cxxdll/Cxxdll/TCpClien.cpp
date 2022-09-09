@@ -213,6 +213,11 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
 	if (WindowTimer->uMainID == MsgCmd_Timer)
 	{
+		if (MsgCmd_HeartBeat == (int)WindowTimer->uTimerID)
+		{
+			HeartbeatTimer();
+			return;
+		}
 		CallBackFun((int)WindowTimer->uTimerID);
 	}
 }
@@ -234,4 +239,9 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 #elif defined(__APPLE__)
 #endif
 
+}
+
+void TCPClient::HeartbeatTimer()
+{
+	SendData("", 0, MsgCmd_HeartBeat, 0, 0, 0);
 }
