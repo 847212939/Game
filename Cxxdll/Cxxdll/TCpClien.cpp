@@ -243,5 +243,9 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 
 void TCPClient::HeartbeatTimer()
 {
+	if (!GetRuninged())
+	{
+		return;
+	}
 	SendData("", 0, MsgCmd_HeartBeat, 0, 0, 0);
 }
