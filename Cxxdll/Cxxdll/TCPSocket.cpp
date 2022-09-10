@@ -120,7 +120,7 @@ bool CTCPSocketManage::Start()
 		return false;
 	}
 
-	m_iServiceType = ServiceType::SERVICE_TYPE_CLIENT_HEARTBEAT;
+	m_iServiceType = ServiceType::SERVICE_TYPE_BEGIN;
 	m_running = true;
 
 	std::thread threadSendMsgThread(&CTCPSocketManage::ThreadSendMsgThread, this);
