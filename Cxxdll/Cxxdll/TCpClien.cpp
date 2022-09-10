@@ -213,11 +213,6 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
 	if (WindowTimer->uMainID == MsgCmd_Timer)
 	{
-		if (MsgCmd_HeartBeat == (int)WindowTimer->uTimerID)
-		{
-			HeartbeatTimer();
-			return;
-		}
 		CallBackFun((int)WindowTimer->uTimerID);
 	}
 }
