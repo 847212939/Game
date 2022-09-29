@@ -294,7 +294,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 	{
 		return;
 	}
-	auto useridIt = m_ServerIdMap.find(userid);
+	ServerIdMap::iterator useridIt = m_ServerIdMap.find(userid);
 	if (useridIt == m_ServerIdMap.end())
 	{
 		return;
@@ -302,12 +302,15 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 
 	Cos os;
 	os << (int)useridIt->second.size();
-	for (auto id : useridIt->second)
+
+	for (std::set<int>::iterator it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
 	{
-		os << id;
+		os << *it;
 	}
 
-	DTCPC->SendData(pMsg->uIndex, os.str().c_str(), os.str().size(),
+	std::string data = os;
+
+	DTCPC->SendData(pMsg->uIndex, data.c_str(), data.size(),
 		MsgCmd(pMsg->netMessageHead.uMainID),
 		pMsg->netMessageHead.uAssistantID, 0,
 		pMsg->pBufferevent, 0);
