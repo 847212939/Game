@@ -109,8 +109,13 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		loginData.userId = userid;
 	}
 
-	AddLoginInMap(loginData);
+	if (loginData.userId <= 0)
+	{
+		loginData.userId = DUtil->CreateUserId();
+	}
 
+	AddLoginInMap(loginData);
+	Save(loginData.id, loginData.pw, loginData.userId);
 
 	Cos os;
 	os << (int)true;
@@ -174,14 +179,12 @@ bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 	const CHeroList* pCHeroList = CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
 	if (!pCHeroList)
 	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
 		return false;
 	}
 
 	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
 	if (!pLoginData)
 	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
 		return false;
 	}
 
@@ -212,7 +215,6 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
 	if (!pLoginData)
 	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
 		return false;
 	}
 	if (pLoginData->userId <= 0)
@@ -312,7 +314,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 }
 void LoginSys::LoadServerIds(uint64_t userid)
 {
-	std::vector<int>* serverIdVec = nullptr;
+	std::set<int>* serverIdVec = nullptr;
 	auto useridIt = m_ServerIdMap.find(userid);
 	if (useridIt != m_ServerIdMap.end())
 	{
@@ -320,7 +322,7 @@ void LoginSys::LoadServerIds(uint64_t userid)
 	}
 	else
 	{
-		std::vector<int> tmpServerIdVec;
+		std::set<int> tmpServerIdVec;
 		m_ServerIdMap.insert({ userid , tmpServerIdVec });
 		serverIdVec = &(m_ServerIdMap.find(userid)->second);
 	}
@@ -329,7 +331,7 @@ void LoginSys::LoadServerIds(uint64_t userid)
 		return;
 	}
 
-	serverIdVec->clear();
+	//serverIdVec->clear();
 
 	std::string data;
 	DPPC->LoadOneSql("serverlist", userid, data);
@@ -342,7 +344,7 @@ void LoginSys::LoadServerIds(uint64_t userid)
 	{
 		int id = 0;
 		is >> id;
-		serverIdVec->push_back(id);
+		serverIdVec->insert(id);
 	}
 }
 void LoginSys::SaveServerIds(uint64_t userid)
@@ -369,12 +371,12 @@ void LoginSys::AddServerIdMap(uint64_t userid, int serverId)
 	auto useridIt = m_ServerIdMap.find(userid);
 	if (useridIt == m_ServerIdMap.end())
 	{
-		std::vector<int> serveridVec;
-		serveridVec.push_back(serverId);
+		std::set<int> serveridVec;
+		serveridVec.insert(serverId);
 		m_ServerIdMap.insert({ userid , serveridVec });
 	}
 	else
 	{
-		useridIt->second.push_back(serverId);
+		useridIt->second.insert(serverId);
 	}
 }

@@ -43,5 +43,5 @@ private:
 
 private:
 	LoginInMap m_LoginInMap;
-	ServerIdMap m_ServerIdMap;
+	std::map<uint64_t, std::set<int>> m_ServerIdMap;
 };
