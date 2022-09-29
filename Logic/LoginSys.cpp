@@ -114,6 +114,9 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		loginData.userId = DUtil->CreateUserId();
 	}
 
+	AddLoginInMap(loginData);
+	Save(loginData.id, loginData.pw, loginData.userId);
+
 	Cos os;
 	os << (int)true;
 	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
