@@ -7,7 +7,6 @@ PlayerPrepClient::PlayerPrepClient() :
 {
 	InitMysqlTable();
 }
-
 PlayerPrepClient::~PlayerPrepClient()
 {
 }
@@ -15,4 +14,14 @@ PlayerPrepClient::~PlayerPrepClient()
 SceneClient* PlayerPrepClient::GetSceneClient()
 {
 	return &m_SceneClient;
+}
+
+void PlayerPrepClient::SendOperateResults(SocketReadLine* pMsg)
+{
+	if (!pMsg) return;
+
+	Cos os;
+	os << (int)true;
+	DTCPC->SendData(pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(pMsg->netMessageHead.uMainID), pMsg->netMessageHead.uAssistantID, 0, pMsg->pBufferevent, 0);
 }

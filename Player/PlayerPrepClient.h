@@ -13,6 +13,10 @@ protected:
 public:
 	SceneClient* GetSceneClient();
 
+public:
+	// 发送操作结果
+	void SendOperateResults(SocketReadLine* pMsg);
+
 private:
 	// 建立数据库
 	void InitMysqlTable();

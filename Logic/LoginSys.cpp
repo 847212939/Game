@@ -108,21 +108,12 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		}
 		loginData.userId = userid;
 	}
-
 	if (loginData.userId <= 0)
 	{
 		loginData.userId = DUtil->CreateUserId();
 	}
 
-	AddLoginInMap(loginData);
-	Save(loginData.id, loginData.pw, loginData.userId);
-
-	Cos os;
-	os << (int)true;
-	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-		playerInfo->pMsg->pBufferevent, 0);
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -152,12 +143,7 @@ bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 
 	AddServerIdMap(pLoginData->userId, serverid);
 
-	Cos os;
-	os << (int)true;
-	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-		playerInfo->pMsg->pBufferevent, 0);
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -214,12 +200,7 @@ bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
 
-	Cos os;
-	os << (int)true;
-	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-		playerInfo->pMsg->pBufferevent, 0);
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -250,21 +231,11 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 	SaveServerIds(pLoginData->userId);
 	DelLoginInMap(playerInfo->pMsg->uIndex);
 
-	Cos os;
-	os << (int)true;
-	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-		playerInfo->pMsg->pBufferevent, 0);
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
 
-
-void LoginSys::AddLoginInMap(LoginData& key)
-{
-	m_LoginInMap.insert({ key.index , key });
-}
 void LoginSys::DelLoginInMap(UINT index)
 {
 	LoginInMap::iterator it = m_LoginInMap.find(index);
@@ -274,6 +245,10 @@ void LoginSys::DelLoginInMap(UINT index)
 	}
 
 	m_LoginInMap.erase(it);
+}
+void LoginSys::AddLoginInMap(LoginData& key)
+{
+	m_LoginInMap.insert({ key.index , key });
 }
 LoginData* LoginSys::GetLoginInMap(UINT index)
 {
