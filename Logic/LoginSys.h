@@ -7,6 +7,7 @@ enum class LoginSysMsgCmd
 	cs_select_server			= 2,	// 选择区服
 	cs_select_role				= 3,	// 选角色
 	cs_login					= 4,	// 登录
+	cs_request_server_list		= 5,    // 请求已有区服
 };
 
 class LoginSys
@@ -22,10 +23,11 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
-	bool VerificationAccount(Cis& is, PlayerInfo* playerInfo);
-	bool SelectServer(Cis& is, PlayerInfo* playerInfo);
-	bool SelectRole(Cis& is, PlayerInfo* playerInfo);
-	bool LoginIn(Cis& is, PlayerInfo* playerInfo);
+	bool NetVerificationAccount(Cis& is, PlayerInfo* playerInfo);
+	bool NetSelectServer(Cis& is, PlayerInfo* playerInfo);
+	bool NetSelectRole(Cis& is, PlayerInfo* playerInfo);
+	bool NetLoginIn(Cis& is, PlayerInfo* playerInfo);
+	bool NetcRequestServerList(Cis& is, PlayerInfo* playerInfo);
 
 private:
 	void AddLoginInMap(LoginData key);

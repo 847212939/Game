@@ -22,30 +22,34 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 		return;
 	}
 
-	LoginSysMsgCmd uAssistantID = 
-		(LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
+	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
 	Cis is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
 	case LoginSysMsgCmd::cs_verification_account:
 	{
-		VerificationAccount(is, playerInfo);
+		NetVerificationAccount(is, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_select_server:
 	{
-		SelectServer(is, playerInfo);
+		NetSelectServer(is, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_select_role:
 	{
-		SelectRole(is, playerInfo);
+		NetSelectRole(is, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_login:
 	{
-		LoginIn(is, playerInfo);
+		NetLoginIn(is, playerInfo);
+		break;
+	}
+	case LoginSysMsgCmd::cs_request_server_list:
+	{
+		NetcRequestServerList(is, playerInfo);
 		break;
 	}
 	default:
@@ -54,7 +58,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 }
 
 // 检查密码
-bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -109,15 +113,19 @@ bool LoginSys::VerificationAccount(Cis& is, PlayerInfo* playerInfo)
 
 	AddLoginInMap(loginData);
 
-	DTCPC->SendData(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login, 
-		(int)LoginSysMsgCmd::cs_verification_account, 0, 
+
+	Cos os;
+	os << (int)true;
+	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
 		playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }
 
 // 选择服务器
-bool LoginSys::SelectServer(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -148,15 +156,26 @@ bool LoginSys::SelectServer(Cis& is, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	DTCPC->SendData(pLoginData->index, nullptr, 0, MsgCmd::MsgCmd_Login,
-		(int)LoginSysMsgCmd::cs_select_server,
-		0, playerInfo->pMsg->pBufferevent, 0);
+	{
+		Cos os;
+		os << (int)true;
+		DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+			MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+			playerInfo->pMsg->netMessageHead.uAssistantID, 0,
+			playerInfo->pMsg->pBufferevent, 0);
+	}
 
-	return true;
+	{
+		Cos os;
+		os << serverid;
+		std::string str = os;
+		DPPC->SaveReplaceSQL("serverlist", pLoginData->userId, str);
+		return true;
+	}
 }
 
 // 选角
-bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -190,14 +209,17 @@ bool LoginSys::SelectRole(Cis& is, PlayerInfo* playerInfo)
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
 
-	DTCPC->SendData(pLoginData->index, nullptr, 0, MsgCmd::MsgCmd_Login,
-		(int)LoginSysMsgCmd::cs_verification_account, 
-		0, playerInfo->pMsg->pBufferevent, 0);
+	Cos os;
+	os << (int)true;
+	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
+		playerInfo->pMsg->pBufferevent, 0);
 
 	return true;
 }
 
-bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -222,6 +244,43 @@ bool LoginSys::LoginIn(Cis& is, PlayerInfo* playerInfo)
 
 	Save(pLoginData->id, pLoginData->pw, pLoginData->userId);
 	DelLoginInMap(playerInfo->pMsg->uIndex);
+
+	Cos os;
+	os << (int)true;
+	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
+		playerInfo->pMsg->pBufferevent, 0);
+
+	return true;
+}
+
+bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		return false;
+	}
+
+	std::string data;
+	DPPC->LoadOneSql("serverlist", pLoginData->userId, data);
+
+	Cos os;
+	os << data;
+	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
+		playerInfo->pMsg->pBufferevent, 0);
+
 	return true;
 }
 
