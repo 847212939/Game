@@ -303,7 +303,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 	Cos os;
 	os << (int)useridIt->second.size();
 
-	for (std::set<int>::iterator it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
+	for (auto it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
 	{
 		os << *it;
 	}
