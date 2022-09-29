@@ -158,6 +158,27 @@ bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
+bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		return false;
+	}
+
+	LoadServerIds(pLoginData->userId);
+	SendServerIds(pLoginData->userId, playerInfo->pMsg);
+
+	return true;
+}
 bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -234,27 +255,7 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		return false;
-	}
-	if (!playerInfo->pMsg)
-	{
-		return false;
-	}
-	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
-	if (!pLoginData)
-	{
-		return false;
-	}
 
-	LoadServerIds(pLoginData->userId);
-	SendServerIds(pLoginData->userId, playerInfo->pMsg);
-
-	return true;
-}
 
 void LoginSys::AddLoginInMap(LoginData& key)
 {
