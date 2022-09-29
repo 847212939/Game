@@ -392,6 +392,7 @@ using MonsterMap			= std::map<int, MonsterKVMap>;
 using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
+using ServerIdMap			= std::map<uint64_t, std::vector<int>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

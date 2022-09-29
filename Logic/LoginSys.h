@@ -33,9 +33,15 @@ private:
 	void AddLoginInMap(LoginData key);
 	LoginData* GetLoginInMap(UINT index);
 
+	void AddServerIdMap(uint64_t userid, int serverId);
+
 private:
 	void Save(std::string& id, std::string& pw, uint64_t userid = 0);
+	void LoadServerIds(uint64_t userid);
+	void SaveServerIds(uint64_t userid);
+	void SendServerIds(uint64_t userid, SocketReadLine* pMsg);
 
 private:
 	LoginInMap m_LoginInMap;
+	ServerIdMap m_ServerIdMap;
 };

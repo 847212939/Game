@@ -4,7 +4,6 @@ LoginSys::LoginSys(PlayerPrepClient* ppc)
 {
 	RegisterNetwk(ppc, LoginSys::Network, MsgCmd::MsgCmd_Login);
 }
-
 LoginSys::~LoginSys()
 {
 }
@@ -57,7 +56,6 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-// 检查密码
 bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -90,8 +88,8 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		uint64_t userid = 0;
 		std::string passwaed;
 
-		Cis is(data);
-		is >> passwaed >> userid;
+		Cis sqlIs(data);
+		sqlIs >> passwaed >> userid;
 
 		if (pw != passwaed)
 		{
@@ -123,8 +121,6 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-
-// 选择服务器
 bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -139,42 +135,27 @@ bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 	int serverid = 0;
 	is >> serverid;
 
-	if (serverid <= 0)
-	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
-		return false;
-	}
 	if (serverid != BaseCfgMgr.GetServerId())
 	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
 		return false;
 	}
 	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
 	if (!pLoginData)
 	{
-		DelLoginInMap(playerInfo->pMsg->uIndex);
 		return false;
 	}
 
-	{
-		Cos os;
-		os << (int)true;
-		DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-			MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-			playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-			playerInfo->pMsg->pBufferevent, 0);
-	}
+	AddServerIdMap(pLoginData->userId, serverid);
 
-	{
-		Cos os;
-		os << serverid;
-		std::string str = os;
-		DPPC->SaveReplaceSQL("serverlist", pLoginData->userId, str);
-		return true;
-	}
+	Cos os;
+	os << (int)true;
+	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
+		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
+		playerInfo->pMsg->pBufferevent, 0);
+
+	return true;
 }
-
-// 选角
 bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -218,7 +199,6 @@ bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-
 bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -254,7 +234,6 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-
 bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -271,15 +250,8 @@ bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	std::string data;
-	DPPC->LoadOneSql("serverlist", pLoginData->userId, data);
-
-	Cos os;
-	os << data;
-	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
-		MsgCmd(playerInfo->pMsg->netMessageHead.uMainID),
-		playerInfo->pMsg->netMessageHead.uAssistantID, 0,
-		playerInfo->pMsg->pBufferevent, 0);
+	LoadServerIds(pLoginData->userId);
+	SendServerIds(pLoginData->userId, playerInfo->pMsg);
 
 	return true;
 }
@@ -288,7 +260,6 @@ void LoginSys::AddLoginInMap(LoginData key)
 {
 	m_LoginInMap.insert({ key.index , key });
 }
-
 void LoginSys::DelLoginInMap(UINT index)
 {
 	LoginInMap::iterator it = m_LoginInMap.find(index);
@@ -299,7 +270,6 @@ void LoginSys::DelLoginInMap(UINT index)
 
 	m_LoginInMap.erase(it);
 }
-
 LoginData* LoginSys::GetLoginInMap(UINT index)
 {
 	LoginInMap::iterator it = m_LoginInMap.find(index);
@@ -315,4 +285,96 @@ void LoginSys::Save(std::string& id, std::string& pw, uint64_t userid)
 	Cos os;
 	os << pw << userid;
 	DPPC->SaveReplaceSQL("useraccount", id, os);
+}
+void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
+{
+	if (!pMsg)
+	{
+		return;
+	}
+	auto useridIt = m_ServerIdMap.find(userid);
+	if (useridIt == m_ServerIdMap.end())
+	{
+		return;
+	}
+
+	Cos os;
+	os << (int)useridIt->second.size();
+	for (auto id : useridIt->second)
+	{
+		os << id;
+	}
+
+	DTCPC->SendData(pMsg->uIndex, os.str().c_str(), os.str().size(),
+		MsgCmd(pMsg->netMessageHead.uMainID),
+		pMsg->netMessageHead.uAssistantID, 0,
+		pMsg->pBufferevent, 0);
+}
+void LoginSys::LoadServerIds(uint64_t userid)
+{
+	std::vector<int>* serverIdVec = nullptr;
+	auto useridIt = m_ServerIdMap.find(userid);
+	if (useridIt != m_ServerIdMap.end())
+	{
+		serverIdVec = &(useridIt->second);
+	}
+	else
+	{
+		std::vector<int> tmpServerIdVec;
+		m_ServerIdMap.insert({ userid , tmpServerIdVec });
+		serverIdVec = &(m_ServerIdMap.find(userid)->second);
+	}
+	if (!serverIdVec)
+	{
+		return;
+	}
+
+	serverIdVec->clear();
+
+	std::string data;
+	DPPC->LoadOneSql("serverlist", userid, data);
+
+	Cis is(data);
+	int size = 0;
+	is >> size;
+
+	for (int i = 0; i < size; i++)
+	{
+		int id = 0;
+		is >> id;
+		serverIdVec->push_back(id);
+	}
+}
+void LoginSys::SaveServerIds(uint64_t userid)
+{
+	auto useridIt = m_ServerIdMap.find(userid);
+	if (useridIt == m_ServerIdMap.end())
+	{
+		return;
+	}
+
+	Cos os;
+	os << (int)useridIt->second.size();
+	for (auto id : useridIt->second)
+	{
+		os << id;
+	}
+
+	std::string str = os;
+	DPPC->SaveReplaceSQL("serverlist", userid, str);
+}
+
+void LoginSys::AddServerIdMap(uint64_t userid, int serverId)
+{
+	auto useridIt = m_ServerIdMap.find(userid);
+	if (useridIt == m_ServerIdMap.end())
+	{
+		std::vector<int> serveridVec;
+		serveridVec.push_back(serverId);
+		m_ServerIdMap.insert({ userid , serveridVec });
+	}
+	else
+	{
+		useridIt->second.push_back(serverId);
+	}
 }
