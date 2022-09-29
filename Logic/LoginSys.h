@@ -30,7 +30,7 @@ private:
 	bool NetcRequestServerList(Cis& is, PlayerInfo* playerInfo);
 
 private:
-	void AddLoginInMap(LoginData key);
+	void AddLoginInMap(LoginData& key);
 	LoginData* GetLoginInMap(UINT index);
 
 	void AddServerIdMap(uint64_t userid, int serverId);

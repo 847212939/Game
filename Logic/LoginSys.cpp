@@ -114,9 +114,6 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		loginData.userId = DUtil->CreateUserId();
 	}
 
-	AddLoginInMap(loginData);
-	Save(loginData.id, loginData.pw, loginData.userId);
-
 	Cos os;
 	os << (int)true;
 	DTCPC->SendData(playerInfo->pMsg->uIndex, os.str().c_str(), os.str().size(),
@@ -224,6 +221,7 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 
 	DPPC->CreatePlayer(*pLoginData);
 
+	AddLoginInMap(*pLoginData);
 	Save(pLoginData->id, pLoginData->pw, pLoginData->userId);
 	DelLoginInMap(playerInfo->pMsg->uIndex);
 
@@ -258,7 +256,7 @@ bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
 	return true;
 }
 
-void LoginSys::AddLoginInMap(LoginData key)
+void LoginSys::AddLoginInMap(LoginData& key)
 {
 	m_LoginInMap.insert({ key.index , key });
 }
