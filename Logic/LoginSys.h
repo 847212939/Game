@@ -36,10 +36,10 @@ private:
 	void AddServerIdMap(uint64_t userid, int serverId);
 
 private:
-	void Save(std::string& id, std::string& pw, uint64_t userid = 0);
 	void LoadServerIds(uint64_t userid);
 	void SaveServerIds(uint64_t userid);
 	void SendServerIds(uint64_t userid, SocketReadLine* pMsg);
+	void SaveUserAccount(std::string& id, std::string& pw, uint64_t userid = 0);
 
 private:
 	LoginInMap m_LoginInMap;

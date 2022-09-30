@@ -219,19 +219,15 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	if (pLoginData->userId <= 0)
-	{
-		pLoginData->userId = DUtil->CreateUserId();
-	}
 
 	DPPC->CreatePlayer(*pLoginData);
 
 	AddLoginInMap(*pLoginData);
-	Save(pLoginData->id, pLoginData->pw, pLoginData->userId);
 	SaveServerIds(pLoginData->userId);
-	DelLoginInMap(playerInfo->pMsg->uIndex);
+	SaveUserAccount(pLoginData->id, pLoginData->pw, pLoginData->userId);
 
 	DPPC->SendOperateResults(playerInfo->pMsg);
+	DelLoginInMap(playerInfo->pMsg->uIndex);
 
 	return true;
 }
@@ -260,7 +256,7 @@ LoginData* LoginSys::GetLoginInMap(UINT index)
 	return &it->second;
 }
 
-void LoginSys::Save(std::string& id, std::string& pw, uint64_t userid)
+void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid)
 {
 	Cos os;
 	os << pw << userid;
