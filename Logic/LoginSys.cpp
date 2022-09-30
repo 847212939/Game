@@ -256,33 +256,6 @@ LoginData* LoginSys::GetLoginInMap(UINT index)
 	return &it->second;
 }
 
-void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid)
-{
-	Cos os;
-	os << pw << userid;
-	DPPC->SaveReplaceSQL("useraccount", id, os);
-}
-void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
-{
-	ServerIdMap::iterator useridIt = m_ServerIdMap.find(userid);
-	if (!pMsg || useridIt == m_ServerIdMap.end())
-	{
-		return;
-	}
-
-	Cos os;
-	os << (int)useridIt->second.size();
-	for (auto it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
-	{
-		os << *it;
-	}
-
-	std::string data = os;
-	DTCPC->SendData(pMsg->uIndex, data.c_str(), data.size(),
-		MsgCmd(pMsg->netMessageHead.uMainID),
-		pMsg->netMessageHead.uAssistantID, 0,
-		pMsg->pBufferevent, 0);
-}
 void LoginSys::LoadServerIds(uint64_t userid)
 {
 	std::set<int>* serverIdVec = nullptr;
@@ -335,6 +308,33 @@ void LoginSys::SaveServerIds(uint64_t userid)
 
 	std::string str = os;
 	DPPC->SaveReplaceSQL("serverlist", userid, str);
+}
+void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
+{
+	ServerIdMap::iterator useridIt = m_ServerIdMap.find(userid);
+	if (!pMsg || useridIt == m_ServerIdMap.end())
+	{
+		return;
+	}
+
+	Cos os;
+	os << (int)useridIt->second.size();
+	for (auto it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
+	{
+		os << *it;
+	}
+
+	std::string data = os;
+	DTCPC->SendData(pMsg->uIndex, data.c_str(), data.size(),
+		MsgCmd(pMsg->netMessageHead.uMainID),
+		pMsg->netMessageHead.uAssistantID, 0,
+		pMsg->pBufferevent, 0);
+}
+void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid)
+{
+	Cos os;
+	os << pw << userid;
+	DPPC->SaveReplaceSQL("useraccount", id, os);
 }
 
 void LoginSys::AddServerIdMap(uint64_t userid, int serverId)
