@@ -143,7 +143,6 @@ bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 	}
 
 	pLoginData->serverId = serverid;
-	AddServerIdMap(pLoginData->userId, serverid);
 
 	DPPC->SendOperateResults(playerInfo->pMsg);
 
@@ -223,11 +222,11 @@ bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
 	}
 
 	DPPC->CreatePlayer(*pLoginData);
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
+	AddServerIdMap(pLoginData->userId, pLoginData->serverId);
 	SaveServerIds(pLoginData->userId);
 	SaveUserAccount(pLoginData->id, pLoginData->pw, pLoginData->userId);
-
-	DPPC->SendOperateResults(playerInfo->pMsg);
 	DelLoginInMap(playerInfo->pMsg->uIndex);
 
 	return true;
