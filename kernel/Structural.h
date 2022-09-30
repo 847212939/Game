@@ -262,8 +262,9 @@ struct LoginData
 	uint64_t				userId;
 	int						roleid;
 	int						roleType;
+	int						serverId;
 
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0) {}
+	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0), serverId(0) {}
 	~LoginData() {}
 };
 
