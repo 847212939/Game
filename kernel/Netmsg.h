@@ -4,8 +4,12 @@ class Netmsg
 {
 public:
 	Netmsg();
-	Netmsg(std::string str);
 	virtual ~Netmsg();
+	Netmsg(std::string str, int count = 0);
+
+protected:
+	Netmsg(const Netmsg& my);
+	Netmsg& operator=(const Netmsg& my);
 
 public:
 	std::string str();
@@ -16,21 +20,14 @@ public:
 
 	template<class T>
 	Netmsg& operator >> (T& t);
-	Netmsg& operator >> (char* pBuf);
-	Netmsg& operator >> (unsigned char* pBuf);
-	Netmsg& operator >> (std::string& outStr);
 
-	void split(std::string& str, std::string separator);
+	void split(std::string& str, std::string separator, size_t count = 0);
 
 private:
-	// 记录输出几次的数量
 	std::ostringstream	m_os;
-	std::istringstream	m_is;
 	size_t				m_cnt;
 
-protected:
-	Netmsg(const Netmsg& my);
-	Netmsg& operator=(const Netmsg& my);
+	std::vector<std::string> m_SplitsVec;
 };
 
 template<class T>
@@ -43,7 +40,11 @@ Netmsg& Netmsg::operator << (T t)
 template<class T>
 Netmsg& Netmsg::operator >> (T& t)
 {
-	m_is >> t;
-	++m_cnt;
+	if (m_cnt < m_SplitsVec.size())
+	{
+		std::istringstream is(m_SplitsVec[m_cnt]);
+		is >> t;
+		++m_cnt;
+	}
 	return *this;
 }
