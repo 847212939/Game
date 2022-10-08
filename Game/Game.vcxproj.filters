@@ -172,6 +172,9 @@
     <ClCompile Include="table.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\kernel\Netmsg.cpp">
+      <Filter>工具接口</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
@@ -290,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="..\Logic\SkillLvSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Netmsg.h">
+      <Filter>工具接口</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

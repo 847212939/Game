@@ -70,6 +70,7 @@ extern "C"
 #include "../kernel/TCPSocket.h"			// 网络基类
 #include "../kernel/TCPClient.h"			// 网络客户端
 #include "../kernel/Util.h"					// 工具类
+#include "../kernel/Netmsg.h"				// 消息解析
 #include "../kernel/LogManager.h"			// 日志管理类
 #include "../Logic/SkillCfg.h"				// 技能配置
 #include "../Logic/Animal.h"				// 动物

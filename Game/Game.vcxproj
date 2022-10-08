@@ -162,6 +162,7 @@
     <ClCompile Include="..\kernel\DataLine.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
+    <ClCompile Include="..\kernel\Netmsg.cpp" />
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\Macro.h" />
+    <ClInclude Include="..\kernel\Netmsg.h" />
     <ClInclude Include="..\kernel\Structural.h" />
     <ClInclude Include="..\kernel\LogManager.h" />
     <ClInclude Include="..\kernel\MysqlHelper.h" />
