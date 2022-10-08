@@ -91,18 +91,17 @@ protected:
 	Netmsg& operator=(const Netmsg& my);
 
 public:
-	template<class T>
-	Netmsg& operator >> (T& t);
-	template<class T>
-	Netmsg& operator << (T t);
-
 	std::string str();
 	operator std::string();
 
-	// 输出字符串
-	Netmsg& operator >> (std::string& outStr);
+	template<class T>
+	Netmsg& operator << (T t);
+
+	template<class T>
+	Netmsg& operator >> (T& t);
 	Netmsg& operator >> (char* pBuf);
 	Netmsg& operator >> (unsigned char* pBuf);
+	Netmsg& operator >> (std::string& outStr);
 
 private:
 	// 记录输出几次的数量
