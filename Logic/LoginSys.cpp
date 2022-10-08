@@ -22,7 +22,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 
 	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Cis is((char*)playerInfo->pData);
+	Netmsg is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
@@ -56,7 +56,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -88,7 +88,7 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 		uint64_t userid = 0;
 		std::string passwaed;
 
-		Cis sqlIs(data);
+		Netmsg sqlIs(data);
 		sqlIs >> passwaed >> userid;
 
 		if (pw != passwaed)
@@ -118,7 +118,7 @@ bool LoginSys::NetVerificationAccount(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectServer(Netmsg& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -148,7 +148,7 @@ bool LoginSys::NetSelectServer(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetcRequestServerList(Netmsg& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -169,7 +169,7 @@ bool LoginSys::NetcRequestServerList(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectRole(Netmsg& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -205,7 +205,7 @@ bool LoginSys::NetSelectRole(Cis& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetLoginIn(Cis& is, PlayerInfo* playerInfo)
+bool LoginSys::NetLoginIn(Netmsg& is, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -280,7 +280,7 @@ void LoginSys::LoadServerIds(uint64_t userid)
 	std::string data;
 	DPPC->LoadOneSql("serverlist", userid, data);
 
-	Cis is(data);
+	Netmsg is(data);
 	int size = 0;
 	is >> size;
 
@@ -299,7 +299,7 @@ void LoginSys::SaveServerIds(uint64_t userid)
 		return;
 	}
 
-	Cos os;
+	Netmsg os;
 	os << (int)useridIt->second.size();
 	for (auto id : useridIt->second)
 	{
@@ -317,7 +317,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 		return;
 	}
 
-	Cos os;
+	Netmsg os;
 	os << (int)useridIt->second.size();
 	for (auto it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
 	{
@@ -332,7 +332,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 }
 void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid)
 {
-	Cos os;
+	Netmsg os;
 	os << pw << userid;
 	DPPC->SaveReplaceSQL("useraccount", id, os);
 }

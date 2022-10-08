@@ -35,7 +35,7 @@ void Animal::AdditionAttributes(AttrsMap& attrs)
 
 void Animal::RefreshProp()
 {
-	Cos os;
+	Netmsg os;
 	os << (int)m_AttrsMap.size();
 	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{

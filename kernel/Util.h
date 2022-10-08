@@ -58,72 +58,11 @@ private:
 	static time_t				m_OpenServerTimeSecond;
 };
 
-class Cos
-{
-public:
-	Cos();
-	virtual ~Cos();
-
-protected:
-	Cos(const Cos& my);
-	Cos& operator=(const Cos& my);
-
-public:
-	template<class T>
-	Cos& operator << (T t);
-
-	operator std::string();
-	std::string str();
-
-private:
-	std::ostringstream m_os;
-};
-
-class Cis
-{
-public:
-	virtual ~Cis();
-	Cis(std::string str);
-
-protected:
-	Cis(const Cis& my);
-	Cis& operator=(const Cis& my);
-
-public:
-	template<class T>
-	Cis& operator >> (T& t);
-
-	// 输出字符串
-	Cis& operator >> (std::string& outStr);
-	Cis& operator >> (char* pBuf);
-	Cis& operator >> (unsigned char* pBuf);
-
-private:
-	// 记录输出几次的数量
-	size_t				m_cnt;
-	std::istringstream	m_is;
-};
-
-template<class T>
-Cos& Cos::operator << (T t)
-{
-	m_os << t << "\n";
-	return *this;
-}
-
-template<class T>
-Cis& Cis::operator >> (T& t)
-{
-	m_is >> t;
-	++m_cnt;
-	return *this;
-}
-
 class IDGen
 {
 public:
 	IDGen();
-	virtual ~IDGen(){}
+	virtual ~IDGen() {}
 
 protected:
 	IDGen(const IDGen& my);
@@ -139,3 +78,50 @@ private:
 	time_t      m_lastSecond;
 	uint64_t	m_addID;
 };
+
+class Netmsg
+{
+public:
+	Netmsg();
+	virtual ~Netmsg();
+	Netmsg(std::string str);
+
+protected:
+	Netmsg(const Netmsg& my);
+	Netmsg& operator=(const Netmsg& my);
+
+public:
+	template<class T>
+	Netmsg& operator >> (T& t);
+	template<class T>
+	Netmsg& operator << (T t);
+
+	std::string str();
+	operator std::string();
+
+	// 输出字符串
+	Netmsg& operator >> (std::string& outStr);
+	Netmsg& operator >> (char* pBuf);
+	Netmsg& operator >> (unsigned char* pBuf);
+
+private:
+	// 记录输出几次的数量
+	std::ostringstream	m_os;
+	std::istringstream	m_is;
+	size_t				m_cnt;
+};
+
+template<class T>
+Netmsg& Netmsg::operator << (T t)
+{
+	m_os << t << "\n";
+	return *this;
+}
+
+template<class T>
+Netmsg& Netmsg::operator >> (T& t)
+{
+	m_is >> t;
+	++m_cnt;
+	return *this;
+}

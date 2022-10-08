@@ -98,35 +98,31 @@ void Util::Exit(bool& run)
 	DTCPC->NotifyAll();
 }
 
-Cos::Cos()
-{
-}
-
-Cos::~Cos()
-{
-
-}
-
-Cos::operator std::string()
+Netmsg::operator std::string()
 {
 	return m_os.str();
 }
 
-std::string Cos::str()
+std::string Netmsg::str()
 {
 	return m_os.str();
 }
 
-Cis::~Cis()
+Netmsg::Netmsg() : m_cnt(0)
 {
 
 }
 
-Cis::Cis(std::string str) : m_is(str), m_cnt(0)
+Netmsg::~Netmsg()
+{
+
+}
+
+Netmsg::Netmsg(std::string str) : m_is(str), m_cnt(0)
 {
 }
 
-Cis& Cis::operator >> (std::string& outStr)
+Netmsg& Netmsg::operator >> (std::string& outStr)
 {
 	std::string str = m_is.str();
 	size_t index1 = 0, index2 = 0, cnt = 0, len = 0, block = -1;
@@ -165,7 +161,7 @@ Cis& Cis::operator >> (std::string& outStr)
 	return *this;
 }
 
-Cis& Cis::operator >> (char* pBuf)
+Netmsg& Netmsg::operator >> (char* pBuf)
 {
 	std::string outStr;
 	std::string str = m_is.str();
@@ -206,7 +202,7 @@ Cis& Cis::operator >> (char* pBuf)
 	return *this;
 }
 
-Cis& Cis::operator >> (unsigned char* pBuf)
+Netmsg& Netmsg::operator >> (unsigned char* pBuf)
 {
 	std::string outStr;
 	std::string str = m_is.str();

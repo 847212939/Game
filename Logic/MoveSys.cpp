@@ -25,7 +25,7 @@ void MoveSys::LoadMysql(std::string& data)
 		return;
 	}
 
-	Cis is(data);
+	Netmsg is(data);
 	unsigned int x = 0, y = 0;
 
 	is >> x >> y;
@@ -59,7 +59,7 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 	}
 
 	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Cis is((char*)playerInfo->pData);
+	Netmsg is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
@@ -80,12 +80,12 @@ void MoveSys::Exit(SocketCloseLine* socketCloseLine)
 	COUT_LOG(LOG_CINFO, "Íæ¼ÒÍË³ö");
 }
 
-bool MoveSys::MoveCoo(Cis& is, PlayerInfo* playerInfo)
+bool MoveSys::MoveCoo(Netmsg& is, PlayerInfo* playerInfo)
 {
 	unsigned int x = 0, y = 0;
 	is >> x >> y;
 
-	Cos os;
+	Netmsg os;
 	os << x << y;
 
 	m_PlayerClient->SaveReplaceSQL("move", os);

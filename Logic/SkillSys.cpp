@@ -40,7 +40,7 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 		return;
 	}
 	HurtSysMsgCmd uAssistantID = (HurtSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Cis is((char*)playerInfo->pData);
+	Netmsg is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
@@ -54,7 +54,7 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool SkillSys::CalHurt(Cis& is, PlayerInfo* playerInfo)
+bool SkillSys::CalHurt(Netmsg& is, PlayerInfo* playerInfo)
 {
 	int sceneid = 0, skillpos = 0, norattack = 0;
 	uint64_t hitedid = 0, behitedid = 0;
@@ -121,7 +121,7 @@ void SkillSys::SendSkillCD(HurtSysMsgCmd type, int value, Animal* animal)
 {
 	if (animal->GetType() == AnimalType::at_player)
 	{
-		Cos os;
+		Netmsg os;
 		os << value;
 		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)type, 0);
 
