@@ -42,9 +42,8 @@ Netmsg& Netmsg::operator >> (T& t)
 {
 	if (m_cnt < m_SplitsVec.size())
 	{
-		std::istringstream is(m_SplitsVec[m_cnt]);
+		std::istringstream is(m_SplitsVec[m_cnt++]);
 		is >> t;
-		++m_cnt;
 	}
 	return *this;
 }
