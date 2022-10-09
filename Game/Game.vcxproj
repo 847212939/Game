@@ -197,6 +197,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\kernel\Alias.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\Macro.h" />

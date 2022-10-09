@@ -297,6 +297,9 @@
     <ClInclude Include="..\kernel\Netmsg.h">
       <Filter>工具接口</Filter>
     </ClInclude>
+    <ClInclude Include="..\kernel\Alias.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Config\BaseCfg.lua">
