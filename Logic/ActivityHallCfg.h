@@ -5,10 +5,10 @@ struct CActivityList
 	int id;
 	int type;
 	int sid;
-	IntVector beginTime;
-	IntVector endTime;
-	IntVector solidTime;
-	IntVector openServerTime;
+	VectorInt beginTime;
+	VectorInt endTime;
+	VectorInt solidTime;
+	VectorInt openServerTime;
 	int activityBreakdown;
 	CActivityList();
 	~CActivityList();
@@ -56,9 +56,9 @@ struct CBrushMonsterCfg
 class ActivityHallCfg
 {
 public:
-	CfgSet<CActivityList>& GetActivityListCfgSet();
+	SetTemplate<CActivityList>& GetActivityListCfgSet();
 	const CActivityBreakdown* GetActivityBreakdown(int id);
-	CfgVector<CBrushMonsterCfg>* GetBrushMonsterCfg(int id);
+	VectorTemplate<CBrushMonsterCfg>* GetBrushMonsterCfg(int id);
 
 public:
 	ActivityHallCfg() {}
@@ -70,7 +70,7 @@ public:
 	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
 
 private:
-	CfgSet<CActivityList>		m_ActivityListCfgSet;
+	SetTemplate<CActivityList>		m_ActivityListCfgSet;
 	CfgMap<CBrushMonsterCfg>		m_BrushMonsterCfgMap;
-	CfgSet<CActivityBreakdown>	m_ActivityBreakdownCfgSet;
+	SetTemplate<CActivityBreakdown>	m_ActivityBreakdownCfgSet;
 };

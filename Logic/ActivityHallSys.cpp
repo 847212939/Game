@@ -41,7 +41,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 	return it->second.open;
 }
 
-CfgVector<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityList* cfg, int& bmid)
+VectorTemplate<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityList* cfg, int& bmid)
 {
 	std::pair<int, int> pr; // type, index
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
@@ -72,7 +72,7 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const CActivityBreakdown* pConfig,
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
 	for (int i = 1; i < pr.second; i++)
 	{
-		CfgVector<CBrushMonsterCfg>* pVector = 
+		VectorTemplate<CBrushMonsterCfg>* pVector = 
 			activityHallCfg.GetBrushMonsterCfg(GetPreBrushMonsterId(pConfig, pr.first, i));
 		if (!pVector)
 		{
@@ -404,7 +404,7 @@ void ActivityHallSys::TimerCallback()
 
 bool ActivityHallSys::Enter(CActivityList* cfg, int& bmid)
 {
-	CfgVector<CBrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
+	VectorTemplate<CBrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");
@@ -426,7 +426,7 @@ bool ActivityHallSys::Enter(CActivityList* cfg, int& bmid)
 bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 {
 	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
-	CfgVector<CBrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
+	VectorTemplate<CBrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
 	if (!pVector)
 	{
 		COUT_LOG(LOG_CINFO, "pVector = null");

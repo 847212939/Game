@@ -20,7 +20,7 @@ void SkillCfg::ReadSkillIdList(CSkillIdList* config)
 
 const CHeroList* SkillCfg::GetCHeroListCfg(int heroid)
 {
-	CfgSet<CHeroList>::const_iterator it = m_HeroListSet.find(heroid);
+	SetTemplate<CHeroList>::const_iterator it = m_HeroListSet.find(heroid);
 	if (it == m_HeroListSet.end())
 	{
 		return nullptr;
@@ -31,7 +31,7 @@ const CHeroList* SkillCfg::GetCHeroListCfg(int heroid)
 
 const CSkillIdList* SkillCfg::GetCSkillIdListCfg(int skillid)
 {
-	CfgSet<CSkillIdList>::const_iterator it = m_SkillIdListSet.find(skillid);
+	SetTemplate<CSkillIdList>::const_iterator it = m_SkillIdListSet.find(skillid);
 	if (it == m_SkillIdListSet.end())
 	{
 		return nullptr;

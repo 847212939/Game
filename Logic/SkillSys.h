@@ -41,5 +41,5 @@ private:
 	bool SkillCountdown(HurtSysMsgCmd type, int value, int& cnt, Animal* animal);
 
 private:
-	SkillCDList m_SkillCDList;
+	ListSkillCDData m_SkillCDList;
 };

@@ -59,7 +59,7 @@ void CActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 	CfgMap<int>::iterator it = dayBreakdownList.find(idex);
 	if (it == dayBreakdownList.end())
 	{
-		CfgVector<int> tmp;
+		VectorTemplate<int> tmp;
 		tmp.push_back(tm);
 		dayBreakdownList.insert({ idex , tmp });
 	}
@@ -74,7 +74,7 @@ void CActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 	CfgMap<int>::iterator it = hourBreakdownList.find(idex);
 	if (it == hourBreakdownList.end())
 	{
-		CfgVector<int> tmp;
+		VectorTemplate<int> tmp;
 		tmp.push_back(tm);
 		hourBreakdownList.insert({ idex , tmp });
 	}
@@ -178,14 +178,14 @@ bool CActivityBreakdown::operator < (const CActivityBreakdown& other) const
 	return false;
 }
 
-CfgSet<CActivityList>& ActivityHallCfg::GetActivityListCfgSet()
+SetTemplate<CActivityList>& ActivityHallCfg::GetActivityListCfgSet()
 {
 	return m_ActivityListCfgSet;
 }
 
 const CActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
 {
-	CfgSet<CActivityBreakdown>::iterator it = m_ActivityBreakdownCfgSet.find(id);
+	SetTemplate<CActivityBreakdown>::iterator it = m_ActivityBreakdownCfgSet.find(id);
 	if (it == m_ActivityBreakdownCfgSet.end())
 	{
 		return nullptr;
@@ -193,7 +193,7 @@ const CActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
 	return &(*it);
 }
 
-CfgVector<CBrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
+VectorTemplate<CBrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
 {
 	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
 	if (it == m_BrushMonsterCfgMap.end())
@@ -219,7 +219,7 @@ void ActivityHallCfg::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
 	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
-		CfgVector<CBrushMonsterCfg> tmp;
+		VectorTemplate<CBrushMonsterCfg> tmp;
 		tmp.push_back(*config);
 		m_BrushMonsterCfgMap.insert({ config->id, tmp });
 	}

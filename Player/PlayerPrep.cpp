@@ -476,7 +476,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 	return true;
 }
 
-bool PlayerPrep::SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run)
+bool PlayerPrep::SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool& run)
 {
 	RSqlList.clear();
 
@@ -516,8 +516,8 @@ void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 
 void PlayerPrep::HandlerExecuteSqlThread()
 {
-	SqlList sqlList;
-	SqlList& mysqlList = m_sqlList;
+	ListString sqlList;
+	ListString& mysqlList = m_sqlList;
 	bool& run = DTCPC->GetRuninged();
 
 	while (run)

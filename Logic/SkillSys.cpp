@@ -79,7 +79,7 @@ bool SkillSys::CalHurt(Netmsg& is, PlayerInfo* playerInfo)
 // 技能时间定时器
 void SkillSys::SkillCdTimer()
 {
-	SkillCDList::iterator it = m_SkillCDList.begin();
+	ListSkillCDData::iterator it = m_SkillCDList.begin();
 	while (it != m_SkillCDList.end())
 	{
 		SkillCDData& data = *it;

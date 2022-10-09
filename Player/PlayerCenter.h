@@ -27,10 +27,10 @@ public:
 private:
 	void HandlerPlayerThread();
 	void HandleLoadPlayer(LoginData& loginData);
-	bool SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlayerList& RloadPlayerList, bool& run);
+	bool SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run);
 
 private:
 	ConditionVariable				m_cond;
-	LoadPlayerList					m_LoadPlayerList;
-	PlayerClientVec					m_PlayerClientVec;
+	ListLoginData					m_LoadPlayerList;
+	VectorPlayerClient				m_PlayerClientVec;
 };

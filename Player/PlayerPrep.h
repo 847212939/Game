@@ -57,7 +57,7 @@ private:
 	void HandlerExecuteSqlThread();
 	void HandleEexcuteMysql(std::string& sql);
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
-	bool SwapMysqlList(SqlList& LSqlList, SqlList& RSqlList, bool& run);
+	bool SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool& run);
 
 public:
 	static char createptable[CREATE_TABLE_LEN];
@@ -66,7 +66,7 @@ public:
 
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用
-	SqlList           m_sqlList;			// 数据库语链表
+	ListString        m_sqlList;			// 数据库语链表
 	NetFunMap		  m_NetCBFunMap;		// 回调函数
 	CServerTimer*	  m_pServerTimer;		// 定时器
 	TimerFunMap		  m_TimerFunMap;		// 回调函数

@@ -54,8 +54,8 @@ public:
 
 private:
 	NetFunMap				m_NetCBFunMap;			// 回调函数集合
-	ExitFunMap				m_ExitFunMap;			// 回调函数集合
-	AttrsFunMap				m_AttrsFunMap;			// 回调函数集合
+	VectorExitFunc			m_ExitFunMap;			// 回调函数集合
 	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
-	AttrsFunMap				m_EnterSceneFunMap;		// 回调函数集合
+	VectorVoidFunc			m_AttrsFunMap;			// 回调函数集合
+	VectorVoidFunc			m_EnterSceneFunMap;		// 回调函数集合
 };

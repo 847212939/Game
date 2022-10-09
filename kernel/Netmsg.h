@@ -8,6 +8,7 @@ public:
 	Netmsg(std::string str, int count = 0);
 
 protected:
+	// 禁用拷贝构造函数
 	Netmsg(const Netmsg& my);
 	Netmsg& operator=(const Netmsg& my);
 
@@ -24,10 +25,9 @@ public:
 	void split(std::string& str, std::string separator, size_t count = 0);
 
 private:
-	std::ostringstream	m_os;
 	size_t				m_cnt;
-
-	std::vector<std::string> m_SplitsVec;
+	std::ostringstream	m_os;
+	VectorString		m_SplitsVec;
 };
 
 template<class T>

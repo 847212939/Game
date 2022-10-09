@@ -5,7 +5,7 @@ struct CHeroList
 	int heroId;
 	int heroType;
 	std::string heroName;
-	IntVector skillId;
+	VectorInt skillId;
 
 	void AddskillId(int skillid)
 	{
@@ -80,6 +80,6 @@ public:
 	void ReadSkillIdList(CSkillIdList* config);
 
 private:
-	CfgSet<CHeroList>		m_HeroListSet;
-	CfgSet<CSkillIdList>	m_SkillIdListSet;
+	SetTemplate<CHeroList>		m_HeroListSet;
+	SetTemplate<CSkillIdList>	m_SkillIdListSet;
 };

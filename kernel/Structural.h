@@ -364,36 +364,40 @@ struct SkillCDData
 };
 
 template<typename T>
-using CfgSet				= std::set<T>;
+using SetTemplate			= std::set<T>;
+using SetUint				= std::set<unsigned int>;
+
 template<typename T>
-using CfgVector				= std::vector<T>;
+using VectorTemplate		= std::vector<T>;
+using VectorInt				= std::vector<int>;
+using VectorString			= std::vector<std::string>;
+using VectorPlayerClient	= std::vector<PlayerClient*>;
+using VectorVoidFunc		= std::vector<std::function<void()>>;
+using VectorExitFunc		= std::vector<std::function<void(SocketCloseLine*)>>;
+
+using ListUint				= std::list<unsigned int>;
+using ListString			= std::list<std::string>;
+using ListLoginData			= std::list<LoginData>;
+using ListSkillCDData		= std::list<SkillCDData>;
+
 template<typename T>
-using CfgMap				= std::map<int, CfgVector<T>>;
-using IntVector				= std::vector<int>;
-using TimerList				= std::list<UINT>;
+using CfgMap				= std::map<int, VectorTemplate<T>>;
 using AttrsMap				= std::map<AttrsCmd, int>;
-using OnLinePlayerSet		= std::set<unsigned int>;
-using SqlList				= std::list<std::string>;
-using LoadPlayerList		= std::list<LoginData>;
-using PlayerClientVec		= std::vector<PlayerClient*>;
 using SqlKeyDataMap			= std::map<std::string, std::string>;
-using AttrsFunMap			= std::vector<std::function<void()>>;
 using TimerFunMap			= std::map<TimerCmd, std::function<void()>>;
 using NetFunMap				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
-using ExitFunMap			= std::vector<std::function<void(SocketCloseLine*)>>;
 using MysqlFunMap			= std::map<std::string, std::function<void(std::string&)>>;
 using TypeFunMap			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
-using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 using RecordDataMap			= std::map<std::string, std::pair<FT, std::string>>;
 using ActivityFunMap		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
 using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MonsterMap			= std::map<int, MonsterKVMap>;
-using SkillCDList			= std::list<SkillCDData>;
 using SkillDataMap 			= std::map<int, SkillData>;
 using LoginInMap			= std::map<UINT, LoginData>;
 using ServerIdMap			= std::map<uint64_t, std::set<int>>;
+using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

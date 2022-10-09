@@ -31,8 +31,8 @@ public:
 	// 配置转化成秒
 	static uint64_t GetSysSecond();
 	static long long GetSysMilliseconds();
-	static uint64_t GetCfgSecond(const IntVector& vec);
-	static uint64_t GetCfgSecondEnd(const IntVector& vec);
+	static uint64_t GetCfgSecond(const VectorInt& vec);
+	static uint64_t GetCfgSecondEnd(const VectorInt& vec);
 
 public:
 	// 获取开服时间

@@ -77,7 +77,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
-bool PlayerCenter::SwapLoadPlayerList(LoadPlayerList& LloadPlayerList, LoadPlayerList& RloadPlayerList, bool& run)
+bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run)
 {
 	RloadPlayerList.clear();
 
@@ -156,8 +156,8 @@ void PlayerCenter::HandlerPlayerThread()
 {
 	bool& run = DTCPC->GetRuninged();
 
-	LoadPlayerList loadPlayerList;
-	LoadPlayerList& playerList = m_LoadPlayerList;
+	ListLoginData loadPlayerList;
+	ListLoginData& playerList = m_LoadPlayerList;
 
 	while (run)
 	{

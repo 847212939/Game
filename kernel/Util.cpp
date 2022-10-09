@@ -130,7 +130,7 @@ TCPClient* Util::GetTCPClient()
 	return m_TCPClient;
 }
 
-uint64_t Util::GetCfgSecond(const IntVector& vec)
+uint64_t Util::GetCfgSecond(const VectorInt& vec)
 {
 	if (vec.size() < 3)
 	{
@@ -140,7 +140,7 @@ uint64_t Util::GetCfgSecond(const IntVector& vec)
 	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
 }
 
-uint64_t Util::GetCfgSecondEnd(const IntVector& vec)
+uint64_t Util::GetCfgSecondEnd(const VectorInt& vec)
 {
 	if (vec.size() < 6)
 	{
