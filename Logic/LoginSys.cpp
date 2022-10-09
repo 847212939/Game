@@ -275,8 +275,6 @@ void LoginSys::LoadServerIds(uint64_t userid)
 		return;
 	}
 
-	//serverIdVec->clear();
-
 	std::string data;
 	DPPC->LoadOneSql("serverlist", userid, data);
 
