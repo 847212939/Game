@@ -13,8 +13,7 @@ SkillSys::~SkillSys()
 void SkillSys::RegisterSkillTimer()
 {
 	if (!DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		BaseCfgMgr.GetTimerCnt()].
-		ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+		BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
 		RegisterTimer(DPPC, SkillSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
@@ -25,8 +24,7 @@ void SkillSys::RegisterSkillTimer()
 void SkillSys::UnRegisterSkillTimer()
 {
 	if (DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		BaseCfgMgr.GetTimerCnt()].
-		ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+		BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
 		UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Skill);
 	}
