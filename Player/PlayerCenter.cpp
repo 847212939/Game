@@ -196,7 +196,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 
 PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 {
-	std::vector<UINT> playerClientSet;
+	std::vector<unsigned int> playerClientSet;
 	DTCPC->GetSocketSet(playerClientSet);
 	for (int index : playerClientSet)
 	{
@@ -219,7 +219,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 }
 
 // 获取在线玩家
-void PlayerCenter::GetSocketSet(std::vector<UINT>& socketVec)
+void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
 {
 	DTCPC->GetSocketSet(socketVec);
 }

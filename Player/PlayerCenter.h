@@ -18,7 +18,7 @@ public:
 	void CreatePlayer(LoginData& loginData);
 
 public:
-	void GetSocketSet(std::vector<UINT>& socketVec);
+	void GetSocketSet(std::vector<unsigned int>& socketVec);
 
 	ConditionVariable& GetConditionVariable();
 	PlayerClient* GetPlayerClientByUserid(uint64_t userId);

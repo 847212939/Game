@@ -229,7 +229,7 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 }
 
 //设定定时器
-bool PlayerPrep::SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
 	{

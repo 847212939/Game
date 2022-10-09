@@ -232,7 +232,7 @@ bool LoginSys::NetLoginIn(Netmsg& is, PlayerInfo* playerInfo)
 	return true;
 }
 
-void LoginSys::DelLoginInMap(UINT index)
+void LoginSys::DelLoginInMap(unsigned int index)
 {
 	MapLoginIn::iterator it = m_LoginInMap.find(index);
 	if (it == m_LoginInMap.end())
@@ -246,7 +246,7 @@ void LoginSys::AddLoginInMap(LoginData& key)
 {
 	m_LoginInMap.insert({ key.index , key });
 }
-LoginData* LoginSys::GetLoginInMap(UINT index)
+LoginData* LoginSys::GetLoginInMap(unsigned int index)
 {
 	MapLoginIn::iterator it = m_LoginInMap.find(index);
 	if (it == m_LoginInMap.end())

@@ -47,7 +47,7 @@ private:
 	bool RecvData(bufferevent* bev, int index);
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
-	bool OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType);
+	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType);
 
 private:
 	// 线程入口

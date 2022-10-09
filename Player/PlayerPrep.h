@@ -38,7 +38,7 @@ public:
 
 public:
 	// ¶¨Ê±Æ÷
-	bool SetTimer(TimerCmd uTimerID, UINT uElapse, BYTE timerType = SERVERTIMER_TYPE_PERISIST);
+	bool SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char timerType = SERVERTIMER_TYPE_PERISIST);
 	bool KillTimer(TimerCmd uTimerID);
 
 public:

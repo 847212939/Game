@@ -610,7 +610,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 }
 
 //网络关闭处理
-bool CTCPSocketManage::OnSocketCloseEvent(ULONG uAccessIP, UINT uIndex, UINT uConnectTime, BYTE socketType)
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType)
 {
 	SocketCloseLine SocketClose;
 	SocketClose.uConnectTime = uConnectTime;
@@ -652,7 +652,7 @@ bool CTCPSocketManage::IsConnected(int index)
 	return m_socketInfoVec[index].isConnect;
 }
 
-void CTCPSocketManage::GetSocketSet(std::vector<UINT>& vec)
+void CTCPSocketManage::GetSocketSet(std::vector<unsigned int>& vec)
 {
 	vec.clear();
 
@@ -723,7 +723,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 		return;
 	}
 
-	ULONG uAccessIP = 0;
+	unsigned long uAccessIP = 0;
 
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
@@ -744,7 +744,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	uAccessIP = inet_addr(tcpInfo.ip);
 	m_uCurSocketSize--;
-	m_heartBeatSocketSet.erase((UINT)index);
+	m_heartBeatSocketSet.erase((unsigned int)index);
 
 	// 释放参数内存
 	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
@@ -776,7 +776,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo.acceptFd);
 
-	OnSocketCloseEvent(uAccessIP, index, (UINT)tcpInfo.acceptMsgTime, (BYTE)m_socketType);
+	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo.acceptMsgTime, (unsigned char)m_socketType);
 
 	// 清理登录内存
 	DPPC->GetLoginSys().DelLoginInMap(index);

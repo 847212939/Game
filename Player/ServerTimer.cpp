@@ -125,7 +125,7 @@ bool CServerTimer::Stop()
 	return true;
 }
 
-bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, BYTE timerType /*= SERVERTIMER_TYPE_PERISIST*/)
+bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigned char timerType /*= SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (uElapse < (unsigned int)m_timeOnce)
 	{

@@ -122,8 +122,8 @@ struct DataLineHead
 //定时器消息结构定义
 struct ServerTimerLine
 {
-	UINT uMainID;																//定时器 ID
-	UINT uTimerID;																//定时器 ID
+	unsigned int uMainID;																//定时器 ID
+	unsigned int uTimerID;																//定时器 ID
 	ServerTimerLine() { memset(this, 0, sizeof(ServerTimerLine)); }
 };
 
@@ -205,10 +205,10 @@ struct SocketReadLine
 struct SocketCloseLine
 {
 	DataLineHead						LineHead;								//队列头
-	UINT								uIndex;									//SOCKT 索引
-	ULONG								uAccessIP;								//SOCKFD IP
-	UINT								uConnectTime;							//连接时间
-	BYTE								socketType;								//socket类型 enum SocketType
+	unsigned int						uIndex;									//SOCKT 索引
+	unsigned long						uAccessIP;								//SOCKFD IP
+	unsigned int						uConnectTime;							//连接时间
+	unsigned char						socketType;								//socket类型 enum SocketType
 
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };
@@ -235,7 +235,7 @@ struct ServerTimerInfo
 {
 	unsigned int	elapse;														// 定时器间隔（单位毫秒）
 	long long		starttime;													// 起始时间（单位毫秒）
-	BYTE			timertype;													// 定时器类型 SERVERTIMER_TYPE
+	unsigned char	timertype;													// 定时器类型 SERVERTIMER_TYPE
 
 	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
 };
@@ -395,7 +395,7 @@ using MapActiveOpen			= std::map<int, ActtiveOpen>;
 using MapMonsterKV			= std::map<RefMonsterKey, std::vector<Animal*>>;
 using MapMonster			= std::map<int, MapMonsterKV>;
 using MapSkillData 			= std::map<int, SkillData>;
-using MapLoginIn			= std::map<UINT, LoginData>;
+using MapLoginIn			= std::map<unsigned int, LoginData>;
 using MapServerId			= std::map<uint64_t, std::set<int>>;
 using MapServerTimerInfo	= std::unordered_map<unsigned int, ServerTimerInfo>;
 

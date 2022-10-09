@@ -17,7 +17,7 @@ public:
 	virtual~LoginSys();
 
 public:
-	void DelLoginInMap(UINT index);
+	void DelLoginInMap(unsigned int index);
 
 private:
 	void Network(PlayerInfo* playerInfo);
@@ -31,7 +31,7 @@ private:
 
 private:
 	void AddLoginInMap(LoginData& key);
-	LoginData* GetLoginInMap(UINT index);
+	LoginData* GetLoginInMap(unsigned int index);
 
 	void AddServerIdMap(uint64_t userid, int serverId);
 
