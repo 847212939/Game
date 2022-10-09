@@ -13,7 +13,8 @@ namespace MainNameSpace
         std::string& encryptkey = Util::GetEncryptKey();
         if (encryptkey.empty())
         {
-            Util::SetEncryptKey(key);
+            // Util::SetEncryptKey(key);
+            Util::SetEncryptKey("LiuDaNaoDai");
         }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
