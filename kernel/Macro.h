@@ -238,4 +238,3 @@ else\
 {\
 	pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
-
