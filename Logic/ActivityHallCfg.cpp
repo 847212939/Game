@@ -56,7 +56,7 @@ bool CActivityList::operator < (const CActivityList& other) const
 
 void CActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 {
-	CfgMap<int>::iterator it = dayBreakdownList.find(idex);
+	MapIntVecTemplate<int>::iterator it = dayBreakdownList.find(idex);
 	if (it == dayBreakdownList.end())
 	{
 		VectorTemplate<int> tmp;
@@ -71,7 +71,7 @@ void CActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 
 void CActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 {
-	CfgMap<int>::iterator it = hourBreakdownList.find(idex);
+	MapIntVecTemplate<int>::iterator it = hourBreakdownList.find(idex);
 	if (it == hourBreakdownList.end())
 	{
 		VectorTemplate<int> tmp;
@@ -146,7 +146,7 @@ int CActivityBreakdown::GetHourBrushMonsterCfgid(int& index) const
 
 int CActivityBreakdown::GetDayBrushMonsterCfg(int index) const
 {
-	CfgMap<int>::const_iterator it = dayBreakdownList.find(index);
+	MapIntVecTemplate<int>::const_iterator it = dayBreakdownList.find(index);
 	if (it == dayBreakdownList.end())
 	{
 		return 0;
@@ -160,7 +160,7 @@ int CActivityBreakdown::GetDayBrushMonsterCfg(int index) const
 
 int CActivityBreakdown::GetHourBrushMonsterCfg(int index) const
 {
-	CfgMap<int>::const_iterator it = hourBreakdownList.find(index);
+	MapIntVecTemplate<int>::const_iterator it = hourBreakdownList.find(index);
 	if (it == hourBreakdownList.end())
 	{
 		return 0;
@@ -195,7 +195,7 @@ const CActivityBreakdown* ActivityHallCfg::GetActivityBreakdown(int id)
 
 VectorTemplate<CBrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
 {
-	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
+	MapIntVecTemplate<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
 		return nullptr;
@@ -216,7 +216,7 @@ void ActivityHallCfg::ReadActivityList(CActivityList* config)
 
 void ActivityHallCfg::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
 {
-	CfgMap<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
+	MapIntVecTemplate<CBrushMonsterCfg>::iterator it = m_BrushMonsterCfgMap.find(config->id);
 	if (it == m_BrushMonsterCfgMap.end())
 	{
 		VectorTemplate<CBrushMonsterCfg> tmp;

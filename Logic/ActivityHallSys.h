@@ -68,10 +68,10 @@ private:
 	void TimerCallback();
 
 private:
-	ActivityFunMap	m_ActivityFunMap;
-	ActivityFunMap	m_ActivityEnterFunMap;
-	ActivityFunMap	m_ActivityExitFunMap;
-	ActtiveOpenMap	m_ActtiveOpenMap;
+	MapActivityFunc	m_ActivityFunMap;
+	MapActivityFunc	m_ActivityEnterFunMap;
+	MapActivityFunc	m_ActivityExitFunMap;
+	MapActiveOpen	m_ActtiveOpenMap;
 	MonsterMap		m_MonsterMap;
 
 public:

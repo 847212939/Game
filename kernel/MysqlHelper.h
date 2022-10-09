@@ -203,7 +203,7 @@ public:
 	* @throws MysqlHelper_Exception
 	* @return size_t 影响的行数
 	*/
-	size_t updateRecord(const std::string& sTableName, const RecordDataMap& mpColumns, const std::string& sCondition);
+	size_t updateRecord(const std::string& sTableName, const MapRecordData& mpColumns, const std::string& sCondition);
 	/**
 	* @brief 插入记录.
 	*
@@ -212,7 +212,7 @@ public:
 	* @throws MysqlHelper_Exception
 	* @return size_t 影响的行数
 	*/
-	size_t insertRecord(const std::string& sTableName, const RecordDataMap& mpColumns);
+	size_t insertRecord(const std::string& sTableName, const MapRecordData& mpColumns);
 	/**
 	* @brief 替换记录.
 	*
@@ -221,7 +221,7 @@ public:
 	* @throws MysqlHelper_Exception
 	* @return size_t 影响的行数
 	*/
-	size_t replaceRecord(const std::string& sTableName, const RecordDataMap& mpColumns);
+	size_t replaceRecord(const std::string& sTableName, const MapRecordData& mpColumns);
 	/**
 	* @brief 删除记录.
 	*
@@ -271,7 +271,7 @@ public:
 	* @param mpColumns 列名/值对
 	* @return string insert-SQL语句
 	*/
-	std::string buildInsertSQL(const std::string& sTableName, const RecordDataMap& mpColumns);
+	std::string buildInsertSQL(const std::string& sTableName, const MapRecordData& mpColumns);
 	/**
 	* @brief 构造Replace-SQL语句.
 	*
@@ -279,7 +279,7 @@ public:
 	* @param mpColumns 列名/值对
 	* @return string insert-SQL语句
 	*/
-	std::string buildReplaceSQL(const std::string& sTableName, const RecordDataMap& mpColumns);
+	std::string buildReplaceSQL(const std::string& sTableName, const MapRecordData& mpColumns);
 	/**
 	* @brief 构造Update-SQL语句.
 	*
@@ -288,7 +288,7 @@ public:
 	* @param sCondition where子语句
 	* @return string Update-SQL语句
 	*/
-	std::string buildUpdateSQL(const std::string& sTableName, const RecordDataMap& mpColumns, const std::string& sCondition);
+	std::string buildUpdateSQL(const std::string& sTableName, const MapRecordData& mpColumns, const std::string& sCondition);
 	/**
 	* @brief 获取查询影响数
 	* @return int

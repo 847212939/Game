@@ -169,7 +169,7 @@ CServerTimer* PlayerPrep::GetCServerTimer()
 
 void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
 		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
@@ -181,7 +181,7 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
-	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
@@ -194,7 +194,7 @@ bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 
 bool PlayerPrep::CallBackFun(TimerCmd cmd)
 {
-	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
@@ -207,7 +207,7 @@ bool PlayerPrep::CallBackFun(TimerCmd cmd)
 
 void PlayerPrep::DelTimerCallback(TimerCmd cmd)
 {
-	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
 		return;
@@ -218,7 +218,7 @@ void PlayerPrep::DelTimerCallback(TimerCmd cmd)
 
 void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 {
-	TimerFunMap::iterator it = m_TimerFunMap.find(cmd);
+	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
 		m_TimerFunMap.insert(std::make_pair(cmd, fun));
@@ -306,7 +306,7 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 	std::ostringstream os;
 	os << userId;
 
-	RecordDataMap mpColumns;
+	MapRecordData mpColumns;
 
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
@@ -326,7 +326,7 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 	std::ostringstream os;
 	os << userId;
 
-	RecordDataMap mpColumns;
+	MapRecordData mpColumns;
 
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
@@ -346,7 +346,7 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 	std::ostringstream os;
 	os << userId;
 
-	RecordDataMap mpColumns;
+	MapRecordData mpColumns;
 
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
@@ -362,7 +362,7 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 
 void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName, std::string dataName)
 {
-	RecordDataMap mpColumns;
+	MapRecordData mpColumns;
 
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_STR, userId)));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
@@ -412,8 +412,8 @@ void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::strin
 		return;
 	}
 
-	SqlKeyDataMap& dataMap = data[0];
-	SqlKeyDataMap::iterator it = dataMap.find(dataStr);
+	MapStringString& dataMap = data[0];
+	MapStringString::iterator it = dataMap.find(dataStr);
 	if (it == dataMap.end())
 	{
 		return;
@@ -445,8 +445,8 @@ void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& o
 		return;
 	}
 
-	SqlKeyDataMap& dataMap = queryData[0];
-	SqlKeyDataMap::iterator it = dataMap.find(dataStr);
+	MapStringString& dataMap = queryData[0];
+	MapStringString::iterator it = dataMap.find(dataStr);
 	if (it == dataMap.end())
 	{
 		return;

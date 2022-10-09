@@ -63,7 +63,7 @@ void Scene::UpdateScene(Animal* animal, int sceneid, Transform transform)
 
 void Scene::AddSceneAnimalMap(int sceneid, Animal* animal)
 {
-	SceneAnimalMap::iterator it = m_SceneAnimalMap.find(sceneid);
+	MapSceneAnimal::iterator it = m_SceneAnimalMap.find(sceneid);
 	if (it == m_SceneAnimalMap.end())
 	{
 		std::map<uint64_t, Animal*> tmpMap;
@@ -78,7 +78,7 @@ void Scene::AddSceneAnimalMap(int sceneid, Animal* animal)
 
 void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 {
-	SceneAnimalMap::iterator it = m_SceneAnimalMap.find(sceneid);
+	MapSceneAnimal::iterator it = m_SceneAnimalMap.find(sceneid);
 	if (it == m_SceneAnimalMap.end())
 	{
 		return;
@@ -95,7 +95,7 @@ void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 
 Animal* Scene::GetSceneAnimal(int sceneid, uint64_t uid)
 {
-	SceneAnimalMap::iterator it = m_SceneAnimalMap.find(sceneid);
+	MapSceneAnimal::iterator it = m_SceneAnimalMap.find(sceneid);
 	if (it == m_SceneAnimalMap.end())
 	{
 		return nullptr;

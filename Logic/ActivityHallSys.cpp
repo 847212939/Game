@@ -33,7 +33,7 @@ ActivityHallSys::~ActivityHallSys()
 // 活动是否开启
 bool ActivityHallSys::GetActiveOpen(int id)
 {
-	ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(id);
+	MapActiveOpen::iterator it = m_ActtiveOpenMap.find(id);
 	if (it == m_ActtiveOpenMap.end())
 	{
 		return false;
@@ -235,7 +235,7 @@ void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
 // 活动类型判断函数回调
 bool ActivityHallSys::ActiveCallBackFun(ActType type, CActivityList* cfg)
 {
-	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
@@ -248,7 +248,7 @@ bool ActivityHallSys::ActiveCallBackFun(ActType type, CActivityList* cfg)
 // 活动类型判断
 void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
-	ActivityFunMap::iterator it = m_ActivityFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
 	{
 		m_ActivityFunMap.insert(std::make_pair(type, fun));
@@ -261,7 +261,7 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(CActivi
 // 进入活动场景回调
 bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, CActivityList* cfg)
 {
-	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
@@ -273,7 +273,7 @@ bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, CActivityList* cfg)
 
 void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
-	ActivityFunMap::iterator it = m_ActivityEnterFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
 	{
 		m_ActivityEnterFunMap.insert(std::make_pair(type, fun));
@@ -285,7 +285,7 @@ void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(CA
 
 bool ActivityHallSys::ActiveExitCallBackFun(ActType type, CActivityList* cfg)
 {
-	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
@@ -297,7 +297,7 @@ bool ActivityHallSys::ActiveExitCallBackFun(ActType type, CActivityList* cfg)
 
 void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(CActivityList*)>&& fun)
 {
-	ActivityFunMap::iterator it = m_ActivityExitFunMap.find(type);
+	MapActivityFunc::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
 	{
 		m_ActivityExitFunMap.insert(std::make_pair(type, fun));
@@ -374,7 +374,7 @@ void ActivityHallSys::TimerCallback()
 		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<CActivityList*>(&cfg)))
 		{
 			// 活动结束
-			ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
+			MapActiveOpen::iterator it = m_ActtiveOpenMap.find(cfg.id);
 			if (it == m_ActtiveOpenMap.end())
 			{
 				continue;
@@ -389,7 +389,7 @@ void ActivityHallSys::TimerCallback()
 		}
 
 		// 活动开启
-		ActtiveOpenMap::iterator it = m_ActtiveOpenMap.find(cfg.id);
+		MapActiveOpen::iterator it = m_ActtiveOpenMap.find(cfg.id);
 		if (it == m_ActtiveOpenMap.end())
 		{
 			m_ActtiveOpenMap.insert({ cfg.id, ActtiveOpen(cfg.id, true) });

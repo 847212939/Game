@@ -53,9 +53,9 @@ public:
 	GetSetMem(unsigned int, Index)		// 玩家是否初始化完成
 
 private:
-	NetFunMap				m_NetCBFunMap;			// 回调函数集合
+	MapNetFun				m_NetCBFunMap;			// 回调函数集合
 	VectorExitFunc			m_ExitFunMap;			// 回调函数集合
-	MysqlFunMap				m_MysqlCBFunMap;		// 回调函数集合
+	MapMysqlFunc			m_MysqlCBFunMap;		// 回调函数集合
 	VectorVoidFunc			m_AttrsFunMap;			// 回调函数集合
 	VectorVoidFunc			m_EnterSceneFunMap;		// 回调函数集合
 };

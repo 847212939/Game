@@ -30,6 +30,6 @@ private:
 	void HandleRecvData(ListItemData* pListItem);
 
 private:
-	TypeFunMap			m_TypeFunMap;
+	MapTypeFunc			m_TypeFunMap;
 	PlayerPrepClient*	m_PlayerPrepClient;
 };

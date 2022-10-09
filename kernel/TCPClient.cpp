@@ -137,7 +137,7 @@ void TCPClient::NotifyAll()
 
 void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
 {
-	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
+	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
 		m_TypeFunMap.insert(std::make_pair(cmd, fun));
@@ -149,7 +149,7 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 
 bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 {
-	TypeFunMap::iterator it = m_TypeFunMap.find(cmd);
+	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);

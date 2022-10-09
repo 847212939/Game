@@ -112,7 +112,7 @@ MYSQL* CMysqlHelper::getMysql(void)
 	return m_pstMql;
 }
 
-std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const RecordDataMap& mpColumns)
+std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const MapRecordData& mpColumns)
 {
 	std::ostringstream sColumnNames;
 	std::ostringstream sColumnValues;
@@ -152,7 +152,7 @@ std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const Re
 	return os.str();
 }
 
-std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const RecordDataMap& mpColumns)
+std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const MapRecordData& mpColumns)
 {
 	std::ostringstream sColumnNames;
 	std::ostringstream sColumnValues;
@@ -191,7 +191,7 @@ std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const R
 	return os.str();
 }
 
-std::string CMysqlHelper::buildUpdateSQL(const std::string& sTableName, const RecordDataMap& mpColumns, const std::string& sCondition)
+std::string CMysqlHelper::buildUpdateSQL(const std::string& sTableName, const MapRecordData& mpColumns, const std::string& sCondition)
 {
 	std::ostringstream sColumnNameValueSet;
 
@@ -403,7 +403,7 @@ void CMysqlHelper::sqlExec(const char* sql, bool bSetGBK/* = false*/)
 	} while (!mysql_next_result(m_pstMql));
 }
 
-size_t CMysqlHelper::updateRecord(const std::string& sTableName, const RecordDataMap& mpColumns, const std::string& sCondition)
+size_t CMysqlHelper::updateRecord(const std::string& sTableName, const MapRecordData& mpColumns, const std::string& sCondition)
 {
 	std::string sSql = buildUpdateSQL(sTableName, mpColumns, sCondition);
 	execute(sSql);
@@ -411,7 +411,7 @@ size_t CMysqlHelper::updateRecord(const std::string& sTableName, const RecordDat
 	return (size_t)mysql_affected_rows(m_pstMql);
 }
 
-size_t CMysqlHelper::insertRecord(const std::string& sTableName, const RecordDataMap& mpColumns)
+size_t CMysqlHelper::insertRecord(const std::string& sTableName, const MapRecordData& mpColumns)
 {
 	std::string sSql = buildInsertSQL(sTableName, mpColumns);
 	execute(sSql);
@@ -419,7 +419,7 @@ size_t CMysqlHelper::insertRecord(const std::string& sTableName, const RecordDat
 	return (size_t)mysql_affected_rows(m_pstMql);
 }
 
-size_t CMysqlHelper::replaceRecord(const std::string& sTableName, const RecordDataMap& mpColumns)
+size_t CMysqlHelper::replaceRecord(const std::string& sTableName, const MapRecordData& mpColumns)
 {
 	std::string sSql = buildReplaceSQL(sTableName, mpColumns);
 	execute(sSql);

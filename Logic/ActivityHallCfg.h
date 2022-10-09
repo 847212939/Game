@@ -24,8 +24,8 @@ struct CActivityBreakdown
 	int id;
 	int dayBreakdown;
 	int hourBreakdown;
-	CfgMap<int> dayBreakdownList;
-	CfgMap<int> hourBreakdownList;
+	MapIntVecTemplate<int> dayBreakdownList;
+	MapIntVecTemplate<int> hourBreakdownList;
 	CActivityBreakdown();
 	~CActivityBreakdown();
 	void AddDayBreakdownList(int idex, int tm);
@@ -71,6 +71,6 @@ public:
 
 private:
 	SetTemplate<CActivityList>		m_ActivityListCfgSet;
-	CfgMap<CBrushMonsterCfg>		m_BrushMonsterCfgMap;
+	MapIntVecTemplate<CBrushMonsterCfg>		m_BrushMonsterCfgMap;
 	SetTemplate<CActivityBreakdown>	m_ActivityBreakdownCfgSet;
 };

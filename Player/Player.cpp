@@ -50,7 +50,7 @@ void Player::AddEnterSceneCallback(std::function<void()>&& fun)
 
 void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
-	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
 		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
@@ -62,7 +62,7 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 
 void Player::AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun)
 {
-	MysqlFunMap::iterator it = m_MysqlCBFunMap.find(name);
+	MapMysqlFunc::iterator it = m_MysqlCBFunMap.find(name);
 	if (it == m_MysqlCBFunMap.end())
 	{
 		m_MysqlCBFunMap.insert(std::make_pair(name, fun));
@@ -82,7 +82,7 @@ void Player::ExitCallBackFun(SocketCloseLine* pSocketClose)
 
 void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
-	NetFunMap::iterator it = m_NetCBFunMap.find(cmd);
+	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
 		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
@@ -96,7 +96,7 @@ void Player::MysqlCallBackFun()
 {
 	std::string str;
 
-	for (MysqlFunMap::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
+	for (MapMysqlFunc::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
 		str.clear();
 

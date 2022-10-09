@@ -26,5 +26,5 @@ private:
 	void UpdateScene(Animal* animal, int sceneid, Transform transform);
 
 private:
-	SceneAnimalMap	m_SceneAnimalMap;	// 根据场景添加动物
+	MapSceneAnimal	m_SceneAnimalMap;	// 根据场景添加动物
 };

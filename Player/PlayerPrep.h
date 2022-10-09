@@ -67,9 +67,9 @@ public:
 private:
 	ConditionVariable m_cond;				// 条件变量数据库用
 	ListString        m_sqlList;			// 数据库语链表
-	NetFunMap		  m_NetCBFunMap;		// 回调函数
+	MapNetFun		  m_NetCBFunMap;		// 回调函数
 	CServerTimer*	  m_pServerTimer;		// 定时器
-	TimerFunMap		  m_TimerFunMap;		// 回调函数
+	MapTimerFunc	  m_TimerFunMap;		// 回调函数
 	CMysqlHelper      m_CMysqlHelperLoad;	// 数据库加载专用
 	CMysqlHelper      m_CMysqlHelperSave;	// 数据库保存专用
 };

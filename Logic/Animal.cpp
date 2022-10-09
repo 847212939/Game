@@ -20,9 +20,9 @@ Animal::~Animal()
 
 }
 
-void Animal::AdditionAttributes(AttrsMap& attrs)
+void Animal::AdditionAttributes(MapAttrsCmdInt& attrs)
 {
-	for (AttrsMap::iterator it = attrs.begin(); it != attrs.end(); ++it)
+	for (MapAttrsCmdInt::iterator it = attrs.begin(); it != attrs.end(); ++it)
 	{
 		if ((AttrsCmd)it->first <= AttrsCmd::attrs_begin || (AttrsCmd)it->first >= AttrsCmd::attrs_end)
 		{
@@ -37,7 +37,7 @@ void Animal::RefreshProp()
 {
 	Netmsg os;
 	os << (int)m_AttrsMap.size();
-	for (AttrsMap::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
+	for (MapAttrsCmdInt::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{
 		os << (int)it->first << (int)it->second;
 	}
@@ -50,7 +50,7 @@ void Animal::RefreshProp()
 
 int Animal::GetAttrValue(AttrsCmd attrType)
 {
-	AttrsMap::iterator it = m_AttrsMap.find(attrType);
+	MapAttrsCmdInt::iterator it = m_AttrsMap.find(attrType);
 	if (it == m_AttrsMap.end())
 	{
 		return 0;
@@ -61,7 +61,7 @@ int Animal::GetAttrValue(AttrsCmd attrType)
 
 void Animal::SetAttrValue(AttrsCmd attrType, int attr)
 {
-	AttrsMap::iterator it = m_AttrsMap.find(attrType);
+	MapAttrsCmdInt::iterator it = m_AttrsMap.find(attrType);
 	if (it == m_AttrsMap.end())
 	{
 		m_AttrsMap.insert(std::make_pair(attrType, attr));

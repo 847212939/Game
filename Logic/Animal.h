@@ -10,7 +10,7 @@ public:
 public:
 	// 属性
 	void SetAttrValue(AttrsCmd attrType, int attr);
-	void AdditionAttributes(AttrsMap& attrs);
+	void AdditionAttributes(MapAttrsCmdInt& attrs);
 	int GetAttrValue(AttrsCmd attrType);
 	void RefreshProp();
 
@@ -39,6 +39,6 @@ public:
 	GetSetMem(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
 
 public:
-	AttrsMap		m_AttrsMap;				// 属性集合
+	MapAttrsCmdInt	m_AttrsMap;				// 属性集合
 	SkillDataMap	m_SkillDataMap;			// 技能是否可以释放
 };

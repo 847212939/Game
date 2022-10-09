@@ -32,7 +32,7 @@ struct CSkillIdList
 	int skillEffectCd;
 	int minSkillCd;
 	int minSkillEffect;
-	AttrsMap attrs;
+	MapAttrsCmdInt attrs;
 
 	void AddAttrs(int id, int value)
 	{
@@ -55,7 +55,7 @@ struct CSkillIdList
 
 	int GetSkillEffect(AttrsCmd cmd)
 	{
-		AttrsMap::iterator it = attrs.find(cmd);
+		MapAttrsCmdInt::iterator it = attrs.find(cmd);
 		if (it != attrs.end())
 		{
 			return it->second;
