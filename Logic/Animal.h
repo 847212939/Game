@@ -40,5 +40,5 @@ public:
 
 public:
 	MapAttrsCmdInt	m_AttrsMap;				// 属性集合
-	SkillDataMap	m_SkillDataMap;			// 技能是否可以释放
+	MapSkillData	m_SkillDataMap;			// 技能是否可以释放
 };

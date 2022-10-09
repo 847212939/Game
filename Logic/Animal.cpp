@@ -122,7 +122,7 @@ int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
 
 void Animal::SetSkillAcitve(int pos, bool active)
 {
-	SkillDataMap::iterator it = m_SkillDataMap.find(pos);
+	MapSkillData::iterator it = m_SkillDataMap.find(pos);
 	if (it == m_SkillDataMap.end())
 	{
 		SkillData data;
@@ -136,7 +136,7 @@ void Animal::SetSkillAcitve(int pos, bool active)
 
 bool Animal::GetSkillAcitve(int pos)
 {
-	SkillDataMap::iterator it = m_SkillDataMap.find(pos);
+	MapSkillData::iterator it = m_SkillDataMap.find(pos);
 	if (it == m_SkillDataMap.end())
 	{
 		return true;

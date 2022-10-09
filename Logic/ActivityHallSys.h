@@ -72,7 +72,7 @@ private:
 	MapActivityFunc	m_ActivityEnterFunMap;
 	MapActivityFunc	m_ActivityExitFunMap;
 	MapActiveOpen	m_ActtiveOpenMap;
-	MonsterMap		m_MonsterMap;
+	MapMonster		m_MonsterMap;
 
 public:
 	GetClass(ActiveSection, ActiveSection)

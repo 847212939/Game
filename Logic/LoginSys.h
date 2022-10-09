@@ -42,6 +42,6 @@ private:
 	void SaveUserAccount(std::string& id, std::string& pw, uint64_t userid = 0);
 
 private:
-	LoginInMap m_LoginInMap;
-	ServerIdMap m_ServerIdMap;
+	MapLoginIn m_LoginInMap;
+	MapServerId m_ServerIdMap;
 };

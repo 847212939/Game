@@ -160,14 +160,14 @@ bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, CBrushMonsterC
 
 std::vector<Animal*>* ActivityHallSys::GetRefMonster(int sid, RefMonsterKey& key)
 {
-	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	MapMonster::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
 	{
 		return nullptr;
 	}
 	else
 	{
-		MonsterKVMap::iterator pos = it->second.find(key);
+		MapMonsterKV::iterator pos = it->second.find(key);
 		if (pos == it->second.end())
 		{
 			return nullptr;
@@ -180,16 +180,16 @@ std::vector<Animal*>* ActivityHallSys::GetRefMonster(int sid, RefMonsterKey& key
 
 void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Animal*>& value)
 {
-	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	MapMonster::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
 	{
-		MonsterKVMap tmpMonsterKVMap;
+		MapMonsterKV tmpMonsterKVMap;
 		tmpMonsterKVMap.insert({ key, value });
 		m_MonsterMap.insert({ sid, tmpMonsterKVMap });
 	}
 	else
 	{
-		MonsterKVMap::iterator pos = it->second.find(key);
+		MapMonsterKV::iterator pos = it->second.find(key);
 		if (pos == it->second.end())
 		{
 			it->second.insert({ key, value });
@@ -216,14 +216,14 @@ void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Ani
 
 void ActivityHallSys::DelRefMonster(int sid, RefMonsterKey& key)
 {
-	MonsterMap::iterator it = m_MonsterMap.find(sid);
+	MapMonster::iterator it = m_MonsterMap.find(sid);
 	if (it == m_MonsterMap.end())
 	{
 		return;
 	}
 	else
 	{
-		MonsterKVMap::iterator pos = it->second.find(key);
+		MapMonsterKV::iterator pos = it->second.find(key);
 		if (pos == it->second.end())
 		{
 			return;

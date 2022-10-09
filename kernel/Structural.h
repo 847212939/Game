@@ -391,13 +391,13 @@ using MapTypeFunc			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead
 using MapRecordData			= std::map<std::string, std::pair<FT, std::string>>;
 using MapActivityFunc		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using MapSceneAnimal		= std::map<int, std::map<uint64_t, Animal*>>;
-using MapActiveOpen		= std::map<int, ActtiveOpen>;
-using MonsterKVMap			= std::map<RefMonsterKey, std::vector<Animal*>>;
-using MonsterMap			= std::map<int, MonsterKVMap>;
-using SkillDataMap 			= std::map<int, SkillData>;
-using LoginInMap			= std::map<UINT, LoginData>;
-using ServerIdMap			= std::map<uint64_t, std::set<int>>;
-using ServerTimerInfomap	= std::unordered_map<unsigned int, ServerTimerInfo>;
+using MapActiveOpen			= std::map<int, ActtiveOpen>;
+using MapMonsterKV			= std::map<RefMonsterKey, std::vector<Animal*>>;
+using MapMonster			= std::map<int, MapMonsterKV>;
+using MapSkillData 			= std::map<int, SkillData>;
+using MapLoginIn			= std::map<UINT, LoginData>;
+using MapServerId			= std::map<uint64_t, std::set<int>>;
+using MapServerTimerInfo	= std::unordered_map<unsigned int, ServerTimerInfo>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

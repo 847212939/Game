@@ -89,11 +89,11 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 
 	long long currTime = Util::GetSysMilliseconds() / pCServerTimer->m_timeOnce * pCServerTimer->m_timeOnce;
 
-	ServerTimerInfomap& timerMap = pCServerTimer->m_timerMap;
+	MapServerTimerInfo& timerMap = pCServerTimer->m_timerMap;
 	// lock
 	pCServerTimer->m_cond.GetMutex().lock();
 
-	for (ServerTimerInfomap::iterator iter = timerMap.begin(); iter != timerMap.end();)
+	for (MapServerTimerInfo::iterator iter = timerMap.begin(); iter != timerMap.end();)
 	{
 		if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
 		{

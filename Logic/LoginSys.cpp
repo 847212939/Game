@@ -234,7 +234,7 @@ bool LoginSys::NetLoginIn(Netmsg& is, PlayerInfo* playerInfo)
 
 void LoginSys::DelLoginInMap(UINT index)
 {
-	LoginInMap::iterator it = m_LoginInMap.find(index);
+	MapLoginIn::iterator it = m_LoginInMap.find(index);
 	if (it == m_LoginInMap.end())
 	{
 		return;
@@ -248,7 +248,7 @@ void LoginSys::AddLoginInMap(LoginData& key)
 }
 LoginData* LoginSys::GetLoginInMap(UINT index)
 {
-	LoginInMap::iterator it = m_LoginInMap.find(index);
+	MapLoginIn::iterator it = m_LoginInMap.find(index);
 	if (it == m_LoginInMap.end())
 	{
 		return nullptr;
@@ -311,7 +311,7 @@ void LoginSys::SaveServerIds(uint64_t userid)
 }
 void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 {
-	ServerIdMap::iterator useridIt = m_ServerIdMap.find(userid);
+	MapServerId::iterator useridIt = m_ServerIdMap.find(userid);
 	if (!pMsg || useridIt == m_ServerIdMap.end())
 	{
 		return;
