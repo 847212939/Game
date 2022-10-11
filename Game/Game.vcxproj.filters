@@ -110,6 +110,39 @@
     <Filter Include="头文件\别名">
       <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家中心\基类\场景">
+      <UniqueIdentifier>{f9054190-c968-4e82-9b52-2eb2dd99d61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\基类\玩家">
+      <UniqueIdentifier>{f861265d-0d0a-4be6-b4b2-85b079e8c03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\基类\玩家中心">
+      <UniqueIdentifier>{c5dceb2f-3f01-4bb3-9e0d-29bf428c8e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\基类\玩家预处理">
+      <UniqueIdentifier>{f1acb561-f5ec-4abd-aeb0-57c94799fbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\基类\怪物">
+      <UniqueIdentifier>{4171d512-cd75-4b69-b726-a15cb55df7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\基类\动物">
+      <UniqueIdentifier>{f084ecf6-cb8a-42e5-96b6-7c9acef700f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生\场景">
+      <UniqueIdentifier>{a8f1cead-4bd5-4310-8506-a6278e04dbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生\玩家预处理">
+      <UniqueIdentifier>{eaec15d8-fb5e-4d44-b654-a8b29028a6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生\玩家">
+      <UniqueIdentifier>{0a7ad4cb-4012-4c66-9eb2-27d520304d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生\玩家中心">
+      <UniqueIdentifier>{95556ddc-30ef-4a4b-814e-5511ae908ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\派生\怪物">
+      <UniqueIdentifier>{811c675c-8030-4fa9-a1bc-11adbd43678e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -133,30 +166,6 @@
     <ClCompile Include="..\Lua\LuaCfgMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPrep.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenterClient.cpp">
-      <Filter>玩家中心\派生</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerClient.cpp">
-      <Filter>玩家中心\派生</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPrepClient.cpp">
-      <Filter>玩家中心\派生</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\SceneClient.cpp">
-      <Filter>玩家中心\派生</Filter>
-    </ClCompile>
     <ClCompile Include="..\Logic\ActivityHallCfg.cpp">
       <Filter>游戏逻辑\活动系统\活动大厅</Filter>
     </ClCompile>
@@ -174,15 +183,6 @@
     </ClCompile>
     <ClCompile Include="..\Logic\ActiveTime.cpp">
       <Filter>游戏逻辑\活动系统\定点活动</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\Animal.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\Monster.cpp">
-      <Filter>玩家中心\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\MonsterClient.cpp">
-      <Filter>玩家中心\派生</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\SkillCfg.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
@@ -223,6 +223,39 @@
     <ClCompile Include="table.cpp">
       <Filter>网络架构\数据库</Filter>
     </ClCompile>
+    <ClCompile Include="..\Player\Scene.cpp">
+      <Filter>玩家中心\基类\场景</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\Player.cpp">
+      <Filter>玩家中心\基类\玩家</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerCenter.cpp">
+      <Filter>玩家中心\基类\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPrep.cpp">
+      <Filter>玩家中心\基类\玩家预处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\Monster.cpp">
+      <Filter>玩家中心\基类\怪物</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\Animal.cpp">
+      <Filter>玩家中心\基类\动物</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\SceneClient.cpp">
+      <Filter>玩家中心\派生\场景</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerPrepClient.cpp">
+      <Filter>玩家中心\派生\玩家预处理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerClient.cpp">
+      <Filter>玩家中心\派生\玩家</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Player\PlayerCenterClient.cpp">
+      <Filter>玩家中心\派生\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logic\MonsterClient.cpp">
+      <Filter>玩家中心\派生\怪物</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Logic\LoginSys.h">
@@ -239,30 +272,6 @@
     </ClInclude>
     <ClInclude Include="..\Lua\ConfigMgr.h">
       <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrep.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenterClient.h">
-      <Filter>玩家中心\派生</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerClient.h">
-      <Filter>玩家中心\派生</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrepClient.h">
-      <Filter>玩家中心\派生</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\SceneClient.h">
-      <Filter>玩家中心\派生</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\ActivityHallCfg.h">
       <Filter>游戏逻辑\活动系统\活动大厅</Filter>
@@ -281,15 +290,6 @@
     </ClInclude>
     <ClInclude Include="..\Logic\ActiveTime.h">
       <Filter>游戏逻辑\活动系统\定点活动</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\Animal.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\Monster.h">
-      <Filter>玩家中心\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\MonsterClient.h">
-      <Filter>玩家中心\派生</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\SkillCfg.h">
       <Filter>游戏逻辑\技能系统</Filter>
@@ -350,6 +350,39 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>头文件\预编译</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Scene.h">
+      <Filter>玩家中心\基类\场景</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\Player.h">
+      <Filter>玩家中心\基类\玩家</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenter.h">
+      <Filter>玩家中心\基类\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPrep.h">
+      <Filter>玩家中心\基类\玩家预处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\Monster.h">
+      <Filter>玩家中心\基类\怪物</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\Animal.h">
+      <Filter>玩家中心\基类\动物</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\SceneClient.h">
+      <Filter>玩家中心\派生\场景</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerPrepClient.h">
+      <Filter>玩家中心\派生\玩家预处理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerClient.h">
+      <Filter>玩家中心\派生\玩家</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\PlayerCenterClient.h">
+      <Filter>玩家中心\派生\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logic\MonsterClient.h">
+      <Filter>玩家中心\派生\怪物</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
