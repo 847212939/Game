@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Netmsg::Netmsg(int client) : m_client(client)
+Netmsg::Netmsg() : m_isLog(false)
 {
 
 }
@@ -10,7 +10,7 @@ Netmsg::~Netmsg()
 
 }
 
-Netmsg::Netmsg(std::string str, int client, int count) : m_client(client)
+Netmsg::Netmsg(std::string str, bool isLog, int count) : m_isLog(isLog)
 {
 	split(str, "\n", count);
 }
