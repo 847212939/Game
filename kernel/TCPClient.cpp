@@ -6,6 +6,25 @@ TCPClient::TCPClient() : CTCPSocketManage(), m_PlayerPrepClient(new PlayerPrepCl
 	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
 	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
+TCPClient::~TCPClient()
+{
+	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
+	while (!threadVec.empty())
+	{
+		std::vector<std::thread*>::iterator it = threadVec.begin();
+		if (*it)
+		{
+			(*it)->join();
+			SafeDelete(*it);
+		}
+
+		threadVec.erase(it);
+	}
+	if (m_PlayerPrepClient)
+	{
+		SafeDelete(m_PlayerPrepClient);
+	}
+}
 
 bool TCPClient::Init(ServiceType serverType)
 {
@@ -29,26 +48,6 @@ bool TCPClient::Init(ServiceType serverType)
 	return true;
 }
 
-TCPClient::~TCPClient()
-{
-	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	while (!threadVec.empty())
-	{
-		std::vector<std::thread*>::iterator it = threadVec.begin();
-		if (*it)
-		{
-			(*it)->join();
-			SafeDelete(*it);
-		}
-
-		threadVec.erase(it);
-	}
-	if (m_PlayerPrepClient)
-	{
-		SafeDelete(m_PlayerPrepClient);
-	}
-}
-
 void TCPClient::HandleRecvData(ListItemData* pListItem)
 {
 	if (!pListItem)
@@ -66,7 +65,6 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
 }
-
 void TCPClient::HandlerRecvDataListThread()
 {
 	bool& run = GetRuninged();
@@ -146,7 +144,6 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 
 	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
-
 bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 {
 	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
@@ -172,7 +169,6 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 		COUT_LOG(LOG_CERROR, "Timer message error");
 	}
 }
-
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
 	//处理数据
@@ -196,7 +192,6 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		COUT_LOG(LOG_CERROR, "Failed to process data，index=%d Out of range", index);
 	}
 }
-
 void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
