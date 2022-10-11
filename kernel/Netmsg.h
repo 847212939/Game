@@ -56,13 +56,14 @@ Netmsg& Netmsg::operator >> (T& t)
 		m_SplitsList.pop_front();
 
 #ifdef __DEBUG__
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
 		if (m_client == 0)
 		{
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
 			printf("客户端传来消息: %s\n", m_is.str().c_str());
 		}
 		else if (m_client == 1)
 		{
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_INTENSITY);
 			printf("数据库传来消息: %s\n", m_is.str().c_str());
 		}
 		if (m_SplitsList.empty())
