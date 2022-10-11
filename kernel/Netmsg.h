@@ -3,9 +3,9 @@
 class Netmsg
 {
 public:
-	Netmsg();
+	Netmsg(int client = 0);
 	virtual ~Netmsg();
-	Netmsg(std::string str, int count = 0);
+	Netmsg(std::string str, int client = 0, int count = 0);
 
 protected:
 	// 禁用拷贝构造函数
@@ -29,6 +29,7 @@ private:
 	std::istringstream	m_is;
 
 	ListString			m_SplitsList;
+	int					m_client;
 };
 
 template<class T>
@@ -47,6 +48,23 @@ Netmsg& Netmsg::operator >> (T& t)
 		m_is.str(m_SplitsList.front());
 		m_is >> t;
 		m_SplitsList.pop_front();
+
+#ifdef __DEBUG__
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
+		if (m_client == 0)
+		{
+			printf("客户端传来消息: %s\n", m_is.str().c_str());
+		}
+		else if (m_client == 1)
+		{
+			printf("数据库传来消息: %s\n", m_is.str().c_str());
+		}
+		if (m_SplitsList.empty())
+		{
+			printf("---end---\n");
+		}
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+#endif // __DEBUG__
 	}
 	return *this;
 }

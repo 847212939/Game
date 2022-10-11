@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Netmsg::Netmsg()
+Netmsg::Netmsg(int client) : m_client(client)
 {
 
 }
@@ -10,7 +10,7 @@ Netmsg::~Netmsg()
 
 }
 
-Netmsg::Netmsg(std::string str, int count)
+Netmsg::Netmsg(std::string str, int client, int count) : m_client(client)
 {
 	split(str, "\n", count);
 }
@@ -48,3 +48,4 @@ void Netmsg::split(std::string& str, std::string separator, size_t count)
 		i = pos + separator.size() - 1;
 	}
 }
+

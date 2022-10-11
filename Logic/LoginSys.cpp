@@ -88,7 +88,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo)
 		uint64_t userid = 0;
 		std::string passwaed;
 
-		Netmsg sqlIs(data);
+		Netmsg sqlIs(data, 1);
 		sqlIs >> passwaed >> userid;
 
 		if (pw != passwaed)
