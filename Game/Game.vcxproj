@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\kernel\DataLine.cpp" />
+    <ClCompile Include="..\kernel\IDGen.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
     <ClCompile Include="..\kernel\Netmsg.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\kernel\Alias.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
+    <ClInclude Include="..\kernel\IDGen.h" />
     <ClInclude Include="..\kernel\Macro.h" />
     <ClInclude Include="..\kernel\Netmsg.h" />
     <ClInclude Include="..\kernel\Structural.h" />

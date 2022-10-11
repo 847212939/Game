@@ -63,6 +63,7 @@ extern "C"
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器
 #include "../kernel/Structural.h"			// 结构
+#include "../kernel/IDGen.h"				// 唯一ID
 #include "../kernel/Alias.h"				// 别名
 #include "../Player/Attribute.h"			// 属性
 #include "../kernel/MysqlHelper.h"			// 数据库

@@ -10,13 +10,11 @@ Util* Util::Instance()
 	static Util g_mgr;
 	return &g_mgr;
 }
-
 Util::Util() : 
 	m_IDGen(new IDGen), 
 	m_TCPClient(new TCPClient)
 {
 }
-
 Util::~Util() 
 {
 
@@ -27,7 +25,6 @@ unsigned int Util::GetRandNum()
 {
 	return m_mt();
 }
-
 // 获取[A,B)随机数,min<= 随机数 < iMax
 int Util::GetRandRange(int iMin, int iMax)
 {
@@ -43,68 +40,12 @@ IDGen& Util::GetIDGen()
 {
 	return *m_IDGen;
 }
-
 uint64_t Util::CreateUserId()
 {
 	return m_IDGen->GenerateUID();
 }
 
-IDGen::IDGen() :
-	m_serverType(0),
-	m_serverID(0),
-	m_lastSecond(0),
-	m_addID(0)
-{ 
-
-}
-
-void IDGen::Init(int serverType, int serverID)
-{
-	m_serverType = serverType;
-	m_serverID = serverID;
-}
-
-uint64_t IDGen::GenerateUID()
-{
-	time_t curSecond = time(nullptr);
-	if (curSecond != m_lastSecond)
-	{
-		m_lastSecond = curSecond;
-		m_addID = 0;
-	}
-
-	return ((uint64_t)m_serverType << 59) + 
-		((uint64_t)m_serverID << 52) + 
-		((uint64_t)curSecond << 20) + 
-		((uint64_t)m_addID++);
-}
-
-void Util::Exit(bool& run)
-{
-	std::string str;
-
-	while (run)
-	{
-		std::cin >> str;
-
-		if (str == BaseCfgMgr.GetExit())
-		{
-			run = false;
-			break;
-		}
-	}
-
-	DTCPC->Stop();
-	DTCPC->NotifyAll();
-}
-
-long long Util::GetSysMilliseconds()
-{
-	auto time_now = std::chrono::system_clock::now();
-	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
-	return duration_in_ms.count();
-}
-
+// 对称加密
 char* Util::Encrypt(char* content, size_t length)
 {
 	std::string sKey = BaseCfgMgr.GetKey();
@@ -114,7 +55,6 @@ char* Util::Encrypt(char* content, size_t length)
 	}
 	return content;
 }
-
 char* Util::Decrypt(char* content, size_t length)
 {
 	std::string sKey = BaseCfgMgr.GetKey();
@@ -125,11 +65,12 @@ char* Util::Decrypt(char* content, size_t length)
 	return content;
 }
 
-TCPClient* Util::GetTCPClient()
+long long Util::GetSysMilliseconds()
 {
-	return m_TCPClient;
+	auto time_now = std::chrono::system_clock::now();
+	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
+	return duration_in_ms.count();
 }
-
 uint64_t Util::GetCfgSecond(const VectorInt& vec)
 {
 	if (vec.size() < 3)
@@ -139,7 +80,6 @@ uint64_t Util::GetCfgSecond(const VectorInt& vec)
 
 	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
 }
-
 uint64_t Util::GetCfgSecondEnd(const VectorInt& vec)
 {
 	if (vec.size() < 6)
@@ -149,7 +89,6 @@ uint64_t Util::GetCfgSecondEnd(const VectorInt& vec)
 
 	return ((uint64_t)vec[3]) * 60 * 60 + ((uint64_t)vec[4]) * 60 + (uint64_t)vec[5];
 }
-
 uint64_t Util::GetSysSecond()
 {
 	time_t tick = ::time(nullptr);
@@ -158,12 +97,10 @@ uint64_t Util::GetSysSecond()
 
 	return ((uint64_t)tm.tm_hour) * 60 * 60 + ((uint64_t)tm.tm_min) * 60 + (uint64_t)tm.tm_sec;
 }
-
 uint64_t Util::GetOpenServerTime()
 {
 	return m_OpenServerTimeSecond;
 }
-
 int Util::GetServiceDays()
 {
 	// 开服天数
@@ -173,7 +110,6 @@ int Util::GetServiceDays()
 		/ (60 * 60 * 24)) 
 		+ 1;
 }
-
 bool Util::InitTime()
 {
 	struct tm tm1;
@@ -196,6 +132,10 @@ bool Util::InitTime()
 	return true;
 }
 
+TCPClient* Util::GetTCPClient()
+{
+	return m_TCPClient;
+}
 Animal* Util::CreatAnimal(AnimalType type, int mid)
 {
 	switch (type)
@@ -214,4 +154,22 @@ Animal* Util::CreatAnimal(AnimalType type, int mid)
 		return nullptr;
 	}
 	return nullptr;
+}
+void Util::Exit(bool& run)
+{
+	std::string str;
+
+	while (run)
+	{
+		std::cin >> str;
+
+		if (str == BaseCfgMgr.GetExit())
+		{
+			run = false;
+			break;
+		}
+	}
+
+	DTCPC->Stop();
+	DTCPC->NotifyAll();
 }

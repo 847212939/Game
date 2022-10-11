@@ -175,6 +175,9 @@
     <ClCompile Include="..\kernel\Netmsg.cpp">
       <Filter>工具接口</Filter>
     </ClCompile>
+    <ClCompile Include="..\kernel\IDGen.cpp">
+      <Filter>工具接口</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\TCPSocket.h">
@@ -299,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="..\kernel\Alias.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\IDGen.h">
+      <Filter>工具接口</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
