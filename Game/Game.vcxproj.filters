@@ -74,9 +74,6 @@
     <Filter Include="网络架构\定时器">
       <UniqueIdentifier>{e5f234df-2aae-4951-b45c-55c387539a3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络架构\锁">
-      <UniqueIdentifier>{e4d06a7c-873c-41cb-9fe8-29cd847989ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="网络架构\日志">
       <UniqueIdentifier>{5fd0166c-8a63-450f-8126-6fcb5e6bceb0}</UniqueIdentifier>
     </Filter>
@@ -88,9 +85,6 @@
     </Filter>
     <Filter Include="工具接口\工具">
       <UniqueIdentifier>{7c99c059-9b9a-4c77-9800-4ec13772186d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\数据结构别名">
-      <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\属性">
       <UniqueIdentifier>{4fb0049f-398f-4edc-b1d3-c805c22f34f6}</UniqueIdentifier>
@@ -106,6 +100,15 @@
     </Filter>
     <Filter Include="头文件\定时器">
       <UniqueIdentifier>{e587902f-c2cb-46c1-ae3e-f05e2e7d3455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\预编译">
+      <UniqueIdentifier>{5a8276c7-74c6-4783-ab1e-7afb28c5ff01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络架构\条件变量">
+      <UniqueIdentifier>{e4d06a7c-873c-41cb-9fe8-29cd847989ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\别名">
+      <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +193,6 @@
     <ClCompile Include="..\Logic\SkillLvSys.cpp">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClCompile>
-    <ClCompile Include="table.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\kernel\IDGen.cpp">
       <Filter>工具接口\杂合工具</Filter>
     </ClCompile>
@@ -220,11 +220,11 @@
     <ClCompile Include="..\kernel\Util.cpp">
       <Filter>工具接口\工具</Filter>
     </ClCompile>
+    <ClCompile Include="table.cpp">
+      <Filter>网络架构\数据库</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\Logic\LoginSys.h">
       <Filter>游戏逻辑\登录系统</Filter>
     </ClInclude>
@@ -313,7 +313,7 @@
       <Filter>网络架构\定时器</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\ConditionVariable.h">
-      <Filter>网络架构\锁</Filter>
+      <Filter>网络架构\条件变量</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\LogManager.h">
       <Filter>网络架构\日志</Filter>
@@ -331,7 +331,7 @@
       <Filter>工具接口\工具</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Alias.h">
-      <Filter>头文件\数据结构别名</Filter>
+      <Filter>头文件\别名</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\AttrsCmd.h">
       <Filter>头文件\属性</Filter>
@@ -347,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="..\Player\TimerCmd.h">
       <Filter>头文件\定时器</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件\预编译</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
