@@ -5,6 +5,12 @@ class Netmsg
 public:
 	Netmsg(int client = 0);
 	virtual ~Netmsg();
+	/*
+	* @brief 消息拆分构造函数
+	* @param str 原始字符串
+	* @param client 0是客户端消息 1是数据库消息
+	* @param count 拆分为几个子串
+	*/
 	Netmsg(std::string str, int client = 0, int count = 0);
 
 protected:
