@@ -104,19 +104,20 @@ uint64_t Util::GetOpenServerTime()
 int Util::GetServiceDays()
 {
 	// 开服天数
-	return (int)(
-		(::time(nullptr) 
-		- m_OpenServerTimeSecond) 
-		/ (60 * 60 * 24)) 
-		+ 1;
+	return (int)((::time(nullptr) - m_OpenServerTimeSecond) / (60 * 60 * 24)) + 1;
 }
 bool Util::InitTime()
 {
 	struct tm tm1;
 	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
 	if (sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d", 
-	&tm1.tm_year, &tm1.tm_mon, &tm1.tm_mday, &tm1.tm_hour, 
-	&tm1.tm_min, &tm1.tm_sec) <= 0 || openServerTime.empty())
+		&tm1.tm_year, 
+		&tm1.tm_mon, 
+		&tm1.tm_mday, 
+		&tm1.tm_hour, 
+		&tm1.tm_min, 
+		&tm1.tm_sec) <= 0 || 
+		openServerTime.empty())
 	{
 		return false;
 	}
