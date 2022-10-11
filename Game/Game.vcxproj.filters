@@ -89,6 +89,24 @@
     <Filter Include="工具接口\工具">
       <UniqueIdentifier>{7c99c059-9b9a-4c77-9800-4ec13772186d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\数据结构别名">
+      <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\属性">
+      <UniqueIdentifier>{4fb0049f-398f-4edc-b1d3-c805c22f34f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\宏定义">
+      <UniqueIdentifier>{6dd9ad27-a9d8-42bf-8f52-c11848270de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\网络消息">
+      <UniqueIdentifier>{dae67348-14b4-46db-be75-77957e02d133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\结构体">
+      <UniqueIdentifier>{1badf0ff-573f-42ff-aef3-cbb69cfb92b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\定时器">
+      <UniqueIdentifier>{e587902f-c2cb-46c1-ae3e-f05e2e7d3455}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -213,21 +231,6 @@
     <ClInclude Include="..\Logic\MoveSys.h">
       <Filter>游戏逻辑\移动系统</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\Structural.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\TimerCmd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Macro.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\Lua\LuaMgr.h">
       <Filter>配置管理\配置管理</Filter>
     </ClInclude>
@@ -297,9 +300,6 @@
     <ClInclude Include="..\Logic\SkillLvSys.h">
       <Filter>游戏逻辑\技能系统</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\Alias.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\kernel\IDGen.h">
       <Filter>工具接口\杂合工具</Filter>
     </ClInclude>
@@ -329,6 +329,24 @@
     </ClInclude>
     <ClInclude Include="..\kernel\Util.h">
       <Filter>工具接口\工具</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Alias.h">
+      <Filter>头文件\数据结构别名</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\AttrsCmd.h">
+      <Filter>头文件\属性</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Macro.h">
+      <Filter>头文件\宏定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>头文件\网络消息</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Structural.h">
+      <Filter>头文件\结构体</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\TimerCmd.h">
+      <Filter>头文件\定时器</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

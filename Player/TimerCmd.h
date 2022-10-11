@@ -8,5 +8,5 @@ enum class TimerCmd
 	TimerCmd_Active						= 2,		// 活动
 	TimerCmd_Skill						= 3,		// 技能CD
 
-	TimerCmd_End								// 消息结束                
+	TimerCmd_End									// 消息结束                
 };
