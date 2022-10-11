@@ -25,9 +25,10 @@ public:
 	void split(std::string& str, std::string separator, size_t count = 0);
 
 private:
-	size_t				m_cnt;
 	std::ostringstream	m_os;
-	VectorString		m_SplitsVec;
+	std::istringstream	m_is;
+
+	ListString			m_SplitsList;
 };
 
 template<class T>
@@ -40,10 +41,12 @@ Netmsg& Netmsg::operator << (T t)
 template<class T>
 Netmsg& Netmsg::operator >> (T& t)
 {
-	if (m_cnt < m_SplitsVec.size())
+	if (!m_SplitsList.empty())
 	{
-		std::istringstream is(m_SplitsVec[m_cnt++]);
-		is >> t;
+		m_is.clear();
+		m_is.str(m_SplitsList.front());
+		m_is >> t;
+		m_SplitsList.pop_front();
 	}
 	return *this;
 }

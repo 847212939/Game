@@ -1,6 +1,6 @@
 #include "../Game/stdafx.h"
 
-Netmsg::Netmsg() : m_cnt(0)
+Netmsg::Netmsg()
 {
 
 }
@@ -10,7 +10,7 @@ Netmsg::~Netmsg()
 
 }
 
-Netmsg::Netmsg(std::string str, int count) : m_cnt(0)
+Netmsg::Netmsg(std::string str, int count)
 {
 	split(str, "\n", count);
 }
@@ -36,7 +36,7 @@ void Netmsg::split(std::string& str, std::string separator, size_t count)
 		// 最后一次拆分
 		if (count > 0 && ++cnt >= count)
 		{
-			m_SplitsVec.push_back(str.substr(i, size - i));
+			m_SplitsList.push_back(str.substr(i, size - i));
 			break;
 		}
 		pos = str.find(separator, i);
@@ -44,7 +44,7 @@ void Netmsg::split(std::string& str, std::string separator, size_t count)
 		{
 			break;
 		}
-		m_SplitsVec.push_back(str.substr(i, pos - i));
+		m_SplitsList.push_back(str.substr(i, pos - i));
 		i = pos + separator.size() - 1;
 	}
 }
