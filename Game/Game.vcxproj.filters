@@ -13,15 +13,6 @@
     <Filter Include="配置管理\配置管理">
       <UniqueIdentifier>{fa539d2b-833b-4a26-915a-0305813455d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="工具管理">
-      <UniqueIdentifier>{84260705-a460-4f29-9ae8-789d442bed07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="工具管理\杂合工具">
-      <UniqueIdentifier>{42f638c8-2133-4a29-a457-dd738baa3426}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="工具管理\基础工具">
-      <UniqueIdentifier>{7c99c059-9b9a-4c77-9800-4ec13772186d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家管理">
       <UniqueIdentifier>{78b7d584-712c-4d5a-b870-5de98bc8c8df}</UniqueIdentifier>
     </Filter>
@@ -67,9 +58,6 @@
     <Filter Include="网络管理">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络管理\网络消息">
-      <UniqueIdentifier>{eabd3ab5-97ee-47b9-ad86-244a93e9cb12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="网络管理\定时管理">
       <UniqueIdentifier>{e5f234df-2aae-4951-b45c-55c387539a3a}</UniqueIdentifier>
     </Filter>
@@ -78,9 +66,6 @@
     </Filter>
     <Filter Include="网络管理\数据管理">
       <UniqueIdentifier>{2a45e5ea-321f-4bf5-b592-c90b432da8c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络管理\消息处理">
-      <UniqueIdentifier>{7f4064e9-040e-4308-a685-cce3df8bb322}</UniqueIdentifier>
     </Filter>
     <Filter Include="网络管理\条件变量">
       <UniqueIdentifier>{e4d06a7c-873c-41cb-9fe8-29cd847989ae}</UniqueIdentifier>
@@ -115,36 +100,24 @@
     <Filter Include="逻辑管理\技能系统">
       <UniqueIdentifier>{6c4d5fde-3bef-4399-9852-0d1bc48137cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="文件管理">
-      <UniqueIdentifier>{1630a828-2396-497f-b953-c7e6f09bf055}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\属性管理">
-      <UniqueIdentifier>{4fb0049f-398f-4edc-b1d3-c805c22f34f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\宏定义头">
-      <UniqueIdentifier>{6dd9ad27-a9d8-42bf-8f52-c11848270de3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\网络消息">
-      <UniqueIdentifier>{dae67348-14b4-46db-be75-77957e02d133}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\结构体头">
-      <UniqueIdentifier>{1badf0ff-573f-42ff-aef3-cbb69cfb92b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\定时器头">
-      <UniqueIdentifier>{e587902f-c2cb-46c1-ae3e-f05e2e7d3455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\预编译头">
-      <UniqueIdentifier>{5a8276c7-74c6-4783-ab1e-7afb28c5ff01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="文件管理\类型别名">
-      <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="系统入口">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="网络管理\数据加密">
-      <UniqueIdentifier>{106e9af6-d3ae-446c-aded-f7ef288bd7b3}</UniqueIdentifier>
+    <Filter Include="网络管理\网络处理">
+      <UniqueIdentifier>{eabd3ab5-97ee-47b9-ad86-244a93e9cb12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息队列">
+      <UniqueIdentifier>{0478a651-9e61-4d02-8332-9dedeea8e8f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息解析">
+      <UniqueIdentifier>{7f4064e9-040e-4308-a685-cce3df8bb322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\工具管理">
+      <UniqueIdentifier>{84260705-a460-4f29-9ae8-789d442bed07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\公共定义">
+      <UniqueIdentifier>{1630a828-2396-497f-b953-c7e6f09bf055}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -196,14 +169,11 @@
     <ClCompile Include="..\Logic\SkillLvSys.cpp">
       <Filter>逻辑管理\技能系统</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\IDGen.cpp">
-      <Filter>工具管理\杂合工具</Filter>
-    </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
-      <Filter>网络管理\网络消息</Filter>
+      <Filter>网络管理\网络处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPSocket.cpp">
-      <Filter>网络管理\网络消息</Filter>
+      <Filter>网络管理\网络处理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\ServerTimer.cpp">
       <Filter>网络管理\定时管理</Filter>
@@ -214,17 +184,8 @@
     <ClCompile Include="..\kernel\MysqlHelper.cpp">
       <Filter>网络管理\数据管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\DataLine.cpp">
-      <Filter>网络管理\消息处理</Filter>
-    </ClCompile>
     <ClCompile Include="..\kernel\Netmsg.cpp">
-      <Filter>网络管理\消息处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\Util.cpp">
-      <Filter>工具管理\基础工具</Filter>
-    </ClCompile>
-    <ClCompile Include="table.cpp">
-      <Filter>网络管理\数据管理</Filter>
+      <Filter>网络管理\消息解析</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
       <Filter>玩家管理\逻辑基类\场景管理</Filter>
@@ -259,11 +220,23 @@
     <ClCompile Include="..\Logic\MonsterClient.cpp">
       <Filter>玩家管理\逻辑派生\怪物管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\sha1.cpp">
-      <Filter>网络管理\数据加密</Filter>
+    <ClCompile Include="..\kernel\DataLine.cpp">
+      <Filter>网络管理\消息队列</Filter>
+    </ClCompile>
+    <ClCompile Include="table.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kernel\Util.cpp">
+      <Filter>网络管理\工具管理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\base64.cpp">
-      <Filter>网络管理\数据加密</Filter>
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kernel\IDGen.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kernel\sha1.cpp">
+      <Filter>网络管理\工具管理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -309,14 +282,11 @@
     <ClInclude Include="..\Logic\SkillLvSys.h">
       <Filter>逻辑管理\技能系统</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\IDGen.h">
-      <Filter>工具管理\杂合工具</Filter>
-    </ClInclude>
     <ClInclude Include="..\kernel\TCPClient.h">
-      <Filter>网络管理\网络消息</Filter>
+      <Filter>网络管理\网络处理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPSocket.h">
-      <Filter>网络管理\网络消息</Filter>
+      <Filter>网络管理\网络处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\ServerTimer.h">
       <Filter>网络管理\定时管理</Filter>
@@ -330,35 +300,8 @@
     <ClInclude Include="..\kernel\MysqlHelper.h">
       <Filter>网络管理\数据管理</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\DataLine.h">
-      <Filter>网络管理\消息处理</Filter>
-    </ClInclude>
     <ClInclude Include="..\kernel\Netmsg.h">
-      <Filter>网络管理\消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Util.h">
-      <Filter>工具管理\基础工具</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Alias.h">
-      <Filter>文件管理\类型别名</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>文件管理\属性管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Macro.h">
-      <Filter>文件管理\宏定义头</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>文件管理\网络消息</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Structural.h">
-      <Filter>文件管理\结构体头</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\TimerCmd.h">
-      <Filter>文件管理\定时器头</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>文件管理\预编译头</Filter>
+      <Filter>网络管理\消息解析</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
       <Filter>玩家管理\逻辑基类\场景管理</Filter>
@@ -393,11 +336,41 @@
     <ClInclude Include="..\Logic\MonsterClient.h">
       <Filter>玩家管理\逻辑派生\怪物管理</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\sha1.h">
-      <Filter>网络管理\数据加密</Filter>
+    <ClInclude Include="..\kernel\DataLine.h">
+      <Filter>网络管理\消息队列</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\TimerCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Alias.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Macro.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Structural.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\AttrsCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Player\MessageCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\Util.h">
+      <Filter>网络管理\工具管理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\base64.h">
-      <Filter>网络管理\数据加密</Filter>
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\IDGen.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\sha1.h">
+      <Filter>网络管理\工具管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
