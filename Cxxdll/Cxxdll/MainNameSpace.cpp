@@ -4,7 +4,7 @@ namespace MainNameSpace
 {
     Util* g_Util = nullptr;
 
-    EXPORT_DLL int EXPORT_STDCALL InitNetwork(char* ip, int port, int timerCnt, char* key)
+    EXPORT_DLL int EXPORT_STDCALL InitNetwork(char* ip, int port, int timerCnt)
     {
         if (!g_Util)
         {
@@ -13,7 +13,6 @@ namespace MainNameSpace
         std::string& encryptkey = Util::GetEncryptKey();
         if (encryptkey.empty())
         {
-            // Util::SetEncryptKey(key);
             Util::SetEncryptKey("LiuDaNaoDai");
         }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
