@@ -4,7 +4,6 @@ Scene::Scene()
 {
 	
 }
-
 Scene::~Scene()
 {
 
@@ -52,7 +51,6 @@ bool Scene::EnterScene(Animal* animal, int sceneid, Transform transform)
 	UpdateScene(animal, sceneid, transform);
 	return true;
 }
-
 void Scene::UpdateScene(Animal* animal, int sceneid, Transform transform)
 {
 	DelSceneAnimalMap(animal->GetSceneid(), animal);
@@ -75,7 +73,6 @@ void Scene::AddSceneAnimalMap(int sceneid, Animal* animal)
 		it->second.insert({ animal->GetID(), animal });
 	}
 }
-
 void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 {
 	MapSceneAnimal::iterator it = m_SceneAnimalMap.find(sceneid);
@@ -92,7 +89,6 @@ void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)
 
 	it->second.erase(pos);
 }
-
 Animal* Scene::GetSceneAnimal(int sceneid, uint64_t uid)
 {
 	MapSceneAnimal::iterator it = m_SceneAnimalMap.find(sceneid);
