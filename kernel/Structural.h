@@ -243,7 +243,7 @@ struct ServerTimerInfo
 // 玩家信息
 struct PlayerInfo
 {
-	SocketReadLine*			pMsg;					// SOCKFD读取通知结构定义
+	SocketReadLine*			pMsg;				// SOCKFD读取通知结构定义
 	void*					pData;				// 玩家发送过来的数据
 	ServiceType				uSrverType;			// 服务器类型
 	uint64_t				userId;				// 玩家id
