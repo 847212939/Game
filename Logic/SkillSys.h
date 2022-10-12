@@ -26,7 +26,7 @@ private:
 	void UnRegisterSkillTimer();
 
 private:
-	bool CalHurt(Netmsg& is, PlayerInfo* playerInfo);
+	bool CalHurt(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	void SkillAttack(Animal* hited, Animal* behited, int skillpos);

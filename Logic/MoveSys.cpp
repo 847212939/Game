@@ -25,10 +25,10 @@ void MoveSys::LoadMysql(std::string& data)
 		return;
 	}
 
-	Netmsg is(data);
+	Netmsg msg(data);
 	unsigned int x = 0, y = 0;
 
-	is >> x >> y;
+	msg >> x >> y;
 
 	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
 }
@@ -59,13 +59,13 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 	}
 
 	MoveSysMsgCmd uAssistantID = (MoveSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg is((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
 	case MoveSysMsgCmd::cs_move:
 	{
-		MoveCoo(is, playerInfo);
+		MoveCoo(msg, playerInfo);
 		break;
 	}
 	default:
@@ -80,15 +80,15 @@ void MoveSys::Exit(SocketCloseLine* socketCloseLine)
 	COUT_LOG(LOG_CINFO, "Íæ¼ÒÍË³ö");
 }
 
-bool MoveSys::MoveCoo(Netmsg& is, PlayerInfo* playerInfo)
+bool MoveSys::MoveCoo(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	unsigned int x = 0, y = 0;
-	is >> x >> y;
+	msg >> x >> y;
 
-	Netmsg msg;
-	msg << x << y;
+	Netmsg msgos;
+	msgos << x << y;
 
-	m_PlayerClient->SaveReplaceSQL("move", msg);
+	m_PlayerClient->SaveReplaceSQL("move", msgos);
 
 	return true;
 }

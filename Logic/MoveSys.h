@@ -20,7 +20,7 @@ private:
 	void Exit(SocketCloseLine* socketCloseLine);
 
 private:
-	bool MoveCoo(Netmsg& is, PlayerInfo* playerInfo);
+	bool MoveCoo(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_PlayerClient;

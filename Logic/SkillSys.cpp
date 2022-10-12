@@ -38,13 +38,13 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 		return;
 	}
 	HurtSysMsgCmd uAssistantID = (HurtSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg is((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
 	case HurtSysMsgCmd::cs_attack:
 	{
-		CalHurt(is, playerInfo);
+		CalHurt(msg, playerInfo);
 		break;
 	}
 	default:
@@ -52,12 +52,12 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool SkillSys::CalHurt(Netmsg& is, PlayerInfo* playerInfo)
+bool SkillSys::CalHurt(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	int sceneid = 0, skillpos = 0, norattack = 0;
 	uint64_t hitedid = 0, behitedid = 0;
 
-	is >> sceneid >> hitedid >> behitedid >> skillpos >> norattack;
+	msg >> sceneid >> hitedid >> behitedid >> skillpos >> norattack;
 
 	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
 	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
