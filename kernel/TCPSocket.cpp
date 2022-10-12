@@ -9,8 +9,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new()),
-	m_socketType(SocketType::SOCKET_TYPE_TCP)
+	m_eventBaseCfg(event_config_new())
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -55,7 +54,7 @@ CTCPSocketManage::~CTCPSocketManage()
 #endif
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, SocketType socketType)
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip)
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
@@ -69,8 +68,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, SocketType s
 	}
 
 	m_port = port;
-	m_socketType = socketType;
-
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
 
@@ -509,7 +506,7 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 }
 
 // 网络消息派发
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size)
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
 	{
@@ -541,7 +538,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	msg.pBufferevent = pBufferevent;
 	msg.uAccessIP = 0;
 	msg.netMessageHead = *pHead;
-	msg.socketType = m_socketType;
+	msg.socketType = socketType;
 
 	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
 	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
@@ -558,13 +555,12 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 }
 
 //网络关闭处理
-bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType)
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime)
 {
 	SocketCloseLine SocketClose;
 	SocketClose.uConnectTime = uConnectTime;
 	SocketClose.uIndex = uIndex;
 	SocketClose.uAccessIP = uAccessIP;
-	SocketClose.socketType = socketType;
 	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 bool CTCPSocketManage::CloseSocket(int index)
@@ -634,7 +630,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo.acceptFd);
 
-	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo.acceptMsgTime, (unsigned char)m_socketType);
+	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo.acceptMsgTime);
 
 	// 清理登录内存
 	DPPC->GetLoginSys().DelLoginInMap(index);
@@ -1189,7 +1185,7 @@ bool CTCPSocketManage::ServiceTypeLogic(bufferevent* bev, int index)
 		}
 
 		// 派发数据
-		DispatchPacket(bev, index, pNetHead, pData, realSize);
+		DispatchPacket(bev, index, pNetHead, pData, realSize, SocketType::SOCKET_TYPE_TCP);
 
 		handleRemainSize -= messageSize;
 
@@ -1313,7 +1309,7 @@ bool CTCPSocketManage::ServiceTypeLogicWS(bufferevent* bev, int index)
 		}
 
 		// 派发数据
-		DispatchPacket(bev, index, pNetHead, pData, realSize);
+		DispatchPacket(bev, index, pNetHead, pData, realSize, SocketType::SOCKET_TYPE_WEBSOCKET);
 
 		handleRemainSize -= pos;
 

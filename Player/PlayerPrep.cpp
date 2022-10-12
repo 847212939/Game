@@ -105,7 +105,7 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 	// websocket服务器
 	if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
 	{
-		// 没处理
+		MessageDispatch((MsgCmd)uMainID, playerInfo);
 	}
 	else if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
 	{

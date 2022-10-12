@@ -209,7 +209,6 @@ struct SocketCloseLine
 	unsigned int						uIndex;									//SOCKT 索引
 	unsigned long						uAccessIP;								//SOCKFD IP
 	unsigned int						uConnectTime;							//连接时间
-	unsigned char						socketType;								//socket类型 enum SocketType
 
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };

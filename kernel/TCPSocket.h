@@ -13,7 +13,7 @@ protected:
 public:
 	bool Stop();
 	bool Start(ServiceType serverType);
-	bool Init(int maxCount, int port, const char* ip = nullptr, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	bool Init(int maxCount, int port, const char* ip = nullptr);
 
 public:
 	bool CloseSocket(int index);
@@ -45,8 +45,8 @@ private:
 private:
 	int GetSocketIndex();
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
-	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
-	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType);
+	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
 
 private:
 	// 线程入口
@@ -98,7 +98,6 @@ private:
 	CDataLine*					m_pSendDataLine;
 	event_config*				m_eventBaseCfg;
 	event_base*					m_listenerBase;
-	SocketType                  m_socketType;
 	ServiceType                 m_iServiceType;
 	ConditionVariable           m_ConditionVariable;
 	std::set<unsigned int>      m_heartBeatSocketSet;
