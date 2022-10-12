@@ -15,7 +15,7 @@ public:
 
 public:
 	// 发送操作结果
-	void SendOperateResults(SocketReadLine* pMsg);
+	void SendOperateResults(SocketReadLine* pMsg, bool results = true);
 
 private:
 	// 建立数据库

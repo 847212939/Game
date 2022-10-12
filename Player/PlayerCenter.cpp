@@ -4,12 +4,10 @@ PlayerCenter::PlayerCenter()
 {
 	
 }
-
 PlayerCenter::~PlayerCenter()
 {
 
 }
-
 void PlayerCenter::Init()
 {
 	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
@@ -77,19 +75,72 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 }
 
+// 创建角色
+void PlayerCenter::CreatePlayer(LoginData& loginData)
+{
+	m_cond.GetMutex().lock();
+	m_LoadPlayerList.push_back(loginData);
+	m_cond.GetMutex().unlock();
+
+	m_cond.NotifyOne();
+}
+
+// 获取玩家
+PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
+{
+	if (index >= m_PlayerClientVec.size() || index < 0)
+	{
+		return nullptr;
+	}
+	return m_PlayerClientVec[index];
+}
+PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
+{
+	std::vector<unsigned int> playerClientSet;
+	DTCPC->GetSocketSet(playerClientSet);
+	for (int index : playerClientSet)
+	{
+		if (index >= m_PlayerClientVec.size() || index < 0)
+		{
+			continue;
+		}
+		PlayerClient* playerClient = m_PlayerClientVec[index];
+		if (!playerClient)
+		{
+			continue;
+		}
+		if (playerClient->GetID() == userId)
+		{
+			return playerClient;
+		}
+	}
+
+	return nullptr;
+}
+void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
+{
+	// 获取在线玩家
+	DTCPC->GetSocketSet(socketVec);
+}
+ConditionVariable& PlayerCenter::GetConditionVariable()
+{
+	return m_cond;
+}
+
+// 玩家加载线程
 bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run)
 {
 	RloadPlayerList.clear();
 
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [&LloadPlayerList, &run] 
-	{ 
-		if (LloadPlayerList.size() > 0 || !run) 
-		{ 
-			return true; 
-		} 
-		return false; 
-	});
+	m_cond.Wait(uniqLock, [&LloadPlayerList, &run]
+		{
+			if (LloadPlayerList.size() > 0 || !run)
+			{
+				return true;
+			}
+			return false;
+		});
 	if (LloadPlayerList.size() <= 0)
 	{
 		uniqLock.unlock();
@@ -102,7 +153,6 @@ bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginD
 
 	return true;
 }
-
 void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 {
 	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(loginData.index);
@@ -151,7 +201,6 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 
 	return;
 }
-
 void PlayerCenter::HandlerPlayerThread()
 {
 	bool& run = DTCPC->GetRuninged();
@@ -172,59 +221,4 @@ void PlayerCenter::HandlerPlayerThread()
 		}
 	}
 	COUT_LOG(LOG_CINFO, "playerClient create thread end");
-}
-
-// 创建角色
-void PlayerCenter::CreatePlayer(LoginData& loginData)
-{
-	m_cond.GetMutex().lock();
-	m_LoadPlayerList.push_back(loginData);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
-}
-
-// 获取玩家
-PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
-{
-	if (index >= m_PlayerClientVec.size() || index < 0)
-	{
-		return nullptr;
-	}
-	return m_PlayerClientVec[index];
-}
-
-PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
-{
-	std::vector<unsigned int> playerClientSet;
-	DTCPC->GetSocketSet(playerClientSet);
-	for (int index : playerClientSet)
-	{
-		if (index >= m_PlayerClientVec.size() || index < 0)
-		{
-			continue;
-		}
-		PlayerClient* playerClient = m_PlayerClientVec[index];
-		if (!playerClient)
-		{
-			continue;
-		}
-		if (playerClient->GetID() == userId)
-		{
-			return playerClient;
-		}
-	}
-
-	return nullptr;
-}
-
-// 获取在线玩家
-void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
-{
-	DTCPC->GetSocketSet(socketVec);
-}
-
-ConditionVariable& PlayerCenter::GetConditionVariable()
-{
-	return m_cond;
 }
