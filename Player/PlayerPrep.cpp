@@ -16,12 +16,12 @@ char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXIS
 PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()])
 {
 }
-
 PlayerPrep::~PlayerPrep()
 {
 
 }
 
+// 初始化
 void PlayerPrep::Init()
 {
 	if (!InitDB())
@@ -41,8 +41,6 @@ void PlayerPrep::Init()
 
 	DSC->Init();
 }
-
-// 启动数据库
 bool PlayerPrep::InitDB()
 {
 	const CDbCfg& dbCfg = BaseCfgMgr.GetDbCfg();
@@ -114,8 +112,6 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		MessageDispatch((MsgCmd)uMainID, playerInfo);
 	}
 }
-
-// 分发消息
 void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -151,17 +147,14 @@ CMysqlHelper& PlayerPrep::GetSaveCMysqlHelper()
 {
 	return m_CMysqlHelperSave;
 }
-
 CMysqlHelper& PlayerPrep::GetLoadCMysqlHelper()
 {
 	return m_CMysqlHelperLoad;
 }
-
 ConditionVariable& PlayerPrep::GetConditionVariable()
 {
 	return m_cond;
 }
-
 CServerTimer* PlayerPrep::GetCServerTimer()
 {
 	return m_pServerTimer;
@@ -178,7 +171,6 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
-
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
@@ -191,7 +183,6 @@ bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 	it->second(playerInfo);
 	return true;
 }
-
 bool PlayerPrep::CallBackFun(TimerCmd cmd)
 {
 	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
@@ -204,7 +195,6 @@ bool PlayerPrep::CallBackFun(TimerCmd cmd)
 	it->second();
 	return true;
 }
-
 void PlayerPrep::DelTimerCallback(TimerCmd cmd)
 {
 	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
@@ -215,7 +205,6 @@ void PlayerPrep::DelTimerCallback(TimerCmd cmd)
 
 	m_TimerFunMap.erase(it);
 }
-
 void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 {
 	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
@@ -228,7 +217,7 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
-//设定定时器
+// 定时器
 bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
@@ -249,8 +238,6 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char
 
 	return true;
 }
-
-//清除定时器
 bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 {
 	if (!m_pServerTimer)
@@ -272,6 +259,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 	return true;
 }
 
+// 数据库操作
 void PlayerPrep::CreateTableS(std::string name)
 {
 	char sql[CREATE_TABLE_LEN] = "";
@@ -280,7 +268,6 @@ void PlayerPrep::CreateTableS(std::string name)
 
 	CreateTableSql(sql);
 }
-
 void PlayerPrep::CreateTableI(std::string name)
 {
 	char sql[CREATE_TABLE_LEN] = "";
@@ -289,8 +276,6 @@ void PlayerPrep::CreateTableI(std::string name)
 
 	CreateTableSql(sql);
 }
-
-// create table
 void PlayerPrep::CreateTableSql(const char* sql)
 {
 	m_cond.GetMutex().lock();
@@ -299,8 +284,6 @@ void PlayerPrep::CreateTableSql(const char* sql)
 
 	m_cond.NotifyOne();
 }
-
-// insert mysql
 void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
@@ -319,8 +302,6 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 
 	m_cond.NotifyOne();
 }
-
-// update mysql
 void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream os;
@@ -339,8 +320,6 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	m_cond.NotifyOne();
 }
-
-// Replace mysql
 void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName, std::string dataName)
 {
 	std::ostringstream os;
@@ -359,7 +338,6 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 
 	m_cond.NotifyOne();
 }
-
 void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName, std::string dataName)
 {
 	MapRecordData mpColumns;
@@ -375,8 +353,6 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::s
 
 	m_cond.NotifyOne();
 }
-
-// delete mysql
 void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
 	std::ostringstream sSql;
@@ -388,7 +364,6 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 
 	m_cond.NotifyOne();
 }
-
 void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";
@@ -421,8 +396,6 @@ void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::strin
 
 	outStr = it->second;
 }
-
-// 加载一条数据库
 void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& outStr, std::string dataStr)
 {
 	char sql[1024] = "";
@@ -454,8 +427,6 @@ void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& o
 
 	outStr = it->second;
 }
-
-// 加载多条数据库
 bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelper::MysqlData& queryData, std::string dataStr)
 {
 	char sql[1024] = "";
@@ -476,6 +447,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 	return true;
 }
 
+// 多线程下数据执行
 bool PlayerPrep::SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool& run)
 {
 	RSqlList.clear();
@@ -501,7 +473,6 @@ bool PlayerPrep::SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool&
 
 	return true;
 }
-
 void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 {
 	try
@@ -513,7 +484,6 @@ void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 		COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
 	}
 }
-
 void PlayerPrep::HandlerExecuteSqlThread()
 {
 	ListString sqlList;
