@@ -22,7 +22,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 
 	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg is((char*)playerInfo->pData, true);
+	Netmsg is((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
