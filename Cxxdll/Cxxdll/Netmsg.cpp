@@ -12,24 +12,11 @@ Netmsg::~Netmsg()
 
 Netmsg::Netmsg(std::string str, int count)
 {
-	split(str, "\n", count);
-}
+	std::string separator = "\n";
 
-Netmsg::operator std::string()
-{
-	return m_os.str();
-}
-
-std::string Netmsg::str()
-{
-	return m_os.str();
-}
-
-//×Ö·û´®·Ö¸îº¯Êý
-void Netmsg::split(std::string& str, std::string separator, size_t count)
-{
 	size_t pos = 0, cnt = 0;
 	size_t size = str.size();
+	size_t separatorSize = separator.size();
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -42,10 +29,23 @@ void Netmsg::split(std::string& str, std::string separator, size_t count)
 		pos = str.find(separator, i);
 		if (pos == std::string::npos)
 		{
+			if (i < size)
+			{
+				m_SplitsList.push_back(str.substr(i, size - i));
+			}
 			break;
 		}
 		m_SplitsList.push_back(str.substr(i, pos - i));
-		i = pos + separator.size() - 1;
+		i = pos + separatorSize - 1;
 	}
 }
 
+Netmsg::operator std::string()
+{
+	return m_os.str();
+}
+
+std::string Netmsg::str()
+{
+	return m_os.str();
+}

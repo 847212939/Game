@@ -23,16 +23,25 @@ protected:
 	Netmsg& operator=(const Netmsg& my);
 
 public:
-	std::string str();
-	operator std::string();
-
 	template<class T>
 	Netmsg& operator << (T t);
-
 	template<class T>
 	Netmsg& operator >> (T& t);
 
-	void split(std::string& str, std::string separator, size_t count = 0);
+public:
+	std::string str();
+	operator std::string();
+
+public:
+	/*
+	* @brief 字符串拆分函数
+	* @param str 原始字符串
+	* @param separator 分隔符
+	* @param count 拆分为几个子串
+	* @return ListString
+	*/
+	static ListString StringSplit(std::string& str,
+		std::string separator, size_t count = 0);
 
 private:
 	std::ostringstream	m_os;

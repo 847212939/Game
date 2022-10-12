@@ -26,14 +26,10 @@ protected:
 public:
 	std::string str();
 	operator std::string();
-
 	template<class T>
 	Netmsg& operator << (T t);
-
 	template<class T>
 	Netmsg& operator >> (T& t);
-
-	void split(std::string& str, std::string separator, size_t count = 0);
 
 private:
 	std::ostringstream		m_os;
