@@ -449,89 +449,6 @@ void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 	// 处理数据，包头解析
 	pThis->RecvData(bev, index);
 }
-bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
-{
-	if (bev == nullptr)
-	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
-		return false;
-	}
-
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-		if (!m_socketInfoVec[index].bHandleAccptMsg)
-		{
-			return HandShark(bev, index);
-		}
-	}
-
-	struct evbuffer* input = bufferevent_get_input(bev);
-
-	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
-
-	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
-
-	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
-	if (realAllSize <= 0)
-	{
-		return false;
-	}
-
-	// 剩余处理数据
-	size_t handleRemainSize = realAllSize;
-
-	// 解出包头
-	NetMessageHead* pNetHead = (NetMessageHead*)recvBuf.get();
-
-	// 错误判断
-	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
-	{
-		// 消息格式不正确
-		CloseSocket(index);
-		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
-		return false;
-	}
-
-	// 粘包处理
-	while (handleRemainSize >= sizeof(NetMessageHead) && handleRemainSize >= pNetHead->uMessageSize)
-	{
-		unsigned int messageSize = pNetHead->uMessageSize;
-		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
-		{
-			// 消息格式不正确
-			CloseSocket(index);
-			COUT_LOG(LOG_CERROR, "消息格式不正确");
-			return false;
-		}
-
-		int realSize = messageSize - sizeof(NetMessageHead);
-		if (realSize < 0)
-		{
-			// 数据包不够包头
-			CloseSocket(index);
-			COUT_LOG(LOG_CERROR, "数据包不够包头");
-			return false;
-		}
-
-		void* pData = nullptr;
-		if (realSize > 0)
-		{
-			// 没数据就为nullptr
-			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
-		}
-
-		// 派发数据
-		DispatchPacket(bev, index, pNetHead, pData, realSize);
-
-		handleRemainSize -= messageSize;
-
-		pNetHead = (NetMessageHead*)(recvBuf.get() + realAllSize - handleRemainSize);
-	}
-
-	evbuffer_drain(input, realAllSize - handleRemainSize);
-
-	return true;
-}
 void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 {
 	RecvThreadParam* param = (RecvThreadParam*)data;
@@ -1185,6 +1102,121 @@ void CTCPSocketManage::ThreadSendMsgThread()
 	return;
 }
 
+// 接收消息进行解包处理
+bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
+{
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	{
+#ifdef __WebSocket__
+		// websocket服务器
+		if (!ServiceTypeLogicWS(bev, index))
+		{
+			return false;
+		}
+#endif // __WebSocket__
+	}
+	else
+	{
+		// TCP服务器
+		if (!ServiceTypeLogic(bev, index))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+bool CTCPSocketManage::ServiceTypeLogic(bufferevent* bev, int index)
+{
+	if (bev == nullptr)
+	{
+		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		return false;
+	}
+	struct evbuffer* input = bufferevent_get_input(bev);
+
+	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
+
+	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
+
+	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
+	if (realAllSize <= 0)
+	{
+		return false;
+	}
+
+	// 剩余处理数据
+	size_t handleRemainSize = realAllSize;
+
+	// 解出包头
+	NetMessageHead* pNetHead = (NetMessageHead*)recvBuf.get();
+
+	// 错误判断
+	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
+	{
+		// 消息格式不正确
+		CloseSocket(index);
+		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
+		return false;
+	}
+
+	// 粘包处理
+	while (handleRemainSize >= sizeof(NetMessageHead) && handleRemainSize >= pNetHead->uMessageSize)
+	{
+		unsigned int messageSize = pNetHead->uMessageSize;
+		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
+		{
+			// 消息格式不正确
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "消息格式不正确");
+			return false;
+		}
+
+		int realSize = messageSize - sizeof(NetMessageHead);
+		if (realSize < 0)
+		{
+			// 数据包不够包头
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "数据包不够包头");
+			return false;
+		}
+
+		void* pData = nullptr;
+		if (realSize > 0)
+		{
+			// 没数据就为nullptr
+			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
+		}
+
+		// 派发数据
+		DispatchPacket(bev, index, pNetHead, pData, realSize);
+
+		handleRemainSize -= messageSize;
+
+		pNetHead = (NetMessageHead*)(recvBuf.get() + realAllSize - handleRemainSize);
+	}
+
+	evbuffer_drain(input, realAllSize - handleRemainSize);
+	return true;
+}
+
+// websocket
+#ifdef __WebSocket__
+bool CTCPSocketManage::ServiceTypeLogicWS(bufferevent* bev, int index)
+{
+	if (bev == nullptr)
+	{
+		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		return false;
+	}
+	if (!m_socketInfoVec[index].bHandleAccptMsg)
+	{
+		return HandShark(bev, index);
+	}
+
+	return true;
+}
+
 bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 {
 	struct evbuffer* input = bufferevent_get_input(bev);
@@ -1275,3 +1307,72 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 
 	return true;
 }
+int CTCPSocketManage::FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	wbmsg.fin = (unsigned char)msg[pos] >> 7;
+	return 0;
+}
+int CTCPSocketManage::FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	wbmsg.opcode = msg[pos] & 0x0f;
+	pos++;
+	return 0;
+}
+int CTCPSocketManage::FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	wbmsg.mask = (unsigned char)msg[pos] >> 7;
+	return 0;
+}
+int CTCPSocketManage::FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	if (wbmsg.mask != 1)
+		return 0;
+	for (int i = 0; i < 4; i++)
+		wbmsg.maskingKey[i] = msg[pos + i];
+	pos += 4;
+	return 0;
+}
+int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	wbmsg.payloadLength = msg[pos] & 0x7f;
+	pos++;
+	if (wbmsg.payloadLength == 126) {
+		uint16_t length = 0;
+		memcpy(&length, msg + pos, 2);
+		pos += 2;
+		wbmsg.payloadLength = ntohs(length);
+	}
+	else if (wbmsg.payloadLength == 127) {
+		uint32_t length = 0;
+		memcpy(&length, msg + pos, 4);
+		pos += 4;
+		wbmsg.payloadLength = ntohl(length);
+	}
+
+	wbmsg.dataLength = pos + wbmsg.payloadLength;
+
+	return 0;
+}
+int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
+{
+	wbmsg.payload = msg + pos;
+
+	if (wbmsg.mask == 1) 
+	{
+		for (uint32_t i = 0; i < wbmsg.payloadLength; i++) 
+		{
+			uint32_t j = i % 4;
+			wbmsg.payload[i] = msg[pos + i] ^ wbmsg.maskingKey[j];
+		}
+	}
+
+	pos += wbmsg.payloadLength;
+
+	return 0;
+}
+void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
+{
+	printf("WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
+		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
+}
+#endif // __WebSocket__

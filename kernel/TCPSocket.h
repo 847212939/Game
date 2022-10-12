@@ -44,7 +44,6 @@ private:
 
 private:
 	int GetSocketIndex();
-	bool RecvData(bufferevent* bev, int index);
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size);
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, unsigned char socketType);
@@ -72,8 +71,21 @@ private:
 private:
 	bool VerifyConnection(int index, char* data);
 
+	bool RecvData(bufferevent* bev, int index);
+	bool ServiceTypeLogic(bufferevent* bev, int index);
+#ifdef __WebSocket__
 private:
+	bool ServiceTypeLogicWS(bufferevent* bev, int index);
+
 	bool HandShark(bufferevent* bev, int index);
+	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static void FetchPrint(const WebSocketMsg& wbmsg);
+#endif // __WebSocket__
 
 private:
 	unsigned short              m_port;
