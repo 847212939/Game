@@ -73,3 +73,4 @@ private:
 	CMysqlHelper      m_CMysqlHelperLoad;	// 数据库加载专用
 	CMysqlHelper      m_CMysqlHelperSave;	// 数据库保存专用
 };
+
