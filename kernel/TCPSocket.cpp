@@ -1214,6 +1214,115 @@ bool CTCPSocketManage::ServiceTypeLogicWS(bufferevent* bev, int index)
 		return HandShark(bev, index);
 	}
 
+	struct evbuffer* input = bufferevent_get_input(bev);
+
+	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
+
+	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
+
+	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
+	if (realAllSize <= 0)
+	{
+		return false;
+	}
+
+	// 剩余处理数据
+	size_t handleRemainSize = realAllSize;
+
+	// 不够一个包头
+	if (handleRemainSize < MIN_WEBSOCKET_HEAD_SIZE + sizeof(NetMessageHead))
+	{
+		return true;
+	}
+
+	char* pBuffer = recvBuf.get();
+	WebSocketMsg wbmsg;
+
+	// 粘包处理，每一个循环处理一个数据包
+	while (true)
+	{
+		// 不够一个包头
+		if (handleRemainSize < MIN_WEBSOCKET_HEAD_SIZE + sizeof(NetMessageHead))
+		{
+			break;
+		}
+
+		// 解析websocket包头
+		int pos = 0;
+		wbmsg.Init();
+		FetchFin(pBuffer, pos, wbmsg);
+		FetchOpcode(pBuffer, pos, wbmsg);
+		FetchMask(pBuffer, pos, wbmsg);
+		FetchPayloadLength(pBuffer, pos, wbmsg);
+		FetchMaskingKey(pBuffer, pos, wbmsg);
+
+		if (wbmsg.dataLength > SOCKET_RECV_BUF_SIZE)
+		{
+			// 消息格式不正确
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,maxsize=%u,wbmsg.dataLength=%u",
+				index, SOCKET_RECV_BUF_SIZE, wbmsg.dataLength);
+			return false;
+		}
+
+		// 数据不够一个完整的包，不继续处理
+		if (handleRemainSize < wbmsg.dataLength)
+		{
+			break;
+		}
+
+		FetchPayload(pBuffer, pos, wbmsg);
+		FetchPrint(wbmsg);
+
+		// 解析应用层包头
+		NetMessageHead* pNetHead = (NetMessageHead*)wbmsg.payload;
+
+		// 协议格式判断
+		if (pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE || pNetHead->uMessageSize != wbmsg.payloadLength)
+		{
+			// 消息格式不正确
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,pNetHead->uMessageSize=%u,wbmsg.payloadLength=%u",
+				index, pNetHead->uMessageSize, wbmsg.payloadLength);
+			return false;
+		}
+
+		unsigned int messageSize = pNetHead->uMessageSize;
+		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
+		{
+			// 消息格式不正确
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,messageSize=%u", index, messageSize);
+			return false;
+		}
+
+		int realSize = messageSize - sizeof(NetMessageHead);
+		if (realSize < 0)
+		{
+			// 数据包不够包头
+			CloseSocket(index);
+			COUT_LOG(LOG_CERROR, "数据包不够包头,index=%d,realSize=%d", index, realSize);
+			return false;
+		}
+
+		void* pData = NULL;
+		if (realSize > 0)
+		{
+			// 没数据就为NULL
+			pData = (void*)(wbmsg.payload + sizeof(NetMessageHead));
+		}
+
+		// 派发数据
+		DispatchPacket(bev, index, pNetHead, pData, realSize);
+
+		handleRemainSize -= pos;
+
+		pBuffer = pBuffer + pos;
+	}
+
+	// 删除buffer数据
+	evbuffer_drain(input, realAllSize - handleRemainSize);
+
 	return true;
 }
 
@@ -1300,7 +1409,7 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 	Netmsg os; os << requestSend;
 
 	//发送数据
-	if (!SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, bev))
+	if (!SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_HandShark, 0, 0, bev))
 	{
 		return false;
 	}
