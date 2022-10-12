@@ -122,13 +122,13 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	m_uCurSocketIndex = 0;
 	m_iServiceType = serverType;
 
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsgThread, this));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAcceptThread, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsg, this));
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAccept, this));
 
 	return true;
 }
 
-void CTCPSocketManage::ThreadAcceptThread()
+void CTCPSocketManage::ThreadAccept()
 {
 	struct sockaddr_in sin;
 	struct evconnlistener* listener;
@@ -222,7 +222,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 	// 开辟工作线程池
 	for (int i = 0; i < workBaseCount; i++)
 	{
-		threadVev.push_back(std::thread(ThreadRSSocketThread, (void*)&uniqueParam[i]));
+		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
 	}
 
 	event_base_dispatch(m_listenerBase);
@@ -255,7 +255,7 @@ void CTCPSocketManage::ThreadAcceptThread()
 
 	return;
 }
-void CTCPSocketManage::ThreadRSSocketThread(void* pThreadData)
+void CTCPSocketManage::ThreadRSSocket(void* pThreadData)
 {
 	RecvThreadParam* param = (RecvThreadParam*)pThreadData;
 	if (!param)
@@ -1071,7 +1071,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
 }
-void CTCPSocketManage::ThreadSendMsgThread()
+void CTCPSocketManage::ThreadSendMsg()
 {
 	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetSendDataLine();

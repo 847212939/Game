@@ -11,56 +11,87 @@ protected:
 	CTCPSocketManage& operator=(const CTCPSocketManage& my);
 
 public:
+	// 停止服务
 	bool Stop();
+	// 开始服务
 	bool Start(ServiceType serverType);
+	// 初始化
 	bool Init(int maxCount, int port, const char* ip = nullptr);
 
 public:
+	// 关闭连接函数
 	bool CloseSocket(int index);
+	// 发送数据函数
 	bool SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 
 public:
+	// 获取event_base
 	event_base* GetEventBase();
+	// 获取服务器类型
 	ServiceType GetServerType();
+	// 获取接收dataline
 	CDataLine* GetRecvDataLine();
+	// 获取发送dataline
 	CDataLine* GetSendDataLine();
+	// 获取条件变量
 	ConditionVariable& GetConditionVariable();
+	// 获取运行线程
 	std::vector<std::thread*>& GetSockeThreadVec();
-
+	// 获取运行状态
 	bool& GetRuninged();
+	// 是否连接
 	bool IsConnected(int index);
+	// 获取socketSet
 	void GetSocketSet(std::vector<unsigned int>& vec);
-
+	// 获取TCPSocketInfo
 	const TCPSocketInfo* GetTCPSocketInfo(int index);
+	// 获取socketVector
 	const std::vector<TCPSocketInfo>& GetSocketVector();
-
+	// 获取连接ip
 	const char* GetSocketIP(int index);
+	// 获取当前socket连接总数
 	unsigned int GetCurSocketSize();
 
 private:
+	// 设置tcp属性
+	// 设置tcp收发缓冲区
 	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
+	// 设置应用层单次读取数据包的大小 bufferevent_set_max_single_read
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
+	// 分配socketIndex算法
 	int GetSocketIndex();
+	// 添加TCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	// 派发数据包
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	//网络关闭处理
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
 
 private:
-	// 线程入口
-	void ThreadAcceptThread();
-	void ThreadSendMsgThread();
+	// 线程函数
+	// SOCKET 连接应答线程
+	void ThreadAccept();
+	// SOCKET 数据发送线程
+	void ThreadSendMsg();
 	void HandleSendData(ListItemData* pListItem);
-	static void ThreadRSSocketThread(void* pThreadData);
+	// SOCKET 数据接收线程
+	static void ThreadRSSocket(void* pThreadData);
 
 private:
 	// 静态回调方法
+	// 新的数据到来，ThreadRSSocket线程函数
 	static void ReadCB(struct bufferevent*, void*);
+	// 连接关闭等等错误消息，ThreadRSSocket线程函数
 	static void EventCB(struct bufferevent*, short, void*);
+	// accept失败，ThreadAccept线程函数
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);
+	// 新的连接到来，ThreadRSSocket线程函数
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
+	// 新的连接到来，ThreadAccept线程函数
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
@@ -74,13 +105,16 @@ private:
 	bool VerifyConnection(int index, char* data);
 
 	// 收到消息进行粘包处理
+	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
 	bool ServiceTypeLogic(bufferevent* bev, int index);
 #ifdef __WebSocket__
 private:
 	bool ServiceTypeLogicWS(bufferevent* bev, int index);
+	//websocket的第一次握手
 	bool HandShark(bufferevent* bev, int index);
 
+	// websocket解析数据包函数
 	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
