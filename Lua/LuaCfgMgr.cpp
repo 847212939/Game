@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Sun Oct  9 11:00:03 2022.
+** Generated automatically by tolua++-1.0.92 on Wed Oct 12 17:31:50 2022.
 */
 
 #ifndef __cplusplus
@@ -2575,13 +2575,6 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
  tolua_reg_types(tolua_S);
  tolua_module(tolua_S,NULL,0);
  tolua_beginmodule(tolua_S,NULL);
-  tolua_constant(tolua_S,"LOG_INFO",LOG_INFO);
-  tolua_constant(tolua_S,"LOG_WARN",LOG_WARN);
-  tolua_constant(tolua_S,"LOG_ERROR",LOG_ERROR);
-  tolua_constant(tolua_S,"LOG_CINFO",LOG_CINFO);
-  tolua_constant(tolua_S,"LOG_CERROR",LOG_CERROR);
-  tolua_constant(tolua_S,"LOG_ERROR_SYS",LOG_ERROR_SYS);
-  tolua_constant(tolua_S,"LOG_END",LOG_END);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"ConfigMgr","ConfigMgr","",tolua_collect_ConfigMgr);
   #else
@@ -2609,6 +2602,13 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ReadHeroList",tolua_Config_ConfigMgr_ReadHeroList00);
    tolua_function(tolua_S,"ReadSkillIdList",tolua_Config_ConfigMgr_ReadSkillIdList00);
   tolua_endmodule(tolua_S);
+  tolua_constant(tolua_S,"LOG_INFO",LOG_INFO);
+  tolua_constant(tolua_S,"LOG_WARN",LOG_WARN);
+  tolua_constant(tolua_S,"LOG_ERROR",LOG_ERROR);
+  tolua_constant(tolua_S,"LOG_CINFO",LOG_CINFO);
+  tolua_constant(tolua_S,"LOG_CERROR",LOG_CERROR);
+  tolua_constant(tolua_S,"LOG_ERROR_SYS",LOG_ERROR_SYS);
+  tolua_constant(tolua_S,"LOG_END",LOG_END);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"CLogicCfg","CLogicCfg","",tolua_collect_CLogicCfg);
   #else
