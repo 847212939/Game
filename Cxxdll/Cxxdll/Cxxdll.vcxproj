@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="DataLine.h" />
+    <ClInclude Include="Netmsg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerTimer.h" />
     <ClInclude Include="Structural.h" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="DataLine.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Netmsg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -221,4 +221,3 @@ using ActivityFunMap		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using SceneAnimalMap		= std::map<int, std::map<uint64_t, Animal*>>;
 using ActtiveOpenMap		= std::map<int, ActtiveOpen>;
 using TimerFunMap			= std::map<int, TimerCallBackFunc>;
-

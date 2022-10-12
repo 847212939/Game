@@ -260,7 +260,7 @@ bool CTCPSocketManage::VerifyConnection(char* data)
 	{
 		return false;
 	}
-	Cis is(data);
+	Netmsg is(data);
 	std::string str;
 	is >> str;
 	if (str.empty())
@@ -272,7 +272,7 @@ bool CTCPSocketManage::VerifyConnection(char* data)
 	{
 		return false;
 	}
-	Cos os;
+	Netmsg os;
 	os << pEncrypt;
 
 	if (!SendData(os.str().c_str(), os.str().size(), MsgCmd_Testlink, 0, 0))

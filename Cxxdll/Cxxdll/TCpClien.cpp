@@ -196,7 +196,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
 	std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
 
-	Cos os;
+	Netmsg os;
 	os << pMsg->netMessageHead.uMainID
 		<< pMsg->netMessageHead.uAssistantID
 		<< pMsg->netMessageHead.uIdentification

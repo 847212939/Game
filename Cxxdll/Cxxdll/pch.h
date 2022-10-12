@@ -169,6 +169,7 @@ else\
 #include <event2/event_struct.h>
 #include <time.h>
 
+#include "Netmsg.h"
 #include "DataLine.h"
 #include "ServerTimer.h"
 #include "TCPSocket.h"
