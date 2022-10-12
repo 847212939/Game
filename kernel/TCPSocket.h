@@ -76,8 +76,8 @@ private:
 #ifdef __WebSocket__
 private:
 	bool ServiceTypeLogicWS(bufferevent* bev, int index);
-
 	bool HandShark(bufferevent* bev, int index);
+
 	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
