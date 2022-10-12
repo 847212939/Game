@@ -1402,10 +1402,10 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 	// 标记已经处理握手
 	m_socketInfoVec[index].bHandleAccptMsg = true;
 
-	Netmsg os; os << requestSend;
+	std::string requestSendStr = requestSend;
 
 	//发送数据
-	if (!SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_HandShark, 0, 0, bev))
+	if (!SendData(index, requestSendStr.c_str(), requestSendStr.size(), MsgCmd::MsgCmd_HandShark, 0, 0, bev))
 	{
 		return false;
 	}
