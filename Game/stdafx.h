@@ -60,8 +60,6 @@ extern "C"
 #include "tolua++.h"
 
 #include "../kernel/Macro.h"				// 宏
-#include "../kernel/base64.h"				// base64
-#include "../kernel/sha1.h"					// sha1
 #include "../Player/MessageCmd.h"			// 玩家消息定义
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器
@@ -79,6 +77,8 @@ extern "C"
 #include "../kernel/LogManager.h"			// 日志管理类
 #include "../Logic/SkillCfg.h"				// 技能配置
 #include "../Logic/Animal.h"				// 动物
+#include "../kernel/base64.h"				// base64
+#include "../kernel/sha1.h"					// sha1
 
 #include "../Logic/SkillLvSys.h"			// 技能等级
 #include "../Logic/MoveSys.h"				// 移动
