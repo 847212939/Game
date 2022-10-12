@@ -483,9 +483,9 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	{
 		return false;
 	}
-	Netmsg is(data);
+	Netmsg msg(data);
 	std::string str;
-	is >> str;
+	msg >> str;
 	if (str.empty())
 	{
 		return false;

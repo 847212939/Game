@@ -23,11 +23,11 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
-	bool NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo);
-	bool NetSelectServer(Netmsg& is, PlayerInfo* playerInfo);
-	bool NetSelectRole(Netmsg& is, PlayerInfo* playerInfo);
-	bool NetLoginIn(Netmsg& is, PlayerInfo* playerInfo);
-	bool NetcRequestServerList(Netmsg& is, PlayerInfo* playerInfo);
+	bool NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo);
+	bool NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo);
+	bool NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo);
+	bool NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo);
+	bool NetcRequestServerList(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	void AddLoginInMap(LoginData& key);

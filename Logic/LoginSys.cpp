@@ -22,33 +22,33 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 
 	LoginSysMsgCmd uAssistantID = (LoginSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg is((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
 	case LoginSysMsgCmd::cs_verification_account:
 	{
-		NetVerificationAccount(is, playerInfo);
+		NetVerificationAccount(msg, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_select_server:
 	{
-		NetSelectServer(is, playerInfo);
+		NetSelectServer(msg, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_select_role:
 	{
-		NetSelectRole(is, playerInfo);
+		NetSelectRole(msg, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_login:
 	{
-		NetLoginIn(is, playerInfo);
+		NetLoginIn(msg, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_request_server_list:
 	{
-		NetcRequestServerList(is, playerInfo);
+		NetcRequestServerList(msg, playerInfo);
 		break;
 	}
 	default:
@@ -56,7 +56,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool LoginSys::NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo)
+bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -68,7 +68,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo)
 	}
 
 	std::string id, pw;
-	is >> id >> pw;
+	msg >> id >> pw;
 
 	if (id.empty() || pw.empty())
 	{
@@ -118,7 +118,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetSelectServer(Netmsg& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -130,7 +130,7 @@ bool LoginSys::NetSelectServer(Netmsg& is, PlayerInfo* playerInfo)
 	}
 
 	int serverid = 0;
-	is >> serverid;
+	msg >> serverid;
 
 	if (serverid != BaseCfgMgr.GetServerId())
 	{
@@ -148,7 +148,7 @@ bool LoginSys::NetSelectServer(Netmsg& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetcRequestServerList(Netmsg& is, PlayerInfo* playerInfo)
+bool LoginSys::NetcRequestServerList(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -169,7 +169,7 @@ bool LoginSys::NetcRequestServerList(Netmsg& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetSelectRole(Netmsg& is, PlayerInfo* playerInfo)
+bool LoginSys::NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -182,7 +182,7 @@ bool LoginSys::NetSelectRole(Netmsg& is, PlayerInfo* playerInfo)
 	
 	int heroid = 0;
 	std::string netname;
-	is >> heroid >> netname;
+	msg >> heroid >> netname;
 
 	const CHeroList* pCHeroList = CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
 	if (!pCHeroList)
@@ -205,7 +205,7 @@ bool LoginSys::NetSelectRole(Netmsg& is, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool LoginSys::NetLoginIn(Netmsg& is, PlayerInfo* playerInfo)
+bool LoginSys::NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -278,14 +278,14 @@ void LoginSys::LoadServerIds(uint64_t userid)
 	std::string data;
 	DPPC->LoadOneSql("serverlist", userid, data);
 
-	Netmsg is(data);
+	Netmsg msg(data);
 	int size = 0;
-	is >> size;
+	msg >> size;
 
 	for (int i = 0; i < size; i++)
 	{
 		int id = 0;
-		is >> id;
+		msg >> id;
 		serverIdVec->insert(id);
 	}
 }

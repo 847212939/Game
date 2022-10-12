@@ -19,8 +19,8 @@ protected:
 	/*
 	* @brief 禁用拷贝构造函数
 	*/
-	Netmsg(const Netmsg& my);
-	Netmsg& operator=(const Netmsg& my);
+	Netmsg(const Netmsg& msg);
+	Netmsg& operator=(const Netmsg& msg);
 
 public:
 	template<class T>
