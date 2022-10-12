@@ -1435,9 +1435,13 @@ int CTCPSocketManage::FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
 int CTCPSocketManage::FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	if (wbmsg.mask != 1)
+	{
 		return 0;
+	}
 	for (int i = 0; i < 4; i++)
+	{
 		wbmsg.maskingKey[i] = msg[pos + i];
+	}
 	pos += 4;
 	return 0;
 }
@@ -1445,13 +1449,15 @@ int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbms
 {
 	wbmsg.payloadLength = msg[pos] & 0x7f;
 	pos++;
-	if (wbmsg.payloadLength == 126) {
+	if (wbmsg.payloadLength == 126) 
+	{
 		uint16_t length = 0;
 		memcpy(&length, msg + pos, 2);
 		pos += 2;
 		wbmsg.payloadLength = ntohs(length);
 	}
-	else if (wbmsg.payloadLength == 127) {
+	else if (wbmsg.payloadLength == 127) 
+	{
 		uint32_t length = 0;
 		memcpy(&length, msg + pos, 4);
 		pos += 4;
