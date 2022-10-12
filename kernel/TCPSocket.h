@@ -64,13 +64,16 @@ private:
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
+	// Socketpair
 	static int DgramSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
 	static int StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
+	// 对称加密测试连接
 	bool VerifyConnection(int index, char* data);
 
+	// 收到消息进行粘包处理
 	bool RecvData(bufferevent* bev, int index);
 	bool ServiceTypeLogic(bufferevent* bev, int index);
 #ifdef __WebSocket__
