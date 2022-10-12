@@ -385,8 +385,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //½âËø
 
-	Netmsg os; os << tcpInfo.link;
-	SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+	Netmsg msg; msg << tcpInfo.link;
+	SendData(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 }
 
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)

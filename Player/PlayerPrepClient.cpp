@@ -20,8 +20,8 @@ void PlayerPrepClient::SendOperateResults(SocketReadLine* pMsg, bool results/* =
 {
 	if (!pMsg) return;
 
-	Netmsg os;
-	os << (int)results;
-	DTCPC->SendData(pMsg->uIndex, os.str().c_str(), os.str().size(),
+	Netmsg msg;
+	msg << (int)results;
+	DTCPC->SendData(pMsg->uIndex, msg.str().c_str(), msg.str().size(),
 		MsgCmd(pMsg->netMessageHead.uMainID), pMsg->netMessageHead.uAssistantID, 0, pMsg->pBufferevent, 0);
 }

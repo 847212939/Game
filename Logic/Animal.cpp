@@ -35,16 +35,16 @@ void Animal::AdditionAttributes(MapAttrsCmdInt& attrs)
 
 void Animal::RefreshProp()
 {
-	Netmsg os;
-	os << (int)m_AttrsMap.size();
+	Netmsg msg;
+	msg << (int)m_AttrsMap.size();
 	for (MapAttrsCmdInt::const_iterator it = m_AttrsMap.begin(); it != m_AttrsMap.end(); ++it)
 	{
-		os << (int)it->first << (int)it->second;
+		msg << (int)it->first << (int)it->second;
 	}
 
 	if (GetType() == AnimalType::at_player)
 	{
-		dynamic_cast<PlayerClient*>(this)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
+		dynamic_cast<PlayerClient*>(this)->SendData(msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
 	}
 }
 

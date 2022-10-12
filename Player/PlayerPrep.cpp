@@ -286,12 +286,12 @@ void PlayerPrep::CreateTableSql(const char* sql)
 }
 void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
-	std::ostringstream os;
-	os << userId;
+	std::ostringstream msg;
+	msg << userId;
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
@@ -304,12 +304,12 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 }
 void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
-	std::ostringstream os;
-	os << userId;
+	std::ostringstream msg;
+	msg << userId;
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
@@ -322,12 +322,12 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 }
 void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName, std::string dataName)
 {
-	std::ostringstream os;
-	os << userId;
+	std::ostringstream msg;
+	msg << userId;
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, os.str())));
+	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);

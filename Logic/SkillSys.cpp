@@ -119,9 +119,9 @@ void SkillSys::SendSkillCD(HurtSysMsgCmd type, int value, Animal* animal)
 {
 	if (animal->GetType() == AnimalType::at_player)
 	{
-		Netmsg os;
-		os << value;
-		dynamic_cast<PlayerClient*>(animal)->SendData(os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Hurt, (int)type, 0);
+		Netmsg msg;
+		msg << value;
+		dynamic_cast<PlayerClient*>(animal)->SendData(msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Hurt, (int)type, 0);
 
 		if (type == HurtSysMsgCmd::sc_skillcd)
 		{

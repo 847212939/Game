@@ -272,10 +272,10 @@ bool CTCPSocketManage::VerifyConnection(char* data)
 	{
 		return false;
 	}
-	Netmsg os;
-	os << pEncrypt;
+	Netmsg msg;
+	msg << pEncrypt;
 
-	if (!SendData(os.str().c_str(), os.str().size(), MsgCmd_Testlink, 0, 0))
+	if (!SendData(msg.str().c_str(), msg.str().size(), MsgCmd_Testlink, 0, 0))
 	{
 		return false;
 	}

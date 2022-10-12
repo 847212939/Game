@@ -147,9 +147,9 @@ std::string CMysqlHelper::buildInsertSQL(const std::string& sTableName, const Ma
 		}
 	}
 
-	std::ostringstream os;
-	os << "insert into " << sTableName << " (" << sColumnNames.str() << ") values (" << sColumnValues.str() << ")";
-	return os.str();
+	std::ostringstream msg;
+	msg << "insert into " << sTableName << " (" << sColumnNames.str() << ") values (" << sColumnValues.str() << ")";
+	return msg.str();
 }
 
 std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const MapRecordData& mpColumns)
@@ -186,9 +186,9 @@ std::string CMysqlHelper::buildReplaceSQL(const std::string& sTableName, const M
 		}
 	}
 
-	std::ostringstream os;
-	os << "replace into " << sTableName << " (" << sColumnNames.str() << ") values (" << sColumnValues.str() << ")";
-	return os.str();
+	std::ostringstream msg;
+	msg << "replace into " << sTableName << " (" << sColumnNames.str() << ") values (" << sColumnValues.str() << ")";
+	return msg.str();
 }
 
 std::string CMysqlHelper::buildUpdateSQL(const std::string& sTableName, const MapRecordData& mpColumns, const std::string& sCondition)
@@ -218,10 +218,10 @@ std::string CMysqlHelper::buildUpdateSQL(const std::string& sTableName, const Ma
 		}
 	}
 
-	std::ostringstream os;
-	os << "update " << sTableName << " set " << sColumnNameValueSet.str() << " " << sCondition;
+	std::ostringstream msg;
+	msg << "update " << sTableName << " set " << sColumnNameValueSet.str() << " " << sCondition;
 
-	return os.str();
+	return msg.str();
 }
 
 std::string CMysqlHelper::getVariables(const std::string& sName)

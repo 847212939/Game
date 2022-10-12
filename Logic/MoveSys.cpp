@@ -85,10 +85,10 @@ bool MoveSys::MoveCoo(Netmsg& is, PlayerInfo* playerInfo)
 	unsigned int x = 0, y = 0;
 	is >> x >> y;
 
-	Netmsg os;
-	os << x << y;
+	Netmsg msg;
+	msg << x << y;
 
-	m_PlayerClient->SaveReplaceSQL("move", os);
+	m_PlayerClient->SaveReplaceSQL("move", msg);
 
 	return true;
 }

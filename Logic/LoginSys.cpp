@@ -297,14 +297,14 @@ void LoginSys::SaveServerIds(uint64_t userid)
 		return;
 	}
 
-	Netmsg os;
-	os << (int)useridIt->second.size();
+	Netmsg msg;
+	msg << (int)useridIt->second.size();
 	for (auto id : useridIt->second)
 	{
-		os << id;
+		msg << id;
 	}
 
-	std::string str = os;
+	std::string str = msg;
 	DPPC->SaveReplaceSQL("serverlist", userid, str);
 }
 void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
@@ -315,14 +315,14 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 		return;
 	}
 
-	Netmsg os;
-	os << (int)useridIt->second.size();
+	Netmsg msg;
+	msg << (int)useridIt->second.size();
 	for (auto it = useridIt->second.begin(); it != useridIt->second.end(); ++it)
 	{
-		os << *it;
+		msg << *it;
 	}
 
-	std::string data = os;
+	std::string data = msg;
 	DTCPC->SendData(pMsg->uIndex, data.c_str(), data.size(),
 		MsgCmd(pMsg->netMessageHead.uMainID),
 		pMsg->netMessageHead.uAssistantID, 0,
@@ -330,9 +330,9 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 }
 void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid)
 {
-	Netmsg os;
-	os << pw << userid;
-	DPPC->SaveReplaceSQL("useraccount", id, os);
+	Netmsg msg;
+	msg << pw << userid;
+	DPPC->SaveReplaceSQL("useraccount", id, msg);
 }
 
 void LoginSys::AddServerIdMap(uint64_t userid, int serverId)
