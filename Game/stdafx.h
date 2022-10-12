@@ -59,6 +59,8 @@ extern "C"
 #include "tolua++.h"
 
 #include "../kernel/Macro.h"				// 宏
+#include "../kernel/base64.h"				// base64
+#include "../kernel/sha1.h"					// sha1
 #include "../Player/MessageCmd.h"			// 玩家消息定义
 #include "../Player/AttrsCmd.h"				// 玩家属性
 #include "../Player/TimerCmd.h"				// 定时器

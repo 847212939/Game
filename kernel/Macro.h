@@ -21,6 +21,8 @@
 #elif defined(__APPLE__)
 #endif
 
+#define MAGIC_KEY "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" // websocket key
+
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\

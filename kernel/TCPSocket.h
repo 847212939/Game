@@ -73,6 +73,9 @@ private:
 	bool VerifyConnection(int index, char* data);
 
 private:
+	bool HandShark(bufferevent* bev, int index);
+
+private:
 	unsigned short              m_port;
 	bool                        m_running;
 	char                        m_bindIP[48];

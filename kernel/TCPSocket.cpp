@@ -457,6 +457,14 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		return false;
 	}
 
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	{
+		if (!m_socketInfoVec[index].bHandleAccptMsg)
+		{
+			return HandShark(bev, index);
+		}
+	}
+
 	struct evbuffer* input = bufferevent_get_input(bev);
 
 	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
@@ -1175,4 +1183,95 @@ void CTCPSocketManage::ThreadSendMsgThread()
 	COUT_LOG(LOG_CINFO, "send data thread end");
 
 	return;
+}
+
+bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
+{
+	struct evbuffer* input = bufferevent_get_input(bev);
+
+	size_t maxSingleRead = Min_(evbuffer_get_length(input), MAX_TEMP_SENDBUF_SIZE);
+
+	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
+
+	size_t realAllSize = evbuffer_remove(input, recvBuf.get(), maxSingleRead);
+	if (realAllSize <= 0)
+	{
+		return false;
+	}
+
+	std::istringstream s(recvBuf.get());
+	std::string request;
+	std::map<std::string, std::string> headMap;
+
+	std::getline(s, request);
+	if (request[request.size() - 1] == '\r') 
+	{
+		request.erase(request.end() - 1);
+	}
+	else 
+	{
+		CloseSocket(index);
+		COUT_LOG(LOG_CINFO, "消息格式不正确,request=%s", request.c_str());
+		return false;
+	}
+
+	std::string header;
+	std::string::size_type end;
+
+	while (std::getline(s, header) && header != "\r") 
+	{
+		if (header[header.size() - 1] != '\r') 
+		{
+			continue; //end
+		}
+		else 
+		{
+			header.erase(header.end() - 1);	//remove last char
+		}
+		end = header.find(": ", 0);
+		if (end != std::string::npos) 
+		{
+			std::string key = header.substr(0, end);
+			std::string value = header.substr(end + 2);
+			headMap[key] = value;
+		}
+	}
+
+	int i = 1;
+	char requestSend[1024] = { 0 };
+
+	strcat(requestSend, "HTTP/1.1 101 Switching Protocols\r\n");
+	strcat(requestSend, "Connection: upgrade\r\n");
+	strcat(requestSend, "Sec-WebSocket-Accept: ");
+	std::string server_key = headMap["Sec-WebSocket-Key"];
+
+	server_key += MAGIC_KEY;
+
+	SHA1 sha;
+	unsigned int message_digest[5];
+	sha.Reset();
+	sha << server_key.c_str();
+
+	sha.Result(message_digest);
+	for (int i = 0; i < 5; i++) 
+	{
+		message_digest[i] = htonl(message_digest[i]);
+	}
+	server_key = base64_encode(reinterpret_cast<const unsigned char*>(message_digest), 20);
+	server_key += "\r\n";
+	strcat(requestSend, server_key.c_str());
+	strcat(requestSend, "Upgrade: websocket\r\n\r\n");
+
+	// 标记已经处理握手
+	m_socketInfoVec[index].bHandleAccptMsg = true;
+
+	Netmsg os; os << requestSend;
+
+	//发送数据
+	if (!SendData(index, os.str().c_str(), os.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, bev))
+	{
+		return false;
+	}
+
+	return true;
 }

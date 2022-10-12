@@ -143,6 +143,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="网络管理\数据加密">
+      <UniqueIdentifier>{106e9af6-d3ae-446c-aded-f7ef288bd7b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -255,6 +258,12 @@
     </ClCompile>
     <ClCompile Include="..\Logic\MonsterClient.cpp">
       <Filter>玩家管理\逻辑派生\怪物管理</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kernel\sha1.cpp">
+      <Filter>网络管理\数据加密</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kernel\base64.cpp">
+      <Filter>网络管理\数据加密</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +392,12 @@
     </ClInclude>
     <ClInclude Include="..\Logic\MonsterClient.h">
       <Filter>玩家管理\逻辑派生\怪物管理</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\sha1.h">
+      <Filter>网络管理\数据加密</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kernel\base64.h">
+      <Filter>网络管理\数据加密</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

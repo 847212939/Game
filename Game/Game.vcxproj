@@ -159,11 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\kernel\base64.cpp" />
     <ClCompile Include="..\kernel\DataLine.cpp" />
     <ClCompile Include="..\kernel\IDGen.cpp" />
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
     <ClCompile Include="..\kernel\Netmsg.cpp" />
+    <ClCompile Include="..\kernel\sha1.cpp" />
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
     <ClCompile Include="..\kernel\Util.cpp" />
@@ -199,11 +201,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\kernel\Alias.h" />
+    <ClInclude Include="..\kernel\base64.h" />
     <ClInclude Include="..\kernel\ConditionVariable.h" />
     <ClInclude Include="..\kernel\DataLine.h" />
     <ClInclude Include="..\kernel\IDGen.h" />
     <ClInclude Include="..\kernel\Macro.h" />
     <ClInclude Include="..\kernel\Netmsg.h" />
+    <ClInclude Include="..\kernel\sha1.h" />
     <ClInclude Include="..\kernel\Structural.h" />
     <ClInclude Include="..\kernel\LogManager.h" />
     <ClInclude Include="..\kernel\MysqlHelper.h" />
