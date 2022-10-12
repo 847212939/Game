@@ -38,12 +38,6 @@
     <Filter Include="网络架构">
       <UniqueIdentifier>{6d30943c-ef2c-4ac7-92de-fa09a2a80c41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类">
-      <UniqueIdentifier>{3b7f2dd8-9513-4c00-830e-dbd53f7d0325}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="玩家中心\派生">
-      <UniqueIdentifier>{9730ed31-a78a-4f26-ab83-91568cd16a2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="游戏逻辑\活动系统">
       <UniqueIdentifier>{d3ba2375-ec86-4aca-ad08-256f96eeac37}</UniqueIdentifier>
     </Filter>
@@ -68,80 +62,86 @@
     <Filter Include="工具接口\杂合工具">
       <UniqueIdentifier>{42f638c8-2133-4a29-a457-dd738baa3426}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络架构\网络">
-      <UniqueIdentifier>{eabd3ab5-97ee-47b9-ad86-244a93e9cb12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络架构\定时器">
-      <UniqueIdentifier>{e5f234df-2aae-4951-b45c-55c387539a3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络架构\日志">
-      <UniqueIdentifier>{5fd0166c-8a63-450f-8126-6fcb5e6bceb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络架构\数据库">
-      <UniqueIdentifier>{2a45e5ea-321f-4bf5-b592-c90b432da8c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="网络架构\消息结构">
-      <UniqueIdentifier>{7f4064e9-040e-4308-a685-cce3df8bb322}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="工具接口\工具">
-      <UniqueIdentifier>{7c99c059-9b9a-4c77-9800-4ec13772186d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\属性">
-      <UniqueIdentifier>{4fb0049f-398f-4edc-b1d3-c805c22f34f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\宏定义">
-      <UniqueIdentifier>{6dd9ad27-a9d8-42bf-8f52-c11848270de3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\网络消息">
       <UniqueIdentifier>{dae67348-14b4-46db-be75-77957e02d133}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\结构体">
-      <UniqueIdentifier>{1badf0ff-573f-42ff-aef3-cbb69cfb92b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\定时器">
-      <UniqueIdentifier>{e587902f-c2cb-46c1-ae3e-f05e2e7d3455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\预编译">
-      <UniqueIdentifier>{5a8276c7-74c6-4783-ab1e-7afb28c5ff01}</UniqueIdentifier>
     </Filter>
     <Filter Include="网络架构\条件变量">
       <UniqueIdentifier>{e4d06a7c-873c-41cb-9fe8-29cd847989ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\别名">
+    <Filter Include="工具接口\基础工具">
+      <UniqueIdentifier>{7c99c059-9b9a-4c77-9800-4ec13772186d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\类型别名">
       <UniqueIdentifier>{a71fd467-6d1b-4ce4-8def-bebd0c310aff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\场景">
+    <Filter Include="网络架构\网络消息">
+      <UniqueIdentifier>{eabd3ab5-97ee-47b9-ad86-244a93e9cb12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络架构\日志管理">
+      <UniqueIdentifier>{5fd0166c-8a63-450f-8126-6fcb5e6bceb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络架构\数据管理">
+      <UniqueIdentifier>{2a45e5ea-321f-4bf5-b592-c90b432da8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络架构\定时管理">
+      <UniqueIdentifier>{e5f234df-2aae-4951-b45c-55c387539a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\预编译头">
+      <UniqueIdentifier>{5a8276c7-74c6-4783-ab1e-7afb28c5ff01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\属性管理">
+      <UniqueIdentifier>{4fb0049f-398f-4edc-b1d3-c805c22f34f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\定时器头">
+      <UniqueIdentifier>{e587902f-c2cb-46c1-ae3e-f05e2e7d3455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\宏定义头">
+      <UniqueIdentifier>{6dd9ad27-a9d8-42bf-8f52-c11848270de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\结构体头">
+      <UniqueIdentifier>{1badf0ff-573f-42ff-aef3-cbb69cfb92b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\逻辑基类">
+      <UniqueIdentifier>{3b7f2dd8-9513-4c00-830e-dbd53f7d0325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\逻辑基类\场景管理">
       <UniqueIdentifier>{f9054190-c968-4e82-9b52-2eb2dd99d61e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\玩家">
+    <Filter Include="玩家中心\逻辑基类\玩家管理">
       <UniqueIdentifier>{f861265d-0d0a-4be6-b4b2-85b079e8c03a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\玩家中心">
+    <Filter Include="玩家中心\逻辑基类\玩家中心">
       <UniqueIdentifier>{c5dceb2f-3f01-4bb3-9e0d-29bf428c8e9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\玩家预处理">
+    <Filter Include="玩家中心\逻辑基类\玩家预处理">
       <UniqueIdentifier>{f1acb561-f5ec-4abd-aeb0-57c94799fbe2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\怪物">
+    <Filter Include="玩家中心\逻辑基类\怪物管理">
       <UniqueIdentifier>{4171d512-cd75-4b69-b726-a15cb55df7fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\基类\动物">
+    <Filter Include="玩家中心\逻辑基类\动物管理">
       <UniqueIdentifier>{f084ecf6-cb8a-42e5-96b6-7c9acef700f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\派生\场景">
+    <Filter Include="玩家中心\逻辑派生">
+      <UniqueIdentifier>{9730ed31-a78a-4f26-ab83-91568cd16a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家中心\逻辑派生\场景管理">
       <UniqueIdentifier>{a8f1cead-4bd5-4310-8506-a6278e04dbe2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\派生\玩家预处理">
+    <Filter Include="玩家中心\逻辑派生\玩家预处理">
       <UniqueIdentifier>{eaec15d8-fb5e-4d44-b654-a8b29028a6dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\派生\玩家">
+    <Filter Include="玩家中心\逻辑派生\玩家管理">
       <UniqueIdentifier>{0a7ad4cb-4012-4c66-9eb2-27d520304d8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\派生\玩家中心">
+    <Filter Include="玩家中心\逻辑派生\玩家中心">
       <UniqueIdentifier>{95556ddc-30ef-4a4b-814e-5511ae908ca5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家中心\派生\怪物">
+    <Filter Include="玩家中心\逻辑派生\怪物管理">
       <UniqueIdentifier>{811c675c-8030-4fa9-a1bc-11adbd43678e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络架构\消息处理">
+      <UniqueIdentifier>{7f4064e9-040e-4308-a685-cce3df8bb322}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -197,64 +197,64 @@
       <Filter>工具接口\杂合工具</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPClient.cpp">
-      <Filter>网络架构\网络</Filter>
+      <Filter>网络架构\网络消息</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\TCPSocket.cpp">
-      <Filter>网络架构\网络</Filter>
+      <Filter>网络架构\网络消息</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\ServerTimer.cpp">
-      <Filter>网络架构\定时器</Filter>
+      <Filter>网络架构\定时管理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\LogManager.cpp">
-      <Filter>网络架构\日志</Filter>
+      <Filter>网络架构\日志管理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\MysqlHelper.cpp">
-      <Filter>网络架构\数据库</Filter>
+      <Filter>网络架构\数据管理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\DataLine.cpp">
-      <Filter>网络架构\消息结构</Filter>
+      <Filter>网络架构\消息处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\Netmsg.cpp">
-      <Filter>网络架构\消息结构</Filter>
+      <Filter>网络架构\消息处理</Filter>
     </ClCompile>
     <ClCompile Include="..\kernel\Util.cpp">
-      <Filter>工具接口\工具</Filter>
+      <Filter>工具接口\基础工具</Filter>
     </ClCompile>
     <ClCompile Include="table.cpp">
-      <Filter>网络架构\数据库</Filter>
+      <Filter>网络架构\数据管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家中心\基类\场景</Filter>
+      <Filter>玩家中心\逻辑基类\场景管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家中心\基类\玩家</Filter>
+      <Filter>玩家中心\逻辑基类\玩家管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家中心\基类\玩家中心</Filter>
+      <Filter>玩家中心\逻辑基类\玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerPrep.cpp">
-      <Filter>玩家中心\基类\玩家预处理</Filter>
+      <Filter>玩家中心\逻辑基类\玩家预处理</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\Monster.cpp">
-      <Filter>玩家中心\基类\怪物</Filter>
+      <Filter>玩家中心\逻辑基类\怪物管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\Animal.cpp">
-      <Filter>玩家中心\基类\动物</Filter>
+      <Filter>玩家中心\逻辑基类\动物管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\SceneClient.cpp">
-      <Filter>玩家中心\派生\场景</Filter>
+      <Filter>玩家中心\逻辑派生\场景管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerPrepClient.cpp">
-      <Filter>玩家中心\派生\玩家预处理</Filter>
+      <Filter>玩家中心\逻辑派生\玩家预处理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerClient.cpp">
-      <Filter>玩家中心\派生\玩家</Filter>
+      <Filter>玩家中心\逻辑派生\玩家管理</Filter>
     </ClCompile>
     <ClCompile Include="..\Player\PlayerCenterClient.cpp">
-      <Filter>玩家中心\派生\玩家中心</Filter>
+      <Filter>玩家中心\逻辑派生\玩家中心</Filter>
     </ClCompile>
     <ClCompile Include="..\Logic\MonsterClient.cpp">
-      <Filter>玩家中心\派生\怪物</Filter>
+      <Filter>玩家中心\逻辑派生\怪物管理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,85 +304,85 @@
       <Filter>工具接口\杂合工具</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPClient.h">
-      <Filter>网络架构\网络</Filter>
+      <Filter>网络架构\网络消息</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\TCPSocket.h">
-      <Filter>网络架构\网络</Filter>
+      <Filter>网络架构\网络消息</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\ServerTimer.h">
-      <Filter>网络架构\定时器</Filter>
+      <Filter>网络架构\定时管理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\ConditionVariable.h">
       <Filter>网络架构\条件变量</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\LogManager.h">
-      <Filter>网络架构\日志</Filter>
+      <Filter>网络架构\日志管理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\MysqlHelper.h">
-      <Filter>网络架构\数据库</Filter>
+      <Filter>网络架构\数据管理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\DataLine.h">
-      <Filter>网络架构\消息结构</Filter>
+      <Filter>网络架构\消息处理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Netmsg.h">
-      <Filter>网络架构\消息结构</Filter>
+      <Filter>网络架构\消息处理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Util.h">
-      <Filter>工具接口\工具</Filter>
+      <Filter>工具接口\基础工具</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Alias.h">
-      <Filter>头文件\别名</Filter>
+      <Filter>头文件\类型别名</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>头文件\属性</Filter>
+      <Filter>头文件\属性管理</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Macro.h">
-      <Filter>头文件\宏定义</Filter>
+      <Filter>头文件\宏定义头</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\MessageCmd.h">
       <Filter>头文件\网络消息</Filter>
     </ClInclude>
     <ClInclude Include="..\kernel\Structural.h">
-      <Filter>头文件\结构体</Filter>
+      <Filter>头文件\结构体头</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\TimerCmd.h">
-      <Filter>头文件\定时器</Filter>
+      <Filter>头文件\定时器头</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>头文件\预编译</Filter>
+      <Filter>头文件\预编译头</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家中心\基类\场景</Filter>
+      <Filter>玩家中心\逻辑基类\场景管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家中心\基类\玩家</Filter>
+      <Filter>玩家中心\逻辑基类\玩家管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家中心\基类\玩家中心</Filter>
+      <Filter>玩家中心\逻辑基类\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerPrep.h">
-      <Filter>玩家中心\基类\玩家预处理</Filter>
+      <Filter>玩家中心\逻辑基类\玩家预处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\Monster.h">
-      <Filter>玩家中心\基类\怪物</Filter>
+      <Filter>玩家中心\逻辑基类\怪物管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\Animal.h">
-      <Filter>玩家中心\基类\动物</Filter>
+      <Filter>玩家中心\逻辑基类\动物管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\SceneClient.h">
-      <Filter>玩家中心\派生\场景</Filter>
+      <Filter>玩家中心\逻辑派生\场景管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerPrepClient.h">
-      <Filter>玩家中心\派生\玩家预处理</Filter>
+      <Filter>玩家中心\逻辑派生\玩家预处理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerClient.h">
-      <Filter>玩家中心\派生\玩家</Filter>
+      <Filter>玩家中心\逻辑派生\玩家管理</Filter>
     </ClInclude>
     <ClInclude Include="..\Player\PlayerCenterClient.h">
-      <Filter>玩家中心\派生\玩家中心</Filter>
+      <Filter>玩家中心\逻辑派生\玩家中心</Filter>
     </ClInclude>
     <ClInclude Include="..\Logic\MonsterClient.h">
-      <Filter>玩家中心\派生\怪物</Filter>
+      <Filter>玩家中心\逻辑派生\怪物管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
