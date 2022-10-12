@@ -68,6 +68,7 @@ ListString Netmsg::StringSplit(std::string& str, std::string separator, size_t c
 		pos = str.find(separator, i);
 		if (pos == std::string::npos)
 		{
+			// 防止最后没有结尾分隔符保留
 			if (i < size)
 			{
 				listString.push_back(str.substr(i, size - i));
