@@ -618,6 +618,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	tcpInfo.lock->lock();
 
 	tcpInfo.isConnect = false;
+	tcpInfo.bHandleAccptMsg = false;
 	bufferevent_free(tcpInfo.bev);
 	tcpInfo.bev = nullptr;
 
@@ -1268,7 +1269,7 @@ bool CTCPSocketManage::ServiceTypeLogicWS(bufferevent* bev, int index)
 		}
 
 		FetchPayload(pBuffer, pos, wbmsg);
-		FetchPrint(wbmsg);
+		//FetchPrint(wbmsg);
 
 		// 解析应用层包头
 		NetMessageHead* pNetHead = (NetMessageHead*)wbmsg.payload;
