@@ -78,7 +78,6 @@ private:
 	void ThreadAccept();
 	// SOCKET 数据发送线程
 	void ThreadSendMsg();
-	void HandleSendData(ListItemData* pListItem);
 	// SOCKET 数据接收线程
 	static void ThreadRSSocket(void* pThreadData);
 
@@ -108,9 +107,18 @@ private:
 	// 收到消息进行粘包处理
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
+	// 收到消息进行粘包处理
 	bool ServiceTypeLogic(bufferevent* bev, int index);
+
+	// 发送线程消息处理
+	void HandleSendMsg(ListItemData* pListItem);
+	// 发送线程消息处理
+	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
 private:
+	// 发送线程消息处理
+	void HandleSendWSData(ListItemData* pListItem);
+	// 收到消息进行粘包处理
 	bool ServiceTypeLogicWS(bufferevent* bev, int index);
 	//websocket的第一次握手
 	bool HandShark(bufferevent* bev, int index);
