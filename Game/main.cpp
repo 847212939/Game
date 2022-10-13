@@ -3,7 +3,7 @@
 int main()
 {
 	bool run = true;
-	ServiceType type = ServiceType::SERVICE_TYPE_LOGIC;
+	ServiceType type = ServiceType::SERVICE_TYPE_LOGIC_WS;
 
 	LogMgr->SetLogFileType(type);
 
