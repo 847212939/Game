@@ -11,12 +11,13 @@ protected:
 	SceneClient& operator=(const SceneClient& my);
 
 public:
+	// 获取玩家中心
 	PlayerCenterClient* GetPlayerCenterClient();
 
 private:
 	PlayerCenterClient	m_PlayerCenterClient;
 
 public:
-	GetClass(ActivityHallSys, ActivityHallSys)
-	GetClass(SkillSys, SkillSys)
+	GetClass(ActivityHallSys, ActivityHallSys)		// 活动系统
+	GetClass(SkillSys, SkillSys)					// 技能系统 
 };

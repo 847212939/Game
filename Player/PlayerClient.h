@@ -11,6 +11,6 @@ protected:
 	PlayerClient& operator=(const PlayerClient& my);
 
 public:
-	GetClass(MoveSys, MoveSys)
-	GetClass(SkillLvSys, SkillLvSys)
+	GetClass(MoveSys, MoveSys)			// 移动系统
+	GetClass(SkillLvSys, SkillLvSys)	// 技能等级系统
 };

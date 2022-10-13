@@ -8,7 +8,9 @@ public:
 	virtual AnimalType GetType();
 
 public:
+	// ³õÊ¼»¯
 	void Init(int mid);
+	// ËÀÍö
 	void Death();
 
 public:

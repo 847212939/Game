@@ -11,6 +11,7 @@ protected:
 	PlayerPrepClient& operator=(const PlayerPrepClient& my);
 
 public:
+	// 获取场景
 	SceneClient* GetSceneClient();
 
 public:
@@ -25,5 +26,5 @@ private:
 	SceneClient	m_SceneClient;
 
 public:
-	GetClass(LoginSys, LoginSys)
+	GetClass(LoginSys, LoginSys)	// 登录系统
 };

@@ -7,6 +7,7 @@ public:
 	virtual ~CTCPSocketManage();
 
 protected:
+	// 禁用拷贝构造函数
 	CTCPSocketManage(const CTCPSocketManage& my);
 	CTCPSocketManage& operator=(const CTCPSocketManage& my);
 

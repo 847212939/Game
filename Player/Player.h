@@ -15,8 +15,9 @@ protected:
 	Player& operator=(const Player& my);
 
 public:
-	// 消息处理
+	// 给一个玩家发送消息
 	bool SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
+	// 消息派发
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 public:
@@ -61,15 +62,22 @@ public:
 	void SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 
 public:
-	GetSetMem(std::string, Playername)	// 玩家网名
-
-	GetSetMem(bool, Load)				// 玩家是否初始化完成
-	GetSetMem(unsigned int, Index)		// 玩家是否初始化完成
+	// 玩家网名
+	GetSetMem(std::string, Playername)
+	// 玩家是否初始化完成
+	GetSetMem(bool, Load)
+	// 玩家是否初始化完成
+	GetSetMem(unsigned int, Index)
 
 private:
-	MapNetFun				m_NetCBFunMap;			// 回调函数集合
-	VectorExitFunc			m_ExitFunMap;			// 回调函数集合
-	MapMysqlFunc			m_MysqlCBFunMap;		// 回调函数集合
-	VectorVoidFunc			m_AttrsFunMap;			// 回调函数集合
-	VectorVoidFunc			m_EnterSceneFunMap;		// 回调函数集合
+	// 回调函数集合
+	MapNetFun				m_NetCBFunMap;	
+	// 回调函数集合
+	VectorExitFunc			m_ExitFunMap;	
+	// 回调函数集合
+	MapMysqlFunc			m_MysqlCBFunMap;
+	// 回调函数集合
+	VectorVoidFunc			m_AttrsFunMap;	
+	// 回调函数集合
+	VectorVoidFunc			m_EnterSceneFunMap;		
 };

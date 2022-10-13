@@ -8,6 +8,7 @@ public:
 	virtual ~TCPClient();
 
 protected:
+	// 禁用拷贝构造函数
 	TCPClient(const TCPClient& my);
 	TCPClient& operator=(const TCPClient& my);
 

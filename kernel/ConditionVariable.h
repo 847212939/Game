@@ -7,6 +7,7 @@ public:
 	virtual ~ConditionVariable() {}
 
 protected:
+	// 禁用拷贝构造函数
 	ConditionVariable(const ConditionVariable& my);
 	ConditionVariable& operator=(const ConditionVariable& my);
 

@@ -7,6 +7,7 @@ private:
 	virtual ~CGameLogManage();
 
 protected:
+	// 禁用拷贝构造函数
 	CGameLogManage(const CGameLogManage& my);
 	CGameLogManage& operator=(const CGameLogManage& my);
 
@@ -56,7 +57,7 @@ private:
 	std::vector<std::thread*> m_threadVec;
 };
 
-//// 日志类
+// 日志类
 class CLog
 {
 public:
