@@ -1060,13 +1060,12 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	}
 	{
 		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (!tcpInfo.isConnect || !tcpInfo.bev)
+		if (tcpInfo.isConnect && tcpInfo.bev)
 		{
-			return;
-		}
-		if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-		{
-			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+			if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+			{
+				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+			}
 		}
 	}
 	SafeDeleteArray(pListItem->pData);
@@ -1407,16 +1406,18 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 
 	//发送数据
 	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	if (tcpInfo.lock)
+	if (!tcpInfo.lock)
+	{
+		return false;
+	}
 	{
 		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (!tcpInfo.isConnect || !tcpInfo.bev)
+		if (tcpInfo.isConnect && tcpInfo.bev)
 		{
-			return false;
-		}
-		if (bufferevent_write(tcpInfo.bev, requestSendStr.c_str(), requestSendStr.size()) < 0)
-		{
-			COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+			if (bufferevent_write(tcpInfo.bev, requestSendStr.c_str(), requestSendStr.size()) < 0)
+			{
+				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+			}
 		}
 	}
 
