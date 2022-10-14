@@ -10,8 +10,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
-	m_ctx(nullptr),
-	m_cert(nullptr)
+	m_ctx(nullptr)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -77,6 +76,12 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip)
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
+#ifdef __WebSocket__
+	if (!WSOpensslInit())
+	{
+		return false;
+	}
+#endif // __WebSocket__
 	return true;
 }
 bool CTCPSocketManage::Stop()
@@ -561,6 +566,22 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	return true;
 }
 
+void TCPSocketInfo::Reset()
+{
+	// 和发送线程相关的锁
+	lock->lock();
+
+	isConnect = false;
+	bufferevent_free(bev);
+	bev = nullptr;
+	bHandleAccptMsg = false;
+	link = 0;
+	SSL_free(ssl);
+	ssl = nullptr;
+
+	// 解锁发送线程
+	lock->unlock();
+}
 //网络关闭处理
 bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime)
 {
@@ -615,22 +636,8 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 		SafeDelete(pRecvThreadParam);
 	}
 
-	//// 服务器主动发起FIN包
-	//if (!isClientAutoClose)
-	//{
-	//	closesocket(tcpInfo.acceptFd);
-	//}
-
 	// 和发送线程相关的锁
-	tcpInfo.lock->lock();
-
-	tcpInfo.isConnect = false;
-	tcpInfo.bHandleAccptMsg = false;
-	bufferevent_free(tcpInfo.bev);
-	tcpInfo.bev = nullptr;
-
-	// 解锁发送线程
-	tcpInfo.lock->unlock();
+	tcpInfo.Reset();
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
@@ -1603,7 +1610,20 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 }
 #endif // __WebSocket__
 
+// 进行openssl握手
 #ifdef __WebSocket__
+SSL* CTCPSocketManage::WSCreateSSL(evutil_socket_t& fd)
+{
+	SSL* ssl = SSL_new(m_ctx);
+	if (!ssl)
+	{
+		return nullptr;
+	}
+
+	SSL_set_fd(ssl, fd);
+
+	return ssl;
+}
 bool CTCPSocketManage::WSOpensslInit()
 {
 	SSL_library_init();//初始化库
@@ -1645,10 +1665,38 @@ bool CTCPSocketManage::WSOpensslInit()
 
 	return true;
 }
-// 进行openssl握手
-bool CTCPSocketManage::WSOpensslHandShark(bufferevent* bev, int index)
+bool CTCPSocketManage::WSOpensslHandShark(int index)
 {
-	evutil_socket_t fd = bufferevent_getfd(bev);
+	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+	evutil_socket_t fd = bufferevent_getfd(tcpInfo.bev);
+
+	SSL* ssl = WSCreateSSL(fd);
+	if (!ssl)
+	{
+		COUT_LOG(LOG_CERROR, "WSCreateSSL error");
+		return false;
+	}
+	tcpInfo.ssl = ssl;
+	int nRet = SSL_do_handshake(ssl);
+	if (nRet != 1)
+	{
+		int nErr = SSL_get_error(ssl, nRet);
+		//正在进行握手
+		if (nErr == SSL_ERROR_WANT_READ || nErr == SSL_ERROR_WANT_WRITE)
+		{
+			return true;
+		}
+
+		COUT_LOG(LOG_CERROR, "SSL_do_handshake error port=%u ip=%s ret=%d err=%d", 
+			tcpInfo.ip, tcpInfo.port, nRet, nErr);
+
+		// 握手失败的话直接断开链接
+		CloseSocket(index);
+
+		//握手发生错误
+		return false;
+	}
+	
 	return true;
 }
 #endif // __WebSocket__

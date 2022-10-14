@@ -139,12 +139,15 @@ private:
 	void WSHandleSendWSData(ListItemData * pListItem);
 #endif // __WebSocket__
 
+	// openssl 握手
 #ifdef __WebSocket__
 private:
 	// opensslInit
 	bool WSOpensslInit();
+	// 将连接付给SSL
+	SSL* WSCreateSSL(evutil_socket_t& fd);
 	// 进行openssl握手
-	bool WSOpensslHandShark(bufferevent* bev, int index);
+	bool WSOpensslHandShark(int index);
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
@@ -165,24 +168,23 @@ private:
 #endif // __WebSocket__
 
 private:
-	unsigned short	m_port;
-	bool			m_running;
-	char			m_bindIP[48];
-	unsigned int	m_uMaxSocketSize;
-	unsigned int	m_uCurSocketSize;
-	unsigned int	m_uCurSocketIndex;
-	CDataLine*		m_pRecvDataLine;
-	CDataLine*		m_pSendDataLine;
-	event_config*	m_eventBaseCfg;
-	event_base*		m_listenerBase;
-	ServiceType		m_iServiceType;
+	bool				 m_running;
+	char				 m_bindIP[48];
+	unsigned short		 m_port;
+	unsigned int		 m_uMaxSocketSize;
+	unsigned int		 m_uCurSocketSize;
+	unsigned int		 m_uCurSocketIndex;
+	CDataLine*			 m_pRecvDataLine;
+	CDataLine*			 m_pSendDataLine;
+	event_config*		 m_eventBaseCfg;
+	event_base*			 m_listenerBase;
+	ServiceType			 m_iServiceType;
+	ConditionVariable	 m_ConditionVariable;
 
-	ConditionVariable           m_ConditionVariable;
-	std::set<unsigned int>      m_heartBeatSocketSet;
-	std::vector<std::thread*>   m_socketThread;
-	std::vector<TCPSocketInfo>  m_socketInfoVec;
-	std::vector<WorkThreadInfo> m_workBaseVec;
+	SetUint				 m_heartBeatSocketSet;
+	VectorThread		 m_socketThread;
+	VectorTCPSocketInfo	 m_socketInfoVec;
+	VectorWorkThreadInfo m_workBaseVec;
 
-	SSL_CTX*	m_ctx;
-	X509*		m_cert;
+	SSL_CTX*		     m_ctx;
 };

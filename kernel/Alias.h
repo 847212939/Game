@@ -7,6 +7,9 @@ using SetUint				= std::set<unsigned int>;
 template<typename T>
 using VectorTemplate		= std::vector<T>;
 using VectorInt				= std::vector<int>;
+using VectorThread			= std::vector<std::thread*>;
+using VectorTCPSocketInfo	= std::vector<TCPSocketInfo>;
+using VectorWorkThreadInfo	= std::vector<WorkThreadInfo>;
 using VectorString			= std::vector<std::string>;
 using VectorPlayerClient	= std::vector<PlayerClient*>;
 using VectorVoidFunc		= std::vector<std::function<void()>>;
