@@ -978,6 +978,7 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKFD recv
 	return result;
 }
 
+// 消息发送
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
@@ -1033,6 +1034,33 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 
 	return true;
 }
+// 消息处理发送
+void CTCPSocketManage::ThreadSendMsg()
+{
+	std::list <ListItemData*> dataList;
+	CDataLine* pDataLine = GetSendDataLine();
+	if (!pDataLine)
+	{
+		COUT_LOG(LOG_CERROR, "send list is null");
+		return;
+	}
+	while (m_running)
+	{
+		if (!pDataLine->SwapDataList(dataList, m_running))
+		{
+			continue;
+		}
+		while (!dataList.empty())
+		{
+			HandleSendMsg(dataList.front());
+			dataList.pop_front();
+		}
+	}
+
+	COUT_LOG(LOG_CINFO, "send data thread end");
+
+	return;
+}
 void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 {
 	if (!pListItem)
@@ -1058,93 +1086,6 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
-}
-void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
-{
-	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
-	unsigned int size = pSocketSend->dataLineHead.uSize;
-	int index = pSocketSend->socketIndex;
-	void* pData = pListItem->pData + sizeof(SendDataLineHead);
-
-	if (index < 0 || index >= m_socketInfoVec.size())
-	{
-		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
-		return;
-	}
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	if (!tcpInfo.lock)
-	{
-		return;
-	}
-	unsigned int* payload_len_32_be = nullptr;
-	unsigned short int* payload_len_short_be = nullptr;
-	unsigned char finNopcode{}, payload_len_small{};
-	unsigned int payload_offset = 2;
-	unsigned int frame_size = 0;
-	int flags = WS_FRAGMENT_FIN | WS_BINARY_FRAME;
-
-	finNopcode = flags & 0xff;
-
-	int allLen = sizeof(NetMessageHead) + size;// PACKET_HEADER_SIZE;
-	if (allLen <= 125)
-	{
-		frame_size = 2 + allLen;
-		payload_len_small = allLen & 0xff;
-	}
-	else if (allLen > 125 && allLen <= 0xffff)
-	{
-		frame_size = 4 + allLen;
-		payload_len_small = 126;
-		payload_offset += 2;
-	}
-	else if (allLen > 0xffff && allLen <= 0xfffffff0)
-	{
-		frame_size = 10 + allLen;
-		payload_len_small = 127;
-		payload_offset += 8;
-	}
-	else 
-	{
-		COUT_LOG(LOG_CERROR, "web socket send to big size=%d", size);
-		return;
-	}
-
-
-	// 整合一下数据
-	std::unique_ptr<char[]> recvBuf(new char[frame_size]);
-	char* frame = recvBuf.get();
-
-	// 填充websocket包头
-	payload_len_small &= 0x7f;
-	*frame = finNopcode;
-	*(frame + 1) = payload_len_small;
-	if (payload_len_small == 126) 
-	{
-		allLen &= 0xffff;
-		payload_len_short_be = (unsigned short*)((char*)frame + 2);
-		*payload_len_short_be = htons(allLen);
-	}
-	if (payload_len_small == 127) 
-	{
-		payload_len_32_be = (unsigned int*)((char*)frame + 2);
-		*payload_len_32_be++ = 0;
-		*payload_len_32_be = htonl(allLen);
-	}
-	// 应用层包体
-	if (pData && size > 0)
-	{
-		memcpy(frame + payload_offset, pData, size);
-	}
-	{
-		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (tcpInfo.isConnect && tcpInfo.bev)
-		{
-			if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
-			{
-				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
-			}
-		}
-	}
 }
 void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 {
@@ -1174,32 +1115,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 		}
 	}
 }
-void CTCPSocketManage::ThreadSendMsg()
-{
-	std::list <ListItemData*> dataList;
-	CDataLine* pDataLine = GetSendDataLine();
-	if (!pDataLine)
-	{
-		COUT_LOG(LOG_CERROR, "send list is null");
-		return;
-	}
-	while (m_running)
-	{
-		if (!pDataLine->SwapDataList(dataList, m_running))
-		{
-			continue;
-		}
-		while (!dataList.empty())
-		{
-			HandleSendMsg(dataList.front());
-			dataList.pop_front();
-		}
-	}
-
-	COUT_LOG(LOG_CINFO, "send data thread end");
-
-	return;
-}
 
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
@@ -1208,7 +1123,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		if (!ServiceTypeLogicWS(bev, index))
+		if (!RecvWSLogicData(bev, index))
 		{
 			return false;
 		}
@@ -1217,7 +1132,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	else
 	{
 		// TCP服务器
-		if (!ServiceTypeLogic(bev, index))
+		if (!RecvLogicData(bev, index))
 		{
 			return false;
 		}
@@ -1225,7 +1140,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 
 	return true;
 }
-bool CTCPSocketManage::ServiceTypeLogic(bufferevent* bev, int index)
+bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
@@ -1301,7 +1216,93 @@ bool CTCPSocketManage::ServiceTypeLogic(bufferevent* bev, int index)
 
 // websocket
 #ifdef __WebSocket__
-bool CTCPSocketManage::ServiceTypeLogicWS(bufferevent* bev, int index)
+void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
+{
+	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
+	unsigned int size = pSocketSend->dataLineHead.uSize;
+	int index = pSocketSend->socketIndex;
+	void* pData = pListItem->pData + sizeof(SendDataLineHead);
+
+	if (index < 0 || index >= m_socketInfoVec.size())
+	{
+		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
+		return;
+	}
+	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+	if (!tcpInfo.lock)
+	{
+		return;
+	}
+	unsigned int* payload_len_32_be = nullptr;
+	unsigned short int* payload_len_short_be = nullptr;
+	unsigned char finNopcode{}, payload_len_small{};
+	unsigned int payload_offset = 2;
+	unsigned int frame_size = 0;
+	int flags = WS_FRAGMENT_FIN | WS_BINARY_FRAME;
+
+	finNopcode = flags & 0xff;
+
+	int allLen = sizeof(NetMessageHead) + size;// PACKET_HEADER_SIZE;
+	if (allLen <= 125)
+	{
+		frame_size = 2 + allLen;
+		payload_len_small = allLen & 0xff;
+	}
+	else if (allLen > 125 && allLen <= 0xffff)
+	{
+		frame_size = 4 + allLen;
+		payload_len_small = 126;
+		payload_offset += 2;
+	}
+	else if (allLen > 0xffff && allLen <= 0xfffffff0)
+	{
+		frame_size = 10 + allLen;
+		payload_len_small = 127;
+		payload_offset += 8;
+	}
+	else
+	{
+		COUT_LOG(LOG_CERROR, "web socket send to big size=%d", size);
+		return;
+	}
+
+	// 整合一下数据
+	std::unique_ptr<char[]> recvBuf(new char[frame_size]);
+	char* frame = recvBuf.get();
+
+	// 填充websocket包头
+	payload_len_small &= 0x7f;
+	*frame = finNopcode;
+	*(frame + 1) = payload_len_small;
+	if (payload_len_small == 126)
+	{
+		allLen &= 0xffff;
+		payload_len_short_be = (unsigned short*)((char*)frame + 2);
+		*payload_len_short_be = htons(allLen);
+	}
+	if (payload_len_small == 127)
+	{
+		payload_len_32_be = (unsigned int*)((char*)frame + 2);
+		*payload_len_32_be++ = 0;
+		*payload_len_32_be = htonl(allLen);
+	}
+	// 应用层包体
+	if (pData && size > 0)
+	{
+		memcpy(frame + payload_offset, pData, size);
+	}
+	{
+		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
+		if (tcpInfo.isConnect && tcpInfo.bev)
+		{
+			if (bufferevent_write(tcpInfo.bev, frame, frame_size) < 0)
+			{
+				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+			}
+		}
+	}
+}
+bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{

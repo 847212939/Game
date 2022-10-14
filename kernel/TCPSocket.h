@@ -108,7 +108,7 @@ private:
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
 	// 收到消息进行粘包处理
-	bool ServiceTypeLogic(bufferevent* bev, int index);
+	bool RecvLogicData(bufferevent* bev, int index);
 
 	// 发送线程消息处理
 	void HandleSendMsg(ListItemData* pListItem);
@@ -119,7 +119,7 @@ private:
 	// 发送线程消息处理
 	void HandleSendWSData(ListItemData* pListItem);
 	// 收到消息进行粘包处理
-	bool ServiceTypeLogicWS(bufferevent* bev, int index);
+	bool RecvWSLogicData(bufferevent* bev, int index);
 	//websocket的第一次握手
 	bool HandShark(bufferevent* bev, int index);
 
