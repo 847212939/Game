@@ -111,36 +111,49 @@ private:
 	bool BuffereventWrite(int index, std::string& data);
 	// 写入bufferevent_write
 	bool BuffereventWrite(int index, void* data, unsigned int size);
+
 	// 发送TCP消息
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
+#ifdef __WebSocket__
+	// 发送WebSocket消息
+	bool WSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
+#endif // __WebSocket__
+
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
 	// 处理收到消息进行粘包
 	bool RecvLogicData(bufferevent* bev, int index);
+#ifdef __WebSocket__
+	// 收到消息进行粘包处理
+	bool WSRecvWSLogicData(bufferevent* bev, int index);
+#endif // __WebSocket__
+
 	// 处理发送线程消息
 	void HandleSendMsg(ListItemData* pListItem);
 	// 处理发送线程消息
 	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
-private:
-	// 发送WebSocket消息
-	bool SendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 	// 处理发送线程消息
-	void HandleSendWSData(ListItemData* pListItem);
-	// 收到消息进行粘包处理
-	bool RecvWSLogicData(bufferevent* bev, int index);
+	void WSHandleSendWSData(ListItemData * pListItem);
+#endif // __WebSocket__
+
+#ifdef __WebSocket__
 	//websocket的第一次握手
-	bool HandShark(bufferevent* bev, int index);
+	bool WSHandShark(bufferevent* bev, int index);
+#endif // __WebSocket__
+
+#ifdef __WebSocket__
+private:
 	// websocket解析数据包函数
-	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static int FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static int FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static int FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static int FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg);
-	static void FetchPrint(const WebSocketMsg& wbmsg);
+	static int WSFetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int WSFetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int WSFetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int WSFetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int WSFetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static int WSFetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg);
+	static void WSFetchPrint(const WebSocketMsg& wbmsg);
 #endif // __WebSocket__
 
 private:

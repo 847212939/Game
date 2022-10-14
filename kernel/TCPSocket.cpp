@@ -386,13 +386,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-#ifdef __WebSocket__
-		// websocket服务器 握手成功后验证客户端
-#endif // __WebSocket__
-	}
-	else
+	if (m_iServiceType != ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
@@ -1038,7 +1032,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		return SendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		return WSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif // __WebSocket__
 	}
 	else
@@ -1106,7 +1100,7 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 	return true;
 }
 #ifdef __WebSocket__
-bool CTCPSocketManage::SendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
 	if (!pBufferevent)
@@ -1242,7 +1236,7 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		HandleSendWSData(pListItem);
+		WSHandleSendWSData(pListItem);
 #endif // __WebSocket__
 	}
 	else
@@ -1272,7 +1266,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	}
 }
 #ifdef __WebSocket__
-void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
+void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 {
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
@@ -1285,6 +1279,7 @@ void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
 		return;
 	}
 	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
+	// websocket 握手
 	if (!tcpInfo.bHandleAccptMsg)
 	{
 		//发送数据
@@ -1304,22 +1299,15 @@ void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
 				tcpInfo.bHandleAccptMsg = true;
 			}
 		}
-
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (tcpInfo.bHandleAccptMsg)
 		{
-#ifdef __WebSocket__
-			// 握手成功 验证客户端
-			// websocket服务器
+			// websocket服务器 握手成功 验证客户端
 			Netmsg msg; msg << tcpInfo.link;
 			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
-#endif // __WebSocket__
-		}
-		else
-		{
-			// TCP服务器
 		}
 		return;
 	}
+	// websocket 握手成功
 	else
 	{
 		unsigned int* payload_len_32_be = nullptr;
@@ -1397,7 +1385,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		if (!RecvWSLogicData(bev, index))
+		if (!WSRecvWSLogicData(bev, index))
 		{
 			return false;
 		}
@@ -1488,7 +1476,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 	return true;
 }
 #ifdef __WebSocket__
-bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
+bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
@@ -1497,7 +1485,7 @@ bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
 	}
 	if (!m_socketInfoVec[index].bHandleAccptMsg)
 	{
-		return HandShark(bev, index);
+		return WSHandShark(bev, index);
 	}
 
 	struct evbuffer* input = bufferevent_get_input(bev);
@@ -1536,11 +1524,11 @@ bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
 		// 解析websocket包头
 		int pos = 0;
 		wbmsg.Init();
-		FetchFin(pBuffer, pos, wbmsg);
-		FetchOpcode(pBuffer, pos, wbmsg);
-		FetchMask(pBuffer, pos, wbmsg);
-		FetchPayloadLength(pBuffer, pos, wbmsg);
-		FetchMaskingKey(pBuffer, pos, wbmsg);
+		WSFetchFin(pBuffer, pos, wbmsg);
+		WSFetchOpcode(pBuffer, pos, wbmsg);
+		WSFetchMask(pBuffer, pos, wbmsg);
+		WSFetchPayloadLength(pBuffer, pos, wbmsg);
+		WSFetchMaskingKey(pBuffer, pos, wbmsg);
 
 		if (wbmsg.dataLength > SOCKET_RECV_BUF_SIZE)
 		{
@@ -1557,8 +1545,8 @@ bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
 			break;
 		}
 
-		FetchPayload(pBuffer, pos, wbmsg);
-		//FetchPrint(wbmsg);
+		WSFetchPayload(pBuffer, pos, wbmsg);
+		//WSFetchPrint(wbmsg);
 
 		// 解析应用层包头
 		NetMessageHead* pNetHead = (NetMessageHead*)wbmsg.payload;
@@ -1614,7 +1602,7 @@ bool CTCPSocketManage::RecvWSLogicData(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
-bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
+bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 {
 	struct evbuffer* input = bufferevent_get_input(bev);
 
@@ -1703,23 +1691,23 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
-int CTCPSocketManage::FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.fin = (unsigned char)msg[pos] >> 7;
 	return 0;
 }
-int CTCPSocketManage::FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.opcode = msg[pos] & 0x0f;
 	pos++;
 	return 0;
 }
-int CTCPSocketManage::FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.mask = (unsigned char)msg[pos] >> 7;
 	return 0;
 }
-int CTCPSocketManage::FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	if (wbmsg.mask != 1)
 	{
@@ -1732,7 +1720,7 @@ int CTCPSocketManage::FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
 	pos += 4;
 	return 0;
 }
-int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.payloadLength = msg[pos] & 0x7f;
 	pos++;
@@ -1755,7 +1743,7 @@ int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbms
 
 	return 0;
 }
-int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::WSFetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.payload = msg + pos;
 
@@ -1772,7 +1760,7 @@ int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 
 	return 0;
 }
-void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
+void CTCPSocketManage::WSFetchPrint(const WebSocketMsg& wbmsg)
 {
 	printf("WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
