@@ -1,9 +1,4 @@
-#include <string>
-
-#include <iostream> 
-#include <cstdio>
-#include <cstdlib>
-#include <stdint.h>
+#pragma once
 
 using namespace std;
 

@@ -140,7 +140,12 @@ private:
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
-	//websocket的第一次握手
+	// 进行openssl握手
+	bool WSOpensslHandShark(bufferevent* bev, int index);
+#endif // __WebSocket__
+
+#ifdef __WebSocket__
+	// websocket的第一次握手
 	bool WSHandShark(bufferevent* bev, int index);
 #endif // __WebSocket__
 

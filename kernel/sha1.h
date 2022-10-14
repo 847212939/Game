@@ -1,3 +1,4 @@
+#pragma once
 /*
  *  sha1.h
  *
@@ -21,16 +22,13 @@
  *
  */
 
-#ifndef _SHA1_H_
-#define _SHA1_H_
 
-
-class SHA1
+class CSha1
 {
     public:
 
-        SHA1();
-        virtual ~SHA1();
+        CSha1();
+        virtual ~CSha1();
 
         /*
          *  Re-initialize the class
@@ -43,7 +41,7 @@ class SHA1
         bool Result(unsigned *message_digest_array);
 
         /*
-         *  Provide input to SHA1
+         *  Provide input to CSha1
          */
         void Input( const unsigned char *message_array,
                     unsigned            length);
@@ -51,10 +49,10 @@ class SHA1
                     unsigned    length);
         void Input(unsigned char message_element);
         void Input(char message_element);
-        SHA1& operator<<(const char *message_array);
-        SHA1& operator<<(const unsigned char *message_array);
-        SHA1& operator<<(const char message_element);
-        SHA1& operator<<(const unsigned char message_element);
+        CSha1& operator<<(const char *message_array);
+        CSha1& operator<<(const unsigned char *message_array);
+        CSha1& operator<<(const char message_element);
+        CSha1& operator<<(const unsigned char message_element);
 
     private:
 
@@ -86,5 +84,3 @@ class SHA1
     
 };
 
-	
-#endif // _SHA1_H_

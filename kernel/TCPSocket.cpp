@@ -1602,6 +1602,15 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
+// ½øĞĞopensslÎÕÊÖ
+bool CTCPSocketManage::WSOpensslHandShark(bufferevent* bev, int index)
+{
+	evutil_socket_t fd = bufferevent_getfd(bev);
+	return true;
+}
+#endif // __WebSocket__
+
+#ifdef __WebSocket__
 bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 {
 	struct evbuffer* input = bufferevent_get_input(bev);
@@ -1664,7 +1673,7 @@ bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 
 	server_key += MAGIC_KEY;
 
-	SHA1 sha;
+	CSha1 sha;
 	unsigned int message_digest[5];
 	sha.Reset();
 	sha << server_key.c_str();

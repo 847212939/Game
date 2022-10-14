@@ -49,6 +49,8 @@
 #include <event2/event_struct.h>
 #include <mysql.h>
 #include <time.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 // lua
 extern "C"
