@@ -1032,25 +1032,25 @@ bool CTCPSocketManage::BuffereventWrite(int index, std::string& data)
 	return true;
 }
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
 {
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		return SendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
+		return SendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif // __WebSocket__
 	}
 	else
 	{
 		// TCP服务器
-		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
+		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 
 	return true;
 }
 bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
+	void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
