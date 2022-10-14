@@ -70,7 +70,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 //    RegisterTimers(1, 1000);
 //    
 //
-//    SendData((char*)"", 0, 7, 1, 3);
+//    SendMsg((char*)"", 0, 7, 1, 3);
 //
 //    while (true)
 //    {

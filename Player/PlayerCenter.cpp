@@ -196,7 +196,7 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	playerClient->EnterScene();
 	playerClient->SetLoad(true);
 
-	DTCPC->SendData(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
+	DTCPC->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
 		(int)LoginSysMsgCmd::cs_login, 0, pInfo->bev, 0);
 
 	return;

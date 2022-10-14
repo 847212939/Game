@@ -19,7 +19,7 @@ public:
 	int GetTimerCnt();
 
 public:
-	bool SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
+	bool SendMsg(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
 	void RemoveTCPSocketStatus(bool isClientAutoClose = false);
 
 public:

@@ -44,7 +44,7 @@ void Animal::RefreshProp()
 
 	if (GetType() == AnimalType::at_player)
 	{
-		dynamic_cast<PlayerClient*>(this)->SendData(msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
+		dynamic_cast<PlayerClient*>(this)->SendMsg(msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_RefreshProperties, 1, 0);
 	}
 }
 

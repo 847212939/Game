@@ -54,14 +54,14 @@ namespace MainNameSpace
         return 0;
     }
 
-    EXPORT_DLL int EXPORT_STDCALL SendData(char* pData, int size, int mainID, int assistID, int uIdentification)
+    EXPORT_DLL int EXPORT_STDCALL SendMsg(char* pData, int size, int mainID, int assistID, int uIdentification)
     {
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
             return -1;
         }
-        if (!pTcpClient->SendData((const char*)pData, (size_t)size, mainID, assistID, 0,
+        if (!pTcpClient->SendMsg((const char*)pData, (size_t)size, mainID, assistID, 0,
             (unsigned int)uIdentification))
         {
             return -1;

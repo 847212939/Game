@@ -323,7 +323,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 	}
 
 	std::string data = msg;
-	DTCPC->SendData(pMsg->uIndex, data.c_str(), data.size(),
+	DTCPC->SendMsg(pMsg->uIndex, data.c_str(), data.size(),
 		MsgCmd(pMsg->netMessageHead.uMainID),
 		pMsg->netMessageHead.uAssistantID, 0,
 		pMsg->pBufferevent, 0);

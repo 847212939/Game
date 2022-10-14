@@ -13,7 +13,7 @@ namespace MainNameSpace
 		// 反初始化网络库
 		EXPORT_DLL int EXPORT_STDCALL UnInitCxxnet();
 		// 发送网络消息
-		EXPORT_DLL int EXPORT_STDCALL SendData(char* pData, int size, int mainID, int assistID, int uIdentification);
+		EXPORT_DLL int EXPORT_STDCALL SendMsg(char* pData, int size, int mainID, int assistID, int uIdentification);
 		// 注册定时器
 		EXPORT_DLL int EXPORT_STDCALL RegisterTimers(int timerid, int uElapse);
 		// 反注册定时器

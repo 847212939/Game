@@ -16,7 +16,7 @@ AnimalType Player::GetType()
 	return AnimalType::at_player;
 }
 
-bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
+bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
 	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_Index);
 	if (!pInfo)
@@ -24,7 +24,7 @@ bool Player::SendData(const char* pData, size_t size, MsgCmd mainID, int assistI
 		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
-	return DTCPC->SendData(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+	return DTCPC->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)

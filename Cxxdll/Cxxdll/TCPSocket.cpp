@@ -275,7 +275,7 @@ bool CTCPSocketManage::VerifyConnection(char* data)
 	Netmsg msg;
 	msg << pEncrypt;
 
-	if (!SendData(msg.str().c_str(), msg.str().size(), MsgCmd_Testlink, 0, 0))
+	if (!SendMsg(msg.str().c_str(), msg.str().size(), MsgCmd_Testlink, 0, 0))
 	{
 		return false;
 	}
@@ -399,7 +399,7 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	((CTCPSocketManage*)data)->RemoveTCPSocketStatus(true);
 }
 
-bool CTCPSocketManage::SendData(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendMsg(const char* pData, size_t size, int mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
 {
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{

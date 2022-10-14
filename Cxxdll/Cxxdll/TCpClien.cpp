@@ -242,5 +242,5 @@ void TCPClient::HeartbeatTimer()
 	{
 		return;
 	}
-	SendData("", 0, MsgCmd_HeartBeat, 0, 0, 0);
+	SendMsg("", 0, MsgCmd_HeartBeat, 0, 0, 0);
 }

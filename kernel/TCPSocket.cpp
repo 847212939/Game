@@ -387,7 +387,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
 	Netmsg msg; msg << tcpInfo.link;
-	SendData(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+	SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 }
 
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)
@@ -978,7 +978,7 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKFD recv
 	return result;
 }
 
-bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
@@ -1035,6 +1035,14 @@ bool CTCPSocketManage::SendData(int index, const char* pData, size_t size, MsgCm
 }
 void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 {
+	if (!pListItem)
+	{
+		return;
+	}
+	if (pListItem->stDataHead.uSize == 0 || pListItem->pData == nullptr)
+	{
+		return;
+	}
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
@@ -1047,115 +1055,12 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 		// TCP服务器
 		HandleSendData(pListItem);
 	}
+
+	SafeDeleteArray(pListItem->pData);
+	SafeDelete(pListItem);
 }
 void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
 {
-//if (!IsConnected(index))
-//{
-//	ERROR_LOG("socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
-//	return false;
-//}
-
-//if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
-//{
-//	ERROR_LOG("invalid message size size=%d", size);
-//	return false;
-//}
-
-//unsigned int* payload_len_32_be;
-//unsigned short int* payload_len_short_be;
-//unsigned char finNopcode, payload_len_small;
-//unsigned int payload_offset = 2;
-//unsigned int frame_size;
-//int flags = WS_FRAGMENT_FIN | WS_BINARY_FRAME;
-
-//finNopcode = flags & 0xff;
-
-//int allLen = sizeof(NetMessageHead) + size;// PACKET_HEADER_SIZE;
-
-//if (allLen <= 125)
-//{
-//	frame_size = 2 + allLen;
-//	payload_len_small = allLen & 0xff;
-//}
-//else if (allLen > 125 && allLen <= 0xffff)
-//{
-//	frame_size = 4 + allLen;
-//	payload_len_small = 126;
-//	payload_offset += 2;
-//}
-//else if (allLen > 0xffff && allLen <= 0xfffffff0)
-//{
-//	frame_size = 10 + allLen;
-//	payload_len_small = 127;
-//	payload_offset += 8;
-//}
-//else {
-//	ERROR_LOG("web socket send to big size=%d", size);
-//	return false;
-//}
-
-
-//// 整合一下数据
-//char frame[frame_size];
-
-//// 填充websocket包头
-//payload_len_small &= 0x7f;
-//*frame = finNopcode;
-//*(frame + 1) = payload_len_small;
-//if (payload_len_small == 126) {
-//	allLen &= 0xffff;
-//	payload_len_short_be = (unsigned short*)((char*)frame + 2);
-//	*payload_len_short_be = htons(allLen);
-//}
-//if (payload_len_small == 127) {
-//	payload_len_32_be = (unsigned int*)((char*)frame + 2);
-//	*payload_len_32_be++ = 0;
-//	*payload_len_32_be = htonl(allLen);
-//}
-
-//// 拼接应用层包头
-//NetMessageHead* pHead = (NetMessageHead*)(frame + payload_offset);
-//pHead->uMainID = mainID;
-//pHead->uAssistantID = assistID;
-//pHead->uMessageSize = sizeof(NetMessageHead) + size;
-//pHead->uHandleCode = handleCode;
-//pHead->uIdentification = uIdentification;
-
-//// 应用层包体
-//if (pData && size > 0)
-//{
-//	memcpy(frame + sizeof(NetMessageHead) + payload_offset, pData, size);
-//}
-
-//// 数据加密
-//if (encrypted)
-//{
-//	Xor::Encrypt((uint8_t*)(frame + sizeof(NetMessageHead) + payload_offset), size);
-//}
-
-//// 投递到发送队列
-//if (m_pSendDataLine)
-//{
-//	SendDataLineHead lineHead;
-//	lineHead.socketIndex = index;
-//	lineHead.pBufferevent = pBufferevent;
-//	unsigned int addBytes = m_pSendDataLine->AddData(&lineHead.dataLineHead, sizeof(lineHead), 0, frame, frame_size);
-
-//	if (addBytes == 0)
-//	{
-//		ERROR_LOG("投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
-//		return false;
-//	}
-//}
-	if (!pListItem)
-	{
-		return;
-	}
-	if (pListItem->stDataHead.uSize == 0 || pListItem->pData == nullptr)
-	{
-		return;
-	}
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
 	int index = pSocketSend->socketIndex;
@@ -1171,6 +1076,65 @@ void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
 	{
 		return;
 	}
+	unsigned int* payload_len_32_be = nullptr;
+	unsigned short int* payload_len_short_be = nullptr;
+	unsigned char finNopcode{}, payload_len_small{};
+	unsigned int payload_offset = 2;
+	unsigned int frame_size = 0;
+	int flags = WS_FRAGMENT_FIN | WS_BINARY_FRAME;
+
+	finNopcode = flags & 0xff;
+
+	int allLen = sizeof(NetMessageHead) + size;// PACKET_HEADER_SIZE;
+	if (allLen <= 125)
+	{
+		frame_size = 2 + allLen;
+		payload_len_small = allLen & 0xff;
+	}
+	else if (allLen > 125 && allLen <= 0xffff)
+	{
+		frame_size = 4 + allLen;
+		payload_len_small = 126;
+		payload_offset += 2;
+	}
+	else if (allLen > 0xffff && allLen <= 0xfffffff0)
+	{
+		frame_size = 10 + allLen;
+		payload_len_small = 127;
+		payload_offset += 8;
+	}
+	else 
+	{
+		COUT_LOG(LOG_CERROR, "web socket send to big size=%d", size);
+		return;
+	}
+
+
+	// 整合一下数据
+	std::unique_ptr<char[]> recvBuf(new char[frame_size]);
+	char* frame = recvBuf.get();
+
+	// 填充websocket包头
+	payload_len_small &= 0x7f;
+	*frame = finNopcode;
+	*(frame + 1) = payload_len_small;
+	if (payload_len_small == 126) 
+	{
+		allLen &= 0xffff;
+		payload_len_short_be = (unsigned short*)((char*)frame + 2);
+		*payload_len_short_be = htons(allLen);
+	}
+	if (payload_len_small == 127) 
+	{
+		payload_len_32_be = (unsigned int*)((char*)frame + 2);
+		*payload_len_32_be++ = 0;
+		*payload_len_32_be = htonl(allLen);
+	}
+	// 应用层包体
+	if (pData && size > 0)
+	{
+		memcpy(frame + payload_offset, pData, size);
+	}
 	{
 		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
 		if (tcpInfo.isConnect && tcpInfo.bev)
@@ -1181,19 +1145,9 @@ void CTCPSocketManage::HandleSendWSData(ListItemData* pListItem)
 			}
 		}
 	}
-	SafeDeleteArray(pListItem->pData);
-	SafeDelete(pListItem);
 }
 void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 {
-	if (!pListItem)
-	{
-		return;
-	}
-	if (pListItem->stDataHead.uSize == 0 || pListItem->pData == nullptr)
-	{
-		return;
-	}
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
 	int index = pSocketSend->socketIndex;
@@ -1219,8 +1173,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 			}
 		}
 	}
-	SafeDeleteArray(pListItem->pData);
-	SafeDelete(pListItem);
 }
 void CTCPSocketManage::ThreadSendMsg()
 {
