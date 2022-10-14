@@ -406,4 +406,4 @@ struct WebSocketMsg
 		payload = nullptr;
 	}
 };
-#endif // __WebSocket__
+#endif

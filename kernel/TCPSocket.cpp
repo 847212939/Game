@@ -84,7 +84,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, ServiceType 
 		{
 			return false;
 		}
-#endif // __WebSocket__
+#endif
 	}
 
 	return true;
@@ -1214,7 +1214,7 @@ bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t siz
 
 	return true;
 }
-#endif // __WebSocket__
+#endif
 
 // 发送线程消息处理发送
 void CTCPSocketManage::ThreadSendMsg()
@@ -1400,7 +1400,7 @@ void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 	}
 	return;
 }
-#endif // __WebSocket__
+#endif
 
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
@@ -1626,7 +1626,7 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 
 	return true;
 }
-#endif // __WebSocket__
+#endif
 
 // 进行openssl握手
 #ifdef __WebSocketOpenssl__
@@ -1717,7 +1717,7 @@ bool CTCPSocketManage::WSSOpensslHandShark(int index)
 	
 	return true;
 }
-#endif // __WebSocket__
+#endif
 
 #ifdef __WebSocket__
 bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
@@ -1806,7 +1806,7 @@ bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 	
 	return true;
 }
-#endif // __WebSocket__
+#endif
 
 #ifdef __WebSocket__
 int CTCPSocketManage::WSFetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
@@ -1883,5 +1883,5 @@ void CTCPSocketManage::WSFetchPrint(const WebSocketMsg& wbmsg)
 	printf("WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
 }
-#endif // __WebSocket__
+#endif
 
