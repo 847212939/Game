@@ -23,7 +23,8 @@ public:
 	// 关闭连接函数
 	bool CloseSocket(int index);
 	// 发送数据函数
-	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, void* pBufferevent, unsigned int uIdentification = 0);
+	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 
@@ -68,7 +69,8 @@ private:
 	// 添加TCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	// 派发数据包
-	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, 
+		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 	//网络关闭处理
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
 
@@ -104,25 +106,33 @@ private:
 	// 对称加密测试连接
 	bool VerifyConnection(int index, char* data);
 
-	// 收到消息进行粘包处理
+private:
+	// 写入bufferevent_write
+	bool BuffereventWrite(int index, std::string& data);
+	// 写入bufferevent_write
+	bool BuffereventWrite(int index, void* data, unsigned int size);
+	// 发送TCP消息
+	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
-	// 收到消息进行粘包处理
+	// 处理收到消息进行粘包
 	bool RecvLogicData(bufferevent* bev, int index);
-
-	// 发送线程消息处理
+	// 处理发送线程消息
 	void HandleSendMsg(ListItemData* pListItem);
-	// 发送线程消息处理
+	// 处理发送线程消息
 	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
 private:
-	// 发送线程消息处理
+	// 发送WebSocket消息
+	bool SendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
+	// 处理发送线程消息
 	void HandleSendWSData(ListItemData* pListItem);
 	// 收到消息进行粘包处理
 	bool RecvWSLogicData(bufferevent* bev, int index);
 	//websocket的第一次握手
 	bool HandShark(bufferevent* bev, int index);
-
 	// websocket解析数据包函数
 	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
