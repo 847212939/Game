@@ -117,7 +117,6 @@ private:
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
 #ifdef __WebSocket__
-	// 发送WebSocket消息
 	bool WSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 #endif
@@ -127,7 +126,6 @@ private:
 	// 处理收到消息进行粘包
 	bool RecvLogicData(bufferevent* bev, int index);
 #ifdef __WebSocket__
-	// 收到消息进行粘包处理
 	bool WSRecvWSLogicData(bufferevent* bev, int index);
 #endif
 
@@ -136,29 +134,25 @@ private:
 	// 处理发送线程消息
 	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
-	// 处理发送线程消息
 	void WSHandleSendWSData(ListItemData * pListItem);
 #endif
 
 	// openssl 握手
 #ifdef __WebSocketOpenssl__
 private:
-	// opensslInit
 	bool WSSOpensslInit();
-	// 将连接付给SSL
 	SSL* WSSCreateSSL(evutil_socket_t& fd);
-	// 进行openssl握手
 	bool WSSOpensslHandShark(int index);
 #endif
 
-#ifdef __WebSocket__
 	// websocket的第一次握手
+#ifdef __WebSocket__
 	bool WSHandShark(bufferevent* bev, int index);
 #endif
 
+	// websocket解析数据包函数
 #ifdef __WebSocket__
 private:
-	// websocket解析数据包函数
 	static int WSFetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int WSFetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int WSFetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
