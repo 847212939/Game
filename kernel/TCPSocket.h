@@ -141,8 +141,6 @@ private:
 
 #ifdef __WebSocket__
 private:
-	// 加载证书
-	bool WSOpensslCert(std::string path);
 	// opensslInit
 	bool WSOpensslInit();
 	// 进行openssl握手
@@ -185,8 +183,6 @@ private:
 	std::vector<TCPSocketInfo>  m_socketInfoVec;
 	std::vector<WorkThreadInfo> m_workBaseVec;
 
-#ifdef __WebSocket__
 	SSL_CTX*	m_ctx;
 	X509*		m_cert;
-#endif // __WebSocket__
 };

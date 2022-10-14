@@ -26,6 +26,13 @@
 #define MAGIC_KEY "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" // websocket key
 #define WS_FRAGMENT_FIN (1 << 7)
 
+#pragma comment(lib,"libcrypto.lib")
+#pragma comment(lib,"libssl.lib")
+
+#define CA_CERT_FILE "server/ca.crt"
+#define SERVER_CERT_FILE "server/server.crt"
+#define SERVER_KEY_FILE "server/server.key"
+
 // Get Set mem
 #define GetSetMem(type,Name)\
 private:\

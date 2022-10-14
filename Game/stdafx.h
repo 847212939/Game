@@ -49,12 +49,10 @@
 #include <event2/event_struct.h>
 #include <mysql.h>
 #include <time.h>
-#ifdef __WebSocket__
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#endif // __WebSocket__
 
 // lua
 extern "C"

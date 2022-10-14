@@ -9,11 +9,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new())
-#ifdef __WebSocket__
-	,m_ctx(nullptr)
-	, m_cert(nullptr)
-#endif // __WebSocket__
+	m_eventBaseCfg(event_config_new()),
+	m_ctx(nullptr),
+	m_cert(nullptr)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -1606,29 +1604,6 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
-bool CTCPSocketManage::WSOpensslCert(std::string path)
-{
-	FILE* fp = fopen(path.c_str(), "r");
-	if (!fp) 
-	{
-		COUT_LOG(LOG_CERROR, "unable to open: %s", path.c_str());
-		return false;
-	}
-
-	X509* cert = PEM_read_X509(fp, NULL, NULL, NULL);
-	if (!cert) 
-	{
-		COUT_LOG(LOG_CERROR, "unable to parse certificate in: %s", path.c_str());
-		fclose(fp);
-		return false;
-	}
-
-	// any additional processing would go here..
-
-	X509_free(cert);
-	fclose(fp);
-	return true;
-}
 bool CTCPSocketManage::WSOpensslInit()
 {
 	SSL_library_init();//初始化库
@@ -1642,22 +1617,22 @@ bool CTCPSocketManage::WSOpensslInit()
 	}
 	SSL_CTX_set_verify(m_ctx, SSL_VERIFY_NONE, nullptr);//取消验证前端证书
 	// 设置信任根证书
-	if (SSL_CTX_load_verify_locations(m_ctx, "chain.crt", NULL) <= 0)
+	if (SSL_CTX_load_verify_locations(m_ctx, CA_CERT_FILE, NULL) <= 0)
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_load_verify_locations kill myself,%s", ERR_error_string(ERR_get_error(), NULL));
 		return false;
 	}
-	if (1 != SSL_CTX_use_certificate_file(m_ctx, m_cert.data(), SSL_FILETYPE_PEM))//加载证书
+	if (1 != SSL_CTX_use_certificate_file(m_ctx, SERVER_CERT_FILE, SSL_FILETYPE_PEM))//加载证书
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_file error");
 		return false;
 	}
-	if (1 != SSL_CTX_use_certificate_chain_file(m_ctx, m_cert.data()))//加载证书链
+	if (1 != SSL_CTX_use_certificate_chain_file(m_ctx, SERVER_CERT_FILE))//加载证书链
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_chain_file error");
 		return false;
 	}
-	if (1 != SSL_CTX_use_PrivateKey_file(m_ctx, m_key.data(), SSL_FILETYPE_PEM))//加载密钥
+	if (1 != SSL_CTX_use_PrivateKey_file(m_ctx, SERVER_KEY_FILE, SSL_FILETYPE_PEM))//加载密钥
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_use_PrivateKey_file error");
 		return false;
