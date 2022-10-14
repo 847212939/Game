@@ -123,7 +123,8 @@ void CGameLogManage::SetLogFileType(ServiceType serviceType)
 	}
 	std::string nameStr;
 	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC || 
-		serviceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		serviceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 		nameStr += "LogicServer";
 	}

@@ -55,7 +55,7 @@ CTCPSocketManage::~CTCPSocketManage()
 #endif
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip)
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
@@ -69,6 +69,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip)
 	}
 
 	m_port = port;
+	m_iServiceType = serverType;
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
 
@@ -76,12 +77,16 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip)
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
-#ifdef __WebSocket__
-	if (!WSOpensslInit())
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		return false;
-	}
+#ifdef __WebSocketOpenssl__
+		if (!WSSOpensslInit())
+		{
+			return false;
+		}
 #endif // __WebSocket__
+	}
+
 	return true;
 }
 bool CTCPSocketManage::Stop()
@@ -116,7 +121,7 @@ bool CTCPSocketManage::Stop()
 
 	return true;
 }
-bool CTCPSocketManage::Start(ServiceType serverType)
+bool CTCPSocketManage::Start()
 {
 	if (m_running == true)
 	{
@@ -127,7 +132,6 @@ bool CTCPSocketManage::Start(ServiceType serverType)
 	m_running = true;
 	m_uCurSocketSize = 0;
 	m_uCurSocketIndex = 0;
-	m_iServiceType = serverType;
 
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsg, this));
 	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAccept, this));
@@ -354,8 +358,9 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 
 	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC || 
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
@@ -393,7 +398,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	if (m_iServiceType != ServiceType::SERVICE_TYPE_LOGIC_WS)
+	if (m_iServiceType != ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
@@ -1042,7 +1048,13 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 #ifdef __WebSocket__
 		// websocket服务器
 		return WSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif // __WebSocket__
+#endif
+	}
+	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+		return true;
+#endif
 	}
 	else
 	{
@@ -1244,13 +1256,16 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
-		// websocket服务器
 		WSHandleSendWSData(pListItem);
-#endif // __WebSocket__
+#endif
+	}
+	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+#endif
 	}
 	else
 	{
-		// TCP服务器
 		HandleSendData(pListItem);
 	}
 
@@ -1393,16 +1408,19 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
-		// websocket服务器
 		if (!WSRecvWSLogicData(bev, index))
 		{
 			return false;
 		}
-#endif // __WebSocket__
+#endif
+	}
+	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+#endif
 	}
 	else
 	{
-		// TCP服务器
 		if (!RecvLogicData(bev, index))
 		{
 			return false;
@@ -1611,8 +1629,8 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 // 进行openssl握手
-#ifdef __WebSocket__
-SSL* CTCPSocketManage::WSCreateSSL(evutil_socket_t& fd)
+#ifdef __WebSocketOpenssl__
+SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t& fd)
 {
 	SSL* ssl = SSL_new(m_ctx);
 	if (!ssl)
@@ -1620,11 +1638,11 @@ SSL* CTCPSocketManage::WSCreateSSL(evutil_socket_t& fd)
 		return nullptr;
 	}
 
-	SSL_set_fd(ssl, fd);
+	SSL_set_fd(ssl, (int)fd);
 
 	return ssl;
 }
-bool CTCPSocketManage::WSOpensslInit()
+bool CTCPSocketManage::WSSOpensslInit()
 {
 	SSL_library_init();//初始化库
 	OpenSSL_add_all_algorithms();
@@ -1665,15 +1683,15 @@ bool CTCPSocketManage::WSOpensslInit()
 
 	return true;
 }
-bool CTCPSocketManage::WSOpensslHandShark(int index)
+bool CTCPSocketManage::WSSOpensslHandShark(int index)
 {
 	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
 	evutil_socket_t fd = bufferevent_getfd(tcpInfo.bev);
 
-	SSL* ssl = WSCreateSSL(fd);
+	SSL* ssl = WSSCreateSSL(fd);
 	if (!ssl)
 	{
-		COUT_LOG(LOG_CERROR, "WSCreateSSL error");
+		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");
 		return false;
 	}
 	tcpInfo.ssl = ssl;

@@ -15,9 +15,10 @@ public:
 	// 停止服务
 	bool Stop();
 	// 开始服务
-	bool Start(ServiceType serverType);
+	bool Start();
 	// 初始化
-	bool Init(int maxCount, int port, const char* ip = nullptr);
+	bool Init(int maxCount, int port, const char* ip = nullptr, 
+		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
 	// 关闭连接函数
@@ -140,14 +141,14 @@ private:
 #endif // __WebSocket__
 
 	// openssl 握手
-#ifdef __WebSocket__
+#ifdef __WebSocketOpenssl__
 private:
 	// opensslInit
-	bool WSOpensslInit();
+	bool WSSOpensslInit();
 	// 将连接付给SSL
-	SSL* WSCreateSSL(evutil_socket_t& fd);
+	SSL* WSSCreateSSL(evutil_socket_t& fd);
 	// 进行openssl握手
-	bool WSOpensslHandShark(int index);
+	bool WSSOpensslHandShark(int index);
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
