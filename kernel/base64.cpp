@@ -146,15 +146,24 @@ char* StrSHA256(const char* str, long long length, char* sha256)
 
 	for (i = 0; i < length; )
 	{
-		pp[i + 3 - 2 * (i % 4)] = str[i];
+		if (l > (i + 3 - 2 * (i % 4)))
+		{
+			pp[i + 3 - 2 * (i % 4)] = str[i];
+			i++;
+		}
+	}
+	if (l > (i + 3 - 2 * (i % 4)))
+	{
+		pp[i + 3 - 2 * (i % 4)] = (char)128;
 		i++;
 	}
-	pp[i + 3 - 2 * (i % 4)] = (char)128;
-	i++;
 	for (; i < l; )
 	{
-		pp[i + 3 - 2 * (i % 4)] = 0;
-		i++;
+		if (l > (i + 3 - 2 * (i % 4)))
+		{
+			pp[i + 3 - 2 * (i % 4)] = 0;
+			i++;
+		}
 	}
 
 	*((long*)(pp + l - 4)) = (long)(length << 3);
