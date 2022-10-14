@@ -10,6 +10,10 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new())
+#ifdef __WebSocket__
+	,m_ctx(nullptr)
+	, m_cert(nullptr)
+#endif // __WebSocket__
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -1602,6 +1606,70 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
+bool CTCPSocketManage::WSOpensslCert(std::string path)
+{
+	FILE* fp = fopen(path.c_str(), "r");
+	if (!fp) 
+	{
+		COUT_LOG(LOG_CERROR, "unable to open: %s", path.c_str());
+		return false;
+	}
+
+	X509* cert = PEM_read_X509(fp, NULL, NULL, NULL);
+	if (!cert) 
+	{
+		COUT_LOG(LOG_CERROR, "unable to parse certificate in: %s", path.c_str());
+		fclose(fp);
+		return false;
+	}
+
+	// any additional processing would go here..
+
+	X509_free(cert);
+	fclose(fp);
+	return true;
+}
+bool CTCPSocketManage::WSOpensslInit()
+{
+	SSL_library_init();//初始化库
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();//加载错误信息
+	m_ctx = SSL_CTX_new(SSLv23_method());//SSLv23_server_method or SSLv23_client_method 
+	if (nullptr == m_ctx)
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_new error");
+		return false;
+	}
+	SSL_CTX_set_verify(m_ctx, SSL_VERIFY_NONE, nullptr);//取消验证前端证书
+	// 设置信任根证书
+	if (SSL_CTX_load_verify_locations(m_ctx, "chain.crt", NULL) <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_load_verify_locations kill myself,%s", ERR_error_string(ERR_get_error(), NULL));
+		return false;
+	}
+	if (1 != SSL_CTX_use_certificate_file(m_ctx, m_cert.data(), SSL_FILETYPE_PEM))//加载证书
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_file error");
+		return false;
+	}
+	if (1 != SSL_CTX_use_certificate_chain_file(m_ctx, m_cert.data()))//加载证书链
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_chain_file error");
+		return false;
+	}
+	if (1 != SSL_CTX_use_PrivateKey_file(m_ctx, m_key.data(), SSL_FILETYPE_PEM))//加载密钥
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_use_PrivateKey_file error");
+		return false;
+	}
+	if (1 != SSL_CTX_check_private_key(m_ctx))//验证密钥
+	{
+		COUT_LOG(LOG_CERROR, "SSL_CTX_check_private_key error");
+		return false;
+	}
+
+	return true;
+}
 // 进行openssl握手
 bool CTCPSocketManage::WSOpensslHandShark(bufferevent* bev, int index)
 {

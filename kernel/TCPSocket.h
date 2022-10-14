@@ -140,6 +140,11 @@ private:
 #endif // __WebSocket__
 
 #ifdef __WebSocket__
+private:
+	// 加载证书
+	bool WSOpensslCert(std::string path);
+	// opensslInit
+	bool WSOpensslInit();
 	// 进行openssl握手
 	bool WSOpensslHandShark(bufferevent* bev, int index);
 #endif // __WebSocket__
@@ -162,20 +167,26 @@ private:
 #endif // __WebSocket__
 
 private:
-	unsigned short              m_port;
-	bool                        m_running;
-	char                        m_bindIP[48];
-	unsigned int                m_uMaxSocketSize;
-	unsigned int                m_uCurSocketSize;
-	unsigned int                m_uCurSocketIndex;
-	CDataLine*					m_pRecvDataLine;
-	CDataLine*					m_pSendDataLine;
-	event_config*				m_eventBaseCfg;
-	event_base*					m_listenerBase;
-	ServiceType                 m_iServiceType;
+	unsigned short	m_port;
+	bool			m_running;
+	char			m_bindIP[48];
+	unsigned int	m_uMaxSocketSize;
+	unsigned int	m_uCurSocketSize;
+	unsigned int	m_uCurSocketIndex;
+	CDataLine*		m_pRecvDataLine;
+	CDataLine*		m_pSendDataLine;
+	event_config*	m_eventBaseCfg;
+	event_base*		m_listenerBase;
+	ServiceType		m_iServiceType;
+
 	ConditionVariable           m_ConditionVariable;
 	std::set<unsigned int>      m_heartBeatSocketSet;
 	std::vector<std::thread*>   m_socketThread;
 	std::vector<TCPSocketInfo>  m_socketInfoVec;
 	std::vector<WorkThreadInfo> m_workBaseVec;
+
+#ifdef __WebSocket__
+	SSL_CTX*	m_ctx;
+	X509*		m_cert;
+#endif // __WebSocket__
 };
