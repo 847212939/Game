@@ -1640,6 +1640,9 @@ SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t& fd)
 
 	SSL_set_fd(ssl, (int)fd);
 
+	//设置为接受连接socket 并且和客户端开启ssl握手
+	SSL_set_accept_state(ssl);
+
 	return ssl;
 }
 bool CTCPSocketManage::WSSOpensslInit()
