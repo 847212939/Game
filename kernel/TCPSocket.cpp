@@ -572,7 +572,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	return true;
 }
 
-void TCPSocketInfo::Reset()
+void TCPSocketInfo::Reset(ServiceType& serviceType)
 {
 	// 和发送线程相关的锁
 	lock->lock();
@@ -582,8 +582,14 @@ void TCPSocketInfo::Reset()
 	bev = nullptr;
 	bHandleAccptMsg = false;
 	link = 0;
-	SSL_free(ssl);
-	ssl = nullptr;
+	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+		SSL_shutdown(ssl);
+		SSL_free(ssl);
+		ssl = nullptr;
+#endif
+	}
 
 	// 解锁发送线程
 	lock->unlock();
@@ -643,7 +649,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	}
 
 	// 和发送线程相关的锁
-	tcpInfo.Reset();
+	tcpInfo.Reset(m_iServiceType);
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
@@ -1053,7 +1059,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
-		return true;
+		return WSSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif
 	}
 	else
@@ -1215,6 +1221,13 @@ bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t siz
 	return true;
 }
 #endif
+#ifdef __WebSocketOpenssl__
+bool CTCPSocketManage::WSSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
+{
+	return true;
+}
+#endif
 
 // 发送线程消息处理发送
 void CTCPSocketManage::ThreadSendMsg()
@@ -1262,6 +1275,7 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
+		WSSHandleSendWSData(pListItem);
 #endif
 	}
 	else
@@ -1401,6 +1415,12 @@ void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 	return;
 }
 #endif
+#ifdef __WebSocketOpenssl__
+void CTCPSocketManage::WSSHandleSendWSData(ListItemData* pListItem)
+{
+
+}
+#endif
 
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
@@ -1417,6 +1437,10 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
+		if (!WSSRecvWSSLogicData(bev, index))
+		{
+			return false;
+		}
 #endif
 	}
 	else
@@ -1623,6 +1647,22 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 
 	// 删除buffer数据
 	evbuffer_drain(input, realAllSize - handleRemainSize);
+
+	return true;
+}
+#endif
+#ifdef __WebSocketOpenssl__
+bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
+{
+	if (bev == nullptr)
+	{
+		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		return false;
+	}
+	if (!m_socketInfoVec[index].bHandleAccptMsg)
+	{
+		return WSSOpensslHandShark(index);
+	}
 
 	return true;
 }

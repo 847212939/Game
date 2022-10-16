@@ -178,7 +178,7 @@ struct TCPSocketInfo
 	uint64_t		link;														//测试连接是否成功
 	SSL*			ssl;
 
-	void Reset();
+	void Reset(ServiceType& serviceType);
 
 	TCPSocketInfo() { memset(this, 0, sizeof(TCPSocketInfo)); }
 };

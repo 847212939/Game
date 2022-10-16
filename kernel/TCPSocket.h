@@ -120,6 +120,10 @@ private:
 	bool WSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 #endif
+#ifdef __WebSocketOpenssl__
+	bool WSSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
+#endif
 
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
@@ -128,6 +132,9 @@ private:
 #ifdef __WebSocket__
 	bool WSRecvWSLogicData(bufferevent* bev, int index);
 #endif
+#ifdef __WebSocketOpenssl__
+	bool WSSRecvWSSLogicData(bufferevent* bev, int index);
+#endif
 
 	// 处理发送线程消息
 	void HandleSendMsg(ListItemData* pListItem);
@@ -135,6 +142,9 @@ private:
 	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
 	void WSHandleSendWSData(ListItemData * pListItem);
+#endif
+#ifdef __WebSocketOpenssl__
+	void WSSHandleSendWSData(ListItemData* pListItem);
 #endif
 
 	// openssl 握手
