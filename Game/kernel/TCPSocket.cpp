@@ -1801,7 +1801,7 @@ bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 
 	std::istringstream s(recvBuf.get());
 	std::string request;
-	std::map<std::string, std::string> headMap;
+	MapStringString headMap;
 
 	std::getline(s, request);
 	if (request[request.size() - 1] == '\r')
