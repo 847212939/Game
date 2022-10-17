@@ -165,6 +165,7 @@
     <ClCompile Include="..\kernel\LogManager.cpp" />
     <ClCompile Include="..\kernel\MysqlHelper.cpp" />
     <ClCompile Include="..\kernel\Netmsg.cpp" />
+    <ClCompile Include="..\kernel\ServerTimer.cpp" />
     <ClCompile Include="..\kernel\sha1.cpp" />
     <ClCompile Include="..\kernel\TCPClient.cpp" />
     <ClCompile Include="..\kernel\TCPSocket.cpp" />
@@ -195,7 +196,6 @@
     <ClCompile Include="..\Player\PlayerPrepClient.cpp" />
     <ClCompile Include="..\Player\Scene.cpp" />
     <ClCompile Include="..\Player\SceneClient.cpp" />
-    <ClCompile Include="..\Player\ServerTimer.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -207,12 +207,14 @@
     <ClInclude Include="..\kernel\IDGen.h" />
     <ClInclude Include="..\kernel\Macro.h" />
     <ClInclude Include="..\kernel\Netmsg.h" />
+    <ClInclude Include="..\kernel\ServerTimer.h" />
     <ClInclude Include="..\kernel\sha1.h" />
     <ClInclude Include="..\kernel\Structural.h" />
     <ClInclude Include="..\kernel\LogManager.h" />
     <ClInclude Include="..\kernel\MysqlHelper.h" />
     <ClInclude Include="..\kernel\TCPClient.h" />
     <ClInclude Include="..\kernel\TCPSocket.h" />
+    <ClInclude Include="..\kernel\TimerCmd.h" />
     <ClInclude Include="..\kernel\Util.h" />
     <ClInclude Include="..\Logic\ActiveAlways.h" />
     <ClInclude Include="..\Logic\ActiveSection.h" />
@@ -241,8 +243,6 @@
     <ClInclude Include="..\Player\PlayerPrepClient.h" />
     <ClInclude Include="..\Player\Scene.h" />
     <ClInclude Include="..\Player\SceneClient.h" />
-    <ClInclude Include="..\Player\ServerTimer.h" />
-    <ClInclude Include="..\Player\TimerCmd.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

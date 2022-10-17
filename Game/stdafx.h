@@ -67,7 +67,7 @@ extern "C"
 #include "../kernel/Macro.h"				// 宏
 #include "../Player/MessageCmd.h"			// 玩家消息定义
 #include "../Player/AttrsCmd.h"				// 玩家属性
-#include "../Player/TimerCmd.h"				// 定时器
+#include "../kernel/TimerCmd.h"				// 定时器
 #include "../kernel/Structural.h"			// 结构
 #include "../kernel/IDGen.h"				// 唯一ID
 #include "../kernel/Alias.h"				// 别名
@@ -103,7 +103,7 @@ extern "C"
 #include "../Logic/ActivityHallSys.h"		// 活动系统
 #include "../Player/Scene.h"				// 场景
 #include "../Player/SceneClient.h"			// 场景
-#include "../Player/ServerTimer.h"			// 定时器
+#include "../kernel/ServerTimer.h"			// 定时器
 
 #include "../Logic/LoginSys.h"				// 登录系统
 #include "../Player/PlayerPrep.h"			// 信息在注册
