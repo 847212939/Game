@@ -1,0 +1,134 @@
+$#include "../stdafx.h"
+
+class ConfigMgr
+{ 
+public:
+	ConfigMgr();
+	~ConfigMgr();
+
+public:
+	// 日志打印
+	void CoutLog(int level, const char* log);
+
+public:
+	// 基础配置
+	void ReadLogicCfg(CLogicCfg* config);
+	void ReadDbCfg(CDbCfg* config);
+	void ReadThreadCntCfg(int cnt);
+	void ReadServerIDCfg(int id);
+	void ReadLogPrintTmCfg(int tm);
+	void ReadMaxSocketCntCfg(int cnt);
+	void ReadExitCfg(std::string exit);
+	void ReadTimerCntCfg(int cnt);
+	void ReadKeyCfg(std::string key);
+	void ReadOpenServerTime(std::string servertm);
+
+public:
+	// 活动
+	void ReadActivityList(CActivityList* config);
+	void ReadBrushMonsterCfg(CBrushMonsterCfg* config);
+	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
+
+public:
+	// 技能
+	void ReadHeroList(CHeroList* config);
+	void ReadSkillIdList(CSkillIdList* config);
+
+};
+
+enum LogLevel
+{
+	LOG_INFO = 0,							//info
+	LOG_WARN,								//warnning
+	LOG_ERROR,								//error
+	LOG_CINFO,								//info Console tip
+	LOG_CERROR,								//error Console
+	LOG_ERROR_SYS,							//error system
+	LOG_END,
+};
+
+struct CLogicCfg
+{
+	std::string ip;
+	int port;
+
+	CLogicCfg();
+	~CLogicCfg();
+};
+
+struct CDbCfg
+{
+	std::string ip;
+	std::string user;
+	std::string passwd;
+	std::string database;
+	int port;
+
+	CDbCfg();
+	~CDbCfg();
+};
+
+struct CActivityList
+{
+	int id;
+	int type;
+	int sid;
+	int activityBreakdown;
+	CActivityList();
+	~CActivityList();
+	void AddBeginTime(int tm);
+	void AddEndTime(int tm);
+	void AddSolidTime(int tm);
+	void AddOpenServerTime(int tm);
+};
+
+struct CActivityBreakdown
+{
+	int id;
+	int dayBreakdown;
+	int hourBreakdown;
+	CActivityBreakdown();
+	~CActivityBreakdown();
+	void AddDayBreakdownList(int idex, int tm);
+	void AddHourBreakdownList(int idex, int tm);
+};
+
+struct CBrushMonsterCfg
+{
+	int id;
+	int sid;
+	int mid;
+	int count;
+	int delayTime;
+	int refreshTime;
+	int x;
+	int y;
+	CBrushMonsterCfg();
+	~CBrushMonsterCfg();
+};
+
+struct CHeroList
+{
+	int heroId;
+	int heroType;
+	std::string heroName;
+	void AddskillId(int skillid);
+
+	CHeroList();
+	~CHeroList();
+};
+
+struct CSkillIdList
+{
+	int skillId;
+	int skillType;
+	int skillCd;
+	int skillEffect;
+	int skillEffectCd;
+	int minSkillCd;
+	int minSkillEffect;
+	MapAttrsCmdInt attrs;
+	void AddAttrs(int id, int value);
+	CSkillIdList();
+	~CSkillIdList();
+};

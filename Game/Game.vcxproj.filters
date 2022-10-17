@@ -88,9 +88,6 @@
     <Filter Include="逻辑管理\活动系统\区间活动">
       <UniqueIdentifier>{90e037ad-0ab2-492a-bf9f-9b7e4c642425}</UniqueIdentifier>
     </Filter>
-    <Filter Include="逻辑管理\活动系统\全天活动">
-      <UniqueIdentifier>{ddc52368-b160-4e91-aac6-42c68bf02e8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="逻辑管理\活动系统\开服活动">
       <UniqueIdentifier>{8220c779-6925-4e96-ab99-70e7f69b0956}</UniqueIdentifier>
     </Filter>
@@ -119,277 +116,280 @@
     <Filter Include="网络管理\公共定义">
       <UniqueIdentifier>{1630a828-2396-497f-b953-c7e6f09bf055}</UniqueIdentifier>
     </Filter>
+    <Filter Include="逻辑管理\活动系统\全天活动">
+      <UniqueIdentifier>{c9e18bd9-bcd2-4bfa-b6ab-c2c1411d5576}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>系统入口</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logic\LoginSys.cpp">
-      <Filter>逻辑管理\登录系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\MoveSys.cpp">
-      <Filter>逻辑管理\移动系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Lua\LuaMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Lua\BaseCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Lua\ConfigMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Lua\LuaCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActivityHallCfg.cpp">
-      <Filter>逻辑管理\活动系统\活动大厅</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActivityHallSys.cpp">
-      <Filter>逻辑管理\活动系统\活动大厅</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActiveSection.cpp">
-      <Filter>逻辑管理\活动系统\区间活动</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActiveAlways.cpp">
-      <Filter>逻辑管理\活动系统\全天活动</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActiveService.cpp">
-      <Filter>逻辑管理\活动系统\开服活动</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\ActiveTime.cpp">
-      <Filter>逻辑管理\活动系统\定点活动</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\SkillCfg.cpp">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\SkillSys.cpp">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\SkillLvSys.cpp">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\TCPClient.cpp">
-      <Filter>网络管理\网络处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\TCPSocket.cpp">
-      <Filter>网络管理\网络处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\LogManager.cpp">
-      <Filter>网络管理\日志管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\MysqlHelper.cpp">
-      <Filter>网络管理\数据管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\Netmsg.cpp">
-      <Filter>网络管理\消息解析</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Scene.cpp">
-      <Filter>玩家管理\逻辑基类\场景管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\Player.cpp">
-      <Filter>玩家管理\逻辑基类\玩家管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenter.cpp">
-      <Filter>玩家管理\逻辑基类\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPrep.cpp">
-      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\Monster.cpp">
-      <Filter>玩家管理\逻辑基类\怪物管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\Animal.cpp">
-      <Filter>玩家管理\逻辑基类\动物管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\SceneClient.cpp">
-      <Filter>玩家管理\逻辑派生\场景管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerPrepClient.cpp">
-      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerClient.cpp">
-      <Filter>玩家管理\逻辑派生\玩家管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Player\PlayerCenterClient.cpp">
-      <Filter>玩家管理\逻辑派生\玩家中心</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Logic\MonsterClient.cpp">
-      <Filter>玩家管理\逻辑派生\怪物管理</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kernel\DataLine.cpp">
-      <Filter>网络管理\消息队列</Filter>
-    </ClCompile>
     <ClCompile Include="table.cpp">
       <Filter>系统入口</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\Util.cpp">
+    <ClCompile Include="kernel\Netmsg.cpp">
+      <Filter>网络管理\消息解析</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\DataLine.cpp">
+      <Filter>网络管理\消息队列</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\TCPClient.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\TCPSocket.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\MysqlHelper.cpp">
+      <Filter>网络管理\数据管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\LogManager.cpp">
+      <Filter>网络管理\日志管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\base64.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\base64.cpp">
+    <ClCompile Include="kernel\IDGen.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\IDGen.cpp">
+    <ClCompile Include="kernel\sha1.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\sha1.cpp">
+    <ClCompile Include="kernel\Util.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>
-    <ClCompile Include="..\kernel\ServerTimer.cpp">
+    <ClCompile Include="kernel\ServerTimer.cpp">
       <Filter>网络管理\定时管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerCenterClient.cpp">
+      <Filter>玩家管理\逻辑派生\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerPrepClient.cpp">
+      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerClient.cpp">
+      <Filter>玩家管理\逻辑派生\玩家管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\MonsterClient.cpp">
+      <Filter>玩家管理\逻辑派生\怪物管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\SceneClient.cpp">
+      <Filter>玩家管理\逻辑派生\场景管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Scene.cpp">
+      <Filter>玩家管理\逻辑基类\场景管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Animal.cpp">
+      <Filter>玩家管理\逻辑基类\动物管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Monster.cpp">
+      <Filter>玩家管理\逻辑基类\怪物管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>玩家管理\逻辑基类\玩家管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerPrep.cpp">
+      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerCenter.cpp">
+      <Filter>玩家管理\逻辑基类\玩家中心</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\BaseCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ConfigMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\LoginSys.cpp">
+      <Filter>逻辑管理\登录系统</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActiveTime.cpp">
+      <Filter>逻辑管理\活动系统\定点活动</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActivityHallCfg.cpp">
+      <Filter>逻辑管理\活动系统\活动大厅</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActivityHallSys.cpp">
+      <Filter>逻辑管理\活动系统\活动大厅</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActiveService.cpp">
+      <Filter>逻辑管理\活动系统\开服活动</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActiveSection.cpp">
+      <Filter>逻辑管理\活动系统\区间活动</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\SkillCfg.cpp">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\SkillLvSys.cpp">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\SkillSys.cpp">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\MoveSys.cpp">
+      <Filter>逻辑管理\移动系统</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\ActiveAlways.cpp">
+      <Filter>逻辑管理\活动系统\全天活动</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Logic\LoginSys.h">
-      <Filter>逻辑管理\登录系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\MoveSys.h">
-      <Filter>逻辑管理\移动系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Lua\LuaMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Lua\BaseCfgMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Lua\ConfigMgr.h">
-      <Filter>配置管理\配置管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActivityHallCfg.h">
-      <Filter>逻辑管理\活动系统\活动大厅</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActivityHallSys.h">
-      <Filter>逻辑管理\活动系统\活动大厅</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActiveSection.h">
-      <Filter>逻辑管理\活动系统\区间活动</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActiveAlways.h">
-      <Filter>逻辑管理\活动系统\全天活动</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActiveService.h">
-      <Filter>逻辑管理\活动系统\开服活动</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\ActiveTime.h">
-      <Filter>逻辑管理\活动系统\定点活动</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\SkillCfg.h">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\SkillSys.h">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\SkillLvSys.h">
-      <Filter>逻辑管理\技能系统</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\TCPClient.h">
-      <Filter>网络管理\网络处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\TCPSocket.h">
-      <Filter>网络管理\网络处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\ConditionVariable.h">
-      <Filter>网络管理\条件变量</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\LogManager.h">
-      <Filter>网络管理\日志管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\MysqlHelper.h">
-      <Filter>网络管理\数据管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Netmsg.h">
-      <Filter>网络管理\消息解析</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Scene.h">
-      <Filter>玩家管理\逻辑基类\场景管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\Player.h">
-      <Filter>玩家管理\逻辑基类\玩家管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenter.h">
-      <Filter>玩家管理\逻辑基类\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrep.h">
-      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\Monster.h">
-      <Filter>玩家管理\逻辑基类\怪物管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\Animal.h">
-      <Filter>玩家管理\逻辑基类\动物管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\SceneClient.h">
-      <Filter>玩家管理\逻辑派生\场景管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerPrepClient.h">
-      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerClient.h">
-      <Filter>玩家管理\逻辑派生\玩家管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\PlayerCenterClient.h">
-      <Filter>玩家管理\逻辑派生\玩家中心</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Logic\MonsterClient.h">
-      <Filter>玩家管理\逻辑派生\怪物管理</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\DataLine.h">
-      <Filter>网络管理\消息队列</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Alias.h">
-      <Filter>网络管理\公共定义</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Macro.h">
-      <Filter>网络管理\公共定义</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kernel\Structural.h">
-      <Filter>网络管理\公共定义</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\AttrsCmd.h">
-      <Filter>网络管理\公共定义</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Player\MessageCmd.h">
-      <Filter>网络管理\公共定义</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>系统入口</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\Util.h">
-      <Filter>网络管理\工具管理</Filter>
+    <ClInclude Include="kernel\Netmsg.h">
+      <Filter>网络管理\消息解析</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\base64.h">
-      <Filter>网络管理\工具管理</Filter>
+    <ClInclude Include="kernel\DataLine.h">
+      <Filter>网络管理\消息队列</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\IDGen.h">
-      <Filter>网络管理\工具管理</Filter>
+    <ClInclude Include="kernel\TCPClient.h">
+      <Filter>网络管理\网络处理</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\sha1.h">
-      <Filter>网络管理\工具管理</Filter>
+    <ClInclude Include="kernel\TCPSocket.h">
+      <Filter>网络管理\网络处理</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\TimerCmd.h">
+    <ClInclude Include="kernel\ConditionVariable.h">
+      <Filter>网络管理\条件变量</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\MysqlHelper.h">
+      <Filter>网络管理\数据管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\LogManager.h">
+      <Filter>网络管理\日志管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\TimerCmd.h">
       <Filter>网络管理\公共定义</Filter>
     </ClInclude>
-    <ClInclude Include="..\kernel\ServerTimer.h">
+    <ClInclude Include="kernel\Structural.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Macro.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Alias.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\AttrsCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\MessageCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\base64.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IDGen.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\sha1.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Util.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\ServerTimer.h">
       <Filter>网络管理\定时管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerCenterClient.h">
+      <Filter>玩家管理\逻辑派生\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerPrepClient.h">
+      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerClient.h">
+      <Filter>玩家管理\逻辑派生\玩家管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\MonsterClient.h">
+      <Filter>玩家管理\逻辑派生\怪物管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\SceneClient.h">
+      <Filter>玩家管理\逻辑派生\场景管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Scene.h">
+      <Filter>玩家管理\逻辑基类\场景管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Animal.h">
+      <Filter>玩家管理\逻辑基类\动物管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Monster.h">
+      <Filter>玩家管理\逻辑基类\怪物管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>玩家管理\逻辑基类\玩家管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerPrep.h">
+      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerCenter.h">
+      <Filter>玩家管理\逻辑基类\玩家中心</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\BaseCfgMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ConfigMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\LuaMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\LoginSys.h">
+      <Filter>逻辑管理\登录系统</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActiveTime.h">
+      <Filter>逻辑管理\活动系统\定点活动</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActivityHallCfg.h">
+      <Filter>逻辑管理\活动系统\活动大厅</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActivityHallSys.h">
+      <Filter>逻辑管理\活动系统\活动大厅</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActiveService.h">
+      <Filter>逻辑管理\活动系统\开服活动</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActiveSection.h">
+      <Filter>逻辑管理\活动系统\区间活动</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\SkillCfg.h">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\SkillLvSys.h">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\SkillSys.h">
+      <Filter>逻辑管理\技能系统</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\MoveSys.h">
+      <Filter>逻辑管理\移动系统</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\ActiveAlways.h">
+      <Filter>逻辑管理\活动系统\全天活动</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\Config\BaseCfg.lua">
-      <Filter>配置管理\配置文件</Filter>
-    </None>
-    <None Include="..\Lua\Config.pkg">
+    <None Include="Lua\LoadScript.lua">
       <Filter>配置管理\配置脚本</Filter>
     </None>
-    <None Include="..\Lua\LoadScript.lua">
+    <None Include="Lua\Config.pkg">
       <Filter>配置管理\配置脚本</Filter>
     </None>
-    <None Include="..\Data\Config\ActivityCfg.lua">
+    <None Include="Data\Config\ActivityCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
-    <None Include="..\Data\Config\SkillCfg.lua">
+    <None Include="Data\Config\BaseCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
-    <None Include="..\Data\Config\Monster.lua">
+    <None Include="Data\Config\Monster.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="Data\Config\SkillCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
   </ItemGroup>
