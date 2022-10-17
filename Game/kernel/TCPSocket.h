@@ -49,7 +49,7 @@ public:
 	// 获取socketSet
 	void GetSocketSet(std::vector<unsigned int>& vec);
 	// 获取TCPSocketInfo
-	const TCPSocketInfo* GetTCPSocketInfo(int index);
+	TCPSocketInfo* GetTCPSocketInfo(int index);
 	// 获取socketVector
 	const std::vector<TCPSocketInfo>& GetSocketVector();
 	// 获取连接ip

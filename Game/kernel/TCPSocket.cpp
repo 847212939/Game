@@ -508,17 +508,21 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	{
 		return false;
 	}
-	auto& tcpInfo = m_socketInfoVec[index];
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		return false;
+	}
 	Util::Decrypt((char*)str.c_str(), str.size());
-	if (std::to_string(tcpInfo.link) != str)
+	if (std::to_string(tcpInfo->link) != str)
 	{
 		return false;
 	}
 	
-	tcpInfo.link = (uint64_t)MsgCmd::MsgCmd_Testlink;
+	tcpInfo->link = (uint64_t)MsgCmd::MsgCmd_Testlink;
 
 	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
-		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, tcpInfo->bev);
 
 	return true;
 }
@@ -611,7 +615,8 @@ bool CTCPSocketManage::CloseSocket(int index)
 }
 void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/* = false*/)
 {
-	if (index < 0 || index >= m_socketInfoVec.size())
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
 	{
 		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
 		return;
@@ -622,48 +627,46 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
 
-	auto& tcpInfo = m_socketInfoVec[index];
-
 	// 重复调用
-	if (!tcpInfo.isConnect)
+	if (!tcpInfo->isConnect)
 	{
 		return;
 	}
 
 	// 如果锁没有分配内存，就分配
-	if (!tcpInfo.lock)
+	if (!tcpInfo->lock)
 	{
-		tcpInfo.lock = new std::mutex;
+		tcpInfo->lock = new std::mutex;
 	}
 
-	uAccessIP = inet_addr(tcpInfo.ip);
+	uAccessIP = inet_addr(tcpInfo->ip);
 	m_uCurSocketSize--;
 	m_heartBeatSocketSet.erase((unsigned int)index);
 
 	// 释放参数内存
 	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
-	bufferevent_getcb(tcpInfo.bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
+	bufferevent_getcb(tcpInfo->bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
 	if (pRecvThreadParam)
 	{
 		SafeDelete(pRecvThreadParam);
 	}
 
 	// 和发送线程相关的锁
-	tcpInfo.Reset(m_iServiceType);
+	tcpInfo->Reset(m_iServiceType);
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
 
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
-	closesocket(tcpInfo.acceptFd);
+	closesocket(tcpInfo->acceptFd);
 
-	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo.acceptMsgTime);
+	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime);
 
 	// 清理登录内存
 	DPPC->GetLoginSys().DelLoginInMap(index);
 
 	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
-		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, isClientAutoClose, tcpInfo.acceptMsgTime);
+		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 }
 
 CDataLine* CTCPSocketManage::GetRecvDataLine()
@@ -695,14 +698,15 @@ const std::vector<TCPSocketInfo>& CTCPSocketManage::GetSocketVector()
 }
 const char* CTCPSocketManage::GetSocketIP(int index)
 {
-	if (index < 0 || index >= m_socketInfoVec.size())
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
 	{
 		return nullptr;
 	}
 
-	return m_socketInfoVec[index].ip;
+	return tcpInfo->ip;
 }
-const TCPSocketInfo* CTCPSocketManage::GetTCPSocketInfo(int index)
+TCPSocketInfo* CTCPSocketManage::GetTCPSocketInfo(int index)
 {
 	if (index < 0 || index >= m_socketInfoVec.size())
 	{
@@ -734,12 +738,12 @@ std::vector<std::thread*>& CTCPSocketManage::GetSockeThreadVec()
 
 bool CTCPSocketManage::IsConnected(int index)
 {
-	if (index < 0 || index >= m_socketInfoVec.size())
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
 	{
 		return false;
 	}
-
-	return m_socketInfoVec[index].isConnect;
+	return tcpInfo->isConnect;
 }
 // 分配索引算法
 int CTCPSocketManage::GetSocketIndex()
@@ -1007,18 +1011,23 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKFD recv
 bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size)
 {
 	//发送数据
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	if (!tcpInfo.lock)
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		return false;
+	}
+	if (!tcpInfo->lock)
 	{
 		return false;
 	}
 	{
-		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (tcpInfo.isConnect && tcpInfo.bev)
+		std::lock_guard<std::mutex> guard(*tcpInfo->lock);
+		if (tcpInfo->isConnect && tcpInfo->bev)
 		{
-			if (bufferevent_write(tcpInfo.bev, data, size) < 0)
+			if (bufferevent_write(tcpInfo->bev, data, size) < 0)
 			{
-				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 			}
 		}
 	}
@@ -1028,18 +1037,23 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 bool CTCPSocketManage::BuffereventWrite(int index, std::string& data)
 {
 	//发送数据
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	if (!tcpInfo.lock)
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		return false;
+	}
+	if (!tcpInfo->lock)
 	{
 		return false;
 	}
 	{
-		std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-		if (tcpInfo.isConnect && tcpInfo.bev)
+		std::lock_guard<std::mutex> guard(*tcpInfo->lock);
+		if (tcpInfo->isConnect && tcpInfo->bev)
 		{
-			if (bufferevent_write(tcpInfo.bev, data.c_str(), data.size()) < 0)
+			if (bufferevent_write(tcpInfo->bev, data.c_str(), data.size()) < 0)
 			{
-				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 			}
 		}
 	}
@@ -1293,11 +1307,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	int index = pSocketSend->socketIndex;
 	void* pData = pListItem->pData + sizeof(SendDataLineHead);
 
-	if (index < 0 || index >= m_socketInfoVec.size())
-	{
-		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
-		return;
-	}
 	if (!BuffereventWrite(index, pData, size))
 	{
 		return;
@@ -1311,37 +1320,37 @@ void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 	int index = pSocketSend->socketIndex;
 	void* pData = pListItem->pData + sizeof(SendDataLineHead);
 
-	if (index < 0 || index >= m_socketInfoVec.size())
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "发送数据失败，index=%d 超出范围", index);
+		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
 		return;
 	}
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
 	// websocket 握手
-	if (!tcpInfo.bHandleAccptMsg)
+	if (!tcpInfo->bHandleAccptMsg)
 	{
 		//发送数据
-		if (!tcpInfo.lock)
+		if (!tcpInfo->lock)
 		{
 			return;
 		}
 		{
-			std::lock_guard<std::mutex> guard(*tcpInfo.lock);
-			if (tcpInfo.isConnect && tcpInfo.bev)
+			std::lock_guard<std::mutex> guard(*tcpInfo->lock);
+			if (tcpInfo->isConnect && tcpInfo->bev)
 			{
-				if (bufferevent_write(tcpInfo.bev, pData, size) < 0)
+				if (bufferevent_write(tcpInfo->bev, pData, size) < 0)
 				{
-					COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo.acceptFd, tcpInfo.bev);
+					COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 				}
 				// 标记已经处理握手
-				tcpInfo.bHandleAccptMsg = true;
+				tcpInfo->bHandleAccptMsg = true;
 			}
 		}
-		if (tcpInfo.bHandleAccptMsg)
+		if (tcpInfo->bHandleAccptMsg)
 		{
 			// websocket服务器 握手成功 验证客户端
-			Netmsg msg; msg << tcpInfo.link;
-			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+			Netmsg msg; msg << tcpInfo->link;
+			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo->bev);
 		}
 		return;
 	}
@@ -1534,7 +1543,13 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
 		return false;
 	}
-	if (!m_socketInfoVec[index].bHandleAccptMsg)
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		return false;
+	}
+	if (!tcpInfo->bHandleAccptMsg)
 	{
 		return WSHandShark(bev, index);
 	}
@@ -1728,10 +1743,15 @@ bool CTCPSocketManage::WSSOpensslInit()
 }
 bool CTCPSocketManage::WSSOpensslHandShark(int index)
 {
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	evutil_socket_t fd = bufferevent_getfd(tcpInfo.bev);
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		return false;
+	}
+	evutil_socket_t fd = bufferevent_getfd(tcpInfo->bev);
 
-	tcpInfo.bHandleAccptMsg = true;
+	tcpInfo->bHandleAccptMsg = true;
 
 	SSL* ssl = WSSCreateSSL(fd);
 	if (!ssl)
@@ -1739,7 +1759,7 @@ bool CTCPSocketManage::WSSOpensslHandShark(int index)
 		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");
 		return false;
 	}
-	tcpInfo.ssl = ssl;
+	tcpInfo->ssl = ssl;
 	int nRet = SSL_do_handshake(ssl);
 	if (nRet != 1)
 	{
@@ -1751,7 +1771,7 @@ bool CTCPSocketManage::WSSOpensslHandShark(int index)
 		}
 
 		COUT_LOG(LOG_CERROR, "SSL_do_handshake error port=%u ip=%s ret=%d err=%d", 
-			tcpInfo.ip, tcpInfo.port, nRet, nErr);
+			tcpInfo->ip, tcpInfo->port, nRet, nErr);
 
 		// 握手失败的话直接断开链接
 		CloseSocket(index);
@@ -1844,10 +1864,13 @@ bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 
 	std::string requestSendStr = requestSend;
 
-	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
-	//发送数据
-	SendMsg(index, requestSendStr.c_str(), requestSendStr.size(), 
-		MsgCmd::MsgCmd_HandShark, 0, 0, tcpInfo.bev, 0, tcpInfo.bHandleAccptMsg);
+	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+	if (tcpInfo)
+	{
+		//发送数据
+		SendMsg(index, requestSendStr.c_str(), requestSendStr.size(),
+			MsgCmd::MsgCmd_HandShark, 0, 0, tcpInfo->bev, 0, tcpInfo->bHandleAccptMsg);
+	}
 	
 	return true;
 }
