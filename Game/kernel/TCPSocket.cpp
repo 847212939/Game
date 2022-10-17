@@ -1731,6 +1731,8 @@ bool CTCPSocketManage::WSSOpensslHandShark(int index)
 	TCPSocketInfo& tcpInfo = m_socketInfoVec[index];
 	evutil_socket_t fd = bufferevent_getfd(tcpInfo.bev);
 
+	tcpInfo.bHandleAccptMsg = true;
+
 	SSL* ssl = WSSCreateSSL(fd);
 	if (!ssl)
 	{
