@@ -1692,7 +1692,7 @@ bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
 
 // 进行openssl握手
 #ifdef __WebSocketOpenssl__
-SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t& fd)
+SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t fd)
 {
 	SSL* ssl = SSL_new(m_ctx);
 	if (!ssl)
@@ -1756,11 +1756,10 @@ bool CTCPSocketManage::WSSOpensslHandShark(int index)
 		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
 		return false;
 	}
-	evutil_socket_t fd = bufferevent_getfd(tcpInfo->bev);
 
 	tcpInfo->bHandleAccptMsg = true;
 
-	SSL* ssl = WSSCreateSSL(fd);
+	SSL* ssl = WSSCreateSSL((evutil_socket_t)(tcpInfo->acceptFd));
 	if (!ssl)
 	{
 		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");

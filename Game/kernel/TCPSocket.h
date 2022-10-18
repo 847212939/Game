@@ -151,7 +151,7 @@ private:
 #ifdef __WebSocketOpenssl__
 private:
 	bool WSSOpensslInit();
-	SSL* WSSCreateSSL(evutil_socket_t& fd);
+	SSL* WSSCreateSSL(evutil_socket_t fd);
 	bool WSSOpensslHandShark(int index);
 #endif
 
