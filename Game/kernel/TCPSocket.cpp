@@ -398,8 +398,15 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	if (m_iServiceType != ServiceType::SERVICE_TYPE_LOGIC_WS ||
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	{
+		return;
+	}
+	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		return;
+	}
+	else
 	{
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
