@@ -1265,7 +1265,7 @@ bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t siz
 bool CTCPSocketManage::WSSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
-	return true;
+	return WSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
 }
 #endif
 
@@ -1453,7 +1453,7 @@ void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 #ifdef __WebSocketOpenssl__
 void CTCPSocketManage::WSSHandleSendWSData(ListItemData* pListItem)
 {
-
+	WSHandleSendWSData(pListItem);
 }
 #endif
 
@@ -1695,17 +1695,7 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 #ifdef __WebSocketOpenssl__
 bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
 {
-	if (bev == nullptr)
-	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
-		return false;
-	}
-	if (!m_socketInfoVec[index].bHandleAccptMsg)
-	{
-		return WSSOpensslHandShark(index);
-	}
-
-	return true;
+	return WSRecvWSLogicData(bev, index);
 }
 #endif
 
