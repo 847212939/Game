@@ -320,7 +320,9 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
 	SOCKFD fd = pTCPSocketInfo->acceptFd;
+#ifdef __WebSocketOpenssl__
 	SSL* ssl = nullptr;
+#endif
 
 	// 分配索引算法
 	int index = GetSocketIndex();
@@ -332,6 +334,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
+#ifdef __WebSocketOpenssl__
 		ssl = SSL_new(m_ctx);
 		if (!ssl)
 		{
@@ -340,6 +343,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		}
 		// 不知道我的版本为啥不支持bufferevent_openssl_socket_new
 		//bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE | BEV_OPT_DEFER_CALLBACKS);
+#endif
 	}
 	else
 	{
@@ -418,11 +422,13 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
+#ifdef __WebSocketOpenssl__
 		TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
 		if (tcpInfo1)
 		{
 			tcpInfo1->ssl = ssl;
 		}
+#endif
 		return;
 	}
 	else
