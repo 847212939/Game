@@ -320,6 +320,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
 	SOCKFD fd = pTCPSocketInfo->acceptFd;
+	SSL* ssl = nullptr;
 
 	// ·ÖÅäË÷ÒýËã·¨
 	int index = GetSocketIndex();
@@ -329,8 +330,20 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		closesocket(fd);
 		return;
 	}
-
-	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		ssl = SSL_new(m_ctx);
+		if (!ssl)
+		{
+			COUT_LOG(LOG_CERROR, "SSL* ssl = SSL_new(m_ctx)");
+			return;
+		}
+		//bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE | BEV_OPT_DEFER_CALLBACKS);
+	}
+	else
+	{
+		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	}
 	if (!bev)
 	{
 		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
@@ -404,6 +417,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
+		tcpInfo.ssl = ssl;
 		return;
 	}
 	else

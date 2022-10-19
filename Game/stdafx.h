@@ -54,6 +54,7 @@
 #include <openssl/err.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
+#include <event2/bufferevent_ssl.h>
 
 // lua
 extern "C"
