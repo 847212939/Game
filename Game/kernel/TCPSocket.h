@@ -65,17 +65,6 @@ private:
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
-	// 分配socketIndex算法
-	int GetSocketIndex();
-	// 添加TCPSocketInfo
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
-	// 派发数据包
-	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, 
-		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
-	//网络关闭处理
-	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
-
-private:
 	// 线程函数
 	// SOCKET 连接应答线程
 	void ThreadAccept();
@@ -96,6 +85,17 @@ private:
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
 	// 新的连接到来，ThreadAccept线程函数
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
+
+private:
+	// 分配socketIndex算法
+	int GetSocketIndex();
+	// 添加TCPSocketInfo
+	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	// 派发数据包
+	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
+		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
+	//网络关闭处理
+	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
 
 private:
 	// Socketpair
