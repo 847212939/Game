@@ -151,8 +151,8 @@ private:
 #ifdef __WebSocketOpenssl__
 private:
 	bool WSSOpensslInit();
-	SSL* WSSCreateSSL(evutil_socket_t fd);
-	bool WSSOpensslHandShark(int index);
+	//SSL* WSSCreateSSL(evutil_socket_t fd);
+	//bool WSSOpensslHandShark(int index);
 #endif
 
 	// websocket的第一次握手

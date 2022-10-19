@@ -338,6 +338,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 			COUT_LOG(LOG_CERROR, "SSL* ssl = SSL_new(m_ctx)");
 			return;
 		}
+		// 不知道我的版本为啥不支持bufferevent_openssl_socket_new
 		//bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE | BEV_OPT_DEFER_CALLBACKS);
 	}
 	else
@@ -417,7 +418,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		tcpInfo.ssl = ssl;
+		TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
+		if (tcpInfo1)
+		{
+			tcpInfo1->ssl = ssl;
+		}
 		return;
 	}
 	else
@@ -1706,21 +1711,61 @@ bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
 
 // 进行openssl握手
 #ifdef __WebSocketOpenssl__
-SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t fd)
-{
-	SSL* ssl = SSL_new(m_ctx);
-	if (!ssl)
-	{
-		return nullptr;
-	}
-
-	SSL_set_fd(ssl, (int)fd);
-
-	//设置为接受连接socket 并且和客户端开启ssl握手
-	SSL_set_accept_state(ssl);
-
-	return ssl;
-}
+//SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t fd)
+//{
+//	SSL* ssl = SSL_new(m_ctx);
+//	if (!ssl)
+//	{
+//		return nullptr;
+//	}
+//
+//	SSL_set_fd(ssl, (int)fd);
+//
+//	//设置为接受连接socket 并且和客户端开启ssl握手
+//	SSL_set_accept_state(ssl);
+//
+//	return ssl;
+//}
+//bool CTCPSocketManage::WSSOpensslHandShark(int index)
+//{
+//	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
+//	if (!tcpInfo)
+//	{
+//		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+//		return false;
+//	}
+//
+//	tcpInfo->bHandleAccptMsg = true;
+//
+//	SSL* ssl = WSSCreateSSL((evutil_socket_t)(tcpInfo->acceptFd));
+//	if (!ssl)
+//	{
+//		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");
+//		return false;
+//	}
+//	tcpInfo->ssl = ssl;
+//	int nRet = SSL_do_handshake(ssl);
+//	if (nRet != 1)
+//	{
+//		int nErr = SSL_get_error(ssl, nRet);
+//		//正在进行握手
+//		if (nErr == SSL_ERROR_WANT_READ || nErr == SSL_ERROR_WANT_WRITE)
+//		{
+//			return true;
+//		}
+//
+//		COUT_LOG(LOG_CERROR, "SSL_do_handshake error port=%u ip=%s ret=%d err=%d", 
+//			tcpInfo->ip, tcpInfo->port, nRet, nErr);
+//
+//		// 握手失败的话直接断开链接
+//		CloseSocket(index);
+//
+//		//握手发生错误
+//		return false;
+//	}
+//	
+//	return true;
+//}
 bool CTCPSocketManage::WSSOpensslInit()
 {
 	SSL_library_init();//初始化库
@@ -1760,46 +1805,6 @@ bool CTCPSocketManage::WSSOpensslInit()
 		return false;
 	}
 
-	return true;
-}
-bool CTCPSocketManage::WSSOpensslHandShark(int index)
-{
-	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
-	if (!tcpInfo)
-	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
-		return false;
-	}
-
-	tcpInfo->bHandleAccptMsg = true;
-
-	SSL* ssl = WSSCreateSSL((evutil_socket_t)(tcpInfo->acceptFd));
-	if (!ssl)
-	{
-		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");
-		return false;
-	}
-	tcpInfo->ssl = ssl;
-	int nRet = SSL_do_handshake(ssl);
-	if (nRet != 1)
-	{
-		int nErr = SSL_get_error(ssl, nRet);
-		//正在进行握手
-		if (nErr == SSL_ERROR_WANT_READ || nErr == SSL_ERROR_WANT_WRITE)
-		{
-			return true;
-		}
-
-		COUT_LOG(LOG_CERROR, "SSL_do_handshake error port=%u ip=%s ret=%d err=%d", 
-			tcpInfo->ip, tcpInfo->port, nRet, nErr);
-
-		// 握手失败的话直接断开链接
-		CloseSocket(index);
-
-		//握手发生错误
-		return false;
-	}
-	
 	return true;
 }
 #endif
