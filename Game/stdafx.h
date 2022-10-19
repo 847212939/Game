@@ -48,13 +48,13 @@
 #include <event2/event.h>
 #include <event2/thread.h>
 #include <event2/event_struct.h>
+#include <event2/bufferevent_ssl.h>
 #include <mysql.h>
 #include <time.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include <event2/bufferevent_ssl.h>
 
 // lua
 extern "C"
