@@ -1707,67 +1707,12 @@ bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
 
 // 进行openssl握手
 #ifdef __WebSocketOpenssl__
-//SSL* CTCPSocketManage::WSSCreateSSL(evutil_socket_t fd)
-//{
-//	SSL* ssl = SSL_new(m_ctx);
-//	if (!ssl)
-//	{
-//		return nullptr;
-//	}
-//
-//	SSL_set_fd(ssl, (int)fd);
-//
-//	//设置为接受连接socket 并且和客户端开启ssl握手
-//	SSL_set_accept_state(ssl);
-//
-//	return ssl;
-//}
-//bool CTCPSocketManage::WSSOpensslHandShark(int index)
-//{
-//	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
-//	if (!tcpInfo)
-//	{
-//		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
-//		return false;
-//	}
-//
-//	tcpInfo->bHandleAccptMsg = true;
-//
-//	SSL* ssl = WSSCreateSSL((evutil_socket_t)(tcpInfo->acceptFd));
-//	if (!ssl)
-//	{
-//		COUT_LOG(LOG_CERROR, "WSSCreateSSL error");
-//		return false;
-//	}
-//	tcpInfo->ssl = ssl;
-//	int nRet = SSL_do_handshake(ssl);
-//	if (nRet != 1)
-//	{
-//		int nErr = SSL_get_error(ssl, nRet);
-//		//正在进行握手
-//		if (nErr == SSL_ERROR_WANT_READ || nErr == SSL_ERROR_WANT_WRITE)
-//		{
-//			return true;
-//		}
-//
-//		COUT_LOG(LOG_CERROR, "SSL_do_handshake error port=%u ip=%s ret=%d err=%d", 
-//			tcpInfo->ip, tcpInfo->port, nRet, nErr);
-//
-//		// 握手失败的话直接断开链接
-//		CloseSocket(index);
-//
-//		//握手发生错误
-//		return false;
-//	}
-//	
-//	return true;
-//}
 bool CTCPSocketManage::WSSOpensslInit()
 {
 	SSL_library_init();//初始化库
 	OpenSSL_add_all_algorithms();
 	SSL_load_error_strings();//加载错误信息
-	m_ctx = SSL_CTX_new(SSLv23_method());//SSLv23_server_method or SSLv23_client_method 
+	m_ctx = SSL_CTX_new(SSLv23_server_method());//SSLv23_server_method or SSLv23_client_method 
 	if (nullptr == m_ctx)
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_new error");
@@ -1783,11 +1728,6 @@ bool CTCPSocketManage::WSSOpensslInit()
 	if (1 != SSL_CTX_use_certificate_file(m_ctx, SERVER_CERT_FILE, SSL_FILETYPE_PEM))//加载证书
 	{
 		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_file error");
-		return false;
-	}
-	if (1 != SSL_CTX_use_certificate_chain_file(m_ctx, SERVER_CERT_FILE))//加载证书链
-	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_chain_file error");
 		return false;
 	}
 	if (1 != SSL_CTX_use_PrivateKey_file(m_ctx, SERVER_KEY_FILE, SSL_FILETYPE_PEM))//加载密钥
