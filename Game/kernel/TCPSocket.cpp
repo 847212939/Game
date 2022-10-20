@@ -1712,6 +1712,7 @@ bool CTCPSocketManage::OpensslInit()
 	SSL_library_init();//初始化库
 	OpenSSL_add_all_algorithms();
 	SSL_load_error_strings();//加载错误信息
+
 	m_ctx = SSL_CTX_new(SSLv23_server_method());//SSLv23_server_method or SSLv23_client_method 
 	if (nullptr == m_ctx)
 	{
