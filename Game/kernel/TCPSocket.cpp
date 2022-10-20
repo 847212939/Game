@@ -80,7 +80,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, ServiceType 
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
-		if (!WSSOpensslInit())
+		if (!OpensslInit())
 		{
 			return false;
 		}
@@ -1099,13 +1099,13 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	{
 #ifdef __WebSocket__
 		// websocket服务器
-		return WSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif
 	}
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
-		return WSSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif
 	}
 	else
@@ -1173,7 +1173,7 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 	return true;
 }
 #ifdef __WebSocket__
-bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
 	if (!pBufferevent)
@@ -1268,10 +1268,10 @@ bool CTCPSocketManage::WSSendWSLogicMsg(int index, const char* pData, size_t siz
 }
 #endif
 #ifdef __WebSocketOpenssl__
-bool CTCPSocketManage::WSSSendWSLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+bool CTCPSocketManage::SendLogicWssMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
-	return WSSendWSLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
+	return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
 }
 #endif
 
@@ -1315,13 +1315,13 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
-		WSHandleSendWSData(pListItem);
+		HandleSendWsData(pListItem);
 #endif
 	}
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
-		WSSHandleSendWSData(pListItem);
+		HandleSendWssData(pListItem);
 #endif
 	}
 	else
@@ -1345,7 +1345,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	}
 }
 #ifdef __WebSocket__
-void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
+void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 {
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
 	unsigned int size = pSocketSend->dataLineHead.uSize;
@@ -1457,9 +1457,9 @@ void CTCPSocketManage::WSHandleSendWSData(ListItemData* pListItem)
 }
 #endif
 #ifdef __WebSocketOpenssl__
-void CTCPSocketManage::WSSHandleSendWSData(ListItemData* pListItem)
+void CTCPSocketManage::HandleSendWssData(ListItemData* pListItem)
 {
-	WSHandleSendWSData(pListItem);
+	HandleSendWsData(pListItem);
 }
 #endif
 
@@ -1469,7 +1469,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
-		if (!WSRecvWSLogicData(bev, index))
+		if (!RecvLogicWsData(bev, index))
 		{
 			return false;
 		}
@@ -1478,7 +1478,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
-		if (!WSSRecvWSSLogicData(bev, index))
+		if (!RecvLogicWssData(bev, index))
 		{
 			return false;
 		}
@@ -1568,7 +1568,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 	return true;
 }
 #ifdef __WebSocket__
-bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
+bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
@@ -1583,7 +1583,7 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 	}
 	if (!tcpInfo->bHandleAccptMsg)
 	{
-		return WSHandShark(bev, index);
+		return HandShark(bev, index);
 	}
 
 	struct evbuffer* input = bufferevent_get_input(bev);
@@ -1622,11 +1622,11 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 		// 解析websocket包头
 		int pos = 0;
 		wbmsg.Init();
-		WSFetchFin(pBuffer, pos, wbmsg);
-		WSFetchOpcode(pBuffer, pos, wbmsg);
-		WSFetchMask(pBuffer, pos, wbmsg);
-		WSFetchPayloadLength(pBuffer, pos, wbmsg);
-		WSFetchMaskingKey(pBuffer, pos, wbmsg);
+		FetchFin(pBuffer, pos, wbmsg);
+		FetchOpcode(pBuffer, pos, wbmsg);
+		FetchMask(pBuffer, pos, wbmsg);
+		FetchPayloadLength(pBuffer, pos, wbmsg);
+		FetchMaskingKey(pBuffer, pos, wbmsg);
 
 		if (wbmsg.dataLength > SOCKET_RECV_BUF_SIZE)
 		{
@@ -1643,7 +1643,7 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 			break;
 		}
 
-		WSFetchPayload(pBuffer, pos, wbmsg);
+		FetchPayload(pBuffer, pos, wbmsg);
 		//WSFetchPrint(wbmsg);
 
 		// 解析应用层包头
@@ -1699,15 +1699,15 @@ bool CTCPSocketManage::WSRecvWSLogicData(bufferevent* bev, int index)
 }
 #endif
 #ifdef __WebSocketOpenssl__
-bool CTCPSocketManage::WSSRecvWSSLogicData(bufferevent* bev, int index)
+bool CTCPSocketManage::RecvLogicWssData(bufferevent* bev, int index)
 {
-	return WSRecvWSLogicData(bev, index);
+	return RecvLogicWsData(bev, index);
 }
 #endif
 
 // 进行openssl握手
 #ifdef __WebSocketOpenssl__
-bool CTCPSocketManage::WSSOpensslInit()
+bool CTCPSocketManage::OpensslInit()
 {
 	SSL_library_init();//初始化库
 	OpenSSL_add_all_algorithms();
@@ -1746,7 +1746,7 @@ bool CTCPSocketManage::WSSOpensslInit()
 #endif
 
 #ifdef __WebSocket__
-bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
+bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 {
 	struct evbuffer* input = bufferevent_get_input(bev);
 
@@ -1838,23 +1838,23 @@ bool CTCPSocketManage::WSHandShark(bufferevent* bev, int index)
 #endif
 
 #ifdef __WebSocket__
-int CTCPSocketManage::WSFetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.fin = (unsigned char)msg[pos] >> 7;
 	return 0;
 }
-int CTCPSocketManage::WSFetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.opcode = msg[pos] & 0x0f;
 	pos++;
 	return 0;
 }
-int CTCPSocketManage::WSFetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.mask = (unsigned char)msg[pos] >> 7;
 	return 0;
 }
-int CTCPSocketManage::WSFetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	if (wbmsg.mask != 1)
 	{
@@ -1867,7 +1867,7 @@ int CTCPSocketManage::WSFetchMaskingKey(char* msg, int& pos, WebSocketMsg& wbmsg
 	pos += 4;
 	return 0;
 }
-int CTCPSocketManage::WSFetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.payloadLength = msg[pos] & 0x7f;
 	pos++;
@@ -1890,7 +1890,7 @@ int CTCPSocketManage::WSFetchPayloadLength(char* msg, int& pos, WebSocketMsg& wb
 
 	return 0;
 }
-int CTCPSocketManage::WSFetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
+int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.payload = msg + pos;
 
@@ -1907,7 +1907,7 @@ int CTCPSocketManage::WSFetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 
 	return 0;
 }
-void CTCPSocketManage::WSFetchPrint(const WebSocketMsg& wbmsg)
+void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 {
 	printf("WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
