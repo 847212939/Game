@@ -338,10 +338,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		ssl = SSL_new(m_ctx);
 		if (!ssl)
 		{
-			COUT_LOG(LOG_CERROR, "SSL* ssl = SSL_new(m_ctx)");
+			COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 			return;
 		}
-		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
+		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, 
+			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
 #endif
 	}
 	else
