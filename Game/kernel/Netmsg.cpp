@@ -4,12 +4,10 @@ Netmsg::Netmsg()
 {
 
 }
-
 Netmsg::~Netmsg()
 {
 
 }
-
 Netmsg::Netmsg(std::string str, int count)
 {
 	std::string separator = "\n";
@@ -45,7 +43,6 @@ Netmsg::operator std::string()
 {
 	return m_os.str();
 }
-
 std::string Netmsg::str()
 {
 	return m_os.str();
