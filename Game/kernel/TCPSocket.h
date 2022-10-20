@@ -22,11 +22,11 @@ public:
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
+	// 发送数据函数
+	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
 	// 关闭连接函数
 	bool CloseSocket(int index);
-	// 发送数据函数
-	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
 	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 
