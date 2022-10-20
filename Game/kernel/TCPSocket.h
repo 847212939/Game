@@ -143,7 +143,6 @@ private:
 	void HandleSendWssData(ListItemData* pListItem);
 #endif
 
-	// openssl Œ’ ÷
 #ifdef __WebSocketOpenssl__
 private:
 	bool OpensslInit();
