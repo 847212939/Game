@@ -1066,39 +1066,12 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 
 	return true;
 }
-bool CTCPSocketManage::BuffereventWrite(int index, std::string& data)
-{
-	//发送数据
-	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
-	if (!tcpInfo)
-	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
-		return false;
-	}
-	if (!tcpInfo->lock)
-	{
-		return false;
-	}
-	{
-		std::lock_guard<std::mutex> guard(*tcpInfo->lock);
-		if (tcpInfo->isConnect && tcpInfo->bev)
-		{
-			if (bufferevent_write(tcpInfo->bev, data.c_str(), data.size()) < 0)
-			{
-				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
-			}
-		}
-	}
-
-	return true;
-}
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
 {
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 #ifdef __WebSocket__
-		// websocket服务器
 		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif
 	}
@@ -1110,7 +1083,6 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	}
 	else
 	{
-		// TCP服务器
 		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 

@@ -3,6 +3,7 @@
 class CTCPSocketManage
 {
 public:
+	// 构造函数
 	CTCPSocketManage();
 	virtual ~CTCPSocketManage();
 
@@ -96,6 +97,8 @@ private:
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 	//网络关闭处理
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
+	// 对称加密测试连接
+	bool VerifyConnection(int index, char* data);
 
 private:
 	// Socketpair
@@ -104,16 +107,9 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
-	// 对称加密测试连接
-	bool VerifyConnection(int index, char* data);
-
-private:
-	// 写入bufferevent_write
-	bool BuffereventWrite(int index, std::string& data);
+	// 发送TCP消息
 	// 写入bufferevent_write
 	bool BuffereventWrite(int index, void* data, unsigned int size);
-
-	// 发送TCP消息
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
 #ifdef __WebSocket__
