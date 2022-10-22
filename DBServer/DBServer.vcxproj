@@ -31,6 +31,7 @@
     <ClCompile Include="Lua\LuaCfgMgr.cpp" />
     <ClCompile Include="Lua\LuaMgr.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player\DataBaseSys.cpp" />
     <ClCompile Include="Player\PlayerPrep.cpp" />
     <ClCompile Include="Player\PlayerPrepClient.cpp" />
   </ItemGroup>
@@ -50,6 +51,7 @@
     <ClInclude Include="Lua\BaseCfgMgr.h" />
     <ClInclude Include="Lua\ConfigMgr.h" />
     <ClInclude Include="Lua\LuaMgr.h" />
+    <ClInclude Include="Player\DataBaseSys.h" />
     <ClInclude Include="Player\PlayerPrep.h" />
     <ClInclude Include="Player\PlayerPrepClient.h" />
     <ClInclude Include="stdafx.h" />

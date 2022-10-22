@@ -526,7 +526,6 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	bufferevent_free(bev);
 	bev = nullptr;
 	bHandleAccptMsg = false;
-	link = 0;
 
 	// 解锁发送线程
 	lock->unlock();

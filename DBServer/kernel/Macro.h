@@ -159,3 +159,14 @@ else\
 {\
 	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
+
+// ×¢²áÍøÂçÐ­Òé
+#define RegisterNetwk(pobj, name, cmd)\
+if (!pobj)\
+{\
+	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éÐ´·¨");\
+}\
+else\
+{\
+	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
+}

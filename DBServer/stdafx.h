@@ -48,11 +48,6 @@
 #include "event2/event.h"
 #include "event2/thread.h"
 #include "event2/event_struct.h"
-#include "event2/bufferevent_ssl.h"
-#include "openssl/ssl.h"
-#include "openssl/err.h"
-#include "openssl/x509.h"
-#include "openssl/x509v3.h"
 
 // lua
 extern "C"
@@ -76,6 +71,7 @@ extern "C"
 #include "kernel/Netmsg.h"				// 消息解析
 #include "kernel/LogManager.h"			// 日志管理类
 
+#include "Player/DataBaseSys.h"			// 数据库操作
 #include "Player/PlayerPrep.h"			// 信息在注册
 #include "Player/PlayerPrepClient.h"	// 逻辑处理类
 

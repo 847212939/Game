@@ -50,14 +50,11 @@
     <Filter Include="玩家管理\逻辑基类">
       <UniqueIdentifier>{99b1abbe-221e-40f1-9e60-7d1363efaa04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家管理\逻辑基类\玩家预处理">
-      <UniqueIdentifier>{50a9c95d-24a6-4f5d-b4ae-6e36c14678a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家管理\逻辑派生">
       <UniqueIdentifier>{76ab18cd-12b2-41cc-86b6-8c7815cfc073}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家管理\逻辑派生\玩家预处理">
-      <UniqueIdentifier>{7ceebe5f-a90c-4c73-b447-ce9c74af8cf7}</UniqueIdentifier>
+    <Filter Include="逻辑管理">
+      <UniqueIdentifier>{06acd569-2616-4d0b-9a32-02f0497d992d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +94,14 @@
     <ClCompile Include="Lua\LuaMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
-    <ClCompile Include="Player\PlayerPrep.cpp">
-      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
+    <ClCompile Include="Player\DataBaseSys.cpp">
+      <Filter>逻辑管理</Filter>
     </ClCompile>
     <ClCompile Include="Player\PlayerPrepClient.cpp">
-      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
+      <Filter>玩家管理\逻辑派生</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerPrep.cpp">
+      <Filter>玩家管理\逻辑基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,11 +153,14 @@
     <ClInclude Include="Lua\LuaMgr.h">
       <Filter>配置管理\配置管理</Filter>
     </ClInclude>
-    <ClInclude Include="Player\PlayerPrep.h">
-      <Filter>玩家管理\逻辑基类\玩家预处理</Filter>
+    <ClInclude Include="Player\DataBaseSys.h">
+      <Filter>逻辑管理</Filter>
     </ClInclude>
     <ClInclude Include="Player\PlayerPrepClient.h">
-      <Filter>玩家管理\逻辑派生\玩家预处理</Filter>
+      <Filter>玩家管理\逻辑派生</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerPrep.h">
+      <Filter>玩家管理\逻辑基类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -76,18 +76,6 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
-	auto* tcpInfo = DTCPC->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
-	if (!tcpInfo)
-	{
-		COUT_LOG(LOG_CERROR, "!tcpInfo");
-		return;
-	}
-	if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
-	{
-		DTCPC->CloseSocket(playerInfo->pMsg->uIndex);
-		COUT_LOG(LOG_CERROR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
-		return;
-	}
 	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
