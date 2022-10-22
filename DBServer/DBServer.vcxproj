@@ -23,7 +23,6 @@
     <ClCompile Include="kernel\LogManager.cpp" />
     <ClCompile Include="kernel\MysqlHelper.cpp" />
     <ClCompile Include="kernel\Netmsg.cpp" />
-    <ClCompile Include="kernel\ServerTimer.cpp" />
     <ClCompile Include="kernel\TCPClient.cpp" />
     <ClCompile Include="kernel\TCPSocket.cpp" />
     <ClCompile Include="kernel\Util.cpp" />
@@ -38,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kernel\Alias.h" />
-    <ClInclude Include="kernel\AttrsCmd.h" />
     <ClInclude Include="kernel\ConditionVariable.h" />
     <ClInclude Include="kernel\DataLine.h" />
     <ClInclude Include="kernel\LogManager.h" />
@@ -46,11 +44,9 @@
     <ClInclude Include="kernel\MessageCmd.h" />
     <ClInclude Include="kernel\MysqlHelper.h" />
     <ClInclude Include="kernel\Netmsg.h" />
-    <ClInclude Include="kernel\ServerTimer.h" />
     <ClInclude Include="kernel\Structural.h" />
     <ClInclude Include="kernel\TCPClient.h" />
     <ClInclude Include="kernel\TCPSocket.h" />
-    <ClInclude Include="kernel\TimerCmd.h" />
     <ClInclude Include="kernel\Util.h" />
     <ClInclude Include="Lua\BaseCfgMgr.h" />
     <ClInclude Include="Lua\ConfigMgr.h" />

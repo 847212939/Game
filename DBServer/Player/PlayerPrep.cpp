@@ -13,7 +13,7 @@ char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `
 char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
 "default charset utf8 COLLATE utf8_unicode_ci";
 
-PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()])
+PlayerPrep::PlayerPrep()
 {
 }
 PlayerPrep::~PlayerPrep()
@@ -31,13 +31,6 @@ void PlayerPrep::Init()
 	}
 
 	DTCPC->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
-
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
-	for (int i = 0; i < timerCnt; i++)
-	{
-		m_pServerTimer[i].Start();
-	}
 }
 bool PlayerPrep::InitDB()
 {
@@ -148,10 +141,6 @@ ConditionVariable& PlayerPrep::GetConditionVariable()
 {
 	return m_cond;
 }
-CServerTimer* PlayerPrep::GetCServerTimer()
-{
-	return m_pServerTimer;
-}
 
 void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
@@ -174,81 +163,6 @@ bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 
 	it->second(playerInfo);
-	return true;
-}
-bool PlayerPrep::CallBackFun(TimerCmd cmd)
-{
-	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
-	if (it == m_TimerFunMap.end())
-	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
-		return false;
-	}
-
-	it->second();
-	return true;
-}
-void PlayerPrep::DelTimerCallback(TimerCmd cmd)
-{
-	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
-	if (it == m_TimerFunMap.end())
-	{
-		return;
-	}
-
-	m_TimerFunMap.erase(it);
-}
-void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
-{
-	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
-	if (it == m_TimerFunMap.end())
-	{
-		m_TimerFunMap.insert(std::make_pair(cmd, fun));
-		return;
-	}
-
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
-}
-
-// ¶¨Ê±Æ÷
-bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
-{
-	if (!m_pServerTimer)
-	{
-		COUT_LOG(LOG_CERROR, "no timer run");
-		return false;
-	}
-
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
-	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
-	{
-		COUT_LOG(LOG_CERROR, "timer error");
-		return false;
-	}
-
-	m_pServerTimer[(int)uTimerID % timerCnt].SetTimer((unsigned int)uTimerID, uElapse, timerType);
-
-	return true;
-}
-bool PlayerPrep::KillTimer(TimerCmd uTimerID)
-{
-	if (!m_pServerTimer)
-	{
-		COUT_LOG(LOG_CERROR, "no timer run");
-		return false;
-	}
-
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
-	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
-	{
-		COUT_LOG(LOG_CERROR, "timer error");
-		return false;
-	}
-
-	m_pServerTimer[(int)uTimerID % timerCnt].KillTimer((unsigned int)uTimerID);
-
 	return true;
 }
 

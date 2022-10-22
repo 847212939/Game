@@ -22,9 +22,7 @@ using ListSkillCDData		= std::list<SkillCDData>;
 
 template<typename T>
 using MapIntVecTemplate		= std::map<int, VectorTemplate<T>>;
-using MapAttrsCmdInt		= std::map<AttrsCmd, int>;
 using MapStringString		= std::map<std::string, std::string>;
-using MapTimerFunc			= std::map<TimerCmd, std::function<void()>>;
 using MapNetFun				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using MapMysqlFunc			= std::map<std::string, std::function<void(std::string&)>>;
 using MapTypeFunc			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;

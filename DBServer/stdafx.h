@@ -65,8 +65,6 @@ extern "C"
 
 #include "kernel/Macro.h"				// 宏
 #include "kernel/MessageCmd.h"			// 玩家消息定义
-#include "kernel/AttrsCmd.h"			// 玩家属性
-#include "kernel/TimerCmd.h"			// 定时器
 #include "kernel/Structural.h"			// 结构
 #include "kernel/Alias.h"				// 别名
 #include "kernel/MysqlHelper.h"			// 数据库
@@ -77,7 +75,6 @@ extern "C"
 #include "kernel/Util.h"				// 工具类
 #include "kernel/Netmsg.h"				// 消息解析
 #include "kernel/LogManager.h"			// 日志管理类
-#include "kernel/ServerTimer.h"			// 定时器
 
 #include "Player/PlayerPrep.h"			// 信息在注册
 #include "Player/PlayerPrepClient.h"	// 逻辑处理类

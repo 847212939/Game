@@ -2,8 +2,6 @@
 
 TCPClient::TCPClient() : CTCPSocketManage(), m_PlayerPrepClient(new PlayerPrepClient)
 {
-	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
-	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
 }
 TCPClient::~TCPClient()
 {
@@ -59,7 +57,7 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 	{
 		return;
 	}
-	CallBackFun((SysMsgCmd)pListItem->stDataHead.uDataKind, (void*)pListItem->pData);
+	SocketCallback((void*)pListItem->pData);
 
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
@@ -113,60 +111,12 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "SendDataLine = null");
 		return;
 	}
-	CServerTimer* pCServerTimer = DPPC->GetCServerTimer();
-	if (!pCServerTimer)
-	{
-		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
-		return;
-	}
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
-
+	
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
 	DPPC->GetConditionVariable().NotifyAll();
-
-	for (int i = 0; i < timerCnt; i++)
-	{
-		pCServerTimer[i].SetTimerRun(false);
-	}
 }
 
-void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
-{
-	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
-	if (it == m_TypeFunMap.end())
-	{
-		m_TypeFunMap.insert(std::make_pair(cmd, fun));
-		return;
-	}
-
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
-}
-bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
-{
-	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
-	if (it == m_TypeFunMap.end())
-	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
-		return false;
-	}
-
-	it->second(pDataLineHead);
-	return true;
-}
-
-void TCPClient::TimerCallback(void* pDataLineHead)
-{
-	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
-	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
-	{
-		m_PlayerPrepClient->CallBackFun((TimerCmd)WindowTimer->uTimerID);
-	}
-	else
-	{
-		COUT_LOG(LOG_CERROR, "Timer message error");
-	}
-}
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
 	//处理数据

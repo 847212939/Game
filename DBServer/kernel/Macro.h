@@ -75,9 +75,6 @@ private:
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 
-// 网络消息注册
-#define RegisterNetType(name, cmd) this->AddNetTypeCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)))
-
 // 注册活动
 #define RegisterActive(name, cmd) this->AddActiveCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));
 
