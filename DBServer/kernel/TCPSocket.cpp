@@ -77,16 +77,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		if (!OpensslInit())
-		{
-			return false;
-		}
-#endif
-	}
-
 	return true;
 }
 bool CTCPSocketManage::Stop()
@@ -582,14 +572,6 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	bev = nullptr;
 	bHandleAccptMsg = false;
 	link = 0;
-	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		SSL_shutdown(ssl);
-		SSL_free(ssl);
-		ssl = nullptr;
-#endif
-	}
 
 	// 解锁发送线程
 	lock->unlock();
@@ -1030,24 +1012,7 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
 {
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-#ifdef __WebSocket__
-		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
-	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
-	}
-	else
-	{
-		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
-	}
-
-	return true;
+	return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/)
@@ -1143,22 +1108,8 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	{
 		return;
 	}
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-#ifdef __WebSocket__
-		HandleSendWsData(pListItem);
-#endif
-	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		HandleSendWssData(pListItem);
-#endif
-	}
-	else
-	{
-		HandleSendData(pListItem);
-	}
+
+	HandleSendData(pListItem);
 
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
@@ -1179,32 +1130,10 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 {
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	if (!RecvLogicData(bev, index))
 	{
-#ifdef __WebSocket__
-		if (!RecvLogicWsData(bev, index))
-		{
-			return false;
-		}
-#endif
+		return false;
 	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		if (!RecvLogicWssData(bev, index))
-		{
-			return false;
-		}
-#endif
-	}
-	else
-	{
-		if (!RecvLogicData(bev, index))
-		{
-			return false;
-		}
-	}
-
 	return true;
 }
 bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
