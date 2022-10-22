@@ -17,8 +17,6 @@ using VectorExitFunc		= std::vector<std::function<void(SocketCloseLine*)>>;
 
 using ListUint				= std::list<unsigned int>;
 using ListString			= std::list<std::string>;
-using ListLoginData			= std::list<LoginData>;
-using ListSkillCDData		= std::list<SkillCDData>;
 
 template<typename T>
 using MapIntVecTemplate		= std::map<int, VectorTemplate<T>>;
@@ -30,12 +28,7 @@ using MapRecordData			= std::map<std::string, std::pair<FT, std::string>>;
 using MapActivityFunc		= std::map<ActType, std::function<bool(CActivityList*)>>;
 using MapSceneAnimal		= std::map<int, std::map<uint64_t, Animal*>>;
 using MapActiveOpen			= std::map<int, ActtiveOpen>;
-using MapMonsterKV			= std::map<RefMonsterKey, std::vector<Animal*>>;
-using MapMonster			= std::map<int, MapMonsterKV>;
-using MapSkillData			= std::map<int, SkillData>;
-using MapLoginIn			= std::map<unsigned int, LoginData>;
 using MapServerId			= std::map<uint64_t, std::set<int>>;
-using MapServerTimerInfo	= std::unordered_map<unsigned int, ServerTimerInfo>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 

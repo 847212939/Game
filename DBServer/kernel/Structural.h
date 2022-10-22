@@ -246,16 +246,6 @@ struct ListItemData
 	ListItemData() : pData(nullptr) {}
 };
 
-// 定时器结构
-struct ServerTimerInfo
-{
-	unsigned int	elapse;														// 定时器间隔（单位毫秒）
-	long long		starttime;													// 起始时间（单位毫秒）
-	unsigned char	timertype;													// 定时器类型 SERVERTIMER_TYPE
-
-	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
-};
-
 // 玩家信息
 struct PlayerInfo
 {
@@ -268,22 +258,6 @@ struct PlayerInfo
 	~PlayerInfo() {}
 };
 
-struct LoginData
-{
-	unsigned int			index;
-	std::string				id;
-	std::string				pw;
-	std::string				roleName;	// 英雄名
-	std::string				netName;	// 游戏名
-	uint64_t				userId;
-	int						roleid;
-	int						roleType;
-	int						serverId;
-
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0), serverId(0) {}
-	~LoginData() {}
-};
-
 //接收线程参数
 struct RecvThreadParam
 {
@@ -291,90 +265,4 @@ struct RecvThreadParam
 	int						index;
 
 	RecvThreadParam() :pThis(nullptr), index(0) {}
-};
-
-struct Position
-{
-	int x;
-	int y;
-	int z;
-	Position() : x(0), y(0), z(0) {}
-	~Position() {}
-};
-
-struct Rotation
-{
-	int x;
-	int y;
-	int z;
-	Rotation() : x(0), y(0), z(0) {}
-	~Rotation() {}
-};
-
-struct Scale
-{
-	int x;
-	int y;
-	int z;
-	Scale() : x(0), y(0), z(0) {}
-	~Scale() {}
-};
-
-struct Transform
-{
-	Position	position;
-	Rotation	rotation;
-	Scale		scale;
-
-	Transform() {}
-	Transform(int x, int y)
-	{
-		position.x = x;
-		position.y = y;
-	}
-
-	~Transform() {}
-};
-
-struct RefMonsterKey
-{
-	int mid;
-	int x;
-	int y;
-	~RefMonsterKey(){}
-	RefMonsterKey() : mid(0), x(0), y(0) {}
-	RefMonsterKey(int mId, int X, int Y) : mid(mId), x(X), y(Y) {}
-	bool operator < (const RefMonsterKey& other) const
-	{
-		if (mid != other.mid) { return mid < other.mid; }
-		if (x != other.x) { return x < other.x; }
-		if (y != other.y) { return y < other.y; }
-		return false;
-	}
-};
-
-struct ActtiveOpen
-{
-	int id;
-	bool open;
-	ActtiveOpen() : id(0), open(false) {}
-	ActtiveOpen(int nId, bool isOpen) : id(nId), open(isOpen) {}
-	~ActtiveOpen() {}
-};
-
-struct SkillData
-{
-	bool cd;
-	int level;
-};
-
-struct SkillCDData
-{
-	HurtSysMsgCmd type;
-	int id;
-	int cnt;
-	Animal* animal;
-
-	SkillCDData(HurtSysMsgCmd cmd, int nid, int ncnt, Animal* ani) : type(cmd), id(nid), cnt(ncnt), animal(ani) {}
-	~SkillCDData() {}
 };

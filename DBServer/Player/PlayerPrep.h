@@ -57,12 +57,6 @@ private:
 	// 消息派发
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
-public:
-	// 数据库语句表
-	static char createptable[CREATE_TABLE_LEN];
-	static char createpptable[CREATE_TABLE_LEN];
-	static char createdatabase[CREATE_TABLE_LEN];
-
 private:
 	// 条件变量数据库用
 	ConditionVariable m_cond;
