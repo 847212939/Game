@@ -108,7 +108,6 @@ private:
 
 private:
 	// 发送TCP消息
-	// 写入bufferevent_write
 	bool BuffereventWrite(int index, void* data, unsigned int size);
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);

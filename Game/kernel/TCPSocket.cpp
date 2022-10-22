@@ -55,7 +55,8 @@ CTCPSocketManage::~CTCPSocketManage()
 #endif
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, 
+	ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
@@ -560,7 +561,8 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 }
 
 // ÍøÂçÏûÏ¢ÅÉ·¢
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
+	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
 	{
