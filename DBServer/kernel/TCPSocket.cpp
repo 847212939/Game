@@ -479,39 +479,6 @@ void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 	COUT_LOG(LOG_CERROR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
 }
 
-// 测试连接
-bool CTCPSocketManage::VerifyConnection(int index, char* data)
-{
-	if (!data)
-	{
-		return false;
-	}
-	Netmsg msg(data);
-	std::string str;
-	msg >> str;
-	if (str.empty())
-	{
-		return false;
-	}
-	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
-	if (!tcpInfo)
-	{
-		return false;
-	}
-	Util::Decrypt((char*)str.c_str(), str.size());
-	if (std::to_string(tcpInfo->link) != str)
-	{
-		return false;
-	}
-	
-	tcpInfo->link = (uint64_t)MsgCmd::MsgCmd_Testlink;
-
-	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
-		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, tcpInfo->bev);
-
-	return true;
-}
-
 // 网络消息派发
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
@@ -520,19 +487,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	{
 		return false;
 	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
-	{
-		return true;
-	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
-	{
-		if (!VerifyConnection(index, (char*)pData))
-		{
-			RemoveTCPSocketStatus(index);
-		}
-		return true;
-	}
-
+	
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{

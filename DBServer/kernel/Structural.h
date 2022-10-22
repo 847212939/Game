@@ -24,18 +24,6 @@ const int					MAX_FILE_NAME_SIZE = 256;							// 最大文件名长度
 const int					MAX_FUNC_NAME_SIZE = 128;							// 最大函数名长度
 const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//日子文件的最大的长度，超过长度会生成新的文件
 
-enum WS_FrameType
-{
-	WS_EMPTY_FRAME = 0xF0,
-	WS_ERROR_FRAME = 0xF1,
-	WS_TEXT_FRAME = 0x01,
-	WS_BINARY_FRAME = 0x02,
-	WS_PING_FRAME = 0x09,
-	WS_PONG_FRAME = 0x0A,
-	WS_OPENING_FRAME = 0xF3,
-	WS_CLOSING_FRAME = 0x08
-};
-
 enum class SysMsgCmd
 {
 	HD_SYS_MSG_BEGIN			= 0,											// 开始
@@ -79,13 +67,6 @@ enum class SocketType
 	SOCKET_TYPE_WEBSOCKET       = 1,											//websocket
 };
 
-// 定时器类型
-enum SERVERTIMER_TYPE
-{
-	SERVERTIMER_TYPE_PERISIST   = 0,											// 持久定时器
-	SERVERTIMER_TYPE_SINGLE     = 1,											// 一次性定时器
-};
-
 /**
 * @brief 定义字段类型，
 * DB_INT:数字类型
@@ -97,31 +78,7 @@ enum class FT
 	DB_STR,
 };
 
-// 场景内类型
-enum class AnimalType
-{
-	at_player		= 1,														// 玩家
-	at_monster		= 2,														// 怪物
-};
-
-// 场景内类型
-enum class HeroType
-{
-	ht_shooter		= 1,														// 射手
-	ht_warrior		= 2,														// 战士
-	ht_master		= 3,														// 法师
-	ht_meat			= 4,														// 肉
-	ht_wild			= 5,														// 打野
-};
-
-class Animal;
-class PlayerClient;
-enum class ActType;
-struct ActtiveOpen;
-struct CActivityList;
 class CTCPSocketManage;
-enum class HurtSysMsgCmd;
-
 #pragma pack(1)
 
 //数据队列信息头

@@ -97,8 +97,6 @@ private:
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 	//网络关闭处理
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
-	// 对称加密测试连接
-	bool VerifyConnection(int index, char* data);
 
 private:
 	// Socketpair

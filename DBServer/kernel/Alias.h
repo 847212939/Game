@@ -11,7 +11,6 @@ using VectorThread			= std::vector<std::thread*>;
 using VectorTCPSocketInfo	= std::vector<TCPSocketInfo>;
 using VectorWorkThreadInfo	= std::vector<WorkThreadInfo>;
 using VectorString			= std::vector<std::string>;
-using VectorPlayerClient	= std::vector<PlayerClient*>;
 using VectorVoidFunc		= std::vector<std::function<void()>>;
 using VectorExitFunc		= std::vector<std::function<void(SocketCloseLine*)>>;
 
@@ -25,9 +24,6 @@ using MapNetFun				= std::map<MsgCmd, std::function<void(PlayerInfo*)>>;
 using MapMysqlFunc			= std::map<std::string, std::function<void(std::string&)>>;
 using MapTypeFunc			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
 using MapRecordData			= std::map<std::string, std::pair<FT, std::string>>;
-using MapActivityFunc		= std::map<ActType, std::function<bool(CActivityList*)>>;
-using MapSceneAnimal		= std::map<int, std::map<uint64_t, Animal*>>;
-using MapActiveOpen			= std::map<int, ActtiveOpen>;
 using MapServerId			= std::map<uint64_t, std::set<int>>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;

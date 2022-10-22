@@ -153,31 +153,6 @@ bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 	return true;
 }
 
-// Êý¾Ý¿â²Ù×÷
-void PlayerPrep::CreateTableS(std::string name, int cnt)
-{
-	char sql[CREATE_TABLE_LEN] = "";
-
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str(), cnt);
-
-	CreateTableSql(sql);
-}
-void PlayerPrep::CreateTableI(std::string name, int cnt)
-{
-	char sql[CREATE_TABLE_LEN] = "";
-
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str(), cnt);
-
-	CreateTableSql(sql);
-}
-void PlayerPrep::CreateTableSql(const char* sql)
-{
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sql);
-	m_cond.GetMutex().unlock();
-
-	m_cond.NotifyOne();
-}
 void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream msg;
