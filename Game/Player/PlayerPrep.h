@@ -31,8 +31,8 @@ public:
 	void SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	// 创建数据库表
-	void CreateTableS(std::string name);
-	void CreateTableI(std::string name);
+	void CreateTableS(std::string name, int cnt = 4096);
+	void CreateTableI(std::string name, int cnt = 4096);
 	void CreateTableSql(const char* sql);
 
 public:

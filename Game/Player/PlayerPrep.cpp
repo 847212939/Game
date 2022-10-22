@@ -2,12 +2,12 @@
 
 char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
-"`data` varchar(2048) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
 char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`userid` bigint(20) NOT NULL,"
-"`data` varchar(2048) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
 "PRIMARY KEY(`userid`) USING BTREE"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
@@ -261,19 +261,19 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 }
 
 // Êý¾Ý¿â²Ù×÷
-void PlayerPrep::CreateTableS(std::string name)
+void PlayerPrep::CreateTableS(std::string name, int cnt)
 {
 	char sql[CREATE_TABLE_LEN] = "";
 
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str());
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str(), cnt);
 
 	CreateTableSql(sql);
 }
-void PlayerPrep::CreateTableI(std::string name)
+void PlayerPrep::CreateTableI(std::string name, int cnt)
 {
 	char sql[CREATE_TABLE_LEN] = "";
 
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str());
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str(), cnt);
 
 	CreateTableSql(sql);
 }
