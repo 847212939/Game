@@ -11,7 +11,6 @@ Util* Util::Instance()
 	return &g_mgr;
 }
 Util::Util() : 
-	m_IDGen(new IDGen), 
 	m_TCPClient(new TCPClient)
 {
 }
@@ -34,15 +33,6 @@ int Util::GetRandRange(int iMin, int iMax)
 	}
 
 	return iMin + (int)(GetRandNum() % (iMax - iMin));
-}
-
-IDGen& Util::GetIDGen()
-{
-	return *m_IDGen;
-}
-uint64_t Util::CreateUserId()
-{
-	return m_IDGen->GenerateUID();
 }
 
 // 对称加密

@@ -1,8 +1,8 @@
 #pragma once
 
 #define __DEBUG__
-#define __WebSocket__
-#define __WebSocketOpenssl__
+//#define __WebSocket__
+//#define __WebSocketOpenssl__
 
 #if defined(_WIN32)
 #define _CRT_SECURE_NO_WARNINGS
@@ -70,7 +70,6 @@ extern "C"
 #include "kernel/AttrsCmd.h"			// 玩家属性
 #include "kernel/TimerCmd.h"			// 定时器
 #include "kernel/Structural.h"			// 结构
-#include "kernel/IDGen.h"				// 唯一ID
 #include "kernel/Alias.h"				// 别名
 #include "kernel/MysqlHelper.h"			// 数据库
 #include "kernel/ConditionVariable.h"	// 条件变量
@@ -80,8 +79,6 @@ extern "C"
 #include "kernel/Util.h"				// 工具类
 #include "kernel/Netmsg.h"				// 消息解析
 #include "kernel/LogManager.h"			// 日志管理类
-#include "kernel/base64.h"				// base64
-#include "kernel/sha1.h"				// sha1
 #include "kernel/ServerTimer.h"			// 定时器
 
 #include "Player/PlayerPrep.h"			// 信息在注册

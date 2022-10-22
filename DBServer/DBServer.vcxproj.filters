@@ -73,15 +73,6 @@
     <ClCompile Include="kernel\ServerTimer.cpp">
       <Filter>网络管理\定时管理</Filter>
     </ClCompile>
-    <ClCompile Include="kernel\base64.cpp">
-      <Filter>网络管理\工具管理</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\IDGen.cpp">
-      <Filter>网络管理\工具管理</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\sha1.cpp">
-      <Filter>网络管理\工具管理</Filter>
-    </ClCompile>
     <ClCompile Include="kernel\Util.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>
@@ -128,15 +119,6 @@
     </ClInclude>
     <ClInclude Include="kernel\ServerTimer.h">
       <Filter>网络管理\定时管理</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\base64.h">
-      <Filter>网络管理\工具管理</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\IDGen.h">
-      <Filter>网络管理\工具管理</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\sha1.h">
-      <Filter>网络管理\工具管理</Filter>
     </ClInclude>
     <ClInclude Include="kernel\Util.h">
       <Filter>网络管理\工具管理</Filter>

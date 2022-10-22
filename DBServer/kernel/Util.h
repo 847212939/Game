@@ -61,14 +61,12 @@ public:
 
 public:
 	// ΨһID
-	IDGen& GetIDGen();
 	uint64_t CreateUserId();
 	TCPClient* GetTCPClient();
 
 private:
 	static std::random_device	m_rd;
 	static std::mt19937			m_mt;
-	IDGen*						m_IDGen;
 	TCPClient*					m_TCPClient;
 	static time_t				m_OpenServerTimeSecond;
 };
