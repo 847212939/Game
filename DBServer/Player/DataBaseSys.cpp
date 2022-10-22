@@ -2,7 +2,7 @@
 
 DataBaseSys::DataBaseSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, DataBaseSys::Network, MsgCmd::MsgCmd_Login);
+	RegisterNetwk(ppc, DataBaseSys::Network, MsgCmd::MsgCmd_DBServer);
 }
 
 DataBaseSys::~DataBaseSys()
