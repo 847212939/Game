@@ -36,6 +36,12 @@ public:
 	void CreateTableSql(const char* sql);
 
 public:
+	// 数据库语句表
+	static char createptable[CREATE_TABLE_LEN];
+	static char createpptable[CREATE_TABLE_LEN];
+	static char createdatabase[CREATE_TABLE_LEN];
+
+public:
 	// 获取保存数据库
 	CMysqlHelper& GetSaveCMysqlHelper();
 	// 获取加载数据库

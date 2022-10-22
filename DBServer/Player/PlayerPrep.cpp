@@ -8,6 +8,19 @@ PlayerPrep::~PlayerPrep()
 
 }
 
+char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
+"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
+char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`userid` bigint(20) NOT NULL,"
+"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`userid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
+char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
+"default charset utf8 COLLATE utf8_unicode_ci";
+
 // 初始化
 void PlayerPrep::Init()
 {
@@ -152,9 +165,7 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 
 	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
 }
@@ -170,9 +181,7 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
 
-	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
 }
@@ -188,9 +197,7 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
 }
@@ -203,9 +210,7 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::s
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
-	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sSql);
-	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
 }
@@ -214,9 +219,7 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
 
-	m_cond.GetMutex().lock();
 	m_sqlList.push_back(sSql.str());
-	m_cond.GetMutex().unlock();
 
 	m_cond.NotifyOne();
 }
@@ -228,9 +231,7 @@ void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::strin
 	CMysqlHelper::MysqlData data;
 	try
 	{
-		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, data);
-		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
@@ -260,9 +261,7 @@ void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& o
 	CMysqlHelper::MysqlData queryData;
 	try
 	{
-		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
-		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
@@ -290,9 +289,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 
 	try
 	{
-		m_cond.GetMutex().lock();
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
-		m_cond.GetMutex().unlock();
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
@@ -301,6 +298,30 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 	}
 
 	return true;
+}
+
+// 数据库操作
+void PlayerPrep::CreateTableS(std::string name, int cnt)
+{
+	char sql[CREATE_TABLE_LEN] = "";
+
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str(), cnt);
+
+	CreateTableSql(sql);
+}
+void PlayerPrep::CreateTableI(std::string name, int cnt)
+{
+	char sql[CREATE_TABLE_LEN] = "";
+
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str(), cnt);
+
+	CreateTableSql(sql);
+}
+void PlayerPrep::CreateTableSql(const char* sql)
+{
+	m_sqlList.push_back(sql);
+
+	m_cond.NotifyOne();
 }
 
 // 多线程下数据执行
