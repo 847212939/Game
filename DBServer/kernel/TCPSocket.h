@@ -107,14 +107,8 @@ private:
 private:
 	// 发送TCP消息
 	bool BuffereventWrite(int index, void* data, unsigned int size);
-	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-		void* pBufferevent, unsigned int uIdentification = 0);
-
 	// 最底层处理收到的数据函数
 	bool RecvData(bufferevent* bev, int index);
-	// 处理收到消息进行粘包
-	bool RecvLogicData(bufferevent* bev, int index);
-
 	// 处理发送线程消息
 	void HandleSendMsg(ListItemData* pListItem);
 	// 处理发送线程消息

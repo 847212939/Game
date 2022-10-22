@@ -967,11 +967,6 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
 {
-	return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
-}
-bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/)
-{
 	if (!pBufferevent)
 	{
 		COUT_LOG(LOG_CERROR, "!pBufferevent");
@@ -1084,14 +1079,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
-{
-	if (!RecvLogicData(bev, index))
-	{
-		return false;
-	}
-	return true;
-}
-bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
