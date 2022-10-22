@@ -63,10 +63,6 @@ public:
 	// 添加全局的网络回调
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 
-public:
-	// 创建角色
-	void CreatePlayer(LoginData& loginData);
-
 private:
 	// 执行数据库语句线程
 	void HandlerExecuteSqlThread();

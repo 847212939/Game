@@ -137,25 +137,6 @@ TCPClient* Util::GetTCPClient()
 {
 	return m_TCPClient;
 }
-Animal* Util::CreatAnimal(AnimalType type, int mid)
-{
-	switch (type)
-	{
-	case AnimalType::at_player:
-	{
-		return nullptr;
-	}
-	case AnimalType::at_monster:
-	{
-		Animal* animal = new MonsterClient;
-		dynamic_cast<MonsterClient*>(animal)->Init(mid);
-		return animal;
-	}
-	default:
-		return nullptr;
-	}
-	return nullptr;
-}
 void Util::Exit(bool& run)
 {
 	std::string str;

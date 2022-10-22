@@ -696,9 +696,6 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime);
 
-	// ÇåÀíµÇÂ¼ÄÚ´æ
-	DPPC->GetLoginSys().DelLoginInMap(index);
-
 	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
 		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 }

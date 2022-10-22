@@ -50,10 +50,6 @@ public:
 	static bool InitTime();
 
 public:
-	// 生产怪
-	static Animal* CreatAnimal(AnimalType type, int mid = 0);
-
-public:
 	/*
 	* @brief 字符串拆分函数
 	* @param str 原始字符串

@@ -28,8 +28,6 @@ private:
 	void TimerCallback(void* pDataLineHead);
 	// 主消息回调函数
 	void SocketCallback(void* pDataLineHead);
-	// 断开链接回调函数
-	void CloseSocketCallback(void* pDataLineHead);
 	// 回调到TimerCallback or SocketCallback or CloseSocketCallback 中
 	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
 	// 添加回调函数

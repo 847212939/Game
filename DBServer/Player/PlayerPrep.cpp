@@ -38,8 +38,6 @@ void PlayerPrep::Init()
 	{
 		m_pServerTimer[i].Start();
 	}
-
-	DSC->Init();
 }
 bool PlayerPrep::InitDB()
 {
@@ -133,14 +131,8 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		DSC->MessageDispatch(cmd, playerInfo);
+		
 	}
-}
-
-// 创建角色
-void PlayerPrep::CreatePlayer(LoginData& loginData)
-{
-	DPCC->CreatePlayer(loginData);
 }
 
 // 获取数据库

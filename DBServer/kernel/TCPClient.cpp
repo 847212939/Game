@@ -4,7 +4,6 @@ TCPClient::TCPClient() : CTCPSocketManage(), m_PlayerPrepClient(new PlayerPrepCl
 {
 	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
 	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
-	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 TCPClient::~TCPClient()
 {
@@ -125,7 +124,6 @@ void TCPClient::NotifyAll()
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
 	DPPC->GetConditionVariable().NotifyAll();
-	DPCC->GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -191,19 +189,4 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	{
 		COUT_LOG(LOG_CERROR, "Failed to process data£¬index=%d Out of range", index);
 	}
-}
-void TCPClient::CloseSocketCallback(void* pDataLineHead)
-{
-	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
-
-	PlayerClient* playerClient = DPCC->GetPlayerClientByIndex(pSocketClose->uIndex);
-	if (!playerClient)
-	{
-		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
-		return;
-	}
-
-	playerClient->ExitGame(pSocketClose);
-
-	SafeDelete(playerClient);
 }

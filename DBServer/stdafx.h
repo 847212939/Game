@@ -84,16 +84,6 @@ extern "C"
 #include "kernel/sha1.h"				// sha1
 #include "kernel/ServerTimer.h"			// 定时器
 
-#include "Player/Attribute.h"			// 属性
-#include "Player/Animal.h"				// 动物
-#include "Player/Player.h"				// 玩家
-#include "Player/PlayerClient.h"		// 逻辑处理类
-#include "Player/PlayerCenter.h"		// 玩家管理
-#include "Player/PlayerCenterClient.h"	// 玩家管理
-#include "Player/Monster.h"				// 怪物
-#include "Player/MonsterClient.h"		// 怪物
-#include "Player/Scene.h"				// 场景
-#include "Player/SceneClient.h"			// 场景
 #include "Player/PlayerPrep.h"			// 信息在注册
 #include "Player/PlayerPrepClient.h"	// 逻辑处理类
 

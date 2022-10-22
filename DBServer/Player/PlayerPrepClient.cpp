@@ -1,19 +1,12 @@
 #include "../stdafx.h"
 
 PlayerPrepClient::PlayerPrepClient() : 
-	PlayerPrep(), 
-	m_SceneClient(this),
-	m_LoginSys(this)
+	PlayerPrep()
 {
 	InitMysqlTable();
 }
 PlayerPrepClient::~PlayerPrepClient()
 {
-}
-
-SceneClient* PlayerPrepClient::GetSceneClient()
-{
-	return &m_SceneClient;
 }
 
 void PlayerPrepClient::SendOperateResults(SocketReadLine* pMsg, bool results/* = true*/)
