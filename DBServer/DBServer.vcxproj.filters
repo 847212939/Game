@@ -176,16 +176,7 @@
     <None Include="Lua\Config.pkg">
       <Filter>配置管理\配置脚本</Filter>
     </None>
-    <None Include="Data\Config\ActivityCfg.lua">
-      <Filter>配置管理\配置文件</Filter>
-    </None>
     <None Include="Data\Config\BaseCfg.lua">
-      <Filter>配置管理\配置文件</Filter>
-    </None>
-    <None Include="Data\Config\Monster.lua">
-      <Filter>配置管理\配置文件</Filter>
-    </None>
-    <None Include="Data\Config\SkillCfg.lua">
       <Filter>配置管理\配置文件</Filter>
     </None>
   </ItemGroup>
