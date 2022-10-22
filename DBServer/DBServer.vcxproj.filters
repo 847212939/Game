@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="系统入口">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="配置管理">
+      <UniqueIdentifier>{bf60bbf0-565e-4bd9-b126-9cd608e64ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理">
+      <UniqueIdentifier>{7a0d2c7c-f887-43ed-9360-bd83797f60bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\定时管理">
+      <UniqueIdentifier>{2ce9279a-3eae-461d-b172-6ac506ac0c69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\工具管理">
+      <UniqueIdentifier>{e741fea3-f029-4aa4-b983-10856e40adac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\公共定义">
+      <UniqueIdentifier>{3eddbdbd-9b05-48bd-bc05-6cc9e6839c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\日志管理">
+      <UniqueIdentifier>{a73b0d0f-cc93-4c10-8509-80c3460c50af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\数据管理">
+      <UniqueIdentifier>{ac12b9cc-d786-45a4-805e-0f751fe47483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\条件变量">
+      <UniqueIdentifier>{403c4f45-0821-4063-a597-aa745dd81686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\网络处理">
+      <UniqueIdentifier>{f87a9dd5-f4dd-42e5-ba6e-987210208cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息队列">
+      <UniqueIdentifier>{8a66d858-1f19-4cd9-9889-8671814d86a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息解析">
+      <UniqueIdentifier>{4da4fd48-8d9c-493c-b20b-5da2521bb573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理\配置管理">
+      <UniqueIdentifier>{71146117-9f7f-4768-949e-079a0b996e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理\配置脚本">
+      <UniqueIdentifier>{d63a4313-e06f-4531-871a-eb1f35864a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理\配置文件">
+      <UniqueIdentifier>{36f2deb2-e329-4bea-b11d-5681111e2a34}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="table.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\ServerTimer.cpp">
+      <Filter>网络管理\定时管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\base64.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IDGen.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\sha1.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\Util.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\LogManager.cpp">
+      <Filter>网络管理\日志管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\MysqlHelper.cpp">
+      <Filter>网络管理\数据管理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\TCPClient.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\TCPSocket.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\DataLine.cpp">
+      <Filter>网络管理\消息队列</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\Netmsg.cpp">
+      <Filter>网络管理\消息解析</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\BaseCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ConfigMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\ServerTimer.h">
+      <Filter>网络管理\定时管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\base64.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IDGen.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\sha1.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Util.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\TimerCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Structural.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\MessageCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Macro.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\AttrsCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Alias.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\LogManager.h">
+      <Filter>网络管理\日志管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\MysqlHelper.h">
+      <Filter>网络管理\数据管理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\ConditionVariable.h">
+      <Filter>网络管理\条件变量</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\TCPClient.h">
+      <Filter>网络管理\网络处理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\TCPSocket.h">
+      <Filter>网络管理\网络处理</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\DataLine.h">
+      <Filter>网络管理\消息队列</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\Netmsg.h">
+      <Filter>网络管理\消息解析</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\BaseCfgMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ConfigMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\LuaMgr.h">
+      <Filter>配置管理\配置管理</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lua\LoadScript.lua">
+      <Filter>配置管理\配置脚本</Filter>
+    </None>
+    <None Include="Lua\Config.pkg">
+      <Filter>配置管理\配置脚本</Filter>
+    </None>
+    <None Include="Data\Config\ActivityCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="Data\Config\BaseCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="Data\Config\Monster.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+    <None Include="Data\Config\SkillCfg.lua">
+      <Filter>配置管理\配置文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>

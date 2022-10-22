@@ -1,0 +1,1 @@
+tolua++.exe -o LuaCfgMgr.cpp Config.pkg
