@@ -81,15 +81,7 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
-	// websocket服务器
-	if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
-	{
-		MessageDispatch((MsgCmd)uMainID, playerInfo);
-	}
-	else if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
-	{
-		MessageDispatch((MsgCmd)uMainID, playerInfo);
-	}
+	MessageDispatch((MsgCmd)uMainID, playerInfo);
 }
 void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
@@ -104,14 +96,9 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
-	// 处理登录协议等.. 玩家没有创建
-	if (MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification)
+	if (MsgCmd::MsgCmd_DBServer == (MsgCmd)pMsg->netMessageHead.uIdentification)
 	{
 		CallBackFun(cmd, playerInfo);
-	}
-	else
-	{
-		
 	}
 }
 
