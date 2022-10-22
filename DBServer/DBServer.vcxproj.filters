@@ -64,9 +64,6 @@
     <ClCompile Include="main.cpp">
       <Filter>系统入口</Filter>
     </ClCompile>
-    <ClCompile Include="table.cpp">
-      <Filter>系统入口</Filter>
-    </ClCompile>
     <ClCompile Include="kernel\Util.cpp">
       <Filter>网络管理\工具管理</Filter>
     </ClCompile>

@@ -33,7 +33,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player\PlayerPrep.cpp" />
     <ClCompile Include="Player\PlayerPrepClient.cpp" />
-    <ClCompile Include="table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kernel\Alias.h" />

@@ -1,18 +1,5 @@
 #include "../stdafx.h"
 
-char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
-"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
-char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` bigint(20) NOT NULL,"
-"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
-char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
-"default charset utf8 COLLATE utf8_unicode_ci";
-
 PlayerPrep::PlayerPrep()
 {
 }

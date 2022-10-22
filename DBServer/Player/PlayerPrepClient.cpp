@@ -3,7 +3,6 @@
 PlayerPrepClient::PlayerPrepClient() : 
 	PlayerPrep()
 {
-	InitMysqlTable();
 }
 PlayerPrepClient::~PlayerPrepClient()
 {
