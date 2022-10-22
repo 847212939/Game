@@ -8,8 +8,6 @@
 
 #define DTCPC		DUtil->GetTCPClient()
 #define DPPC		DTCPC->GetPlayerPrepClient()
-#define DSC			DPPC->GetSceneClient()
-#define DPCC		DSC->GetPlayerCenterClient()
 
 #if defined(_WIN32)
 #define SOCKFD SOCKET

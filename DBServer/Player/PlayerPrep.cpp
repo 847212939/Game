@@ -241,10 +241,10 @@ void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::strin
 
 	outStr = it->second;
 }
-void PlayerPrep::LoadOneSql(std::string sqlName, uint64_t userId, std::string& outStr, std::string dataStr)
+void PlayerPrep::LoadOneSql(std::string sqlName, int serverid, uint64_t userId, std::string& outStr, std::string dataStr)
 {
 	char sql[1024] = "";
-	sprintf(sql, "select * from %s where userid=%lld", sqlName.c_str(), userId);
+	sprintf(sql, "select * from %s where serverid=%d and userid=%lld", sqlName.c_str(), serverid, userId);
 
 	CMysqlHelper::MysqlData queryData;
 	try
