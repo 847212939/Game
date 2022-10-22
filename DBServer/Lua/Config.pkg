@@ -23,17 +23,6 @@ public:
 	void ReadKeyCfg(std::string key);
 	void ReadOpenServerTime(std::string servertm);
 
-public:
-	// 活动
-	void ReadActivityList(CActivityList* config);
-	void ReadBrushMonsterCfg(CBrushMonsterCfg* config);
-	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
-
-public:
-	// 技能
-	void ReadHeroList(CHeroList* config);
-	void ReadSkillIdList(CSkillIdList* config);
-
 };
 
 enum LogLevel
@@ -66,69 +55,4 @@ struct CDbCfg
 
 	CDbCfg();
 	~CDbCfg();
-};
-
-struct CActivityList
-{
-	int id;
-	int type;
-	int sid;
-	int activityBreakdown;
-	CActivityList();
-	~CActivityList();
-	void AddBeginTime(int tm);
-	void AddEndTime(int tm);
-	void AddSolidTime(int tm);
-	void AddOpenServerTime(int tm);
-};
-
-struct CActivityBreakdown
-{
-	int id;
-	int dayBreakdown;
-	int hourBreakdown;
-	CActivityBreakdown();
-	~CActivityBreakdown();
-	void AddDayBreakdownList(int idex, int tm);
-	void AddHourBreakdownList(int idex, int tm);
-};
-
-struct CBrushMonsterCfg
-{
-	int id;
-	int sid;
-	int mid;
-	int count;
-	int delayTime;
-	int refreshTime;
-	int x;
-	int y;
-	CBrushMonsterCfg();
-	~CBrushMonsterCfg();
-};
-
-struct CHeroList
-{
-	int heroId;
-	int heroType;
-	std::string heroName;
-	void AddskillId(int skillid);
-
-	CHeroList();
-	~CHeroList();
-};
-
-struct CSkillIdList
-{
-	int skillId;
-	int skillType;
-	int skillCd;
-	int skillEffect;
-	int skillEffectCd;
-	int minSkillCd;
-	int minSkillEffect;
-	MapAttrsCmdInt attrs;
-	void AddAttrs(int id, int value);
-	CSkillIdList();
-	~CSkillIdList();
 };

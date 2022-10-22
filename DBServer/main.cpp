@@ -12,15 +12,6 @@ int main()
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
-	if (!DUtil->InitTime())
-	{
-		COUT_LOG(LOG_CERROR, "main exit");
-		return -1;
-	}
-
-	IDGen& idGen = DUtil->GetIDGen();
-	idGen.Init((int)type, BaseCfgMgr.GetServerId());
-
 	if (!DTCPC->Init(type))
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
@@ -28,7 +19,6 @@ int main()
 	}
 
 	LogMgr->Init(std::ref(run));
-
 	Util::Exit(std::ref(run));
 
 	return 0;

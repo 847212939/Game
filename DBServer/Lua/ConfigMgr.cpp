@@ -57,27 +57,3 @@ void ConfigMgr::ReadOpenServerTime(std::string servertm)
 {
 	m_CBaseCfgMgr.ReadOpenServerTime(servertm);
 }
-
-// 活动
-void ConfigMgr::ReadActivityBreakdownCfg(CActivityBreakdown* config)
-{
-	m_ActivityHallCfg.ReadActivityBreakdownCfg(config);
-}
-void ConfigMgr::ReadActivityList(CActivityList* config)
-{
-	m_ActivityHallCfg.ReadActivityList(config);
-}
-void ConfigMgr::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
-{
-	m_ActivityHallCfg.ReadBrushMonsterCfg(config);
-}
-
-// 技能
-void ConfigMgr::ReadHeroList(CHeroList* config)
-{
-	m_SkillCfg.ReadHeroList(config);
-}
-void ConfigMgr::ReadSkillIdList(CSkillIdList* config)
-{
-	m_SkillCfg.ReadSkillIdList(config);
-}

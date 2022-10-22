@@ -84,18 +84,6 @@ extern "C"
 #include "kernel/sha1.h"				// sha1
 #include "kernel/ServerTimer.h"			// 定时器
 
-#include "Logic/SkillCfg.h"				// 技能配置
-#include "Logic/SkillLvSys.h"			// 技能等级
-#include "Logic/MoveSys.h"				// 移动
-#include "Logic/SkillSys.h"				// 伤害系统
-#include "Logic/ActivityHallCfg.h"		// 活动配置
-#include "Logic/ActiveTime.h"			// 固定时间活动
-#include "Logic/ActiveService.h"		// 开服活动
-#include "Logic/ActiveAlways.h"			// 全天活动
-#include "Logic/ActiveSection.h"		// 时间内活动
-#include "Logic/ActivityHallSys.h"		// 活动系统
-#include "Logic/LoginSys.h"				// 登录系统
-
 #include "Player/Attribute.h"			// 属性
 #include "Player/Animal.h"				// 动物
 #include "Player/Player.h"				// 玩家

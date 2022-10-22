@@ -28,23 +28,8 @@ public:
 	void ReadKeyCfg(std::string key);
 	void ReadOpenServerTime(std::string servertm);
 
-public:
-	// 活动
-	void ReadActivityList(CActivityList* config);
-	void ReadBrushMonsterCfg(CBrushMonsterCfg* config);
-	void ReadActivityBreakdownCfg(CActivityBreakdown* config);
-
-public:
-	// 技能
-	void ReadHeroList(CHeroList* config);
-	void ReadSkillIdList(CSkillIdList* config);
-
 private:
 	CBaseCfgMgr	m_CBaseCfgMgr;
-
-public:
-	GetClass(ActivityHallCfg, ActivityHallCfg)
-	GetClass(SkillCfg, SkillCfg)
 };
 
 // tolua++.exe -o LuaCfgMgr.cpp Config.pkg
