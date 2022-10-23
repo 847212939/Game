@@ -1,107 +1,107 @@
-#pragma once
+ï»¿#pragma once
 
 class CTCPSocketManage
 {
 public:
-	// ¹¹Ôìº¯Êı
+	// æ„é€ å‡½æ•°
 	CTCPSocketManage();
 	virtual ~CTCPSocketManage();
 
 protected:
-	// ½ûÓÃ¿½±´¹¹Ôìº¯Êı
+	// ç¦ç”¨æ‹·è´æ„é€ å‡½æ•°
 	CTCPSocketManage(const CTCPSocketManage& my);
 	CTCPSocketManage& operator=(const CTCPSocketManage& my);
 
 public:
-	// Í£Ö¹·şÎñ
+	// åœæ­¢æœåŠ¡
 	bool Stop();
-	// ¿ªÊ¼·şÎñ
+	// å¼€å§‹æœåŠ¡
 	bool Start();
-	// ³õÊ¼»¯
+	// åˆå§‹åŒ–
 	bool Init(int maxCount, int port, const char* ip = nullptr, 
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
-	// ·¢ËÍÊı¾İº¯Êı
+	// å‘é€æ•°æ®å‡½æ•°
 	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
-	// ¹Ø±ÕÁ¬½Óº¯Êı
+	// å…³é—­è¿æ¥å‡½æ•°
 	bool CloseSocket(int index);
-	// ÉèÖÃtcpÎªÎ´Á¬½Ó×´Ì¬
+	// è®¾ç½®tcpä¸ºæœªè¿æ¥çŠ¶æ€
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
-	// ·ÖÅäsocketIndexËã·¨
+	// åˆ†é…socketIndexç®—æ³•
 	int GetSocketIndex();
-	// Ìí¼ÓTCPSocketInfo
+	// æ·»åŠ TCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type = ServiceType::SERVICE_TYPE_BEGIN);
-	// ÏûÏ¢·¢ËÍ
+	// æ¶ˆæ¯å‘é€
 	bool BuffereventWrite(int index, void* data, unsigned int size);
 
 public:
-	// »ñÈ¡event_base
+	// è·å–event_base
 	event_base* GetEventBase();
-	// »ñÈ¡·şÎñÆ÷ÀàĞÍ
+	// è·å–æœåŠ¡å™¨ç±»å‹
 	ServiceType GetServerType();
-	// »ñÈ¡½ÓÊÕdataline
+	// è·å–æ¥æ”¶dataline
 	CDataLine* GetRecvDataLine();
-	// »ñÈ¡·¢ËÍdataline
+	// è·å–å‘é€dataline
 	CDataLine* GetSendDataLine();
-	// »ñÈ¡Ìõ¼ş±äÁ¿
+	// è·å–æ¡ä»¶å˜é‡
 	ConditionVariable& GetConditionVariable();
-	// »ñÈ¡ÔËĞĞÏß³Ì
+	// è·å–è¿è¡Œçº¿ç¨‹
 	std::vector<std::thread*>& GetSockeThreadVec();
-	// »ñÈ¡ÔËĞĞ×´Ì¬
+	// è·å–è¿è¡ŒçŠ¶æ€
 	bool& GetRuninged();
-	// ÊÇ·ñÁ¬½Ó
+	// æ˜¯å¦è¿æ¥
 	bool IsConnected(int index);
-	// »ñÈ¡socketSet
+	// è·å–socketSet
 	void GetSocketSet(std::vector<unsigned int>& vec);
-	// »ñÈ¡TCPSocketInfo
+	// è·å–TCPSocketInfo
 	TCPSocketInfo* GetTCPSocketInfo(int index);
-	// »ñÈ¡socketVector
+	// è·å–socketVector
 	const std::vector<TCPSocketInfo>& GetSocketVector();
-	// »ñÈ¡Á¬½Óip
+	// è·å–è¿æ¥ip
 	const char* GetSocketIP(int index);
-	// »ñÈ¡µ±Ç°socketÁ¬½Ó×ÜÊı
+	// è·å–å½“å‰socketè¿æ¥æ€»æ•°
 	unsigned int GetCurSocketSize();
-	// »ñÈ¡DBServerË÷Òı
+	// è·å–DBServerç´¢å¼•
 	int GetDBServerIndex();
 
 private:
-	// ÉèÖÃtcpÊôĞÔ
-	// ÉèÖÃtcpÊÕ·¢»º³åÇø
+	// è®¾ç½®tcpå±æ€§
+	// è®¾ç½®tcpæ”¶å‘ç¼“å†²åŒº
 	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
-	// ÉèÖÃÓ¦ÓÃ²ãµ¥´Î¶ÁÈ¡Êı¾İ°üµÄ´óĞ¡ bufferevent_set_max_single_read
+	// è®¾ç½®åº”ç”¨å±‚å•æ¬¡è¯»å–æ•°æ®åŒ…çš„å¤§å° bufferevent_set_max_single_read
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
-	// Ïß³Ìº¯Êı
-	// SOCKET Á¬½ÓÓ¦´ğÏß³Ì
+	// çº¿ç¨‹å‡½æ•°
+	// SOCKET è¿æ¥åº”ç­”çº¿ç¨‹
 	void ThreadAccept();
-	// SOCKET Êı¾İ·¢ËÍÏß³Ì
+	// SOCKET æ•°æ®å‘é€çº¿ç¨‹
 	void ThreadSendMsg();
-	// SOCKET Êı¾İ½ÓÊÕÏß³Ì
+	// SOCKET æ•°æ®æ¥æ”¶çº¿ç¨‹
 	static void ThreadRSSocket(void* pThreadData);
 
 private:
-	// ¾²Ì¬»Øµ÷·½·¨
-	// ĞÂµÄÊı¾İµ½À´£¬ThreadRSSocketÏß³Ìº¯Êı
+	// é™æ€å›è°ƒæ–¹æ³•
+	// æ–°çš„æ•°æ®åˆ°æ¥ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
 	static void ReadCB(struct bufferevent*, void*);
-	// Á¬½Ó¹Ø±ÕµÈµÈ´íÎóÏûÏ¢£¬ThreadRSSocketÏß³Ìº¯Êı
+	// è¿æ¥å…³é—­ç­‰ç­‰é”™è¯¯æ¶ˆæ¯ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
 	static void EventCB(struct bufferevent*, short, void*);
-	// acceptÊ§°Ü£¬ThreadAcceptÏß³Ìº¯Êı
+	// acceptå¤±è´¥ï¼ŒThreadAcceptçº¿ç¨‹å‡½æ•°
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);
-	// ĞÂµÄÁ¬½Óµ½À´£¬ThreadRSSocketÏß³Ìº¯Êı
+	// æ–°çš„è¿æ¥åˆ°æ¥ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
-	// ĞÂµÄÁ¬½Óµ½À´£¬ThreadAcceptÏß³Ìº¯Êı
+	// æ–°çš„è¿æ¥åˆ°æ¥ï¼ŒThreadAcceptçº¿ç¨‹å‡½æ•°
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
-	// ÅÉ·¢Êı¾İ°ü
+	// æ´¾å‘æ•°æ®åŒ…
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
-	//ÍøÂç¹Ø±Õ´¦Àí
+	//ç½‘ç»œå…³é—­å¤„ç†
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
-	// ¶Ô³Æ¼ÓÃÜ²âÊÔÁ¬½Ó
+	// å¯¹ç§°åŠ å¯†æµ‹è¯•è¿æ¥
 	bool VerifyConnection(int index, char* data);
 
 private:
@@ -111,7 +111,7 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
-	// ·¢ËÍTCPÏûÏ¢
+	// å‘é€TCPæ¶ˆæ¯
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
 #ifdef __WebSocket__
@@ -123,9 +123,9 @@ private:
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
 #endif
 
-	// ×îµ×²ã´¦ÀíÊÕµ½µÄÊı¾İº¯Êı
+	// æœ€åº•å±‚å¤„ç†æ”¶åˆ°çš„æ•°æ®å‡½æ•°
 	bool RecvData(bufferevent* bev, int index);
-	// ´¦ÀíÊÕµ½ÏûÏ¢½øĞĞÕ³°ü
+	// å¤„ç†æ”¶åˆ°æ¶ˆæ¯è¿›è¡Œç²˜åŒ…
 	bool RecvLogicData(bufferevent* bev, int index);
 #ifdef __WebSocket__
 	bool RecvLogicWsData(bufferevent* bev, int index);
@@ -134,9 +134,9 @@ private:
 	bool RecvLogicWssData(bufferevent* bev, int index);
 #endif
 
-	// ´¦Àí·¢ËÍÏß³ÌÏûÏ¢
+	// å¤„ç†å‘é€çº¿ç¨‹æ¶ˆæ¯
 	void HandleSendMsg(ListItemData* pListItem);
-	// ´¦Àí·¢ËÍÏß³ÌÏûÏ¢
+	// å¤„ç†å‘é€çº¿ç¨‹æ¶ˆæ¯
 	void HandleSendData(ListItemData* pListItem);
 #ifdef __WebSocket__
 	void HandleSendWsData(ListItemData * pListItem);
@@ -150,12 +150,12 @@ private:
 	bool OpensslInit();
 #endif
 
-	// websocketµÄµÚÒ»´ÎÎÕÊÖ
+	// websocketçš„ç¬¬ä¸€æ¬¡æ¡æ‰‹
 #ifdef __WebSocket__
 	bool HandShark(bufferevent* bev, int index);
 #endif
 
-	// websocket½âÎöÊı¾İ°üº¯Êı
+	// websocketè§£ææ•°æ®åŒ…å‡½æ•°
 #ifdef __WebSocket__
 private:
 	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
