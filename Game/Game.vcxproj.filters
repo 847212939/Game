@@ -238,6 +238,9 @@
     <ClCompile Include="Logic\ActiveAlways.cpp">
       <Filter>逻辑管理\活动系统\全天活动</Filter>
     </ClCompile>
+    <ClCompile Include="kernel\MysqlClient.cpp">
+      <Filter>网络管理\数据管理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -371,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="Logic\ActiveAlways.h">
       <Filter>逻辑管理\活动系统\全天活动</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\MysqlClient.h">
+      <Filter>网络管理\数据管理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

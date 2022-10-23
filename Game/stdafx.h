@@ -83,6 +83,7 @@ extern "C"
 #include "kernel/base64.h"				// base64
 #include "kernel/sha1.h"				// sha1
 #include "kernel/ServerTimer.h"			// 定时器
+#include "kernel/MysqlClient.h"			// 数据库客户端
 
 #include "Logic/SkillCfg.h"				// 技能配置
 #include "Logic/SkillLvSys.h"			// 技能等级

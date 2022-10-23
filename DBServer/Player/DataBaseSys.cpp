@@ -23,22 +23,38 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 
 	DataBaseSysMsgCmd uAssistantID = (DataBaseSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
+	Netmsg msg((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
-	case DataBaseSysMsgCmd::cs_load:
+	case DataBaseSysMsgCmd::cs_load_player:
 	{
-		LoadMysql(playerInfo);
+		LoadPlayerMysql(msg, playerInfo);
 		break;
 	}
-	case DataBaseSysMsgCmd::cs_save:
+	case DataBaseSysMsgCmd::cs_load_global:
 	{
-		SaveMysql(playerInfo);
+		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
-	case DataBaseSysMsgCmd::cs_create:
+	case DataBaseSysMsgCmd::cs_save_player:
 	{
-		CreateMysql(playerInfo);
+		break;
+	}
+	case DataBaseSysMsgCmd::cs_save_global:
+	{
+		break;
+	}
+	case DataBaseSysMsgCmd::cs_create_global:
+	{
+		break;
+	}
+	case DataBaseSysMsgCmd::cs_create_player:
+	{
+		break;
+	}
+	case DataBaseSysMsgCmd::cs_load_login:
+	{
 		break;
 	}
 	default:
@@ -46,8 +62,7 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-// ¼ÓÔØ
-bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
+bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -58,28 +73,78 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 		return false;
 	}
 
-	auto* pMsg = playerInfo->pMsg;
-	int serverid = 0, option = 0;
-	unsigned int uMainID = 0, uAssistantID = 0, uIdentification = 0;
-	std::string sqlName, outStr;
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	int serverid = 0;
+	std::string sqlName;
+	std::string outStr;
+	uint64_t userid = 0;
+	unsigned int uMainID = 0;
+	unsigned int uAssistantID = 0;
+	unsigned int uIdentification = 0;
 
-	Netmsg msgCin((char*)playerInfo->pData);
-	msgCin >> option >> serverid >> sqlName;
+	msg >> serverid >> userid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	DPPC->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
-	if (option == 1)
+	Netmsg msgCout;
+	msgCout << outStr;
+
+	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
+
+	return true;
+}
+bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
 	{
-		std::string userid;
-		msgCin >> userid;
-		DPPC->LoadOneSql(sqlName, serverid, userid, outStr);
+		return false;
 	}
-	else if (option == 2)
+	if (!playerInfo->pMsg)
 	{
-		uint64_t userid = 0;
-		msgCin >> userid;
-		DPPC->LoadOneSql(sqlName, serverid, userid, outStr);
+		return false;
 	}
 
-	msgCin >> uMainID >> uAssistantID >> uIdentification;
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	int serverid = 0;
+	std::string sqlName;
+	std::string outStr;
+	std::string userid;
+	unsigned int uMainID = 0;
+	unsigned int uAssistantID = 0;
+	unsigned int uIdentification = 0;
+
+	msg >> serverid >> userid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	DPPC->LoadLoginMysql(sqlName, serverid, userid, outStr);
+
+	Netmsg msgCout;
+	msgCout << outStr;
+
+	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
+
+	return true;
+}
+bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	int serverid = 0;
+	std::string sqlName;
+	std::string outStr;
+	unsigned int uMainID = 0;
+	unsigned int uAssistantID = 0;
+	unsigned int uIdentification = 0;
+
+	msg >> serverid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	DPPC->LoadGlobalMysql(sqlName, serverid, outStr);
 
 	Netmsg msgCout;
 	msgCout << outStr;
@@ -91,7 +156,7 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 }
 
 // ±£´æ
-bool DataBaseSys::SaveMysql(PlayerInfo* playerInfo)
+bool DataBaseSys::SaveMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -113,7 +178,7 @@ bool DataBaseSys::SaveMysql(PlayerInfo* playerInfo)
 	return true;
 }
 
-bool DataBaseSys::CreateMysql(PlayerInfo* playerInfo)
+bool DataBaseSys::CreateMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{

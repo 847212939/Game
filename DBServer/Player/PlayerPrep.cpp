@@ -225,7 +225,37 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::LoadOneSql(std::string sqlName, int serverid, std::string& userId, std::string& outStr, std::string dataStr/* = "data"*/)
+void PlayerPrep::LoadGlobalMysql(std::string sqlName, int serverid, std::string& outStr, std::string dataStr/* = "data"*/)
+{
+	char sql[1024] = "";
+	sprintf(sql, "select * from %s where serverid=%d", sqlName.c_str(), serverid);
+
+	CMysqlHelper::MysqlData data;
+	try
+	{
+		m_CMysqlHelperLoad.queryRecord(sql, data);
+	}
+	catch (MysqlHelper_Exception& excep)
+	{
+		COUT_LOG(LOG_CERROR, "º”‘ÿ ˝æ›ø‚ ß∞‹:%s", excep.errorInfo.c_str());
+		return;
+	}
+
+	if (data.size() <= 0)
+	{
+		return;
+	}
+
+	MapStringString& dataMap = data[0];
+	MapStringString::iterator it = dataMap.find(dataStr);
+	if (it == dataMap.end())
+	{
+		return;
+	}
+
+	outStr = it->second;
+}
+void PlayerPrep::LoadLoginMysql(std::string sqlName, int serverid, std::string& userId, std::string& outStr, std::string dataStr/* = "data"*/)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where serverid=%d and userid='%s'", sqlName.c_str(), serverid, userId.c_str());
@@ -255,7 +285,7 @@ void PlayerPrep::LoadOneSql(std::string sqlName, int serverid, std::string& user
 
 	outStr = it->second;
 }
-void PlayerPrep::LoadOneSql(std::string sqlName, int serverid, uint64_t userId, std::string& outStr, std::string dataStr)
+void PlayerPrep::LoadPlayerMysql(std::string sqlName, int serverid, uint64_t userId, std::string& outStr, std::string dataStr)
 {
 	char sql[1024] = "";
 	sprintf(sql, "select * from %s where serverid=%d and userid=%lld", sqlName.c_str(), serverid, userId);

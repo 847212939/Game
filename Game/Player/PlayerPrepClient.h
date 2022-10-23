@@ -26,5 +26,6 @@ private:
 	SceneClient	m_SceneClient;
 
 public:
+	GetClass(MysqlClient, MysqlClient)
 	GetClass(LoginSys, LoginSys)	// µÇÂ¼ÏµÍ³
 };

@@ -88,7 +88,7 @@ void Player::MysqlCallBackFun()
 {
 	for (MapMysqlFunc::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		LoadOneSql(it->second);
+		DPPC->GetMysqlClient().LoadPlayerMysql(this, it->second);
 	}
 }
 void Player::AttrsCallBackFun()
