@@ -24,20 +24,16 @@ function ReadBaseCfg()
     local BaseCfg = require "BaseCfg"
 
     if BaseCfg then
-        ConfigMgr:ReadKeyCfg(BaseCfg.Skey or 0)
-        ConfigMgr:ReadTimerCntCfg(BaseCfg.TimerCnt or 0)
-        ConfigMgr:ReadServerIDCfg(BaseCfg.serverID or 0)
         ConfigMgr:ReadThreadCntCfg(BaseCfg.ThreadCnt or 0)
         ConfigMgr:ReadLogPrintTmCfg(BaseCfg.LogPrintfTime or 0)
         ConfigMgr:ReadMaxSocketCntCfg(BaseCfg.maxSocketCnt or 0)
         ConfigMgr:ReadExitCfg(BaseCfg.Exit or 0)
-        ConfigMgr:ReadOpenServerTime(BaseCfg.OpenServerTime or 0)
 
-        if BaseCfg.LogicCfg then
-            local config = CLogicCfg:new()
-            config.ip = BaseCfg.LogicCfg.ip or 0
-            config.port = BaseCfg.LogicCfg.port or 0
-            ConfigMgr:ReadLogicCfg(config)
+        if BaseCfg.ServerCfg then
+            local config = CServerCfg:new()
+            config.ip = BaseCfg.ServerCfg.ip or 0
+            config.port = BaseCfg.ServerCfg.port or 0
+            ConfigMgr:ReadServerCfg(config)
             config:delete()
         end
 

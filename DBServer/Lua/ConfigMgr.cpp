@@ -13,9 +13,9 @@ CBaseCfgMgr& ConfigMgr::GetCBaseCfgMgr()
 }
 
 // ª˘¥°≈‰÷√
-void ConfigMgr::ReadLogicCfg(CLogicCfg* config) 
+void ConfigMgr::ReadServerCfg(CServerCfg* CServerCfg)
 { 
-	m_CBaseCfgMgr.ReadLogicCfg(config);
+	m_CBaseCfgMgr.ReadServerCfg(config);
 }
 void ConfigMgr::ReadDbCfg(CDbCfg* config) 
 { 
@@ -24,10 +24,6 @@ void ConfigMgr::ReadDbCfg(CDbCfg* config)
 void ConfigMgr::ReadThreadCntCfg(int cnt) 
 { 
 	m_CBaseCfgMgr.ReadThreadCntCfg(cnt); 
-}
-void ConfigMgr::ReadServerIDCfg(int id)
-{
-	m_CBaseCfgMgr.ReadServerIDCfg(id);
 }
 void ConfigMgr::ReadLogPrintTmCfg(int tm)
 {
@@ -44,16 +40,4 @@ void ConfigMgr::ReadMaxSocketCntCfg(int cnt)
 void ConfigMgr::ReadExitCfg(std::string exit)
 {
 	m_CBaseCfgMgr.ReadExitCfg(exit);
-}
-void ConfigMgr::ReadTimerCntCfg(int cnt)
-{
-	m_CBaseCfgMgr.ReadTimerCntCfg(cnt);
-}
-void ConfigMgr::ReadKeyCfg(std::string key)
-{
-	m_CBaseCfgMgr.ReadKeyCfg(key);
-}
-void ConfigMgr::ReadOpenServerTime(std::string servertm)
-{
-	m_CBaseCfgMgr.ReadOpenServerTime(servertm);
 }

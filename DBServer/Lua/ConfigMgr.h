@@ -17,16 +17,12 @@ public:
 public:
 	// ª˘¥°≈‰÷√
 	CBaseCfgMgr& GetCBaseCfgMgr();
-	void ReadLogicCfg(CLogicCfg* config);
+	void ReadServerCfg(CServerCfg* config);
 	void ReadDbCfg(CDbCfg* config);
 	void ReadThreadCntCfg(int cnt);
-	void ReadServerIDCfg(int id);
 	void ReadLogPrintTmCfg(int tm);
 	void ReadMaxSocketCntCfg(int cnt);
 	void ReadExitCfg(std::string exit);
-	void ReadTimerCntCfg(int cnt);
-	void ReadKeyCfg(std::string key);
-	void ReadOpenServerTime(std::string servertm);
 
 private:
 	CBaseCfgMgr	m_CBaseCfgMgr;
