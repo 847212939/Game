@@ -29,6 +29,10 @@ public:
 	bool CloseSocket(int index);
 	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
+	// 分配socketIndex算法
+	int GetSocketIndex();
+	// 添加TCPSocketInfo
+	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 
 public:
 	// 获取event_base
@@ -88,10 +92,6 @@ private:
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
-	// 分配socketIndex算法
-	int GetSocketIndex();
-	// 添加TCPSocketInfo
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	// 派发数据包
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
