@@ -263,27 +263,62 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 // 数据库操作
 void PlayerPrep::CreateTableS(std::string name, int cnt)
 {
-	char sql[CREATE_TABLE_LEN] = "";
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
 
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str(), cnt);
+	Netmsg msg;
+	msg << 1 << name << cnt;
 
-	CreateTableSql(sql);
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_DBServer, 
+		3, 0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
 void PlayerPrep::CreateTableI(std::string name, int cnt)
 {
-	char sql[CREATE_TABLE_LEN] = "";
-
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str(), cnt);
-
-	CreateTableSql(sql);
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	Netmsg msg;
+	msg << 2 << name << cnt;
+	
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_DBServer, 
+		3, 0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void PlayerPrep::CreateTableSql(const char* sql)
+void PlayerPrep::CreateTableSql(const char* sql, size_t size)
 {
-	m_cond.GetMutex().lock();
-	m_sqlList.push_back(sql);
-	m_cond.GetMutex().unlock();
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
 
-	m_cond.NotifyOne();
+	//DTCPC->SendMsg(index, sql, size, );
+	m_sqlList.push_back(sql);
 }
 void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
@@ -476,14 +511,14 @@ bool PlayerPrep::SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool&
 }
 void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 {
-	try
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
 	{
-		m_CMysqlHelperSave.execute(sql);
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
 	}
-	catch (MysqlHelper_Exception& excep)
-	{
-		COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
-	}
+
+	DTCPC->BuffereventWrite(index, (void*)sql.c_str(), (unsigned int)sql.size());
 }
 void PlayerPrep::HandlerExecuteSqlThread()
 {

@@ -6,6 +6,10 @@ public:
 	PlayerPrepClient();
 	virtual~PlayerPrepClient();
 
+public:
+	// 建立数据库
+	void InitMysqlTable();
+
 protected:
 	PlayerPrepClient(const PlayerPrepClient& my);
 	PlayerPrepClient& operator=(const PlayerPrepClient& my);
@@ -17,10 +21,6 @@ public:
 public:
 	// 发送操作结果
 	void SendOperateResults(SocketReadLine* pMsg, bool results = true);
-
-private:
-	// 建立数据库
-	void InitMysqlTable();
 
 private:
 	SceneClient	m_SceneClient;

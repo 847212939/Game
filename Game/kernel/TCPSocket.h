@@ -33,6 +33,8 @@ public:
 	int GetSocketIndex();
 	// 添加TCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type = ServiceType::SERVICE_TYPE_BEGIN);
+	// 消息发送
+	bool BuffereventWrite(int index, void* data, unsigned int size);
 
 public:
 	// 获取event_base
@@ -110,7 +112,6 @@ private:
 
 private:
 	// 发送TCP消息
-	bool BuffereventWrite(int index, void* data, unsigned int size);
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
 #ifdef __WebSocket__

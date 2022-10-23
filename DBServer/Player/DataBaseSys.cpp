@@ -115,15 +115,15 @@ bool DataBaseSys::CreateMysql(PlayerInfo* playerInfo)
 	auto* pMsg = playerInfo->pMsg;
 	Netmsg msgCin((char*)playerInfo->pData, 4);
 
-	int cnt = 0;
+	int cnt = 0, option = 0;
 	std::string sqlName;
-	msgCin >> sqlName >> cnt;
+	msgCin >> option >> sqlName >> cnt;
 
-	if (pMsg->netMessageHead.uHandleCode == 1)
+	if (option == 1)
 	{
 		DPPC->CreateTableS(sqlName, cnt);
 	}
-	else
+	else if (option == 2)
 	{
 		DPPC->CreateTableI(sqlName, cnt);
 	}

@@ -5,7 +5,6 @@ PlayerPrepClient::PlayerPrepClient() :
 	m_SceneClient(this),
 	m_LoginSys(this)
 {
-	InitMysqlTable();
 }
 PlayerPrepClient::~PlayerPrepClient()
 {

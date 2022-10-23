@@ -72,6 +72,9 @@ bool TCPClient::InitDBServer()
 	AddTCPSocketInfo(index, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
 
+	DPPC->InitMysqlTable();
+	DPPC->GetConditionVariable().NotifyAll();
+
 	return true;
 }
 bool TCPClient::Init(ServiceType serverType)
