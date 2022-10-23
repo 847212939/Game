@@ -188,7 +188,7 @@ else\
 }
 
 // 注册数据库回调
-#define RegisterMysql(pobj, loadMysql)\
+#define RegisterPlayerMysql(pobj, loadMysql)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\

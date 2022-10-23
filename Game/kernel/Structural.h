@@ -420,7 +420,7 @@ struct SLoadMysql
 		MsgCmd mainID,
 		unsigned int assistantID, 
 		unsigned int identification = (unsigned int)MsgCmd::MsgCmd_Player) :
-		sqlName(sqlName), 
+		sqlName(sqlname),
 		uMainID((unsigned int)mainID),
 		uAssistantID(assistantID), 
 		uIdentification(identification)

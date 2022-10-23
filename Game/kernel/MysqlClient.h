@@ -11,6 +11,7 @@ enum class DataBaseSysMsgCmd
 	cs_load_login		= 7,	// ¼ÓÔØµÇÂ¼Êý¾Ý¿â
 };
 
+class Player;
 class MysqlClient
 {
 public:
@@ -19,7 +20,7 @@ public:
 
 public:
 	static void LoadGlobalMysql(SLoadMysql& loadMysql);
-	static void LoadLoginMysql(std::string& userid, SLoadMysql& loadMysql);
+	static void LoadLoginMysql(std::string& userid, SLoadMysql loadMysql);
 	static void LoadPlayerMysql(Player* player, SLoadMysql& loadMysql);
 
 private:

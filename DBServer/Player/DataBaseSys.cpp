@@ -34,7 +34,6 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 	case DataBaseSysMsgCmd::cs_load_global:
 	{
-		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_save_player:
@@ -55,6 +54,7 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 	case DataBaseSysMsgCmd::cs_load_login:
 	{
+		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
 	default:
@@ -106,18 +106,24 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	SocketReadLine* pMsg = playerInfo->pMsg;
 	int serverid = 0;
+	int index = 0;
 	std::string sqlName;
 	std::string outStr;
 	std::string userid;
+	std::string passWord;
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
 
-	msg >> serverid >> userid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	msg >> serverid >> userid >> passWord >> index >> sqlName >> uMainID >> uAssistantID >> uIdentification;
 	DPPC->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
-	msgCout << outStr;
+	msgCout << userid << passWord << index;
+	if (!outStr.empty())
+	{
+		msgCout << outStr;
+	}
 
 	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, pMsg->pBufferevent, uIdentification);

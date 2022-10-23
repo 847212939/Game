@@ -39,7 +39,7 @@ void MysqlClient::LoadPlayerMysql(Player* player, SLoadMysql& loadMysql)
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_player, 
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql& loadMysql)
+void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 {
 	if (userid.empty())
 	{

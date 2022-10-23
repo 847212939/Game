@@ -86,9 +86,10 @@ void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 }
 void Player::MysqlCallBackFun()
 {
+	MysqlClient& mysqlClient = DPPC->GetMysqlClient();
 	for (MapMysqlFunc::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		DPPC->GetMysqlClient().LoadPlayerMysql(this, it->second);
+		mysqlClient.LoadPlayerMysql(this, it->second);
 	}
 }
 void Player::AttrsCallBackFun()

@@ -44,6 +44,11 @@ size_t Netmsg::size()
 	return m_SplitsList.size();
 }
 
+bool Netmsg::empty()
+{
+	return m_SplitsList.empty();
+}
+
 Netmsg::operator std::string()
 {
 	return m_os.str();

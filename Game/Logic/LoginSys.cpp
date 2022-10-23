@@ -61,46 +61,6 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool LoginSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
-{
-	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
-	if (!pLoginData)
-	{
-		return false;
-	}
-	if (msg.size() > 0)
-	{
-		uint64_t userid = 0;
-		std::string passwaed;
-
-		msg >> passwaed >> userid;
-
-		if (pLoginData->pw != passwaed)
-		{
-			// 密码不正确
-			return false;
-		}
-		if (userid <= 0)
-		{
-			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
-			return false;
-		}
-		if (DPCC->GetPlayerClientByIndex(pLoginData->index))
-		{
-			// 玩家在线
-			return false;
-		}
-		pLoginData->userId = userid;
-	}
-	if (pLoginData->userId <= 0)
-	{
-		pLoginData->userId = DUtil->CreateUserId();
-	}
-
-	DPPC->SendOperateResults(playerInfo->pMsg);
-
-	return true;
-}
 bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -120,8 +80,63 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	DPPC->LoadOneSql(id, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login, 
+	std::string idPw = id + "\n" + pw + "\n" + std::to_string(playerInfo->pMsg->uIndex);
+	DPPC->GetMysqlClient().LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
 		(unsigned int)LoginSysMsgCmd::cs_load, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces));
+	
+	return true;
+}
+bool LoginSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	int index = 0;
+	std::string id, pw;
+	msg >> id >> pw >> index;
+
+	LoginData loginData;
+	loginData.index = index;
+	loginData.id = id;
+	loginData.pw = pw;
+
+	if (!msg.empty())
+	{
+		uint64_t userid = 0;
+		std::string passwaed;
+
+		msg >> passwaed >> userid;
+
+		if (pw != passwaed)
+		{
+			// 密码不正确
+			return false;
+		}
+		if (userid <= 0)
+		{
+			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
+			return false;
+		}
+		if (DPCC->GetPlayerClientByIndex(loginData.index))
+		{
+			// 玩家在线
+			return false;
+		}
+		loginData.userId = userid;
+	}
+	if (loginData.userId <= 0)
+	{
+		loginData.userId = DUtil->CreateUserId();
+	}
+
+	AddLoginInMap(loginData);
+	TCPSocketInfo* sockInfo = DTCPC->GetTCPSocketInfo(index);
+	if (sockInfo)
+	{
+		Netmsg msg;
+		msg << (int)true;
+		DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
+	}
+
+	DPPC->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
