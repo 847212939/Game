@@ -10,7 +10,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
-	m_ctx(nullptr)
+	m_ctx(nullptr),
+	m_DBServerIndex(-1)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -316,7 +317,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 }
 
-void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
+void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
@@ -417,6 +418,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //½âËø
 
+	if (type == ServiceType::SERVICE_TYPE_DB)
+	{
+		m_DBServerIndex = index;
+		return;
+	}
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
 		return;
@@ -714,6 +720,10 @@ CDataLine* CTCPSocketManage::GetSendDataLine()
 unsigned int CTCPSocketManage::GetCurSocketSize()
 {
 	return m_uCurSocketSize;
+}
+int CTCPSocketManage::GetDBServerIndex()
+{
+	return m_DBServerIndex;
 }
 void CTCPSocketManage::GetSocketSet(std::vector<unsigned int>& vec)
 {

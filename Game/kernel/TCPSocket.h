@@ -32,7 +32,7 @@ public:
 	// 分配socketIndex算法
 	int GetSocketIndex();
 	// 添加TCPSocketInfo
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
 	// 获取event_base
@@ -61,6 +61,8 @@ public:
 	const char* GetSocketIP(int index);
 	// 获取当前socket连接总数
 	unsigned int GetCurSocketSize();
+	// 获取DBServer索引
+	int GetDBServerIndex();
 
 private:
 	// 设置tcp属性
@@ -184,4 +186,6 @@ private:
 	VectorWorkThreadInfo m_workBaseVec;
 
 	SSL_CTX*		     m_ctx;
+
+	int					m_DBServerIndex;
 };
