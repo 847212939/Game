@@ -70,11 +70,11 @@ bool TCPClient::InitDBServer()
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	AddTCPSocketInfo(index, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
-	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
 
 	DPPC->InitMysqlTable();
 	DPPC->GetConditionVariable().NotifyAll();
 
+	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
 	return true;
 }
 bool TCPClient::Init(ServiceType serverType)
