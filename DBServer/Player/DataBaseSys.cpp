@@ -36,6 +36,11 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 		SaveMysql(playerInfo);
 		break;
 	}
+	case DataBaseSysMsgCmd::cs_create:
+	{
+		CreateMysql(playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
@@ -92,6 +97,36 @@ bool DataBaseSys::SaveMysql(PlayerInfo* playerInfo)
 	msgCin >> serverid >> userid >> sqlName >> data;
 
 	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
+
+	return true;
+}
+
+bool DataBaseSys::CreateMysql(PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	auto* pMsg = playerInfo->pMsg;
+	Netmsg msgCin((char*)playerInfo->pData, 4);
+
+	int cnt = 0;
+	std::string sqlName;
+	msgCin >> sqlName >> cnt;
+
+	if (pMsg->netMessageHead.uHandleCode == 1)
+	{
+		DPPC->CreateTableS(sqlName, cnt);
+	}
+	else
+	{
+		DPPC->CreateTableI(sqlName, cnt);
+	}
 
 	return true;
 }

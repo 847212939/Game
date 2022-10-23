@@ -9,15 +9,19 @@ PlayerPrep::~PlayerPrep()
 }
 
 char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
-"`userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,"
-"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;";
+"`serverid` int(11) NOT NULL,"
+"`userid` varchar(255) COLLATE utf8_croatian_ci NOT NULL,"
+"`data` varchar(%d) COLLATE utf8_croatian_ci DEFAULT NULL,"
+"PRIMARY KEY(`serverid`,`userid`)"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_croatian_ci;";
+
 char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+"`serverid` int(11) NOT NULL,"
 "`userid` bigint(20) NOT NULL,"
-"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
-"PRIMARY KEY(`userid`) USING BTREE"
-") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
+"`data` varchar(%d) COLLATE utf8_croatian_ci DEFAULT NULL,"
+"PRIMARY KEY(`serverid`,`userid`)"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_croatian_ci;";
+
 char PlayerPrep::createdatabase[CREATE_TABLE_LEN] = "CREATE DATABASE IF NOT EXISTS game "
 "default charset utf8 COLLATE utf8_unicode_ci";
 
