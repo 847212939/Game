@@ -21,7 +21,7 @@ private:
 
 private:
 	bool MoveCoo(Netmsg& msg, PlayerInfo* playerInfo);
-	void LoadMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool LoadMysql(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_PlayerClient;

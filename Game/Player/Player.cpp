@@ -149,9 +149,9 @@ void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string k
 		COUT_LOG(LOG_CERROR, "Êý¾Ý¿âÁ´½ÓÊ§°Ü");
 		return;
 	}
-	DTCPC->SendMsg(index, "", 0, (MsgCmd)loadMysql.uMainID, loadMysql.uAssistantID,
+	/*DTCPC->SendMsg(index, "", 0, (MsgCmd)loadMysql.uMainID, loadMysql.uAssistantID,
 		2, tcpInfo->bev, loadMysql.uIdentification);
-	DPPC->SaveReplaceSQL(sqlName, GetID(), data, keyName, dataName);
+	DPPC->SaveReplaceSQL(sqlName, GetID(), data, keyName, dataName);*/
 }
 void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)
 {

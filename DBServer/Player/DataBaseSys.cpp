@@ -64,7 +64,7 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 	std::string sqlName, outStr;
 
 	Netmsg msgCin((char*)playerInfo->pData);
-	msgCin >> option >> serverid;
+	msgCin >> option >> serverid >> sqlName;
 
 	if (option == 1)
 	{
@@ -79,10 +79,10 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 		DPPC->LoadOneSql(sqlName, serverid, userid, outStr);
 	}
 
-	msgCin >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	msgCin >> uMainID >> uAssistantID >> uIdentification;
 
 	Netmsg msgCout;
-	msgCout << sqlName << outStr;
+	msgCout << outStr;
 
 	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, pMsg->pBufferevent, uIdentification);

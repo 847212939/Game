@@ -31,6 +31,7 @@ public:
 public:
 	std::string str();
 	operator std::string();
+	size_t size();
 
 private:
 	std::ostringstream	m_os;

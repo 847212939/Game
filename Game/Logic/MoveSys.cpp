@@ -13,18 +13,20 @@ MoveSys::~MoveSys()
 {
 }
 
-void MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
-		return;
+		return false;
 	}
 
 	unsigned int x = 0, y = 0;
 	msg >> x >> y;
 
 	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
+
+	return true;
 }
 
 void MoveSys::CalAttrs()

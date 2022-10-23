@@ -26,6 +26,11 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 
 	switch (uAssistantID)
 	{
+	case LoginSysMsgCmd::cs_load:
+	{
+		LoadMysql(msg, playerInfo);
+		break;
+	}
 	case LoginSysMsgCmd::cs_verification_account:
 	{
 		NetVerificationAccount(msg, playerInfo);
@@ -56,6 +61,46 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
+bool LoginSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	LoginData* pLoginData = GetLoginInMap(playerInfo->pMsg->uIndex);
+	if (!pLoginData)
+	{
+		return false;
+	}
+	if (msg.size() > 0)
+	{
+		uint64_t userid = 0;
+		std::string passwaed;
+
+		msg >> passwaed >> userid;
+
+		if (pLoginData->pw != passwaed)
+		{
+			// 密码不正确
+			return false;
+		}
+		if (userid <= 0)
+		{
+			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
+			return false;
+		}
+		if (DPCC->GetPlayerClientByIndex(pLoginData->index))
+		{
+			// 玩家在线
+			return false;
+		}
+		pLoginData->userId = userid;
+	}
+	if (pLoginData->userId <= 0)
+	{
+		pLoginData->userId = DUtil->CreateUserId();
+	}
+
+	DPPC->SendOperateResults(playerInfo->pMsg);
+
+	return true;
+}
 bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -75,46 +120,8 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	std::string data;
-	DPPC->LoadOneSql(id, "useraccount", data);
-
-	LoginData loginData;
-	loginData.index = playerInfo->pMsg->uIndex;
-	loginData.id = id;
-	loginData.pw = pw;
-
-	if (!data.empty())
-	{
-		uint64_t userid = 0;
-		std::string passwaed;
-
-		Netmsg sqlIs(data);
-		sqlIs >> passwaed >> userid;
-
-		if (pw != passwaed)
-		{
-			// 密码不正确
-			return false;
-		}
-		if (userid <= 0)
-		{
-			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
-			return false;
-		}
-		if (DPCC->GetPlayerClientByIndex(loginData.index))
-		{
-			// 玩家在线
-			return false;
-		}
-		loginData.userId = userid;
-	}
-	if (loginData.userId <= 0)
-	{
-		loginData.userId = DUtil->CreateUserId();
-	}
-
-	AddLoginInMap(loginData);
-	DPPC->SendOperateResults(playerInfo->pMsg);
+	DPPC->LoadOneSql(id, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login, 
+		(unsigned int)LoginSysMsgCmd::cs_load, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces));
 
 	return true;
 }

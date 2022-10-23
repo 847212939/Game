@@ -382,6 +382,27 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 
 	m_cond.NotifyOne();
 }
+void PlayerPrep::LoadOneSql(std::string& userId, SLoadMysql loadMysql)
+{
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+
+	Netmsg msg;
+	msg << 1 << BaseCfgMgr.GetServerId() << userId << loadMysql.sqlName
+		<< loadMysql.uMainID << loadMysql.uAssistantID << loadMysql.uIdentification;
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_DBServer, 1, 0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+}
 void PlayerPrep::LoadOneSql(std::string& userId, std::string sqlName, std::string& outStr, std::string dataStr /*= "data"*/)
 {
 	char sql[1024] = "";

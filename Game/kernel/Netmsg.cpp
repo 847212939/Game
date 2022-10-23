@@ -39,6 +39,11 @@ Netmsg::Netmsg(std::string str, int count)
 	}
 }
 
+size_t Netmsg::size()
+{
+	return m_SplitsList.size();
+}
+
 Netmsg::operator std::string()
 {
 	return m_os.str();
