@@ -302,24 +302,6 @@ void PlayerPrep::CreateTableI(std::string name, int cnt)
 	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_DBServer, 
 		3, 0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void PlayerPrep::CreateTableSql(const char* sql, size_t size)
-{
-	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
-	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
-		return;
-	}
-	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
-	if (!tcpInfo)
-	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
-		return;
-	}
-
-	//DTCPC->SendMsg(index, sql, size, );
-	m_sqlList.push_back(sql);
-}
 void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream msg;

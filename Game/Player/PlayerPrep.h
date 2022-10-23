@@ -33,7 +33,6 @@ public:
 	// 创建数据库表
 	void CreateTableS(std::string name, int cnt = 4096);
 	void CreateTableI(std::string name, int cnt = 4096);
-	void CreateTableSql(const char* sql, size_t size);
 
 public:
 	// 获取定时器
