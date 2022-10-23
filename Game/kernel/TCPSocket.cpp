@@ -418,31 +418,34 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	if (type == ServiceType::SERVICE_TYPE_DB)
+	if (type == ServiceType::SERVICE_TYPE_BEGIN)
+	{
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		{
+			return;
+		}
+		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+#ifdef __WebSocketOpenssl__
+			TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
+			if (tcpInfo1)
+			{
+				tcpInfo1->ssl = ssl;
+			}
+#endif
+			return;
+		}
+		else
+		{
+			// TCP服务器 验证客户端
+			Netmsg msg; msg << tcpInfo.link;
+			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+		}
+	}
+	else if (type == ServiceType::SERVICE_TYPE_DB)
 	{
 		m_DBServerIndex = index;
 		return;
-	}
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-		return;
-	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
-		if (tcpInfo1)
-		{
-			tcpInfo1->ssl = ssl;
-		}
-#endif
-		return;
-	}
-	else
-	{
-		// TCP服务器 验证客户端
-		Netmsg msg; msg << tcpInfo.link;
-		SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 	}
 }
 
