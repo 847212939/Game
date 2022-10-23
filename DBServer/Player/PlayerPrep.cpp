@@ -173,14 +173,19 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
+	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
-	std::ostringstream msg;
-	msg << userId;
+	std::ostringstream msgServerid;
+	msgServerid << serverid;
+
+	std::ostringstream msgUserid;
+	msgUserid << userid;
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
+	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
+	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_INT, msgUserid.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
@@ -189,11 +194,16 @@ void PlayerPrep::SaveReplaceSQL(std::string sqlName, uint64_t userId, std::strin
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::SaveReplaceSQL(std::string sqlName, std::string& userId, std::string data, std::string keyName, std::string dataName)
+void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, std::string& userid, std::string data, 
+	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_STR, userId)));
+	std::ostringstream msg;
+	msg << serverid;
+
+	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msg.str())));
+	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_STR, userid)));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);

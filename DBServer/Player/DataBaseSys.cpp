@@ -54,14 +54,14 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 	}
 
 	int serverid = 0;
-	uint64_t playerid = 0;
+	uint64_t userid = 0;
 	std::string sqlName;
 
-	Netmsg msgCin((char*)playerInfo->pData, 3);
-	msgCin >> serverid >> playerid >> sqlName;
+	Netmsg msgCin((char*)playerInfo->pData, 4);
+	msgCin >> serverid >> userid >> sqlName;
 
 	std::string outStr;
-	DPPC->LoadOneSql(sqlName, serverid, playerid, outStr);
+	DPPC->LoadOneSql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
 	msgCout << sqlName << outStr;
@@ -84,7 +84,14 @@ bool DataBaseSys::SaveMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 1);
+	int serverid = 0;
+	uint64_t userid = 0;
+	std::string sqlName, data;
+
+	Netmsg msgCin((char*)playerInfo->pData, 4);
+	msgCin >> serverid >> userid >> sqlName >> data;
+
+	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
 
 	return true;
 }
