@@ -70,6 +70,8 @@ bool TCPClient::InitDBServer()
 
 	AddTCPSocketInfo(index, &tcpInfo);
 	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
+
+	return true;
 }
 bool TCPClient::Init(ServiceType serverType)
 {
