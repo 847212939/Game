@@ -43,6 +43,7 @@ public:
 
 	void ReadDbCfg(CDbCfg* config);
 	void ReadLogicCfg(CLogicCfg* config);
+	void ReadDBServerCfg(CLogicCfg* config);
 
 public:
 	int GetServerId();
@@ -53,6 +54,7 @@ public:
 	std::string GetExit();
 	const CDbCfg& GetDbCfg();
 	const CLogicCfg& GetLogicCfg();
+	const CLogicCfg& GetDBServerCfg();
 	std::string GetKey();
 	std::string GetOpenServerTime();
 
@@ -64,6 +66,7 @@ private:
 	int			m_TimerCnt;
 
 	CLogicCfg	m_LogicCfg;
+	CLogicCfg	m_DBServerCfg;
 	CDbCfg		m_DbCfg;
 	std::string m_Exit;
 	std::string m_Key;

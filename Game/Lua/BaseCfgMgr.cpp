@@ -61,6 +61,11 @@ void CBaseCfgMgr::ReadLogicCfg(CLogicCfg* config)
 	m_LogicCfg = *config; 
 }
 
+void CBaseCfgMgr::ReadDBServerCfg(CLogicCfg* config)
+{
+	m_DBServerCfg = *config;
+}
+
 int CBaseCfgMgr::GetServerId() 
 { 
 	return m_serverID; 
@@ -99,6 +104,10 @@ const CDbCfg& CBaseCfgMgr::GetDbCfg()
 const CLogicCfg& CBaseCfgMgr::GetLogicCfg() 
 { 
 	return m_LogicCfg; 
+}
+const CLogicCfg& CBaseCfgMgr::GetDBServerCfg()
+{
+	return m_DBServerCfg;
 }
 
 std::string CBaseCfgMgr::GetKey()

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Wed Oct 12 17:31:50 2022.
+** Generated automatically by tolua++-1.0.92 on Sun Oct 23 15:12:08 2022.
 */
 
 #ifndef __cplusplus
@@ -81,13 +81,14 @@ static void tolua_reg_types (lua_State* tolua_S)
 {
  tolua_usertype(tolua_S,"CActivityBreakdown");
  tolua_usertype(tolua_S,"CBrushMonsterCfg");
- tolua_usertype(tolua_S,"CSkillIdList");
+ tolua_usertype(tolua_S,"CBaseCfgMgr");
  tolua_usertype(tolua_S,"CLogicCfg");
  tolua_usertype(tolua_S,"MapAttrsCmdInt");
- tolua_usertype(tolua_S,"CHeroList");
+ tolua_usertype(tolua_S,"CActivityList");
  tolua_usertype(tolua_S,"CDbCfg");
  tolua_usertype(tolua_S,"ConfigMgr");
- tolua_usertype(tolua_S,"CActivityList");
+ tolua_usertype(tolua_S,"CSkillIdList");
+ tolua_usertype(tolua_S,"CHeroList");
 }
 
 /* method: new of class  ConfigMgr */
@@ -211,6 +212,38 @@ static int tolua_Config_ConfigMgr_CoutLog00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: GetCBaseCfgMgr of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_GetCBaseCfgMgr00
+static int tolua_Config_ConfigMgr_GetCBaseCfgMgr00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCBaseCfgMgr'", NULL);
+#endif
+  {
+   CBaseCfgMgr& tolua_ret = (CBaseCfgMgr&)  self->GetCBaseCfgMgr();
+    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CBaseCfgMgr");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetCBaseCfgMgr'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: ReadLogicCfg of class  ConfigMgr */
 #ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadLogicCfg00
 static int tolua_Config_ConfigMgr_ReadLogicCfg00(lua_State* tolua_S)
@@ -239,6 +272,39 @@ static int tolua_Config_ConfigMgr_ReadLogicCfg00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ReadLogicCfg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ReadDBServerCfg of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadDBServerCfg00
+static int tolua_Config_ConfigMgr_ReadDBServerCfg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CLogicCfg",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* config = ((CLogicCfg*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadDBServerCfg'", NULL);
+#endif
+  {
+   self->ReadDBServerCfg(config);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ReadDBServerCfg'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2586,7 +2652,9 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_Config_ConfigMgr_new00_local);
    tolua_function(tolua_S,"delete",tolua_Config_ConfigMgr_delete00);
    tolua_function(tolua_S,"CoutLog",tolua_Config_ConfigMgr_CoutLog00);
+   tolua_function(tolua_S,"GetCBaseCfgMgr",tolua_Config_ConfigMgr_GetCBaseCfgMgr00);
    tolua_function(tolua_S,"ReadLogicCfg",tolua_Config_ConfigMgr_ReadLogicCfg00);
+   tolua_function(tolua_S,"ReadDBServerCfg",tolua_Config_ConfigMgr_ReadDBServerCfg00);
    tolua_function(tolua_S,"ReadDbCfg",tolua_Config_ConfigMgr_ReadDbCfg00);
    tolua_function(tolua_S,"ReadThreadCntCfg",tolua_Config_ConfigMgr_ReadThreadCntCfg00);
    tolua_function(tolua_S,"ReadServerIDCfg",tolua_Config_ConfigMgr_ReadServerIDCfg00);

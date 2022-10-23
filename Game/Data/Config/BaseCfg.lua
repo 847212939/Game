@@ -29,6 +29,11 @@ BaseCfg=
         ip = "127.0.0.1",
         port = 8888, 
     },
+    DBServerCfg =
+    {
+        ip = "127.0.0.1",
+        port = 8889, 
+    },
 
     DbCfg =
     {

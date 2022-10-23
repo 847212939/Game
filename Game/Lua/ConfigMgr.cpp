@@ -17,6 +17,10 @@ void ConfigMgr::ReadLogicCfg(CLogicCfg* config)
 { 
 	m_CBaseCfgMgr.ReadLogicCfg(config);
 }
+void ConfigMgr::ReadDBServerCfg(CLogicCfg* config)
+{
+	m_CBaseCfgMgr.ReadDBServerCfg(config);
+}
 void ConfigMgr::ReadDbCfg(CDbCfg* config) 
 { 
 	m_CBaseCfgMgr.ReadDbCfg(config); 

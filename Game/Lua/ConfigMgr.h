@@ -18,6 +18,7 @@ public:
 	// ª˘¥°≈‰÷√
 	CBaseCfgMgr& GetCBaseCfgMgr();
 	void ReadLogicCfg(CLogicCfg* config);
+	void ReadDBServerCfg(CLogicCfg* config);
 	void ReadDbCfg(CDbCfg* config);
 	void ReadThreadCntCfg(int cnt);
 	void ReadServerIDCfg(int id);

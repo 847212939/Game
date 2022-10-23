@@ -41,6 +41,14 @@ function ReadBaseCfg()
             config:delete()
         end
 
+        if BaseCfg.DBServerCfg then
+            local config = CLogicCfg:new()
+            config.ip = BaseCfg.DBServerCfg.ip or 0
+            config.port = BaseCfg.DBServerCfg.port or 0
+            ConfigMgr:ReadDBServerCfg(config)
+            config:delete()
+        end
+
         if BaseCfg.DbCfg then
             local config = CDbCfg:new()
             config.ip = BaseCfg.DbCfg.ip or 0
