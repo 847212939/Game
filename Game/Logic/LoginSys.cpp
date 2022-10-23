@@ -28,7 +28,7 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 	{
 	case LoginSysMsgCmd::cs_load:
 	{
-		LoadMysql(msg, playerInfo);
+		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
 	case LoginSysMsgCmd::cs_verification_account:
@@ -86,7 +86,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 	
 	return true;
 }
-bool LoginSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	int index = 0;
 	std::string id, pw;

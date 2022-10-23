@@ -29,7 +29,7 @@ private:
 	bool NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo);
 	bool NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo);
 	bool NetcRequestServerList(Netmsg& msg, PlayerInfo* playerInfo);
-	bool LoadMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	void AddLoginInMap(LoginData& key);
