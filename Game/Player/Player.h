@@ -51,11 +51,11 @@ public:
 	// 添加网络消息回调函数
 	void AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun);
 	// 添加数据库回调函数
-	void AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun);
+	void AddMysqlCallback(SLoadMysql loadMysql);
 
 public:
 	// 数据库操作
-	void LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr = "data");
+	void LoadOneSql(SLoadMysql& loadMysql);
 	void SaveInsertSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 	void SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");

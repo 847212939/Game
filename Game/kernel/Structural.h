@@ -407,3 +407,23 @@ struct WebSocketMsg
 	}
 };
 #endif
+
+struct SLoadMysql
+{
+	std::string sqlName;
+	unsigned int uMainID;
+	unsigned int uAssistantID;
+	unsigned int uIdentification;
+
+	SLoadMysql(
+		std::string sqlname, 
+		MsgCmd mainID,
+		unsigned int assistantID, 
+		unsigned int identification = (unsigned int)MsgCmd::MsgCmd_Player) :
+		sqlName(sqlName), 
+		uMainID((unsigned int)mainID),
+		uAssistantID(assistantID), 
+		uIdentification(identification)
+	{}
+	~SLoadMysql() {}
+};

@@ -55,16 +55,16 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 
 	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
-void Player::AddMysqlCallback(std::string name, std::function<void(std::string&)>&& fun)
+void Player::AddMysqlCallback(SLoadMysql loadMysql)
 {
-	MapMysqlFunc::iterator it = m_MysqlCBFunMap.find(name);
+	MapMysqlFunc::iterator it = m_MysqlCBFunMap.find(loadMysql.uMainID);
 	if (it == m_MysqlCBFunMap.end())
 	{
-		m_MysqlCBFunMap.insert(std::make_pair(name, fun));
+		m_MysqlCBFunMap.insert(std::make_pair(loadMysql.uMainID, loadMysql));
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code table = %s", name.c_str());
+	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code table = %s", loadMysql.sqlName.c_str());
 }
 void Player::ExitCallBackFun(SocketCloseLine* pSocketClose)
 {
@@ -86,15 +86,9 @@ void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 }
 void Player::MysqlCallBackFun()
 {
-	std::string str;
-
 	for (MapMysqlFunc::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		str.clear();
-
-		LoadOneSql(it->first, str);
-
-		it->second(str);
+		LoadOneSql(it->second);
 	}
 }
 void Player::AttrsCallBackFun()
@@ -113,9 +107,25 @@ void Player::EnterSceneCallBackFun()
 }
 
 // 数据库操作
-void Player::LoadOneSql(std::string sqlName, std::string& outStr, std::string dataStr)
+void Player::LoadOneSql(SLoadMysql& loadMysql)
 {
-	DPPC->LoadOneSql(sqlName, GetID(), outStr, dataStr);
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	Netmsg msg;
+	msg << 2 << BaseCfgMgr.GetServerId() << GetID() << loadMysql.sqlName 
+		<< loadMysql.uMainID << loadMysql.uAssistantID << loadMysql.uIdentification;
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(), 
+		MsgCmd::MsgCmd_DBServer, 1, 0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
 void Player::SaveInsertSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
@@ -127,6 +137,20 @@ void Player::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 }
 void Player::SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName, std::string dataName)
 {
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	DTCPC->SendMsg(index, "", 0, (MsgCmd)loadMysql.uMainID, loadMysql.uAssistantID,
+		2, tcpInfo->bev, loadMysql.uIdentification);
 	DPPC->SaveReplaceSQL(sqlName, GetID(), data, keyName, dataName);
 }
 void Player::SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName, std::string dataName)

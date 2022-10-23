@@ -5,15 +5,15 @@ SkillLvSys::SkillLvSys(PlayerClient* playerClient) : m_PlayerClient(playerClient
 	RegisterLgout(playerClient, SkillLvSys::Exit);
 	RegisterAttrs(playerClient, SkillLvSys::CalAttrs);
 	RegisterEnter(playerClient, SkillLvSys::EnterScene);
-	RegisterMysql(playerClient, SkillLvSys::LoadMysql, "skill");
 	RegisterNetwk(playerClient, SkillLvSys::NetWork, MsgCmd::MsgCmd_Skill);
+	RegisterMysql(m_PlayerClient, SLoadMysql("skill", MsgCmd::MsgCmd_Skill, (unsigned int)SkillLvSysCmd::cs_load));
 }
 
 SkillLvSys::~SkillLvSys()
 {
 }
 
-void SkillLvSys::LoadMysql(std::string& data)
+void SkillLvSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 
 }
@@ -48,6 +48,11 @@ void SkillLvSys::NetWork(PlayerInfo* playerInfo)
 	{
 	case SkillLvSysCmd::cs_lv:
 	{
+		break;
+	}
+	case SkillLvSysCmd::cs_load:
+	{
+		LoadMysql(msg, playerInfo);
 		break;
 	}
 	default:

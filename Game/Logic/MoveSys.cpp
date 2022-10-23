@@ -5,29 +5,23 @@ MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 	RegisterLgout(m_PlayerClient, MoveSys::Exit);
 	RegisterAttrs(m_PlayerClient, MoveSys::CalAttrs);
 	RegisterEnter(m_PlayerClient, MoveSys::EnterScene);
-	RegisterMysql(m_PlayerClient, MoveSys::LoadMysql, "move");
 	RegisterNetwk(m_PlayerClient, MoveSys::NetWork, MsgCmd::MsgCmd_Move);
+	RegisterMysql(m_PlayerClient, SLoadMysql("move", MsgCmd::MsgCmd_Move, (unsigned int)MoveSysMsgCmd::cs_Load));
 }
 
 MoveSys::~MoveSys()
 {
 }
 
-void MoveSys::LoadMysql(std::string& data)
+void MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
 		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
 		return;
 	}
-	if (data.empty())
-	{
-		return;
-	}
 
-	Netmsg msg(data);
 	unsigned int x = 0, y = 0;
-
 	msg >> x >> y;
 
 	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
@@ -66,6 +60,11 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 	case MoveSysMsgCmd::cs_move:
 	{
 		MoveCoo(msg, playerInfo);
+		break;
+	}
+	case MoveSysMsgCmd::cs_Load:
+	{
+		LoadMysql(msg, playerInfo);
 		break;
 	}
 	default:

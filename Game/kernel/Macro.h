@@ -188,14 +188,14 @@ else\
 }
 
 // 注册数据库回调
-#define RegisterMysql(pobj, name, sql)\
+#define RegisterMysql(pobj, loadMysql)\
 if (!pobj)\
 {\
 	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
-	pobj->AddMysqlCallback(sql, std::move(std::bind(&name, this, std::placeholders::_1)));\
+	pobj->AddMysqlCallback(loadMysql);\
 }
 
 // 注册定时器

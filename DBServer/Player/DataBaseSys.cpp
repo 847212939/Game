@@ -58,9 +58,10 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 		return false;
 	}
 
+	auto* pMsg = playerInfo->pMsg;
 	int serverid = 0, option = 0;
+	unsigned int uMainID = 0, uAssistantID = 0, uIdentification = 0;
 	std::string sqlName, outStr;
-
 
 	Netmsg msgCin((char*)playerInfo->pData);
 	msgCin >> option >> serverid;
@@ -78,14 +79,13 @@ bool DataBaseSys::LoadMysql(PlayerInfo* playerInfo)
 		DPPC->LoadOneSql(sqlName, serverid, userid, outStr);
 	}
 
-	msgCin >> sqlName;
+	msgCin >> sqlName >> uMainID >> uAssistantID >> uIdentification;
 
 	Netmsg msgCout;
 	msgCout << sqlName << outStr;
 
-	auto* pMsg = playerInfo->pMsg;
-	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)pMsg->netMessageHead.uMainID, 
-		pMsg->netMessageHead.uAssistantID, pMsg->netMessageHead.uHandleCode, pMsg->pBufferevent, (unsigned int)MsgCmd::MsgCmd_DBServer);
+	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
 
 	return true;
 }
