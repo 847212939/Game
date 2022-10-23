@@ -1,12 +1,10 @@
 #include "../stdafx.h"
 
 CBaseCfgMgr::CBaseCfgMgr() : 
-	m_serverID(0), 
 	m_threadCnt(0), 
 	m_logPrintTm(0), 
 	m_maxSocketCnt(0), 
-	m_Exit(""), 
-	m_TimerCnt(0) 
+	m_Exit("")
 {
 
 }
@@ -38,7 +36,7 @@ void CBaseCfgMgr::ReadDbCfg(CDbCfg* config)
 }
 void CBaseCfgMgr::ReadServerCfg(CServerCfg* config)
 { 
-	m_LogicCfg = *config; 
+	m_CServerCfg = *config;
 }
 
 int CBaseCfgMgr::GetThreadCnt() 
@@ -63,5 +61,5 @@ const CDbCfg& CBaseCfgMgr::GetDbCfg()
 }
 const CServerCfg& CBaseCfgMgr::GetServerCfg()
 { 
-	return m_LogicCfg; 
+	return m_CServerCfg; 
 }

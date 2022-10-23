@@ -53,7 +53,7 @@ private:
 	int			m_threadCnt;
 	int			m_maxSocketCnt;
 
-	CServerCfg	m_LogicCfg;
+	CServerCfg	m_CServerCfg;
 	CDbCfg		m_DbCfg;
 	std::string m_Exit;
 };

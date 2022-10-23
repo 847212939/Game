@@ -35,26 +35,6 @@ int Util::GetRandRange(int iMin, int iMax)
 	return iMin + (int)(GetRandNum() % (iMax - iMin));
 }
 
-// 对称加密
-char* Util::Encrypt(char* content, size_t length)
-{
-	std::string sKey = BaseCfgMgr.GetKey();
-	for (size_t i = 0; i < length; i++)
-	{
-		content[i] ^= sKey[i % (sKey.size() - 1)];
-	}
-	return content;
-}
-char* Util::Decrypt(char* content, size_t length)
-{
-	std::string sKey = BaseCfgMgr.GetKey();
-	for (size_t i = 0; i < length; i++)
-	{
-		content[i] ^= sKey[i % (sKey.size() - 1)];
-	}
-	return content;
-}
-
 long long Util::GetSysMilliseconds()
 {
 	auto time_now = std::chrono::system_clock::now();
@@ -86,41 +66,6 @@ uint64_t Util::GetSysSecond()
 	tm = *localtime(&tick);
 
 	return ((uint64_t)tm.tm_hour) * 60 * 60 + ((uint64_t)tm.tm_min) * 60 + (uint64_t)tm.tm_sec;
-}
-uint64_t Util::GetOpenServerTime()
-{
-	return m_OpenServerTimeSecond;
-}
-int Util::GetServiceDays()
-{
-	// 开服天数
-	return (int)((::time(nullptr) - m_OpenServerTimeSecond) / (60 * 60 * 24)) + 1;
-}
-bool Util::InitTime()
-{
-	struct tm tm1;
-	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
-	if (sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d", 
-		&tm1.tm_year, 
-		&tm1.tm_mon, 
-		&tm1.tm_mday, 
-		&tm1.tm_hour, 
-		&tm1.tm_min, 
-		&tm1.tm_sec) <= 0 || 
-		openServerTime.empty())
-	{
-		return false;
-	}
-
-	struct tm tm;
-	tm = tm1;
-	tm.tm_year = tm1.tm_year - 1900;
-	tm.tm_mon = tm1.tm_mon - 1;
-	tm.tm_mday = tm1.tm_mday;
-
-	m_OpenServerTimeSecond = mktime(&tm);
-
-	return true;
 }
 
 TCPClient* Util::GetTCPClient()

@@ -37,8 +37,8 @@ struct CServerCfg
 	std::string ip;
 	int port;
 
-	CLogicCfg();
-	~CLogicCfg();
+	CServerCfg();
+	~CServerCfg();
 };
 
 struct CDbCfg

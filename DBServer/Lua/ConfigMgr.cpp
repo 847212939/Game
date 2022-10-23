@@ -13,7 +13,7 @@ CBaseCfgMgr& ConfigMgr::GetCBaseCfgMgr()
 }
 
 // ª˘¥°≈‰÷√
-void ConfigMgr::ReadServerCfg(CServerCfg* CServerCfg)
+void ConfigMgr::ReadServerCfg(CServerCfg* config)
 { 
 	m_CBaseCfgMgr.ReadServerCfg(config);
 }
