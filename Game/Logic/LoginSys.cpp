@@ -81,7 +81,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 
 	std::string idPw = id + "\n" + pw + "\n" + std::to_string(playerInfo->pMsg->uIndex);
-	DPPC->GetMysqlClient().LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
+	MysqlClient::LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
 		(unsigned int)LoginSysMsgCmd::cs_load, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces));
 	
 	return true;
