@@ -11,7 +11,7 @@ MysqlClient::~MysqlClient()
 void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -33,7 +33,7 @@ void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -55,7 +55,7 @@ void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -79,7 +79,7 @@ void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -110,7 +110,7 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 		return;
 	}
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -136,7 +136,7 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -163,7 +163,7 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -187,7 +187,7 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;
@@ -211,7 +211,7 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data)
 {
 	int index = DTCPC->GetDBServerIndex();
-	if (index <= 0)
+	if (index < 0)
 	{
 		COUT_LOG(LOG_CERROR, "数据库链接失败");
 		return;

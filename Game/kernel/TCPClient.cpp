@@ -56,12 +56,8 @@ bool TCPClient::InitDBServer()
 		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
 		return false;
 	}
-	int index = GetSocketIndex();
-	if (index < 0)
-	{
-		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
-		return false;
-	}
+	int threadIndex = 1;
+	
 	// 获取连接信息
 	PlatformSocketInfo tcpInfo;
 	tcpInfo.acceptMsgTime = time(nullptr);
@@ -69,7 +65,7 @@ bool TCPClient::InitDBServer()
 	tcpInfo.port = DBserverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	AddTCPSocketInfo(index, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();
 	DPPC->GetConditionVariable().NotifyAll();
