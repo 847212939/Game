@@ -8,7 +8,7 @@ MysqlClient::~MysqlClient()
 }
 
 // ´´½¨
-void MysqlClient::CreateLoginMysql(std::string name, int cnt = 4096)
+void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
 	if (index <= 0)
@@ -30,7 +30,7 @@ void MysqlClient::CreateLoginMysql(std::string name, int cnt = 4096)
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_login,
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::CreateGlobalMysql(std::string name, int cnt = 4096)
+void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
 	if (index <= 0)
@@ -52,7 +52,7 @@ void MysqlClient::CreateGlobalMysql(std::string name, int cnt = 4096)
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_global,
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::CreatePlayerMysql(std::string name, int cnt = 4096)
+void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 {
 	int index = DTCPC->GetDBServerIndex();
 	if (index <= 0)

@@ -367,7 +367,7 @@ void PlayerPrep::CreatePlayerTable(std::string name, int cnt)
 	int len = sprintf_s(sql, CREATE_TABLE_LEN, m_CreatePlayerTable, name.c_str(), cnt);
 	CreateTableSql(sql);
 }
-void PlayerPrep::CreateLoginTable(std::string name, int cnt = 4096)
+void PlayerPrep::CreateLoginTable(std::string name, int cnt)
 {
 	char sql[CREATE_TABLE_LEN] = "";
 	int len = sprintf_s(sql, CREATE_TABLE_LEN, m_CreateLoginTable, name.c_str(), cnt);
