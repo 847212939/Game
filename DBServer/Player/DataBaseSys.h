@@ -10,6 +10,7 @@ enum class DataBaseSysMsgCmd
 	cs_create_player			= 6,	// 创建玩家数据库
 	cs_load_login				= 7,	// 加载登录数据库
 	cs_create_login				= 8,	// 创建登录数据库
+	cs_save_replace_login		= 9,	// 保存全局数据库
 };
 
 class DataBaseSys
@@ -34,4 +35,5 @@ private:
 private:
 	bool SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
 	bool SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
 };

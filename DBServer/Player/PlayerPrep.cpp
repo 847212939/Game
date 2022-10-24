@@ -182,7 +182,7 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, std::string& data,
+void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std::string& data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream msgServerid;
@@ -199,7 +199,7 @@ void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, std::string&
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
+void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	std::ostringstream msgServerid;
@@ -220,7 +220,7 @@ void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t use
 
 	m_cond.NotifyOne();
 }
-void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, std::string& userid, std::string data, 
+void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::string& userid, std::string data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
 	MapRecordData mpColumns;

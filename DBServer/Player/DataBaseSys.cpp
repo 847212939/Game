@@ -67,6 +67,11 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 		CreateLoginMysql(msg, playerInfo);
 		break;
 	}
+	case DataBaseSysMsgCmd::cs_save_replace_login:
+	{
+		SaveReplaceLoginMysql(msg, playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
@@ -154,7 +159,7 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	DPPC->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
-	msgCout << outStr;
+	msgCout << serverid << userid << outStr;
 
 	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
@@ -244,7 +249,7 @@ bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> sqlName >> data;
-	DPPC->SaveReplaceSQL(sqlName, serverid, data);
+	DPPC->SaveReplaceGlobalMysql(sqlName, serverid, data);
 
 	return true;
 }
@@ -264,7 +269,28 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> userid >> sqlName >> data;
-	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
+	DPPC->SaveReplacePlayerMysql(sqlName, serverid, userid, data);
+
+	return true;
+}
+
+bool DataBaseSys::SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+	int serverid = 0;
+	std::string userid;
+	std::string sqlName;
+	std::string data;
+
+	msg >> serverid >> userid >> sqlName >> data;
+	DPPC->SaveReplaceLoginMysql(sqlName, serverid, userid, data);
 
 	return true;
 }

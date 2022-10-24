@@ -31,6 +31,11 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
+	case LoginSysMsgCmd::cs_load_server_list:
+	{
+		LoadServerListMysql(msg, playerInfo);
+		break;
+	}
 	case LoginSysMsgCmd::cs_verification_account:
 	{
 		NetVerificationAccount(msg, playerInfo);
@@ -84,6 +89,41 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 	MysqlClient::LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
 		(unsigned int)LoginSysMsgCmd::cs_load, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces));
 	
+	return true;
+}
+bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	int serverid = 0;
+	uint64_t userid = 0;
+	msg >> serverid >> userid;
+
+	std::set<int>* serverIdVec = nullptr;
+	auto useridIt = m_ServerIdMap.find(userid);
+	if (useridIt != m_ServerIdMap.end())
+	{
+		serverIdVec = &(useridIt->second);
+	}
+	else
+	{
+		std::set<int> tmpServerIdVec;
+		m_ServerIdMap.insert({ userid , tmpServerIdVec });
+		serverIdVec = &(m_ServerIdMap.find(userid)->second);
+	}
+	if (!serverIdVec)
+	{
+		return false;
+	}
+
+	int size = 0;
+	msg >> size;
+
+	for (int i = 0; i < size; i++)
+	{
+		int id = 0;
+		msg >> id;
+		serverIdVec->insert(id);
+	}
+
 	return true;
 }
 bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
@@ -280,36 +320,11 @@ LoginData* LoginSys::GetLoginInMap(unsigned int index)
 
 void LoginSys::LoadServerIds(uint64_t userid)
 {
-	std::set<int>* serverIdVec = nullptr;
-	auto useridIt = m_ServerIdMap.find(userid);
-	if (useridIt != m_ServerIdMap.end())
-	{
-		serverIdVec = &(useridIt->second);
-	}
-	else
-	{
-		std::set<int> tmpServerIdVec;
-		m_ServerIdMap.insert({ userid , tmpServerIdVec });
-		serverIdVec = &(m_ServerIdMap.find(userid)->second);
-	}
-	if (!serverIdVec)
-	{
-		return;
-	}
+	SLoadMysql loadMysql("serverlist", MsgCmd::MsgCmd_Login, 
+		(unsigned int)LoginSysMsgCmd::cs_load_server_list, 
+		(unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
 
-	std::string data;
-	DPPC->LoadOneSql("serverlist", userid, data);
-
-	Netmsg msg(data);
-	int size = 0;
-	msg >> size;
-
-	for (int i = 0; i < size; i++)
-	{
-		int id = 0;
-		msg >> id;
-		serverIdVec->insert(id);
-	}
+	MysqlClient::LoadPlayerMysql(userid, loadMysql);
 }
 void LoginSys::SaveServerIds(uint64_t userid)
 {
@@ -326,8 +341,7 @@ void LoginSys::SaveServerIds(uint64_t userid)
 		msg << id;
 	}
 
-	std::string str = msg;
-	DPPC->SaveReplaceSQL("serverlist", userid, str);
+	MysqlClient::SaveReplacePlayerMysql(userid, "serverlist", msg.str());
 }
 void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 {
@@ -354,7 +368,8 @@ void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid
 {
 	Netmsg msg;
 	msg << pw << userid;
-	DPPC->SaveReplaceSQL("useraccount", id, msg);
+
+	MysqlClient::SaveReplaceLoginMysql(id, "useraccount", msg.str());
 }
 
 void LoginSys::AddServerIdMap(uint64_t userid, int serverId)

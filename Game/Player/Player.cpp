@@ -88,7 +88,7 @@ void Player::MysqlCallBackFun()
 {
 	for (MapMysqlFunc::iterator it = m_MysqlCBFunMap.begin(); it != m_MysqlCBFunMap.end(); ++it)
 	{
-		MysqlClient::LoadPlayerMysql(this, it->second);
+		MysqlClient::LoadPlayerMysql(GetID(), it->second);
 	}
 }
 void Player::AttrsCallBackFun()

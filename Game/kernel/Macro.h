@@ -72,6 +72,8 @@ private:
 #define RegisterLoginTable(name, cnt) MysqlClient::CreateLoginMysql(name, cnt);
 #define RegisterGlobalTable(name, cnt) MysqlClient::CreateGlobalMysql(name, cnt);
 #define RegisterPlayerTable(name, cnt) MysqlClient::CreatePlayerMysql(name, cnt);
+#define SavePlayerMysql(userid, name, data) MysqlClient::SaveReplacePlayerMysql(userid, name, data);
+#define SaveGlobalMysql(name, data) MysqlClient::SaveReplaceGlobalMysql(name, cnt);
 
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))

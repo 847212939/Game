@@ -9,6 +9,7 @@ enum class LoginSysMsgCmd
 	cs_login					= 4,	// 登录
 	cs_request_server_list		= 5,    // 请求已有区服
 	cs_load						= 6,    // 数据库加载
+	cs_load_server_list			= 7,    // 加载服务器列表
 };
 
 class LoginSys
@@ -30,6 +31,7 @@ private:
 	bool NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo);
 	bool NetcRequestServerList(Netmsg& msg, PlayerInfo* playerInfo);
 	bool LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	void AddLoginInMap(LoginData& key);

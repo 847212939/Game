@@ -29,11 +29,13 @@ public:
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
 
-	void SaveReplaceSQL(std::string& sqlName, int serverid, std::string& data,
+	void SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std::string& data,
 		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
-	void SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
+
+	void SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
 		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
-	void SaveReplaceSQL(std::string& sqlName, int serverid, std::string& userid, std::string data, 
+
+	void SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::string& userid, std::string data,
 		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
 
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");

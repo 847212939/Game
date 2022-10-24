@@ -89,7 +89,7 @@ bool MoveSys::MoveCoo(Netmsg& msg, PlayerInfo* playerInfo)
 	Netmsg msgos;
 	msgos << x << y;
 
-	m_PlayerClient->SaveReplaceSQL("move", msgos);
+	SavePlayerMysql(m_PlayerClient->GetID(), "move", msgos);
 
 	return true;
 }

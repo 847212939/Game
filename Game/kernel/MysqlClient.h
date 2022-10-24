@@ -10,9 +10,9 @@ enum class DataBaseSysMsgCmd
 	cs_create_player		= 6,	// 创建玩家数据库
 	cs_load_login			= 7,	// 加载登录数据库
 	cs_create_login			= 8,	// 创建登录数据库
+	cs_save_replace_login	= 9,	// 保存全局数据库
 };
 
-class Player;
 class MysqlClient
 {
 public:
@@ -28,13 +28,14 @@ public:
 public:
 	// 加载数据库
 	static void LoadGlobalMysql(SLoadMysql& loadMysql);
-	static void LoadPlayerMysql(Player* player, SLoadMysql& loadMysql);
+	static void LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql);
 	static void LoadLoginMysql(std::string& userid, SLoadMysql loadMysql);
 
 public:
 	// 保存数据库
-	static void SaveReplacePlayerMysql(Player* player, std::string sqlName, std::string&& data);
-	static void SaveReplaceGlobalMysql(std::string sqlName, std::string data);
+	static void SaveReplaceGlobalMysql(std::string sqlName, std::string&& data);
+	static void SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data);
+	static void SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data);
 
 private:
 
