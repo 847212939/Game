@@ -38,13 +38,14 @@ bool TCPClient::Init(ServiceType serverType)
 	{
 		return false;
 	}
+	if (!ConnectServer())
+	{
+		return false;
+	}
 
 	m_PlayerPrepClient->Init();
-
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
-
-	// 连接服务器
-	ConnectServer();
+	
 	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
 	return true;
 }

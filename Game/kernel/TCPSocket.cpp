@@ -91,8 +91,14 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 
 	return true;
 }
-void CTCPSocketManage::WaitConnect(int threadIndex)
+bool CTCPSocketManage::WaitConnect(int threadIndex)
 {
+	// 获取接收线程池数量
+	int workBaseCount = BaseCfgMgr.GetThreadCnt();
+	if (threadIndex >= workBaseCount)
+	{
+		return false;
+	}
 	if (m_workBaseVec.size() <= threadIndex)
 	{
 		while (true)
@@ -109,6 +115,7 @@ void CTCPSocketManage::WaitConnect(int threadIndex)
 			COUT_LOG(LOG_CINFO, "等待链接DB服务器");
 		}
 	}
+	return true;
 }
 bool CTCPSocketManage::IsServerMsg(int index)
 {
@@ -147,7 +154,11 @@ bool CTCPSocketManage::ConnectServer()
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
 	int threadIndex = 0;
-	WaitConnect(threadIndex);
+	if (!WaitConnect(threadIndex))
+	{
+		COUT_LOG(LOG_CINFO, "连接服DB失败");
+		return false;
+	}
 
 	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
