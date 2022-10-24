@@ -43,6 +43,7 @@ bool TCPClient::Init(ServiceType serverType)
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
+	// 连接服务器
 	ConnectServer();
 	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
 	return true;
