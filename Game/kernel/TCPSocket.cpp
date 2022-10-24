@@ -93,12 +93,12 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 }
 void CTCPSocketManage::WaitConnect(int threadIndex)
 {
-	if (m_workBaseVec.size() <= 0)
+	if (m_workBaseVec.size() <= threadIndex)
 	{
 		while (true)
 		{
 			std::this_thread::sleep_for(std::chrono::microseconds(10));
-			if (m_workBaseVec.size() > 0)
+			if (m_workBaseVec.size() > threadIndex)
 			{
 				struct event_base* base = m_workBaseVec[threadIndex].base;
 				if (base)
