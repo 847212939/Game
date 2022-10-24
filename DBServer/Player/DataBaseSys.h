@@ -9,6 +9,7 @@ enum class DataBaseSysMsgCmd
 	cs_create_global			= 5,	// 创建全局数据库
 	cs_create_player			= 6,	// 创建玩家数据库
 	cs_load_login				= 7,	// 加载登录数据库
+	cs_create_login				= 8,	// 创建登录数据库
 };
 
 class DataBaseSys
@@ -21,6 +22,11 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
+	bool CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
+
+private:
 	bool LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
 	bool LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
 	bool LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
@@ -31,5 +37,4 @@ private:
 
 private:
 	bool SaveMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool CreateMysql(Netmsg& msg, PlayerInfo* playerInfo);
 };

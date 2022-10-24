@@ -19,6 +19,11 @@ public:
 	~MysqlClient();
 
 public:
+	// 创建数据库表
+	static void CreateTableS(std::string name, int cnt = 4096);
+	static void CreateTableI(std::string name, int cnt = 4096);
+
+public:
 	static void LoadGlobalMysql(SLoadMysql& loadMysql);
 	static void LoadPlayerMysql(Player* player, SLoadMysql& loadMysql);
 	static void LoadLoginMysql(std::string& userid, SLoadMysql loadMysql);

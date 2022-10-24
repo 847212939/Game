@@ -34,6 +34,7 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 	case DataBaseSysMsgCmd::cs_load_global:
 	{
+		LoadGlobalMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_save_replace_player:
@@ -48,10 +49,12 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 	case DataBaseSysMsgCmd::cs_create_global:
 	{
+		CreateGlobalMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_player:
 	{
+		CreatePlayerMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_load_login:
@@ -59,9 +62,81 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 		LoadLoginMysql(msg, playerInfo);
 		break;
 	}
+	case DataBaseSysMsgCmd::cs_create_login:
+	{
+		CreateLoginMysql(msg, playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
+}
+
+bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	auto* pMsg = playerInfo->pMsg;
+	Netmsg msgCin((char*)playerInfo->pData);
+
+	int cnt = 0;
+	std::string sqlName;
+	msgCin >> sqlName >> cnt;
+
+	DPPC->CreateLoginTable(sqlName, cnt);
+
+	return true;
+}
+bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	auto* pMsg = playerInfo->pMsg;
+	Netmsg msgCin((char*)playerInfo->pData);
+
+	int cnt = 0;
+	std::string sqlName;
+	msgCin >> sqlName >> cnt;
+
+	DPPC->CreateGlobalTable(sqlName, cnt);
+
+	return true;
+}
+bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+
+	auto* pMsg = playerInfo->pMsg;
+	Netmsg msgCin((char*)playerInfo->pData);
+
+	int cnt = 0;
+	std::string sqlName;
+	msgCin >> sqlName >> cnt;
+
+	DPPC->CreatePlayerTable(sqlName, cnt);
+
+	return true;
 }
 
 bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
@@ -203,7 +278,6 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	return true;
 }
 
-
 // ±£´æ
 bool DataBaseSys::SaveMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
@@ -223,36 +297,6 @@ bool DataBaseSys::SaveMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin >> serverid >> userid >> sqlName >> data;
 
 	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
-
-	return true;
-}
-
-bool DataBaseSys::CreateMysql(Netmsg& msg, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		return false;
-	}
-	if (!playerInfo->pMsg)
-	{
-		return false;
-	}
-
-	auto* pMsg = playerInfo->pMsg;
-	Netmsg msgCin((char*)playerInfo->pData);
-
-	int cnt = 0, option = 0;
-	std::string sqlName;
-	msgCin >> option >> sqlName >> cnt;
-
-	if (option == 1)
-	{
-		DPPC->CreateTableS(sqlName, cnt);
-	}
-	else if (option == 2)
-	{
-		DPPC->CreateTableI(sqlName, cnt);
-	}
 
 	return true;
 }

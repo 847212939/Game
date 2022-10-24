@@ -7,15 +7,20 @@ PlayerPrep::~PlayerPrep()
 {
 
 }
+char PlayerPrep::m_CreateGlobalTable[CREATE_TABLE_LEN] ="CREATE TABLE IF NOT EXISTS `%s` ("
+"`serverid` int(11) NOT NULL,"
+"`data` varchar(%d) COLLATE utf8_unicode_ci DEFAULT NULL,"
+"PRIMARY KEY(`serverid`) USING BTREE"
+") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC; ";
 
-char PlayerPrep::createptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+char PlayerPrep::m_CreateLoginTable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`serverid` int(11) NOT NULL,"
 "`userid` varchar(255) COLLATE utf8_croatian_ci NOT NULL,"
 "`data` varchar(%d) COLLATE utf8_croatian_ci DEFAULT NULL,"
 "PRIMARY KEY(`serverid`,`userid`)"
 ") ENGINE = MyISAM DEFAULT CHARSET = utf8 COLLATE = utf8_croatian_ci;";
 
-char PlayerPrep::createpptable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
+char PlayerPrep::m_CreatePlayerTable[CREATE_TABLE_LEN] = "CREATE TABLE IF NOT EXISTS `%s` ("
 "`serverid` int(11) NOT NULL,"
 "`userid` bigint(20) NOT NULL,"
 "`data` varchar(%d) COLLATE utf8_croatian_ci DEFAULT NULL,"
@@ -350,26 +355,27 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 }
 
 // Êý¾Ý¿â²Ù×÷
-void PlayerPrep::CreateTableS(std::string name, int cnt)
+void PlayerPrep::CreateGlobalTable(std::string name, int cnt)
 {
 	char sql[CREATE_TABLE_LEN] = "";
-
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createptable, name.c_str(), cnt);
-
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, m_CreateGlobalTable, name.c_str(), cnt);
 	CreateTableSql(sql);
 }
-void PlayerPrep::CreateTableI(std::string name, int cnt)
+void PlayerPrep::CreatePlayerTable(std::string name, int cnt)
 {
 	char sql[CREATE_TABLE_LEN] = "";
-
-	int len = sprintf_s(sql, CREATE_TABLE_LEN, createpptable, name.c_str(), cnt);
-
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, m_CreatePlayerTable, name.c_str(), cnt);
+	CreateTableSql(sql);
+}
+void PlayerPrep::CreateLoginTable(std::string name, int cnt = 4096)
+{
+	char sql[CREATE_TABLE_LEN] = "";
+	int len = sprintf_s(sql, CREATE_TABLE_LEN, m_CreateLoginTable, name.c_str(), cnt);
 	CreateTableSql(sql);
 }
 void PlayerPrep::CreateTableSql(const char* sql)
 {
 	m_sqlList.push_back(sql);
-
 	m_cond.NotifyOne();
 }
 

@@ -38,14 +38,16 @@ public:
 
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	// 创建数据库表
-	void CreateTableS(std::string name, int cnt = 4096);
-	void CreateTableI(std::string name, int cnt = 4096);
+	void CreateGlobalTable(std::string name, int cnt = 4096);
+	void CreatePlayerTable(std::string name, int cnt = 4096);
+	void CreateLoginTable(std::string name, int cnt = 4096);
 	void CreateTableSql(const char* sql);
 
 public:
 	// 数据库语句表
-	static char createptable[CREATE_TABLE_LEN];
-	static char createpptable[CREATE_TABLE_LEN];
+	static char m_CreateGlobalTable[CREATE_TABLE_LEN];
+	static char m_CreateLoginTable[CREATE_TABLE_LEN];
+	static char m_CreatePlayerTable[CREATE_TABLE_LEN];
 	static char createdatabase[CREATE_TABLE_LEN];
 
 public:
