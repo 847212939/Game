@@ -7,6 +7,74 @@ MysqlClient::~MysqlClient()
 {
 }
 
+// 创建
+void MysqlClient::CreateLoginMysql(std::string name, int cnt = 4096)
+{
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+
+	Netmsg msg;
+	msg << name << cnt;
+
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_login,
+		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+}
+void MysqlClient::CreateGlobalMysql(std::string name, int cnt = 4096)
+{
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+
+	Netmsg msg;
+	msg << name << cnt;
+
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_global,
+		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+}
+void MysqlClient::CreatePlayerMysql(std::string name, int cnt = 4096)
+{
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+
+	Netmsg msg;
+	msg << name << cnt;
+
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_player,
+		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+}
+
 // 加载
 void MysqlClient::LoadPlayerMysql(Player* player, SLoadMysql& loadMysql)
 {

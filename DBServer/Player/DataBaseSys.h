@@ -34,7 +34,4 @@ private:
 private:
 	bool SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
 	bool SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
-
-private:
-	bool SaveMysql(Netmsg& msg, PlayerInfo* playerInfo);
 };

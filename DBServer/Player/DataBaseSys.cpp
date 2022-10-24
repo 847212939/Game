@@ -83,12 +83,9 @@ bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	auto* pMsg = playerInfo->pMsg;
-	Netmsg msgCin((char*)playerInfo->pData);
-
 	int cnt = 0;
 	std::string sqlName;
-	msgCin >> sqlName >> cnt;
+	msg >> sqlName >> cnt;
 
 	DPPC->CreateLoginTable(sqlName, cnt);
 
@@ -105,12 +102,9 @@ bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	auto* pMsg = playerInfo->pMsg;
-	Netmsg msgCin((char*)playerInfo->pData);
-
 	int cnt = 0;
 	std::string sqlName;
-	msgCin >> sqlName >> cnt;
+	msg >> sqlName >> cnt;
 
 	DPPC->CreateGlobalTable(sqlName, cnt);
 
@@ -127,12 +121,9 @@ bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	auto* pMsg = playerInfo->pMsg;
-	Netmsg msgCin((char*)playerInfo->pData);
-
 	int cnt = 0;
 	std::string sqlName;
-	msgCin >> sqlName >> cnt;
+	msg >> sqlName >> cnt;
 
 	DPPC->CreatePlayerTable(sqlName, cnt);
 
@@ -273,29 +264,6 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> userid >> sqlName >> data;
-	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
-
-	return true;
-}
-
-// ±£´æ
-bool DataBaseSys::SaveMysql(Netmsg& msg, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		return false;
-	}
-	if (!playerInfo->pMsg)
-	{
-		return false;
-	}
-	int serverid = 0;
-	uint64_t userid = 0;
-	std::string sqlName, data;
-
-	Netmsg msgCin((char*)playerInfo->pData, 4);
-	msgCin >> serverid >> userid >> sqlName >> data;
-
 	DPPC->SaveReplaceSQL(sqlName, serverid, userid, data);
 
 	return true;
