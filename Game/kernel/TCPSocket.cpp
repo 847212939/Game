@@ -43,13 +43,6 @@ CTCPSocketManage::CTCPSocketManage() :
 #elif defined(__ANDROID__)
 #elif defined(__APPLE__)
 #endif
-
-	int workBaseCount = BaseCfgMgr.GetThreadCnt();
-	if (workBaseCount <= 1)
-	{
-		workBaseCount = 8;
-	}
-	m_workBaseVec.reserve(workBaseCount);
 }
 CTCPSocketManage::~CTCPSocketManage()
 {
@@ -85,6 +78,13 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	// 初始化分配内存
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
+
+	int workBaseCount = BaseCfgMgr.GetThreadCnt();
+	if (workBaseCount <= 1)
+	{
+		workBaseCount = 4;
+	}
+	m_workBaseVec.resize(workBaseCount);
 
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
