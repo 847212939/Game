@@ -37,6 +37,11 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 		LoadGlobalMysql(msg, playerInfo);
 		break;
 	}
+	case DataBaseSysMsgCmd::cs_load_login:
+	{
+		LoadLoginMysql(msg, playerInfo);
+		break;
+	}
 	case DataBaseSysMsgCmd::cs_save_replace_player:
 	{
 		SaveReplacePlayerMysql(msg, playerInfo);
@@ -45,6 +50,11 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	case DataBaseSysMsgCmd::cs_save_replace_global:
 	{
 		SaveReplaceGlobalMysql(msg, playerInfo);
+		break;
+	}
+	case DataBaseSysMsgCmd::cs_save_replace_login:
+	{
+		SaveReplaceLoginMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_global:
@@ -57,19 +67,9 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 		CreatePlayerMysql(msg, playerInfo);
 		break;
 	}
-	case DataBaseSysMsgCmd::cs_load_login:
-	{
-		LoadLoginMysql(msg, playerInfo);
-		break;
-	}
 	case DataBaseSysMsgCmd::cs_create_login:
 	{
 		CreateLoginMysql(msg, playerInfo);
-		break;
-	}
-	case DataBaseSysMsgCmd::cs_save_replace_login:
-	{
-		SaveReplaceLoginMysql(msg, playerInfo);
 		break;
 	}
 	default:
