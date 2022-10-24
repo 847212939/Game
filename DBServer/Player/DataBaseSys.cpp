@@ -4,7 +4,6 @@ DataBaseSys::DataBaseSys(PlayerPrepClient* ppc)
 {
 	RegisterNetwk(ppc, DataBaseSys::Network, MsgCmd::MsgCmd_DBServer);
 }
-
 DataBaseSys::~DataBaseSys()
 {
 }
@@ -146,7 +145,6 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	SocketReadLine* pMsg = playerInfo->pMsg;
 	int serverid = 0;
 	std::string sqlName;
 	std::string outStr;
@@ -161,8 +159,8 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	Netmsg msgCout;
 	msgCout << serverid << userid << outStr;
 
-	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
-		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
+	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
 }
@@ -177,7 +175,6 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	SocketReadLine* pMsg = playerInfo->pMsg;
 	int serverid = 0;
 	int index = 0;
 	std::string sqlName;
@@ -198,8 +195,8 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		msgCout << outStr;
 	}
 
-	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
-		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
+	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
 }
@@ -214,7 +211,6 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	SocketReadLine* pMsg = playerInfo->pMsg;
 	int serverid = 0;
 	std::string sqlName;
 	std::string outStr;
@@ -228,8 +224,8 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	Netmsg msgCout;
 	msgCout << outStr;
 
-	DTCPC->SendMsg(pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
-		uAssistantID, 0, pMsg->pBufferevent, uIdentification);
+	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
 }
@@ -273,7 +269,6 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-
 bool DataBaseSys::SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
