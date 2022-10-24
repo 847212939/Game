@@ -94,8 +94,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 bool CTCPSocketManage::WaitConnect(int threadIndex)
 {
 	// 获取接收线程池数量
-	int workBaseCount = BaseCfgMgr.GetThreadCnt();
-	if (threadIndex >= workBaseCount)
+	if (threadIndex >= BaseCfgMgr.GetThreadCnt())
 	{
 		return false;
 	}
