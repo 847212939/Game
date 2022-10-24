@@ -91,6 +91,54 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 
 	return true;
 }
+bool TCPClient::ConnectServer()
+{
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+
+	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
+	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock < 0)
+	{
+		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
+		return false;
+	}
+
+	sockaddr_in sin;
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(DBserverCfg.port);
+
+#if defined(_WIN32)
+	sin.sin_addr.S_un.S_addr = inet_addr(DBserverCfg.ip.c_str());
+#elif defined(_WIN64)
+#elif defined(__linux__)
+	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
+#elif defined(__unix__)
+#elif defined(__ANDROID__)
+#elif defined(__APPLE__)
+#endif
+
+	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
+	{
+		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
+		return false;
+	}
+	int threadIndex = 1;
+
+	// 获取连接信息
+	PlatformSocketInfo tcpInfo;
+	tcpInfo.acceptMsgTime = time(nullptr);
+	memcpy(tcpInfo.ip, DBserverCfg.ip.c_str(), DBserverCfg.ip.size());
+	tcpInfo.port = DBserverCfg.port;
+	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
+
+	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+
+	DPPC->InitMysqlTable();
+	DPPC->GetConditionVariable().NotifyAll();
+
+	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
+	return true;
+}
 bool CTCPSocketManage::Stop()
 {
 	COUT_LOG(LOG_CINFO, "service tcp stop begin");

@@ -20,6 +20,8 @@ public:
 	// 初始化
 	bool Init(int maxCount, int port, const char* ip = nullptr, 
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
+	// 连接服务器
+	bool ConnectServer();
 
 public:
 	// 发送数据函数

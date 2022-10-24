@@ -14,7 +14,6 @@ protected:
 
 public:
 	// 初始化
-	bool InitDBServer();
 	bool Init(ServiceType serverType);
 	// 通知所有线程进行一次循环
 	void NotifyAll();
