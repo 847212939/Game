@@ -93,8 +93,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
 	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
@@ -131,6 +129,12 @@ bool CTCPSocketManage::ConnectServer()
 	tcpInfo.port = DBserverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
+	struct event_base* base = m_workBaseVec[threadIndex].base;
+	while (!base)
+	{
+		std::this_thread::sleep_for(std::chrono::microseconds(10));
+		base = m_workBaseVec[threadIndex].base;
+	}
 	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();
