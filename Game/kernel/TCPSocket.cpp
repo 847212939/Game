@@ -43,6 +43,13 @@ CTCPSocketManage::CTCPSocketManage() :
 #elif defined(__ANDROID__)
 #elif defined(__APPLE__)
 #endif
+
+	int workBaseCount = BaseCfgMgr.GetThreadCnt();
+	if (workBaseCount <= 1)
+	{
+		workBaseCount = 8;
+	}
+	m_workBaseVec.reserve(workBaseCount);
 }
 CTCPSocketManage::~CTCPSocketManage()
 {
