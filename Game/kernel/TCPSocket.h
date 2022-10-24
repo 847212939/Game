@@ -24,6 +24,8 @@ public:
 	bool ConnectServer();
 	// 是否是内部消息
 	bool IsServerMsg(int index);
+	// 等待连接
+	void WaitConnect(int threadIndex);
 
 public:
 	// 发送数据函数

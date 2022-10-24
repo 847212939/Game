@@ -91,6 +91,25 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 
 	return true;
 }
+void CTCPSocketManage::WaitConnect(int threadIndex)
+{
+	if (m_workBaseVec.size() <= 0)
+	{
+		while (true)
+		{
+			std::this_thread::sleep_for(std::chrono::microseconds(10));
+			COUT_LOG(LOG_CINFO, "等待链接DB服务器");
+			if (m_workBaseVec.size() > 0)
+			{
+				struct event_base* base = m_workBaseVec[threadIndex].base;
+				if (base)
+				{
+					break;
+				}
+			}
+		}
+	}
+}
 bool CTCPSocketManage::IsServerMsg(int index)
 {
 	if (index == GetDBServerIndex())
@@ -119,7 +138,6 @@ bool CTCPSocketManage::ConnectServer()
 		COUT_LOG(LOG_CINFO, "连接服DB失败");
 		return false;
 	}
-	int threadIndex = 0;
 
 	// 获取连接信息
 	PlatformSocketInfo tcpInfo;
@@ -128,13 +146,9 @@ bool CTCPSocketManage::ConnectServer()
 	tcpInfo.port = DBserverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	struct event_base* base = m_workBaseVec[threadIndex].base;
-	while (!base)
-	{
-		std::this_thread::sleep_for(std::chrono::microseconds(10));
-		base = m_workBaseVec[threadIndex].base;
-		COUT_LOG(LOG_CINFO, "等待链接DB服务器");
-	}
+	int threadIndex = 0;
+	WaitConnect(threadIndex);
+
 	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();
