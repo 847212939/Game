@@ -787,8 +787,15 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 清理登录内存
 	DPPC->GetLoginSys().DelLoginInMap(index);
 
-	COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
-		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
+	if (IsServerMsg(index))
+	{
+		COUT_LOG(LOG_CERROR, "服务器异常断开链接请检查游戏逻辑 index=%d",index);
+	}
+	else
+	{
+		COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
+			tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
+	}
 }
 
 CDataLine* CTCPSocketManage::GetRecvDataLine()
