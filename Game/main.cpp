@@ -1,8 +1,9 @@
 ﻿#include "stdafx.h"
 
+bool run = true;
+
 int main()
 {
-	bool run = true;
 	ServiceType type = ServiceType::SERVICE_TYPE_LOGIC;
 
 	LogMgr->SetLogFileType(type);
