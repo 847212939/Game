@@ -120,7 +120,7 @@ bool CTCPSocketManage::ConnectServer()
 		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
 		return false;
 	}
-	int threadIndex = 1;
+	int threadIndex = 0;
 
 	// 获取连接信息
 	PlatformSocketInfo tcpInfo;
