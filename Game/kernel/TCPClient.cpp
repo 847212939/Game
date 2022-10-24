@@ -27,8 +27,9 @@ TCPClient::~TCPClient()
 }
 bool TCPClient::InitDBServer()
 {
-	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
+	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
@@ -68,7 +69,6 @@ bool TCPClient::InitDBServer()
 	tcpInfo.port = DBserverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	std::this_thread::sleep_for(std::chrono::seconds(2));
 	AddTCPSocketInfo(index, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();

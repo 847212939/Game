@@ -69,8 +69,9 @@ private:
 #define Max_(x,y) ((x)>(y)?(x):(y))
 
 // 注册创建数据库
-#define RegisterTable(name, cnt) this->CreateTableI(name, cnt);
-#define RegisterCreate(name, cnt) this->CreateTableS(name, cnt);
+#define RegisterLoginTable(name, cnt) MysqlClient::CreateLoginMysql(name, cnt);
+#define RegisterGlobalTable(name, cnt) MysqlClient::CreateGlobalMysql(name, cnt);
+#define RegisterPlayerTable(name, cnt) MysqlClient::CreatePlayerMysql(name, cnt);
 
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
