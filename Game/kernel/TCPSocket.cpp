@@ -97,7 +97,7 @@ bool CTCPSocketManage::ConnectServer()
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
-		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
+		COUT_LOG(LOG_CINFO, "连接服DB失败");
 		return false;
 	}
 
@@ -108,7 +108,7 @@ bool CTCPSocketManage::ConnectServer()
 
 	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		COUT_LOG(LOG_CINFO, "连接服DBServer失败");
+		COUT_LOG(LOG_CINFO, "连接服DB失败");
 		return false;
 	}
 	int threadIndex = 0;
@@ -125,13 +125,14 @@ bool CTCPSocketManage::ConnectServer()
 	{
 		std::this_thread::sleep_for(std::chrono::microseconds(10));
 		base = m_workBaseVec[threadIndex].base;
+		COUT_LOG(LOG_CINFO, "等待链接DB服务器");
 	}
 	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();
 	DPPC->GetConditionVariable().NotifyAll();
 
-	COUT_LOG(LOG_CINFO, "连接服DBServer成功");
+	COUT_LOG(LOG_CINFO, "连接服DB成功");
 	return true;
 }
 bool CTCPSocketManage::Stop()
