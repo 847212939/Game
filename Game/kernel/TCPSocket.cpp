@@ -79,13 +79,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
-	int workBaseCount = BaseCfgMgr.GetThreadCnt();
-	if (workBaseCount <= 1)
-	{
-		workBaseCount = 4;
-	}
-	m_workBaseVec.resize(workBaseCount);
-
 	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
@@ -116,7 +109,7 @@ bool CTCPSocketManage::ConnectServer()
 	sin.sin_addr.S_un.S_addr = inet_addr(DBserverCfg.ip.c_str());
 #elif defined(_WIN64)
 #elif defined(__linux__)
-	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
+	sin.sin_addr.s_addr = inet_addr(DBserverCfg.ip.c_str());
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
 #elif defined(__APPLE__)
