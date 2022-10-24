@@ -377,15 +377,18 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		return;
 	}
 
-	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (type != ServiceType::SERVICE_TYPE_DB)
 	{
-		timeval tvRead;
-		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
-		tvRead.tv_usec = 0;
-		bufferevent_set_timeouts(bev, &tvRead, nullptr);
+		// 设置读超时，当做心跳。网关服务器才需要
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+			m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+			m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+			timeval tvRead;
+			tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
+			tvRead.tv_usec = 0;
+			bufferevent_set_timeouts(bev, &tvRead, nullptr);
+		}
 	}
 
 	// 保存信息
