@@ -91,7 +91,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 
 	return true;
 }
-bool TCPClient::ConnectServer()
+bool CTCPSocketManage::ConnectServer()
 {
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
