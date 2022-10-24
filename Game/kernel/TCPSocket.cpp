@@ -159,13 +159,13 @@ bool CTCPSocketManage::ConnectServer()
 		return false;
 	}
 
-	AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	DPPC->InitMysqlTable();
 	DPPC->GetConditionVariable().NotifyAll();
 
-	COUT_LOG(LOG_CINFO, "连接服DB成功 [ip=%s port=%d fd=%d]",
-		tcpInfo.ip, tcpInfo.port, tcpInfo.acceptFd);
+	COUT_LOG(LOG_CINFO, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
+		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
 	return true;
 }
 bool CTCPSocketManage::Stop()
@@ -394,7 +394,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 }
 
-void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, 
+int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, 
 	ServiceType type/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
@@ -410,7 +410,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	{
 		COUT_LOG(LOG_CERROR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
-		return;
+		return index;
 	}
 	if (type == ServiceType::SERVICE_TYPE_BEGIN)
 	{
@@ -421,7 +421,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 			if (!ssl)
 			{
 				COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-				return;
+				return index;
 			}
 			bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
 				/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
@@ -436,12 +436,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	{
 		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	}
-	
 	if (!bev)
 	{
 		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
-		return;
+		return index;
 	}
 
 	// 设置应用层收发数据包，单次大小
@@ -460,7 +459,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
-		return;
+		return index;
 	}
 
 	if (type != ServiceType::SERVICE_TYPE_DB)
@@ -500,7 +499,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
-		return;
+		return index;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
@@ -511,7 +510,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	{
 		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 		{
-			return;
+			return index;
 		}
 		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
@@ -522,7 +521,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 				tcpInfo1->ssl = ssl;
 			}
 #endif
-			return;
+			return index;
 		}
 		else
 		{
@@ -531,11 +530,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 		}
 	}
-	else if (type == ServiceType::SERVICE_TYPE_DB)
-	{
-		m_DBServerIndex = index;
-		return;
-	}
+
+	return index;
 }
 
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)

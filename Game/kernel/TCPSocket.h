@@ -34,7 +34,7 @@ public:
 	// 分配socketIndex算法
 	int GetSocketIndex();
 	// 添加TCPSocketInfo
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type = ServiceType::SERVICE_TYPE_BEGIN);
+	int AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type = ServiceType::SERVICE_TYPE_BEGIN);
 	// 消息发送
 	bool BuffereventWrite(int index, void* data, unsigned int size);
 
