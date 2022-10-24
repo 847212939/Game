@@ -98,7 +98,6 @@ void CTCPSocketManage::WaitConnect(int threadIndex)
 		while (true)
 		{
 			std::this_thread::sleep_for(std::chrono::microseconds(10));
-			COUT_LOG(LOG_CINFO, "等待链接DB服务器");
 			if (m_workBaseVec.size() > 0)
 			{
 				struct event_base* base = m_workBaseVec[threadIndex].base;
@@ -107,6 +106,7 @@ void CTCPSocketManage::WaitConnect(int threadIndex)
 					break;
 				}
 			}
+			COUT_LOG(LOG_CINFO, "等待链接DB服务器");
 		}
 	}
 }
