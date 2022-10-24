@@ -164,7 +164,8 @@ bool CTCPSocketManage::ConnectServer()
 	DPPC->InitMysqlTable();
 	DPPC->GetConditionVariable().NotifyAll();
 
-	COUT_LOG(LOG_CINFO, "连接服DB成功");
+	COUT_LOG(LOG_CINFO, "连接服DB成功 [ip=%s port=%d fd=%d]",
+		tcpInfo.ip, tcpInfo.port, tcpInfo.acceptFd);
 	return true;
 }
 bool CTCPSocketManage::Stop()
