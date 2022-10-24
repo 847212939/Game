@@ -43,6 +43,7 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 	case DataBaseSysMsgCmd::cs_save_replace_global:
 	{
+		SaveReplaceGlobalMysql(msg, playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_global:
@@ -162,8 +163,23 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	return true;
 }
 
-bool DataBaseSys::SaveGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
+	if (!playerInfo)
+	{
+		return false;
+	}
+	if (!playerInfo->pMsg)
+	{
+		return false;
+	}
+	int serverid = 0;
+	std::string sqlName;
+	std::string data;
+
+	msg >> serverid >> sqlName >> data;
+	DPPC->SaveReplaceSQL(sqlName, serverid, data);
+
 	return true;
 }
 bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)

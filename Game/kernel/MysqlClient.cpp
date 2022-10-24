@@ -126,7 +126,26 @@ void MysqlClient::SaveReplacePlayerMysql(Player* player, std::string sqlName, st
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_save_replace_player,
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::SaveGlobalPlayerMysql(std::string sqlName, std::string data)
+void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string data)
 {
+	int index = DTCPC->GetDBServerIndex();
+	if (index <= 0)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	TCPSocketInfo* tcpInfo = DTCPC->GetTCPSocketInfo(index);
+	if (!tcpInfo)
+	{
+		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		return;
+	}
+	Netmsg msg;
+	msg << BaseCfgMgr.GetServerId()
+		<< sqlName
+		<< data;
 
+	DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_save_replace_global,
+		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }

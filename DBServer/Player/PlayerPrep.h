@@ -28,10 +28,14 @@ public:
 	// 保存数据库
 	void SaveInsertSQL(std::string sqlName, uint64_t userId, std::string& data, std::string keyName = "userid", std::string dataName = "data");
 	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
+
+	void SaveReplaceSQL(std::string& sqlName, int serverid, std::string& data,
+		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
 	void SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
 		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
 	void SaveReplaceSQL(std::string& sqlName, int serverid, std::string& userid, std::string data, 
 		std::string serveridName = "serverid", std::string useridName = "userid", std::string dataName = "data");
+
 	void SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
 	// 创建数据库表
 	void CreateTableS(std::string name, int cnt = 4096);

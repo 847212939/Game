@@ -20,12 +20,12 @@ public:
 
 public:
 	static void LoadGlobalMysql(SLoadMysql& loadMysql);
-	static void LoadLoginMysql(std::string& userid, SLoadMysql loadMysql);
 	static void LoadPlayerMysql(Player* player, SLoadMysql& loadMysql);
+	static void LoadLoginMysql(std::string& userid, SLoadMysql loadMysql);
 
 public:
 	static void SaveReplacePlayerMysql(Player* player, std::string sqlName, std::string&& data);
-	static void SaveGlobalPlayerMysql(std::string sqlName, std::string data);
+	static void SaveReplaceGlobalMysql(std::string sqlName, std::string data);
 
 private:
 

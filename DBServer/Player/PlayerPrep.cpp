@@ -177,6 +177,23 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	m_cond.NotifyOne();
 }
+void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, std::string& data,
+	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
+{
+	std::ostringstream msgServerid;
+	msgServerid << serverid;
+
+	MapRecordData mpColumns;
+
+	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
+	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+
+	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
+
+	m_sqlList.push_back(sSql);
+
+	m_cond.NotifyOne();
+}
 void PlayerPrep::SaveReplaceSQL(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
 {

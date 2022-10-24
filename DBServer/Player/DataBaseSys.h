@@ -26,7 +26,7 @@ private:
 	bool LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
-	bool SaveGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
 	bool SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
