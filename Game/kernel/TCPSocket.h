@@ -22,6 +22,8 @@ public:
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 	// 连接服务器
 	bool ConnectServer();
+	// 是否是内部消息
+	bool IsServerMsg(int index);
 
 public:
 	// 发送数据函数

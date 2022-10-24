@@ -91,6 +91,14 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 
 	return true;
 }
+bool CTCPSocketManage::IsServerMsg(int index)
+{
+	if (index == GetDBServerIndex())
+	{
+		return true;
+	}
+	return false;
+}
 bool CTCPSocketManage::ConnectServer()
 {
 	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
