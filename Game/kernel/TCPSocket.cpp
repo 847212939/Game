@@ -1621,8 +1621,8 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
 		// 消息格式不正确
-		CloseSocket(index);
 		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
+		CloseSocket(index);
 		return false;
 	}
 	// 粘包处理
@@ -1632,16 +1632,16 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
 			// 消息格式不正确
-			CloseSocket(index);
 			COUT_LOG(LOG_CERROR, "消息格式不正确");
+			CloseSocket(index);
 			return false;
 		}
 		int realSize = messageSize - sizeof(NetMessageHead);
 		if (realSize < 0)
 		{
 			// 数据包不够包头
-			CloseSocket(index);
 			COUT_LOG(LOG_CERROR, "数据包不够包头");
+			CloseSocket(index);
 			return false;
 		}
 		void* pData = nullptr;
@@ -1723,9 +1723,9 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 		if (wbmsg.dataLength > SOCKET_RECV_BUF_SIZE)
 		{
 			// 消息格式不正确
-			CloseSocket(index);
 			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,maxsize=%u,wbmsg.dataLength=%u",
 				index, SOCKET_RECV_BUF_SIZE, wbmsg.dataLength);
+			CloseSocket(index);
 			return false;
 		}
 

@@ -42,8 +42,8 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
-			DTCPC->CloseSocket(playerInfo->pMsg->uIndex);
 			COUT_LOG(LOG_CERROR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
+			DTCPC->CloseSocket(playerInfo->pMsg->uIndex);
 			return;
 		}
 	}

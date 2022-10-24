@@ -163,11 +163,13 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	}
 	if (loginData.index < 0 || loginData.index >= m_PlayerClientVec.size())
 	{
+		COUT_LOG(LOG_CINFO, "loginData.index < 0 || loginData.index >= m_PlayerClientVec.size()");
 		DTCPC->CloseSocket(loginData.index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
+		COUT_LOG(LOG_CINFO, "!pInfo->isConnect");
 		DTCPC->CloseSocket(loginData.index);
 		return;
 	}
