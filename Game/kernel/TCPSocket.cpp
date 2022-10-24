@@ -369,7 +369,8 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 }
 
-void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, ServiceType type/* = ServiceType::SERVICE_TYPE_BEGIN*/)
+void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, 
+	ServiceType type/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
@@ -386,23 +387,31 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		closesocket(fd);
 		return;
 	}
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (type == ServiceType::SERVICE_TYPE_BEGIN)
 	{
-#ifdef __WebSocketOpenssl__
-		ssl = SSL_new(m_ctx);
-		if (!ssl)
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
-			COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-			return;
-		}
-		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING, 
-			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
+#ifdef __WebSocketOpenssl__
+			ssl = SSL_new(m_ctx);
+			if (!ssl)
+			{
+				COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+				return;
+			}
+			bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
+				/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
 #endif
+		}
+		else
+		{
+			bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+		}
 	}
 	else
 	{
 		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	}
+	
 	if (!bev)
 	{
 		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
@@ -1139,21 +1148,28 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
 {
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	if (IsServerMsg(index))
 	{
-#ifdef __WebSocket__
-		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
-	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
+		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 	else
 	{
-		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		{
+#ifdef __WebSocket__
+			return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+#endif
+		}
+		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+#ifdef __WebSocketOpenssl__
+			return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+#endif
+		}
+		else
+		{
+			return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		}
 	}
 
 	return true;
@@ -1354,21 +1370,33 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	{
 		return;
 	}
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
+	if (!pSocketSend)
 	{
-#ifdef __WebSocket__
-		HandleSendWsData(pListItem);
-#endif
+		return;
 	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (IsServerMsg(pSocketSend->socketIndex))
 	{
-#ifdef __WebSocketOpenssl__
-		HandleSendWssData(pListItem);
-#endif
+		HandleSendData(pListItem);
 	}
 	else
 	{
-		HandleSendData(pListItem);
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		{
+#ifdef __WebSocket__
+			HandleSendWsData(pListItem);
+#endif
+		}
+		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+#ifdef __WebSocketOpenssl__
+			HandleSendWssData(pListItem);
+#endif
+		}
+		else
+		{
+			HandleSendData(pListItem);
+		}
 	}
 
 	SafeDeleteArray(pListItem->pData);
@@ -1508,32 +1536,42 @@ void CTCPSocketManage::HandleSendWssData(ListItemData* pListItem)
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 {
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-	{
-#ifdef __WebSocket__
-		if (!RecvLogicWsData(bev, index))
-		{
-			return false;
-		}
-#endif
-	}
-	else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		if (!RecvLogicWssData(bev, index))
-		{
-			return false;
-		}
-#endif
-	}
-	else
+	if (IsServerMsg(index))
 	{
 		if (!RecvLogicData(bev, index))
 		{
 			return false;
 		}
 	}
-
+	else
+	{
+		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		{
+#ifdef __WebSocket__
+			if (!RecvLogicWsData(bev, index))
+			{
+				return false;
+			}
+#endif
+		}
+		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+#ifdef __WebSocketOpenssl__
+			if (!RecvLogicWssData(bev, index))
+			{
+				return false;
+			}
+#endif
+		}
+		else
+		{
+			if (!RecvLogicData(bev, index))
+			{
+				return false;
+			}
+		}
+	}
+	
 	return true;
 }
 bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
@@ -1543,12 +1581,10 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
 		return false;
 	}
+
 	struct evbuffer* input = bufferevent_get_input(bev);
-
 	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
-
 	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
-
 	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
 	if (realAllSize <= 0)
 	{
@@ -1557,10 +1593,8 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 
 	// 剩余处理数据
 	size_t handleRemainSize = realAllSize;
-
 	// 解出包头
 	NetMessageHead* pNetHead = (NetMessageHead*)recvBuf.get();
-
 	// 错误判断
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
@@ -1569,7 +1603,6 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
 		return false;
 	}
-
 	// 粘包处理
 	while (handleRemainSize >= sizeof(NetMessageHead) && handleRemainSize >= pNetHead->uMessageSize)
 	{
@@ -1581,7 +1614,6 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 			COUT_LOG(LOG_CERROR, "消息格式不正确");
 			return false;
 		}
-
 		int realSize = messageSize - sizeof(NetMessageHead);
 		if (realSize < 0)
 		{
@@ -1590,19 +1622,15 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 			COUT_LOG(LOG_CERROR, "数据包不够包头");
 			return false;
 		}
-
 		void* pData = nullptr;
 		if (realSize > 0)
 		{
 			// 没数据就为nullptr
 			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
 		}
-
 		// 派发数据
 		DispatchPacket(bev, index, pNetHead, pData, realSize, SocketType::SOCKET_TYPE_TCP);
-
 		handleRemainSize -= messageSize;
-
 		pNetHead = (NetMessageHead*)(recvBuf.get() + realAllSize - handleRemainSize);
 	}
 
