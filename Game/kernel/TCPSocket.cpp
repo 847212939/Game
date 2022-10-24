@@ -412,25 +412,19 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		closesocket(fd);
 		return index;
 	}
-	if (type == ServiceType::SERVICE_TYPE_BEGIN)
+	if (type == ServiceType::SERVICE_TYPE_BEGIN && 
+		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
 #ifdef __WebSocketOpenssl__
-			ssl = SSL_new(m_ctx);
-			if (!ssl)
-			{
-				COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-				return index;
-			}
-			bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
-				/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
-#endif
-		}
-		else
+		ssl = SSL_new(m_ctx);
+		if (!ssl)
 		{
-			bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+			COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+			return index;
 		}
+		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
+			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
+#endif
 	}
 	else
 	{
@@ -462,7 +456,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		return index;
 	}
 
-	if (type != ServiceType::SERVICE_TYPE_DB)
+	if (type == ServiceType::SERVICE_TYPE_BEGIN)
 	{
 		// 设置读超时，当做心跳。网关服务器才需要
 		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
