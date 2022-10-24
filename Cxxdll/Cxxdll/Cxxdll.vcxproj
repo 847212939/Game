@@ -119,7 +119,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>..\..\Res\libevent\lib;..\..\Res\mysql\lib;..\..\Res\openssl\lib;..\..\Res\tolua\libD;..\..\Res\zlib2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>event.lib;event_core.lib;event_extra.lib;event_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>..\..\Res\libevent\lib;..\..\Res\mysql\lib;..\..\Res\openssl\lib;..\..\Res\tolua\libD;..\..\Res\zlib2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;libevent_core.lib;libevent_extras.lib;libevent_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>event.lib;event_core.lib;event_extra.lib;event_openssl.lib;ws2_32.lib;libmysql.lib;zlib.lib;Lua.lib;toLua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
