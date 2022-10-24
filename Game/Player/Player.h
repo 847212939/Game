@@ -54,14 +54,6 @@ public:
 	void AddMysqlCallback(SLoadMysql loadMysql);
 
 public:
-	// 数据库操作
-	void LoadOneSql(SLoadMysql& loadMysql);
-	void SaveInsertSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
-	void SaveDeleteSQL(std::string sqlName, const std::string& sCondition);
-	void SaveReplaceSQL(std::string sqlName, std::string data, std::string keyName = "userid", std::string dataName = "data");
-	void SaveUpdateSQL(std::string sqlName, std::string data, const std::string& sCondition, std::string keyName = "userid", std::string dataName = "data");
-
-public:
 	// 玩家网名
 	GetSetMem(std::string, Playername)
 	// 玩家是否初始化完成

@@ -139,9 +139,6 @@
     <ClCompile Include="kernel\TCPSocket.cpp">
       <Filter>网络管理\网络处理</Filter>
     </ClCompile>
-    <ClCompile Include="kernel\MysqlHelper.cpp">
-      <Filter>网络管理\数据管理</Filter>
-    </ClCompile>
     <ClCompile Include="kernel\LogManager.cpp">
       <Filter>网络管理\日志管理</Filter>
     </ClCompile>
@@ -260,9 +257,6 @@
     </ClInclude>
     <ClInclude Include="kernel\ConditionVariable.h">
       <Filter>网络管理\条件变量</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\MysqlHelper.h">
-      <Filter>网络管理\数据管理</Filter>
     </ClInclude>
     <ClInclude Include="kernel\LogManager.h">
       <Filter>网络管理\日志管理</Filter>

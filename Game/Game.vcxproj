@@ -164,7 +164,6 @@
     <ClCompile Include="kernel\IDGen.cpp" />
     <ClCompile Include="kernel\LogManager.cpp" />
     <ClCompile Include="kernel\MysqlClient.cpp" />
-    <ClCompile Include="kernel\MysqlHelper.cpp" />
     <ClCompile Include="kernel\Netmsg.cpp" />
     <ClCompile Include="kernel\ServerTimer.cpp" />
     <ClCompile Include="kernel\sha1.cpp" />
@@ -211,7 +210,6 @@
     <ClInclude Include="kernel\Macro.h" />
     <ClInclude Include="kernel\MessageCmd.h" />
     <ClInclude Include="kernel\MysqlClient.h" />
-    <ClInclude Include="kernel\MysqlHelper.h" />
     <ClInclude Include="kernel\Netmsg.h" />
     <ClInclude Include="kernel\ServerTimer.h" />
     <ClInclude Include="kernel\sha1.h" />
