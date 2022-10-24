@@ -104,16 +104,7 @@ bool CTCPSocketManage::ConnectServer()
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(DBserverCfg.port);
-
-#if defined(_WIN32)
-	sin.sin_addr.S_un.S_addr = inet_addr(DBserverCfg.ip.c_str());
-#elif defined(_WIN64)
-#elif defined(__linux__)
 	sin.sin_addr.s_addr = inet_addr(DBserverCfg.ip.c_str());
-#elif defined(__unix__)
-#elif defined(__ANDROID__)
-#elif defined(__APPLE__)
-#endif
 
 	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
