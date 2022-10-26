@@ -8,10 +8,9 @@ enum class CrossClientMsgCmd
 class CrossClient
 {
 public:
-	CrossClient(PlayerPrepClient* ppc);
+	CrossClient(PlayerClient* player);
 	~CrossClient();
 
 private:
 	void Network(PlayerInfo* playerInfo);
-
 };

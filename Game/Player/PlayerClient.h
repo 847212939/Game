@@ -10,7 +10,8 @@ protected:
 	PlayerClient(const PlayerClient& my);
 	PlayerClient& operator=(const PlayerClient& my);
 
-public:
+private:
 	BuildReference(MoveSys, MoveSys)			// 移动系统
-	BuildReference(SkillLvSys, SkillLvSys)	// 技能等级系统
+	BuildReference(SkillLvSys, SkillLvSys)		// 技能等级系统
+	BuildReference(CrossClient, CrossClient)	// 跨服客户端
 };
