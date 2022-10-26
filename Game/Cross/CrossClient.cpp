@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-CrossClient::CrossClient(PlayerClient* player)
+CrossClient::CrossClient(PlayerClient* player) : m_Player(player)
 {
 	RegisterNetwk(player, CrossClient::Network, MsgCmd::MsgCmd_Cross);
 }

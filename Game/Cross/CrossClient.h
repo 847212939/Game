@@ -13,4 +13,7 @@ public:
 
 private:
 	void Network(PlayerInfo* playerInfo);
+
+private:
+	PlayerClient* m_Player;
 };
