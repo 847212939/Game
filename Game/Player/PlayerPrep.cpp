@@ -76,7 +76,6 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
-	// 处理登录协议等.. 玩家没有创建
 	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification ||
 		MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification ||
 		MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
