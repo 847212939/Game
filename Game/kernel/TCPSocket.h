@@ -124,7 +124,7 @@ private:
 
 private:
 	// 跨服消息转发
-	bool MsgForward(int index, NetMessageHead* pHead, void* pData, int size);
+	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
 
 private:
 	// 发送TCP消息

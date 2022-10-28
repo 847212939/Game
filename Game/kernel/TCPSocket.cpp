@@ -710,7 +710,7 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	return true;
 }
 // 跨服消息转发
-bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, void* pData, int size)
+bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 {
 	int crossIndex = GetCrossServerIndex();
 	if (crossIndex <= 0)
@@ -723,9 +723,16 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, void* pData,
 		return false;
 	}
 
-	SendMsg(crossIndex, (const char*)pData, size, 
-		(MsgCmd)pHead->uMainID, pHead->uAssistantID, 
-		pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+	PlayerClient* player = G_PlayerCenterClient->GetPlayerClientByIndex(index);
+	if (player)
+	{
+		Netmsg msg;
+		msg << player->GetID();
+		msg << pData;
+
+		SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID, 
+			pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+	}
 
 	return true;
 }
@@ -754,12 +761,9 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 		}
 		return true;
 	}
-	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS)
+	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS && pTcpInfo->isCross)
 	{
-		if (pTcpInfo->isCross)
-		{
-			return MsgForward(index, pHead, pData, size);
-		}
+		return MsgForward(index, pHead, (char*)pData);
 	}
 
 	CDataLine* pDataLine = GetRecvDataLine();
@@ -809,6 +813,7 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 		ssl = nullptr;
 #endif
 	}
+	isCross = false;
 
 	// 解锁发送线程
 	lock->unlock();
