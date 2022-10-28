@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define __DEBUG__
 #define __WebSocket__
@@ -65,53 +65,53 @@ extern "C"
 }
 #include "tolua++.h"
 
-#include "Lua/BaseCfgMgr.h"				// ÍøÂçÅäÖÃ
+#include "Lua/BaseCfgMgr.h"				// ç½‘ç»œé…ç½®
 
-#include "kernel/Macro.h"				// ºê
-#include "kernel/MessageCmd.h"			// Íæ¼ÒÏûÏ¢¶¨Òå
-#include "kernel/AttrsCmd.h"			// Íæ¼ÒÊôĞÔ
-#include "kernel/TimerCmd.h"			// ¶¨Ê±Æ÷
-#include "kernel/Structural.h"			// ½á¹¹
-#include "kernel/IDGen.h"				// Î¨Ò»ID
-#include "kernel/Alias.h"				// ±ğÃû
-#include "kernel/ConditionVariable.h"	// Ìõ¼ş±äÁ¿
-#include "kernel/DataLine.h"			// Êı¾İ´¦Àí
-#include "kernel/TCPSocket.h"			// ÍøÂç»ùÀà
-#include "kernel/TCPClient.h"			// ÍøÂç¿Í»§¶Ë
-#include "kernel/Util.h"				// ¹¤¾ßÀà
-#include "kernel/Netmsg.h"				// ÏûÏ¢½âÎö
-#include "kernel/LogManager.h"			// ÈÕÖ¾¹ÜÀíÀà
+#include "kernel/Macro.h"				// å®
+#include "kernel/MessageCmd.h"			// ç©å®¶æ¶ˆæ¯å®šä¹‰
+#include "kernel/AttrsCmd.h"			// ç©å®¶å±æ€§
+#include "kernel/TimerCmd.h"			// å®šæ—¶å™¨
+#include "kernel/Structural.h"			// ç»“æ„
+#include "kernel/IDGen.h"				// å”¯ä¸€ID
+#include "kernel/Alias.h"				// åˆ«å
+#include "kernel/ConditionVariable.h"	// æ¡ä»¶å˜é‡
+#include "kernel/DataLine.h"			// æ•°æ®å¤„ç†
+#include "kernel/TCPSocket.h"			// ç½‘ç»œåŸºç±»
+#include "kernel/TCPClient.h"			// ç½‘ç»œå®¢æˆ·ç«¯
+#include "kernel/Util.h"				// å·¥å…·ç±»
+#include "kernel/Netmsg.h"				// æ¶ˆæ¯è§£æ
+#include "kernel/LogManager.h"			// æ—¥å¿—ç®¡ç†ç±»
 #include "kernel/base64.h"				// base64
 #include "kernel/sha1.h"				// sha1
-#include "kernel/ServerTimer.h"			// ¶¨Ê±Æ÷
-#include "kernel/MysqlClient.h"			// Êı¾İ¿â¿Í»§¶Ë
+#include "kernel/ServerTimer.h"			// å®šæ—¶å™¨
+#include "kernel/MysqlClient.h"			// æ•°æ®åº“å®¢æˆ·ç«¯
 
-#include "Logic/SkillCfg.h"				// ¼¼ÄÜÅäÖÃ
-#include "Logic/SkillLvSys.h"			// ¼¼ÄÜµÈ¼¶
-#include "Logic/MoveSys.h"				// ÒÆ¶¯
-#include "Logic/SkillSys.h"				// ÉËº¦ÏµÍ³
-#include "Logic/ActivityHallCfg.h"		// »î¶¯ÅäÖÃ
-#include "Logic/ActiveTime.h"			// ¹Ì¶¨Ê±¼ä»î¶¯
-#include "Logic/ActiveService.h"		// ¿ª·ş»î¶¯
-#include "Logic/ActiveAlways.h"			// È«Ìì»î¶¯
-#include "Logic/ActiveSection.h"		// Ê±¼äÄÚ»î¶¯
-#include "Logic/ActivityHallSys.h"		// »î¶¯ÏµÍ³
-#include "Logic/LoginSys.h"				// µÇÂ¼ÏµÍ³
+#include "Logic/SkillCfg.h"				// æŠ€èƒ½é…ç½®
+#include "Logic/SkillLvSys.h"			// æŠ€èƒ½ç­‰çº§
+#include "Logic/MoveSys.h"				// ç§»åŠ¨
+#include "Logic/SkillSys.h"				// ä¼¤å®³ç³»ç»Ÿ
+#include "Logic/ActivityHallCfg.h"		// æ´»åŠ¨é…ç½®
+#include "Logic/ActiveTime.h"			// å›ºå®šæ—¶é—´æ´»åŠ¨
+#include "Logic/ActiveService.h"		// å¼€æœæ´»åŠ¨
+#include "Logic/ActiveAlways.h"			// å…¨å¤©æ´»åŠ¨
+#include "Logic/ActiveSection.h"		// æ—¶é—´å†…æ´»åŠ¨
+#include "Logic/ActivityHallSys.h"		// æ´»åŠ¨ç³»ç»Ÿ
+#include "Logic/LoginSys.h"				// ç™»å½•ç³»ç»Ÿ
 
-#include "Cross/CrossClient.h"			// ¿ç·ş¹ÜÀí
+#include "Cross/CrossClient.h"			// è·¨æœç®¡ç†
 
-#include "Player/Attribute.h"			// ÊôĞÔ
-#include "Player/Animal.h"				// ¶¯Îï
-#include "Player/Player.h"				// Íæ¼Ò
-#include "Player/PlayerClient.h"		// Âß¼­´¦ÀíÀà
-#include "Player/PlayerCenter.h"		// Íæ¼Ò¹ÜÀí
-#include "Player/PlayerCenterClient.h"	// Íæ¼Ò¹ÜÀí
-#include "Player/Monster.h"				// ¹ÖÎï
-#include "Player/MonsterClient.h"		// ¹ÖÎï
-#include "Player/Scene.h"				// ³¡¾°
-#include "Player/SceneClient.h"			// ³¡¾°
-#include "Player/PlayerPrep.h"			// ĞÅÏ¢ÔÚ×¢²á
-#include "Player/PlayerPrepClient.h"	// Âß¼­´¦ÀíÀà
+#include "Player/Attribute.h"			// å±æ€§
+#include "Player/Animal.h"				// åŠ¨ç‰©
+#include "Player/Player.h"				// ç©å®¶
+#include "Player/PlayerClient.h"		// é€»è¾‘å¤„ç†ç±»
+#include "Player/PlayerCenter.h"		// ç©å®¶ç®¡ç†
+#include "Player/PlayerCenterClient.h"	// ç©å®¶ç®¡ç†
+#include "Player/Monster.h"				// æ€ªç‰©
+#include "Player/MonsterClient.h"		// æ€ªç‰©
+#include "Player/Scene.h"				// åœºæ™¯
+#include "Player/SceneClient.h"			// åœºæ™¯
+#include "Player/PlayerPrep.h"			// ä¿¡æ¯åœ¨æ³¨å†Œ
+#include "Player/PlayerPrepClient.h"	// é€»è¾‘å¤„ç†ç±»
 
-#include "Lua/ConfigMgr.h"				// ÅäÖÃ¹ÜÀí
-#include "Lua/LuaMgr.h"					// luaĞéÄâ»ú´´½¨
+#include "Lua/ConfigMgr.h"				// é…ç½®ç®¡ç†
+#include "Lua/LuaMgr.h"					// luaè™šæ‹Ÿæœºåˆ›å»º
