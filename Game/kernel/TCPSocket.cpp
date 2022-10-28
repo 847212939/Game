@@ -709,12 +709,36 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 
 	return true;
 }
+// 跨服消息转发
+bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, void* pData, int size)
+{
+	int crossIndex = GetCrossServerIndex();
+	if (crossIndex <= 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
+	if (!pCrossTcpInfo)
+	{
+		return false;
+	}
 
+	SendMsg(crossIndex, (const char*)pData, size, 
+		(MsgCmd)pHead->uMainID, pHead->uAssistantID, 
+		pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+
+	return true;
+}
 // 网络消息派发
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
+	{
+		return false;
+	}
+	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
+	if (!pTcpInfo)
 	{
 		return false;
 	}
@@ -729,6 +753,13 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 			RemoveTCPSocketStatus(index);
 		}
 		return true;
+	}
+	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS)
+	{
+		if (pTcpInfo->isCross)
+		{
+			return MsgForward(index, pHead, pData, size);
+		}
 	}
 
 	CDataLine* pDataLine = GetRecvDataLine();

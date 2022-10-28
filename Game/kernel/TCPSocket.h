@@ -123,6 +123,10 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
+	// 跨服消息转发
+	bool MsgForward(int index, NetMessageHead* pHead, void* pData, int size);
+
+private:
 	// 发送TCP消息
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0);
