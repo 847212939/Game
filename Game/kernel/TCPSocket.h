@@ -125,9 +125,6 @@ private:
 	bool ConnectDBServer(SOCKFD sock, int threadIndex);
 	// 连接跨服服务器
 	bool ConnectCrossServer(SOCKFD sock, int threadIndex);
-	// 连接本服服务器
-	bool ConnectLogicServer(SOCKFD sock, int threadIndex);
-	
 
 private:
 	// Socketpair
