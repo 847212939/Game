@@ -3,8 +3,8 @@ class PlayerClient;
 
 enum class MoveSysMsgCmd
 {
-	cs_move = 1,  // 移动
-	cs_Load = 2,  // 加载数据库
+	cs_move = 1,		// 移动
+	cs_Load_mysql = 2,  // 加载数据库
 };
 
 class MoveSys

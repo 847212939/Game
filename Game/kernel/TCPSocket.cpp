@@ -222,10 +222,10 @@ bool CTCPSocketManage::ConnectServer()
 			return false;
 		}
 		// 连接跨服服务器
-		if (!ConnectCrossServer())
+		/*if (!ConnectCrossServer())
 		{
 			return false;
-		}
+		}*/
 	}
 
 	return true;
