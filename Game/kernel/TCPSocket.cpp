@@ -141,14 +141,15 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
-		Log(CINF, "连接服跨服失败");
+		Log(CINF, "申请socket失败");
 		return false;
 	}
 
 	return sock;
 }
-bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock, int threadIndex)
+bool CTCPSocketManage::ConnectCrossServer(int threadIndex)
 {
+	SOCKFD sock = GetNewSocket();
 	const CLogicCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	
 	sockaddr_in sin;
@@ -175,8 +176,9 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock, int threadIndex)
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
 	return true;
 }
-bool CTCPSocketManage::ConnectDBServer(SOCKFD sock, int threadIndex)
+bool CTCPSocketManage::ConnectDBServer(int threadIndex)
 {
+	SOCKFD sock = GetNewSocket();
 	const CLogicCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 
 	sockaddr_in sin;
@@ -209,7 +211,6 @@ void CTCPSocketManage::Sleepseconds(int seconds)
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	SOCKFD sock = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		if (!WaitConnect(i))
@@ -219,39 +220,32 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		sock = GetNewSocket();
-		Log(CINF, "ConnectDBServer连接socket:%d", sock);
 		while (true)
 		{
-			if (ConnectDBServer(sock, 0))
+			if (ConnectDBServer(0))
 			{
 				break;
 			}
-			Sleepseconds(10);
+			Sleepseconds(5);
 		}
 	}
 	else
 	{
-		sock = GetNewSocket();
-		Log(CINF, "ConnectDBServer连接socket:%d", sock);
 		while (true)
 		{
-			if (ConnectDBServer(sock, 0))
+			if (ConnectDBServer(0))
 			{
 				break;
 			}
-			Sleepseconds(10);
+			Sleepseconds(5);
 		}
-
-		sock = GetNewSocket();
-		Log(CINF, "ConnectCrossServer连接socket:%d", sock);
 		while (true)
 		{
-			if (ConnectCrossServer(sock, 1))
+			if (ConnectCrossServer(1))
 			{
 				break;
 			}
-			Sleepseconds(10);
+			Sleepseconds(5);
 		}
 	}
 

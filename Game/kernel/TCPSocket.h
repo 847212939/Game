@@ -125,9 +125,9 @@ private:
 	// 获取套接字
 	SOCKFD GetNewSocket();
 	// 连接DB服务器
-	bool ConnectDBServer(SOCKFD sock, int threadIndex);
+	bool ConnectDBServer(int threadIndex);
 	// 连接跨服服务器
-	bool ConnectCrossServer(SOCKFD sock, int threadIndex);
+	bool ConnectCrossServer(int threadIndex);
 
 private:
 	// Socketpair
