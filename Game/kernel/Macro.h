@@ -80,14 +80,14 @@ private:
 #define SavePlayerMysql(userid, name, data) MysqlClient::SaveReplacePlayerMysql(userid, name, data);
 #define RegisterPlayerMysql(pobj, loadMysql)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddMysqlCallback(loadMysql);\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	}\
+	else\
+	{\
+		pobj->AddMysqlCallback(loadMysql);\
+	}\
 }
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
@@ -146,114 +146,118 @@ else\
 // 日志打印
 #define Log(logtype, ...)\
 {\
-if (logtype == ERR)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), ERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else if (logtype == INF)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), INF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else if (logtype == WAR)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), WAR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else if (logtype == CERR)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else if (logtype == CINF)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CINF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else if (logtype == SYS)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
-}\
-else\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
+	if (logtype == ERR)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), ERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else if (logtype == INF)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), INF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else if (logtype == WAR)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), WAR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else if (logtype == CERR)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else if (logtype == CINF)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CINF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else if (logtype == SYS)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	}\
+	else\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
+	}\
 }
 // 注册游戏进入回调
 #define RegisterAttrs(pobj, name)\
-if (!pobj)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	}\
+	else\
+	{\
+		pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
+	}\
 }
 // 注册网络协议
 #define RegisterNetwk(pobj, name, cmd)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	}\
+	else\
+	{\
+		pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
+	}\
 }
 // 注册定时器
 #define RegisterTimer(pobj, name, cmd, uElapse, timerType)\
-if (!pobj)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
-}\
-else\
-{\
-	pobj->SetTimer(cmd, uElapse, timerType);\
-	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, this)));\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	}\
+	else\
+	{\
+		pobj->SetTimer(cmd, uElapse, timerType);\
+		pobj->AddTimerCallback(cmd, std::move(std::bind(&name, this)));\
+	}\
 }
 // 反注册定时器
 #define UnRegisterTimer(pobj, cmd)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
-}\
-else\
-{\
-	pobj->KillTimer(cmd);\
-	pobj->DelTimerCallback(cmd);\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
+	}\
+	else\
+	{\
+		pobj->KillTimer(cmd);\
+		pobj->DelTimerCallback(cmd);\
+	}\
 }
 // 添加属性
 #define AddAttributes(pobj, attrs)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
-}\
-else\
-{\
-	pobj->AdditionAttributes(attrs);\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
+	}\
+	else\
+	{\
+		pobj->AdditionAttributes(attrs);\
+	}\
 }
 // 进入场景
 #define RegisterEnter(pobj, name)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	}\
+	else\
+	{\
+		pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
+	}\
 }
 // 注册游戏退出
 #define RegisterLgout(pobj, name)\
 {\
-if (!pobj)\
-{\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
-}\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	}\
+	else\
+	{\
+		pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
+	}\
 }
