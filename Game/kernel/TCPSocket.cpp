@@ -577,11 +577,11 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	m_ConditionVariable.GetMutex().lock();	//加锁
 	if (m_socketInfoVec[index].isConnect)
 	{
-		m_ConditionVariable.GetMutex().unlock(); //解锁
 		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
+		m_ConditionVariable.GetMutex().unlock(); //解锁
 		return index;
 	}
 	m_socketInfoVec[index] = tcpInfo;

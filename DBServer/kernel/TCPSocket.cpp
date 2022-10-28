@@ -552,23 +552,19 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
-
 	// 重复调用
 	if (!tcpInfo->isConnect)
 	{
 		return;
 	}
-
 	// 如果锁没有分配内存，就分配
 	if (!tcpInfo->lock)
 	{
 		tcpInfo->lock = new std::mutex;
 	}
-
 	uAccessIP = inet_addr(tcpInfo->ip);
 	m_uCurSocketSize--;
 	m_heartBeatSocketSet.erase((unsigned int)index);
-
 	// 释放参数内存
 	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
 	bufferevent_getcb(tcpInfo->bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
@@ -576,10 +572,8 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	{
 		SafeDelete(pRecvThreadParam);
 	}
-
 	// 和发送线程相关的锁
 	tcpInfo->Reset(m_ServiceType);
-
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
 
