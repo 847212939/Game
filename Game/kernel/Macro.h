@@ -79,9 +79,16 @@ private:
 // 注册保存玩家数据库
 #define SavePlayerMysql(userid, name, data) MysqlClient::SaveReplacePlayerMysql(userid, name, data);
 #define RegisterPlayerMysql(pobj, loadMysql)\
-if (!pobj){CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");}\
-else{pobj->AddMysqlCallback(loadMysql);}
-
+{\
+if (!pobj)\
+{\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+}\
+else\
+{\
+	pobj->AddMysqlCallback(loadMysql);\
+}\
+}
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 // 网络消息注册
@@ -138,6 +145,7 @@ else{pobj->AddMysqlCallback(loadMysql);}
 }
 // 日志打印
 #define Log(logtype, ...)\
+{\
 if (logtype == ERR)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), ERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
@@ -175,9 +183,11 @@ if (!pobj)\
 else\
 {\
 	pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
+}\
 }
 // 注册网络协议
 #define RegisterNetwk(pobj, name, cmd)\
+{\
 if (!pobj)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
@@ -196,9 +206,11 @@ else\
 {\
 	pobj->SetTimer(cmd, uElapse, timerType);\
 	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, this)));\
+}\
 }
 // 反注册定时器
 #define UnRegisterTimer(pobj, cmd)\
+{\
 if (!pobj)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法"); \
@@ -207,9 +219,11 @@ else\
 {\
 	pobj->KillTimer(cmd);\
 	pobj->DelTimerCallback(cmd);\
+}\
 }
 // 添加属性
 #define AddAttributes(pobj, attrs)\
+{\
 if (!pobj)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "添加属性失败");\
@@ -217,9 +231,11 @@ if (!pobj)\
 else\
 {\
 	pobj->AdditionAttributes(attrs);\
+}\
 }
 // 进入场景
 #define RegisterEnter(pobj, name)\
+{\
 if (!pobj)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
@@ -227,9 +243,11 @@ if (!pobj)\
 else\
 {\
 	pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
+}\
 }
 // 注册游戏退出
 #define RegisterLgout(pobj, name)\
+{\
 if (!pobj)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
@@ -237,4 +255,5 @@ if (!pobj)\
 else\
 {\
 	pobj->AddExitCallback(std::move(std::bind(&name, this, std::placeholders::_1)));\
+}\
 }
