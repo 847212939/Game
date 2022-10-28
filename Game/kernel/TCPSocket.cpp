@@ -169,7 +169,7 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock, int threadIndex)
 	tcpInfo.port = serverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	m_CrossServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_CROSS);
+	m_CrossServerIndex = AddServerSocketInfo(threadIndex, &tcpInfo);
 
 	Log(CINF, "连接服跨服成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
@@ -197,7 +197,7 @@ bool CTCPSocketManage::ConnectDBServer(SOCKFD sock, int threadIndex)
 	tcpInfo.port = serverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+	m_DBServerIndex = AddServerSocketInfo(threadIndex, &tcpInfo);
 
 	Log(CINF, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
@@ -482,16 +482,11 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 
 	event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 }
-
-int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo, 
-	ServiceType type/* = ServiceType::SERVICE_TYPE_BEGIN*/)
+int  CTCPSocketManage::AddServerSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
 {
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
 	SOCKFD fd = pTCPSocketInfo->acceptFd;
-#ifdef __WebSocketOpenssl__
-	SSL* ssl = nullptr;
-#endif
 
 	// 分配索引算法
 	int index = GetSocketIndex();
@@ -501,24 +496,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		closesocket(fd);
 		return index;
 	}
-	if (type == ServiceType::SERVICE_TYPE_BEGIN && 
-		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
-		ssl = SSL_new(m_ctx);
-		if (!ssl)
-		{
-			Log(CERR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-			return index;
-		}
-		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
-			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
-#endif
-	}
-	else
-	{
-		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
-	}
+	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
 		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
@@ -545,18 +523,103 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		return index;
 	}
 
-	if (type == ServiceType::SERVICE_TYPE_BEGIN)
+	// 保存信息
+	TCPSocketInfo tcpInfo;
+	memcpy(tcpInfo.ip, pTCPSocketInfo->ip, sizeof(tcpInfo.ip));
+	tcpInfo.acceptFd = pTCPSocketInfo->acceptFd;
+	tcpInfo.acceptMsgTime = pTCPSocketInfo->acceptMsgTime;
+	tcpInfo.bev = bev;
+	tcpInfo.isConnect = true;
+	tcpInfo.port = pTCPSocketInfo->port;
+	if (!tcpInfo.lock)
 	{
-		// 设置读超时，当做心跳。网关服务器才需要
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		tcpInfo.lock = new std::mutex;
+	}
+	tcpInfo.bHandleAccptMsg = false;
+
+	if (m_socketInfoVec[index].isConnect)
+	{
+		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		closesocket(fd);
+		bufferevent_free(bev);
+		SafeDelete(pRecvThreadParam);
+		return index;
+	}
+	m_socketInfoVec[index] = tcpInfo;
+	m_heartBeatSocketSet.insert((unsigned int)index);
+	m_uCurSocketSize++;
+
+	return index;
+}
+void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
+{
+	struct event_base* base = m_workBaseVec[threadIndex].base;
+	struct bufferevent* bev = nullptr;
+	SOCKFD fd = pTCPSocketInfo->acceptFd;
+#ifdef __WebSocketOpenssl__
+	SSL* ssl = nullptr;
+#endif
+
+	// 分配索引算法
+	int index = GetSocketIndex();
+	if (index < 0)
+	{
+		Log(CERR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		closesocket(fd);
+		return;
+	}
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+		ssl = SSL_new(m_ctx);
+		if (!ssl)
 		{
-			timeval tvRead;
-			tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
-			tvRead.tv_usec = 0;
-			bufferevent_set_timeouts(bev, &tvRead, nullptr);
+			Log(CERR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+			return;
 		}
+		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
+			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
+#endif
+	}
+	else
+	{
+		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	}
+	if (!bev)
+	{
+		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		closesocket(fd);
+		return;
+	}
+
+	// 设置应用层收发数据包，单次大小
+	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
+
+	// 生成回调函数参数，调用bufferevent_free要释放内存，否则内存泄露
+	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
+	pRecvThreadParam->pThis = this;
+	pRecvThreadParam->index = index;
+
+	// 添加事件，并设置好回调函数
+	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
+	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
+	{
+		Log(CERR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		closesocket(fd);
+		bufferevent_free(bev);
+		SafeDelete(pRecvThreadParam);
+		return;
+	}
+
+	// 设置读超时，当做心跳。网关服务器才需要
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		timeval tvRead;
+		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
+		tvRead.tv_usec = 0;
+		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
 
 	// 保存信息
@@ -582,39 +645,34 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
 		m_ConditionVariable.GetMutex().unlock(); //解锁
-		return index;
+		return;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
 	m_ConditionVariable.GetMutex().unlock(); //解锁
 
-	if (type == ServiceType::SERVICE_TYPE_BEGIN)
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-		{
-			return index;
-		}
-		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
-#ifdef __WebSocketOpenssl__
-			TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
-			if (tcpInfo1)
-			{
-				tcpInfo1->ssl = ssl;
-			}
-#endif
-			return index;
-		}
-		else
-		{
-			// TCP服务器 验证客户端
-			Netmsg msg; msg << tcpInfo.link;
-			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
-		}
+		return;
 	}
-
-	return index;
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+#ifdef __WebSocketOpenssl__
+		TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
+		if (tcpInfo1)
+		{
+			tcpInfo1->ssl = ssl;
+		}
+#endif
+		return;
+	}
+	else
+	{
+		// TCP服务器 验证客户端
+		Netmsg msg; msg << tcpInfo.link;
+		SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+	}
 }
 
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)
