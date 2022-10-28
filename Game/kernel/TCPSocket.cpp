@@ -209,6 +209,7 @@ void CTCPSocketManage::Sleepseconds(int seconds)
 }
 bool CTCPSocketManage::ConnectServer()
 {
+	SOCKFD sock = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		if (!WaitConnect(i))
@@ -218,7 +219,7 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		SOCKFD sock = GetNewSocket();
+		sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectDBServer(sock, 0))
@@ -230,7 +231,7 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	else
 	{
-		SOCKFD sock = GetNewSocket();
+		sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectDBServer(sock, 0))
@@ -240,7 +241,7 @@ bool CTCPSocketManage::ConnectServer()
 			Sleepseconds(5);
 		}
 
-		SOCKFD sock = GetNewSocket();
+		sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectCrossServer(sock, 1))
