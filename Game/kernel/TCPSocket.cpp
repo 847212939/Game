@@ -669,12 +669,15 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
 		SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+		return;
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
 		Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 			tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+		return;
 	}
+	return;
 }
 
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)
