@@ -112,7 +112,6 @@ bool CTCPSocketManage::WaitConnect(int threadIndex)
 					break;
 				}
 			}
-			Log(CINF, "等待链接DB服务器");
 		}
 	}
 	return true;
