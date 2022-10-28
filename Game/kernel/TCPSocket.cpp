@@ -147,9 +147,8 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 
 	return sock;
 }
-bool CTCPSocketManage::ConnectCrossServer(int threadIndex)
+bool CTCPSocketManage::ConnectCrossServer(SOCKFD& sock, int threadIndex)
 {
-	SOCKFD sock = GetNewSocket();
 	const CLogicCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	
 	sockaddr_in sin;
@@ -176,9 +175,8 @@ bool CTCPSocketManage::ConnectCrossServer(int threadIndex)
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
 	return true;
 }
-bool CTCPSocketManage::ConnectDBServer(int threadIndex)
+bool CTCPSocketManage::ConnectDBServer(SOCKFD& sock, int threadIndex)
 {
-	SOCKFD sock = GetNewSocket();
 	const CLogicCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 
 	sockaddr_in sin;
@@ -220,9 +218,10 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
+		SOCKFD sock = GetNewSocket();
 		while (true)
 		{
-			if (ConnectDBServer(0))
+			if (ConnectDBServer(sock, 0))
 			{
 				break;
 			}
@@ -231,17 +230,20 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	else
 	{
+		SOCKFD sock = GetNewSocket();
 		while (true)
 		{
-			if (ConnectDBServer(0))
+			if (ConnectDBServer(sock, 0))
 			{
 				break;
 			}
 			Sleepseconds(5);
 		}
+
+		SOCKFD sock = GetNewSocket();
 		while (true)
 		{
-			if (ConnectCrossServer(1))
+			if (ConnectCrossServer(sock, 1))
 			{
 				break;
 			}
