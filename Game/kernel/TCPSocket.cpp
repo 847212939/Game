@@ -534,17 +534,20 @@ int  CTCPSocketManage::AddServerSocketInfo(int threadIndex, PlatformSocketInfo* 
 	}
 	tcpInfo.bHandleAccptMsg = false;
 
+	m_ConditionVariable.GetMutex().lock();	//加锁
 	if (m_socketInfoVec[index].isConnect)
 	{
 		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
+		m_ConditionVariable.GetMutex().unlock(); //解锁
 		return index;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
+	m_ConditionVariable.GetMutex().unlock(); //解锁
 
 	return index;
 }
