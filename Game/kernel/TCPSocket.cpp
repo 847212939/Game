@@ -664,7 +664,12 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 #endif
 		return;
 	}
-	else
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
+			tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
