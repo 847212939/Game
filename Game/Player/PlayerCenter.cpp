@@ -25,49 +25,6 @@ void PlayerCenter::Init()
 	G_NetClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
-// 分发消息
-void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		Log(CERR, "Dispatch message playerClient info = null cmd = %d", cmd);
-		return;
-	}
-	if (!playerInfo->pMsg)
-	{
-		Log(CERR, "Dispatch message sock msg = null cmd = %d", cmd);
-		return;
-	}
-	PlayerClient* playerClient = GetPlayerClientByIndex(playerInfo->pMsg->uIndex);
-	if (!playerClient)
-	{
-		Log(CERR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
-		return;
-	}
-	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
-	if (!pInfo)
-	{
-		Log(CERR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
-		return;
-	}
-	if (!pInfo->isConnect)
-	{
-		Log(CINF, "Dispatch message Link broken cmd = %d", cmd);
-		return;
-	}
-	if (!playerClient->GetLoad())
-	{
-		Log(CERR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
-		return;
-	}
-	if (playerClient->GetIndex() != playerInfo->pMsg->uIndex)
-	{
-		Log(CERR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
-		return;
-	}
-	playerClient->MessageDispatch(cmd, playerInfo);
-}
-
 // 创建角色
 void PlayerCenter::CreatePlayer(LoginData& loginData)
 {

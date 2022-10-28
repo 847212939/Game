@@ -81,11 +81,36 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
 	{
 		CallBackFun(cmd, playerInfo);
+		return;
 	}
-	else
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(playerInfo->pMsg->uIndex);
+	if (!playerClient)
 	{
-		G_SceneClient->MessageDispatch(cmd, playerInfo);
+		Log(CERR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
+		return;
 	}
+	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	if (!pInfo)
+	{
+		Log(CERR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
+		return;
+	}
+	if (!pInfo->isConnect)
+	{
+		Log(CINF, "Dispatch message Link broken cmd = %d", cmd);
+		return;
+	}
+	if (!playerClient->GetLoad())
+	{
+		Log(CERR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
+		return;
+	}
+	if (playerClient->GetIndex() != playerInfo->pMsg->uIndex)
+	{
+		Log(CERR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
+		return;
+	}
+	playerClient->MessageDispatch(cmd, playerInfo);
 }
 
 // ´´½¨½ÇÉ«

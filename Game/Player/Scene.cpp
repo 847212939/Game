@@ -14,23 +14,6 @@ void Scene::Init()
 	G_PlayerCenterClient->Init();
 }
 
-// 分发消息
-void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		Log(CERR, "playerInfo = null cmd = %d", (int)cmd);
-		return;
-	}
-	SocketReadLine* pMsg = playerInfo->pMsg;
-	if (!pMsg)
-	{
-		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
-		return;
-	}
-	G_PlayerCenterClient->MessageDispatch(cmd, playerInfo);
-}
-
 bool Scene::EnterScene(Animal* animal, int sceneid, Transform transform)
 {
 	if (!animal)

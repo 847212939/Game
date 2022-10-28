@@ -13,10 +13,6 @@ protected:
 public:
 	// 初始化
 	void Init();
-
-public:
-	// 分发消息
-	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 	// 创建玩家
 	void CreatePlayer(LoginData& loginData);
 

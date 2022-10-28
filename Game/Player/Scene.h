@@ -13,10 +13,6 @@ protected:
 public:
 	// 初始化
 	void Init();
-	// 消息派发
-	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
-
-public:
 	// 进入场景
 	bool EnterScene(Animal* animal, int sceneid, Transform transform);
 
