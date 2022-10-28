@@ -2129,7 +2129,6 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 }
 #endif
 
-#ifdef __CrossServer__
 // 跨服相关
 // 跨服消息转发
 bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
@@ -2158,4 +2157,3 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 
 	return true;
 }
-#endif

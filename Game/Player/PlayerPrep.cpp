@@ -27,87 +27,67 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "!playerInfo");
 		return;
 	}
-	if (!playerInfo->pMsg)
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	if (!pMsg)
 	{
-		Log(CERR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
+		Log(CERR, "!pMsg");
 		return;
 	}
-	auto* tcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	int index = pMsg->uIndex;
+	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
 		Log(CERR, "!tcpInfo");
 		return;
 	}
-	if (!G_NetClient->IsServerMsg((int)playerInfo->pMsg->uIndex))
+	if (!G_NetClient->IsServerMsg(index))
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
 			Log(CERR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
-			G_NetClient->CloseSocket(playerInfo->pMsg->uIndex);
+			G_NetClient->CloseSocket(index);
 			return;
 		}
 	}
-	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;
-	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
+	MsgCmd cmd = (MsgCmd)pMsg->netMessageHead.uMainID;
+	if (cmd >= MsgCmd::MsgCmd_End || cmd <= MsgCmd::MsgCmd_Begin)
 	{
-		Log(CERR, "没有找到消息类型 cmd = %d", uMainID);
+		Log(CERR, "非法消息cmd=%d", (int)cmd);
 		return;
 	}
-	// websocket服务器
-	if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_WEBSOCKET)
-	{
-		MessageDispatch((MsgCmd)uMainID, playerInfo);
-	}
-	else if (playerInfo->pMsg->socketType == SocketType::SOCKET_TYPE_TCP)
-	{
-		MessageDispatch((MsgCmd)uMainID, playerInfo);
-	}
-}
-void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
-{
-	if (!playerInfo)
-	{
-		Log(CERR, "playerInfo = null cmd = %d", (int)cmd);
-		return;
-	}
-	SocketReadLine* pMsg = playerInfo->pMsg;
-	if (!pMsg)
-	{
-		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
-		return;
-	}
-	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification ||
-		MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification ||
-		MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
+	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
+	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
+		MsgCmd::MsgCmd_PlayerCenter == identification ||
+		MsgCmd::MsgCmd_Scene == identification)
 	{
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
-	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(playerInfo->pMsg->uIndex);
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(index);
 	if (!playerClient)
 	{
-		Log(CERR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
+		Log(CERR, "Dispatch message playerClient = null index = %d", index);
 		return;
 	}
-	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!pInfo)
 	{
-		Log(CERR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
+		Log(CERR, "Client information is empty index=%d", index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		Log(CINF, "Dispatch message Link broken cmd = %d", cmd);
+		Log(CINF, "Dispatch message Link broken cmd = %d", (int)cmd);
 		return;
 	}
 	if (!playerClient->GetLoad())
 	{
-		Log(CERR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
+		Log(CERR, "Dispatch message mysql is unload index = %d", index);
 		return;
 	}
-	if (playerClient->GetIndex() != playerInfo->pMsg->uIndex)
+	if (playerClient->GetIndex() != index)
 	{
-		Log(CERR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
+		Log(CERR, "dindex = %u, sindex = %d", playerClient->GetIndex(), index);
 		return;
 	}
 	playerClient->MessageDispatch(cmd, playerInfo);

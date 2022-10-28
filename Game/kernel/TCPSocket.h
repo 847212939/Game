@@ -71,6 +71,8 @@ public:
 	int GetCrossServerIndex();
 	// 是否是内部消息
 	bool IsServerMsg(int index);
+	// 跨服消息转发
+	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
 
 private:
 	// 设置tcp属性
@@ -125,10 +127,6 @@ private:
 	static int DgramSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
 	static int StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
-
-private:
-	// 跨服消息转发
-	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
 
 private:
 	// 发送TCP消息

@@ -40,10 +40,6 @@ public:
 	void CreatePlayer(LoginData& loginData);
 
 private:
-	// 消息派发
-	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
-
-private:
 	// 回调函数
 	MapNetFun		  m_NetCBFunMap;
 	// 定时器
