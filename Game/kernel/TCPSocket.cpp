@@ -148,15 +148,9 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 
 	return sock;
 }
-bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
+bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock, int threadIndex)
 {
-	int threadIndex = 1;
-	if (!WaitConnect(threadIndex))
-	{
-		Log(CINF, "连接服跨服失败");
-		return false;
-	}
-
+	
 	const CLogicCfg& CrossServerCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	
 	sockaddr_in sin;
@@ -183,15 +177,8 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
 	return true;
 }
-bool CTCPSocketManage::ConnectDBServer(SOCKFD sock)
+bool CTCPSocketManage::ConnectDBServer(SOCKFD sock, int threadIndex)
 {
-	int threadIndex = 0;
-	if (!WaitConnect(threadIndex))
-	{
-		Log(CINF, "连接服DB失败");
-		return false;
-	}
-
 	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 
 	sockaddr_in sin;
@@ -218,48 +205,58 @@ bool CTCPSocketManage::ConnectDBServer(SOCKFD sock)
 		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
 	return true;
 }
+void CTCPSocketManage::Sleepseconds(int seconds)
+{
+	std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
 bool CTCPSocketManage::ConnectServer()
 {
 	SOCKFD sock = 0;
-	// 如果不是跨服服务器
-	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS)
+	if (!WaitConnect(0))
+	{
+		Log(CINF, "连接服DB失败");
+		return false;
+	}
+	if (!WaitConnect(1))
+	{
+		Log(CINF, "连接服跨服失败");
+		return false;
+	}
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
 		sock = GetNewSocket();
 		Log(CINF, "ConnectDBServer连接socket:%d", sock);
 		while (true)
 		{
-			// 连接DB服务器
-			if (ConnectDBServer(sock))
+			if (ConnectDBServer(sock, 0))
 			{
 				break;
 			}
-			std::this_thread::sleep_for(std::chrono::seconds(10));
-		}
-		sock = GetNewSocket();
-		Log(CINF, "ConnectCrossServer连接socket:%d", sock);
-		while (true)
-		{
-			// 连接跨服服务器
-			if (ConnectCrossServer(sock))
-			{
-				break;
-			}
-			std::this_thread::sleep_for(std::chrono::seconds(10));
+			Sleepseconds(10);
 		}
 	}
-	// 如果是跨服
 	else
 	{
 		sock = GetNewSocket();
 		Log(CINF, "ConnectDBServer连接socket:%d", sock);
 		while (true)
 		{
-			// 连接DB服务器
-			if (ConnectDBServer(sock))
+			if (ConnectDBServer(sock, 0))
 			{
 				break;
 			}
-			std::this_thread::sleep_for(std::chrono::seconds(10));
+			Sleepseconds(10);
+		}
+
+		sock = GetNewSocket();
+		Log(CINF, "ConnectCrossServer连接socket:%d", sock);
+		while (true)
+		{
+			if (ConnectCrossServer(sock, 1))
+			{
+				break;
+			}
+			Sleepseconds(10);
 		}
 	}
 

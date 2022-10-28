@@ -22,6 +22,8 @@ public:
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 	// 连接服务器
 	bool ConnectServer();
+	// 休眠
+	void Sleepseconds(int seconds);
 
 public:
 	// 发送数据函数
@@ -120,9 +122,9 @@ private:
 	// 获取套接字
 	SOCKFD GetNewSocket();
 	// 连接DB服务器
-	bool ConnectDBServer(SOCKFD sock);
+	bool ConnectDBServer(SOCKFD sock, int threadIndex);
 	// 连接跨服服务器
-	bool ConnectCrossServer(SOCKFD sock);
+	bool ConnectCrossServer(SOCKFD sock, int threadIndex);
 	
 
 private:
