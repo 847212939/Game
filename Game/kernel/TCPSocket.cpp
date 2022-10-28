@@ -137,9 +137,8 @@ bool CTCPSocketManage::IsServerMsg(int index)
 	
 	return false;
 }
-bool CTCPSocketManage::ConnectCrossServer()
+SOCKFD CTCPSocketManage::GetNewSocket()
 {
-	const CLogicCfg& CrossServerCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
@@ -147,6 +146,12 @@ bool CTCPSocketManage::ConnectCrossServer()
 		return false;
 	}
 
+	return sock;
+}
+bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
+{
+	const CLogicCfg& CrossServerCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
+	
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(CrossServerCfg.port);
@@ -178,7 +183,7 @@ bool CTCPSocketManage::ConnectCrossServer()
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
 	return true;
 }
-bool CTCPSocketManage::ConnectDBServer()
+bool CTCPSocketManage::ConnectDBServer(SOCKFD sock)
 {
 	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -221,18 +226,45 @@ bool CTCPSocketManage::ConnectDBServer()
 }
 bool CTCPSocketManage::ConnectServer()
 {
+	SOCKFD sock = 0;
 	// 如果不是跨服服务器
 	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS)
 	{
-		// 连接DB服务器
-		if (!ConnectDBServer())
+		sock = GetNewSocket();
+		Log(CINF, "ConnectDBServer连接socket:%d", sock);
+		while (true)
 		{
-			return false;
+			// 连接DB服务器
+			if (ConnectDBServer(sock))
+			{
+				break;
+			}
+			std::this_thread::sleep_for(std::chrono::seconds(10));
 		}
-		// 连接跨服服务器
-		if (!ConnectCrossServer())
+		sock = GetNewSocket();
+		Log(CINF, "ConnectCrossServer连接socket:%d", sock);
+		while (true)
 		{
-			return false;
+			// 连接跨服服务器
+			if (ConnectCrossServer(sock))
+			{
+				break;
+			}
+			std::this_thread::sleep_for(std::chrono::seconds(10));
+		}
+	}
+	else
+	{
+		sock = GetNewSocket();
+		Log(CINF, "ConnectDBServer连接socket:%d", sock);
+		while (true)
+		{
+			// 连接DB服务器
+			if (ConnectDBServer(sock))
+			{
+				break;
+			}
+			std::this_thread::sleep_for(std::chrono::seconds(10));
 		}
 	}
 

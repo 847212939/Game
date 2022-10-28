@@ -117,10 +117,13 @@ private:
 	bool VerifyConnection(int index, char* data);
 	// 等待连接
 	bool WaitConnect(int threadIndex);
+	// 获取套接字
+	SOCKFD GetNewSocket();
 	// 连接DB服务器
-	bool ConnectDBServer();
+	bool ConnectDBServer(SOCKFD sock);
 	// 连接跨服服务器
-	bool ConnectCrossServer();
+	bool ConnectCrossServer(SOCKFD sock);
+	
 
 private:
 	// Socketpair
