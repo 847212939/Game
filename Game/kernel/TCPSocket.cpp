@@ -150,6 +150,13 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 }
 bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
 {
+	int threadIndex = 1;
+	if (!WaitConnect(threadIndex))
+	{
+		Log(CINF, "连接服跨服失败");
+		return false;
+	}
+
 	const CLogicCfg& CrossServerCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	
 	sockaddr_in sin;
@@ -170,13 +177,6 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
 	tcpInfo.port = CrossServerCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	int threadIndex = 1;
-	if (!WaitConnect(threadIndex))
-	{
-		Log(CINF, "连接服跨服失败");
-		return false;
-	}
-
 	m_CrossServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	Log(CINF, "连接服跨服成功 [ip=%s port=%d index=%d fd=%d]",
@@ -185,13 +185,14 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock)
 }
 bool CTCPSocketManage::ConnectDBServer(SOCKFD sock)
 {
-	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
-	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock < 0)
+	int threadIndex = 0;
+	if (!WaitConnect(threadIndex))
 	{
 		Log(CINF, "连接服DB失败");
 		return false;
 	}
+
+	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
@@ -210,13 +211,6 @@ bool CTCPSocketManage::ConnectDBServer(SOCKFD sock)
 	memcpy(tcpInfo.ip, DBserverCfg.ip.c_str(), DBserverCfg.ip.size());
 	tcpInfo.port = DBserverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
-
-	int threadIndex = 0;
-	if (!WaitConnect(threadIndex))
-	{
-		Log(CINF, "连接服DB失败");
-		return false;
-	}
 
 	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
