@@ -4,7 +4,7 @@ bool run = true;
 
 int main()
 {
-	ServiceType type = ServiceType::SERVICE_TYPE_CROSS;
+	ServiceType type = ServiceType::SERVICE_TYPE_LOGIC;
 
 	G_LogMgr->SetLogFileType(type);
 
