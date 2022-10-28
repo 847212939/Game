@@ -253,6 +253,7 @@ bool CTCPSocketManage::ConnectServer()
 			std::this_thread::sleep_for(std::chrono::seconds(10));
 		}
 	}
+	// 如果是跨服
 	else
 	{
 		sock = GetNewSocket();
