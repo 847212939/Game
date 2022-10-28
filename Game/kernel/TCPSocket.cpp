@@ -212,15 +212,12 @@ void CTCPSocketManage::Sleepseconds(int seconds)
 bool CTCPSocketManage::ConnectServer()
 {
 	SOCKFD sock = 0;
-	if (!WaitConnect(0))
+	for (int i = 0; i < 2; i++)
 	{
-		Log(CINF, "连接服DB失败");
-		return false;
-	}
-	if (!WaitConnect(1))
-	{
-		Log(CINF, "连接服跨服失败");
-		return false;
+		if (!WaitConnect(i))
+		{
+			return false;
+		}
 	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
