@@ -5,7 +5,7 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
-	m_iServiceType(ServiceType::SERVICE_TYPE_END),
+	m_ServiceType(ServiceType::SERVICE_TYPE_END),
 	m_ConnectServerBase(NULL),
 	m_socket(0),
 	m_port(0),
@@ -120,7 +120,7 @@ bool CTCPSocketManage::Start()
 		return false;
 	}
 
-	m_iServiceType = ServiceType::SERVICE_TYPE_BEGIN;
+	m_ServiceType = ServiceType::SERVICE_TYPE_BEGIN;
 	m_running = true;
 
 	std::thread threadSendMsgThread(&CTCPSocketManage::ThreadSendMsgThread, this);
@@ -149,7 +149,7 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	}
 
 	// 设置读超时，当做心跳。
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_CLIENT_HEARTBEAT)
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_CLIENT_HEARTBEAT)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;

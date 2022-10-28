@@ -62,7 +62,7 @@ private:
 	CDataLine*					m_pRecvDataLine;
 	CDataLine*					m_pSendDataLine;
 	event_config*				m_eventBaseCfg;
-	ServiceType                 m_iServiceType;
+	ServiceType                 m_ServiceType;
 	event_base*					m_ConnectServerBase;
 	struct bufferevent*			m_Socketbev;
 	SockFd						m_socket;

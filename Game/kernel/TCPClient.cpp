@@ -27,18 +27,13 @@ TCPClient::~TCPClient()
 }
 bool TCPClient::Init(ServiceType serverType)
 {
-	const CLogicCfg& logicCfg = G_CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
-	if (serverType == ServiceType::SERVICE_TYPE_GAMECENTER)
+	const CLogicCfg* pLogicCfg = GetServerCfg(serverType);
+	if (!pLogicCfg)
 	{
-
-	}
-	else
-	{
-
+		return false;
 	}
 	int maxSocketCnt = G_CfgMgr->GetCBaseCfgMgr().GetMaxSocketCnt();
-
-	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str(), serverType))
+	if (!CTCPSocketManage::Init(maxSocketCnt, pLogicCfg->port, pLogicCfg->ip.c_str(), serverType))
 	{
 		return false;
 	}
@@ -224,4 +219,20 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	playerClient->ExitGame(pSocketClose);
 
 	SafeDelete(playerClient);
+}
+
+const CLogicCfg* TCPClient::GetServerCfg(ServiceType serverType)
+{
+	if (serverType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return &G_CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
+	}
+	else
+	{
+		return &G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
+	}
+}
+bool TCPClient::IsCorss()
+{
+	return GetServerType() == ServiceType::SERVICE_TYPE_CROSS;
 }

@@ -72,7 +72,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	}
 
 	m_port = port;
-	m_iServiceType = serverType;
+	m_ServiceType = serverType;
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
 
@@ -80,7 +80,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
 		if (!OpensslInit())
@@ -214,7 +214,7 @@ bool CTCPSocketManage::ConnectDBServer()
 bool CTCPSocketManage::ConnectServer()
 {
 	// 如果不是跨服服务器
-	if (m_iServiceType != ServiceType::SERVICE_TYPE_CROSS)
+	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS)
 	{
 		// 连接DB服务器
 		if (!ConnectDBServer())
@@ -475,7 +475,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		return index;
 	}
 	if (type == ServiceType::SERVICE_TYPE_BEGIN && 
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
 		ssl = SSL_new(m_ctx);
@@ -521,9 +521,9 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	if (type == ServiceType::SERVICE_TYPE_BEGIN)
 	{
 		// 设置读超时，当做心跳。网关服务器才需要
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-			m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-			m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
 			timeval tvRead;
 			tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
@@ -564,11 +564,11 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 
 	if (type == ServiceType::SERVICE_TYPE_BEGIN)
 	{
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 		{
 			return index;
 		}
-		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
 #ifdef __WebSocketOpenssl__
 			TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
@@ -831,7 +831,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 		SafeDelete(pRecvThreadParam);
 	}
 	// 和发送线程相关的锁
-	tcpInfo->Reset(m_iServiceType);
+	tcpInfo->Reset(m_ServiceType);
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
 
@@ -913,7 +913,7 @@ bool& CTCPSocketManage::GetRuninged()
 }
 ServiceType CTCPSocketManage::GetServerType()
 {
-	return m_iServiceType;
+	return m_ServiceType;
 }
 ConditionVariable& CTCPSocketManage::GetConditionVariable()
 {
@@ -1235,13 +1235,13 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	}
 	else
 	{
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 		{
 #ifdef __WebSocket__
 			return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 #endif
 		}
-		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
 #ifdef __WebSocketOpenssl__
 			return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
@@ -1462,13 +1462,13 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	}
 	else
 	{
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 		{
 #ifdef __WebSocket__
 			HandleSendWsData(pListItem);
 #endif
 		}
-		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
 #ifdef __WebSocketOpenssl__
 			HandleSendWssData(pListItem);
@@ -1626,7 +1626,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 	}
 	else
 	{
-		if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 		{
 #ifdef __WebSocket__
 			if (!RecvLogicWsData(bev, index))
@@ -1635,7 +1635,7 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 			}
 #endif
 		}
-		else if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 		{
 #ifdef __WebSocketOpenssl__
 			if (!RecvLogicWssData(bev, index))

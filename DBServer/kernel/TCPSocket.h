@@ -123,7 +123,7 @@ private:
 	CDataLine*			 m_pSendDataLine;
 	event_config*		 m_eventBaseCfg;
 	event_base*			 m_listenerBase;
-	ServiceType			 m_iServiceType;
+	ServiceType			 m_ServiceType;
 	ConditionVariable	 m_ConditionVariable;
 
 	SetUint				 m_heartBeatSocketSet;

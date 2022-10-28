@@ -69,7 +69,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	}
 
 	m_port = port;
-	m_iServiceType = serverType;
+	m_ServiceType = serverType;
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
 
@@ -352,9 +352,9 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 
 	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-		m_iServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 		timeval tvRead;
 		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
@@ -578,7 +578,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	}
 
 	// 和发送线程相关的锁
-	tcpInfo->Reset(m_iServiceType);
+	tcpInfo->Reset(m_ServiceType);
 
 	// 解锁多线程
 	m_ConditionVariable.GetMutex().unlock();
@@ -642,7 +642,7 @@ bool& CTCPSocketManage::GetRuninged()
 }
 ServiceType CTCPSocketManage::GetServerType()
 {
-	return m_iServiceType;
+	return m_ServiceType;
 }
 ConditionVariable& CTCPSocketManage::GetConditionVariable()
 {
