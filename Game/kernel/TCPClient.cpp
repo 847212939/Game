@@ -210,7 +210,6 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
-		Log(CINF, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
 		return;
 	}
 
