@@ -28,15 +28,7 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
-	if (MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
-	{
-		
-		G_PlayerPrepClient->CallBackFun(cmd, playerInfo);
-	}
-	else
-	{
-		G_PlayerCenterClient->MessageDispatch(cmd, playerInfo);
-	}
+	G_PlayerCenterClient->MessageDispatch(cmd, playerInfo);
 }
 
 bool Scene::EnterScene(Animal* animal, int sceneid, Transform transform)

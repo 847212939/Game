@@ -69,6 +69,8 @@ public:
 	int GetDBServerIndex();
 	// 获取跨服服务器索引
 	int GetCrossServerIndex();
+	// 是否是内部消息
+	bool IsServerMsg(int index);
 
 private:
 	// 设置tcp属性
@@ -111,8 +113,6 @@ private:
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime);
 	// 对称加密测试连接
 	bool VerifyConnection(int index, char* data);
-	// 是否是内部消息
-	bool IsServerMsg(int index);
 	// 等待连接
 	bool WaitConnect(int threadIndex);
 	// 连接DB服务器

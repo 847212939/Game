@@ -38,7 +38,7 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "!tcpInfo");
 		return;
 	}
-	if (playerInfo->pMsg->uIndex != G_NetClient->GetDBServerIndex())
+	if (!G_NetClient->IsServerMsg((int)playerInfo->pMsg->uIndex))
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
@@ -77,7 +77,9 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		return;
 	}
 	// 处理登录协议等.. 玩家没有创建
-	if (MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification)
+	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification ||
+		MsgCmd::MsgCmd_PlayerPreproces == (MsgCmd)pMsg->netMessageHead.uIdentification ||
+		MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
 	{
 		CallBackFun(cmd, playerInfo);
 	}

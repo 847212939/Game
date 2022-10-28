@@ -123,10 +123,18 @@ bool CTCPSocketManage::IsServerMsg(int index)
 	{
 		return true;
 	}
-	if (index == GetCrossServerIndex())
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		return true;
+		return true;;
 	}
+	else
+	{
+		if (index == GetCrossServerIndex())
+		{
+			return true;
+		}
+	}
+	
 	return false;
 }
 bool CTCPSocketManage::ConnectCrossServer()

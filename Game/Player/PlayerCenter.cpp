@@ -65,14 +65,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		Log(CERR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
 		return;
 	}
-	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification)
-	{
-		G_PlayerPrepClient->CallBackFun(cmd, playerInfo);
-	}
-	else
-	{
-		playerClient->MessageDispatch(cmd, playerInfo);
-	}
+	playerClient->MessageDispatch(cmd, playerInfo);
 }
 
 // ´´½¨½ÇÉ«
