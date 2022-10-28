@@ -66,7 +66,6 @@ extern "C"
 #include "tolua++.h"
 
 #include "Lua/BaseCfgMgr.h"				// 网络配置
-#include "Lua/LuaMgr.h"					// lua虚拟机创建
 
 #include "kernel/Macro.h"				// 宏
 #include "kernel/MessageCmd.h"			// 玩家消息定义
@@ -115,3 +114,4 @@ extern "C"
 #include "Player/PlayerPrepClient.h"	// 逻辑处理类
 
 #include "Lua/ConfigMgr.h"				// 配置管理
+#include "Lua/LuaMgr.h"					// lua虚拟机创建

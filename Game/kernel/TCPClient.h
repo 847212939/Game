@@ -41,10 +41,10 @@ private:
 	void HandleRecvData(ListItemData* pListItem);
 
 private:
-	// 获取服务器配置
-	const CLogicCfg* GetServerCfg(ServiceType serverType);
 	// 判断是否为跨服服务器
 	bool IsCorss();
+	// 获取服务器配置
+	const CLogicCfg* GetServerCfg(ServiceType serverType);
 
 private:
 	MapTypeFunc			m_TypeFunMap;
