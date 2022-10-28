@@ -170,7 +170,7 @@ bool CTCPSocketManage::ConnectCrossServer(SOCKFD sock, int threadIndex)
 	tcpInfo.port = serverCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	m_CrossServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+	m_CrossServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_CROSS);
 
 	Log(CINF, "连接服跨服成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
