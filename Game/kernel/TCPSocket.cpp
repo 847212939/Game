@@ -709,41 +709,60 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 
 	return true;
 }
-// 跨服消息转发
-bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
-{
-	int crossIndex = GetCrossServerIndex();
-	if (crossIndex <= 0)
-	{
-		return false;
-	}
-	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
-	if (!pCrossTcpInfo)
-	{
-		return false;
-	}
 
-	PlayerClient* player = G_PlayerCenterClient->GetPlayerClientByIndex(index);
-	if (player)
-	{
-		Netmsg msg;
-		msg << player->GetID();
-		msg << pData;
-
-		SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID, 
-			pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
-	}
-
-	return true;
-}
 // 网络消息派发
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
 	{
 		return false;
 	}
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType);
+	}
+	else
+	{
+		return DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
+	}
+}
+// 跨服消息处理
+bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
+	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+{
+	CDataLine* pDataLine = GetRecvDataLine();
+	if (!pDataLine)
+	{
+		return false;
+	}
+
+	SocketReadLine msg;
+
+	msg.uHandleSize = size;
+	msg.uIndex = index;
+	msg.pBufferevent = pBufferevent;
+	msg.uAccessIP = 0;
+	msg.netMessageHead = *pHead;
+	msg.socketType = socketType;
+
+	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
+	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
+	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
+
+	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+
+	if (addBytes == 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+// 本服消息处理
+bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
+	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+{
 	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
 	if (!pTcpInfo)
 	{
@@ -2102,3 +2121,33 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 }
 #endif
 
+#ifdef __CrossServer__
+// 跨服相关
+// 跨服消息转发
+bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
+{
+	int crossIndex = GetCrossServerIndex();
+	if (crossIndex <= 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
+	if (!pCrossTcpInfo)
+	{
+		return false;
+	}
+
+	PlayerClient* player = G_PlayerCenterClient->GetPlayerClientByIndex(index);
+	if (player)
+	{
+		Netmsg msg;
+		msg << player->GetID();
+		msg << pData;
+
+		SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
+			pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+	}
+
+	return true;
+}
+#endif
