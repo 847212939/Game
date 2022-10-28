@@ -15,9 +15,9 @@ public:
 	/*
 	* @brief 获得互斥锁
 	*/
-	std::mutex* GetMutex()
+	std::mutex& GetMutex()
 	{
-		return &m_mutex;
+		return m_mutex;
 	}
 	/*
 	* @brief 通知一个阻塞的线程
