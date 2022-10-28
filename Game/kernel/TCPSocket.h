@@ -212,6 +212,6 @@ private:
 
 	SSL_CTX*		     m_ctx;
 
-	int					m_DBServerIndex;
-	int					m_CrossServerIndex;
+	int					 m_DBServerIndex;
+	int					 m_CrossServerIndex;
 };
