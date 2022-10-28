@@ -84,19 +84,14 @@ else{pobj->AddMysqlCallback(loadMysql);}
 
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
-
 // 网络消息注册
 #define RegisterNetType(name, cmd) this->AddNetTypeCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)))
-
 // 注册活动
 #define RegisterActive(name, cmd) this->AddActiveCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));
-
 // 注册活动进入
 #define RegisterActiveEnter(name, cmd, obj) this->AddActiveEnterCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));
-
 // 注册活动退出
 #define RegisterActiveExit(name, cmd, obj) this->AddActiveExitCallback(cmd, std::move(std::bind(&name, &obj, std::placeholders::_1)));
-
 // 安全删除指针
 #define SafeDelete(pData)\
 {\
@@ -110,7 +105,6 @@ else{pobj->AddMysqlCallback(loadMysql);}
 	}\
 	pData = nullptr;\
 } 
-
 // 安全删除指针
 #define  SafeDeleteArray(pData)\
 {\
@@ -126,7 +120,6 @@ else{pobj->AddMysqlCallback(loadMysql);}
 		}\
 	}\
 }
-
 // 安全删除指针
 #define SAFE_DELETE(pData)\
 {\
@@ -143,7 +136,6 @@ else{pobj->AddMysqlCallback(loadMysql);}
 		pData = nullptr;\
 	}\
 }
-
 // 日志打印
 #define Log(logtype, ...)\
 if (logtype == ERR)\
@@ -174,7 +166,6 @@ else\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
 }
-
 // 注册游戏进入回调
 #define RegisterAttrs(pobj, name)\
 if (!pobj)\
@@ -185,7 +176,6 @@ else\
 {\
 	pobj->AddAttrsCallback(std::move(std::bind(&name, this)));\
 }
-
 // 注册网络协议
 #define RegisterNetwk(pobj, name, cmd)\
 if (!pobj)\
@@ -196,7 +186,6 @@ else\
 {\
 	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
-
 // 注册定时器
 #define RegisterTimer(pobj, name, cmd, uElapse, timerType)\
 if (!pobj)\
@@ -208,7 +197,6 @@ else\
 	pobj->SetTimer(cmd, uElapse, timerType);\
 	pobj->AddTimerCallback(cmd, std::move(std::bind(&name, this)));\
 }
-
 // 反注册定时器
 #define UnRegisterTimer(pobj, cmd)\
 if (!pobj)\
@@ -220,7 +208,6 @@ else\
 	pobj->KillTimer(cmd);\
 	pobj->DelTimerCallback(cmd);\
 }
-
 // 添加属性
 #define AddAttributes(pobj, attrs)\
 if (!pobj)\
@@ -231,7 +218,6 @@ else\
 {\
 	pobj->AdditionAttributes(attrs);\
 }
-
 // 进入场景
 #define RegisterEnter(pobj, name)\
 if (!pobj)\
@@ -242,7 +228,6 @@ else\
 {\
 	pobj->AddEnterSceneCallback(std::move(std::bind(&name, this)));\
 }
-
 // 注册游戏退出
 #define RegisterLgout(pobj, name)\
 if (!pobj)\
