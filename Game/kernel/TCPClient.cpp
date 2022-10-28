@@ -225,14 +225,14 @@ const CLogicCfg* TCPClient::GetServerCfg(ServiceType serverType)
 {
 	if (serverType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		return &G_CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
+		return &G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
 	}
 	else
 	{
-		return &G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
+		return &G_CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
 	}
 }
-bool TCPClient::IsCorss()
+bool TCPClient::IsCross()
 {
 	return GetServerType() == ServiceType::SERVICE_TYPE_CROSS;
 }

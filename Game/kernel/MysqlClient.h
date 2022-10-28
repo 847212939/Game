@@ -33,7 +33,7 @@ public:
 
 public:
 	// ±£´æÊý¾Ý¿â
-	static void SaveReplaceGlobalMysql(std::string sqlName, std::string&& data);
-	static void SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data);
-	static void SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data);
+	static void SaveReplaceGlobalMysql(std::string sqlName, std::string&& data, int sid = 0);
+	static void SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data, int sid = 0);
+	static void SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data, int sid = 0);
 };

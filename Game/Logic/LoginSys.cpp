@@ -87,7 +87,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 
 	std::string idPw = id + "\n" + pw + "\n" + std::to_string(playerInfo->pMsg->uIndex);
 	MysqlClient::LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
-		(unsigned int)LoginSysMsgCmd::cs_load, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces));
+		(unsigned int)LoginSysMsgCmd::cs_load, MsgCmd::MsgCmd_PlayerPreproces));
 	
 	return true;
 }
@@ -322,7 +322,7 @@ void LoginSys::LoadServerIds(uint64_t userid)
 {
 	SLoadMysql loadMysql("serverlist", MsgCmd::MsgCmd_Login, 
 		(unsigned int)LoginSysMsgCmd::cs_load_server_list, 
-		(unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
+		MsgCmd::MsgCmd_PlayerPreproces);
 
 	MysqlClient::LoadPlayerMysql(userid, loadMysql);
 }

@@ -7,6 +7,20 @@ MysqlClient::~MysqlClient()
 {
 }
 
+SLoadMysql::SLoadMysql(std::string sqlname, MsgCmd mainID, 
+	unsigned int assistantID, MsgCmd identification, int sid) :
+	sqlName(sqlname),
+	uMainID(static_cast<unsigned int>(mainID)),
+	uAssistantID(assistantID),
+	uIdentification(static_cast<unsigned int>(identification)),
+	serverid(sid)
+{
+	if (sid == 0)
+	{
+		serverid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	}
+}
+
 // 创建
 void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 {
@@ -91,7 +105,7 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId() 
+	msg << loadMysql.serverid
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID 
@@ -122,7 +136,7 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+	msg << loadMysql.serverid
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
@@ -148,7 +162,7 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+	msg << loadMysql.serverid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
 		<< loadMysql.uAssistantID
@@ -160,7 +174,7 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 }
 
 // 保存
-void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data)
+void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName, std::string&& data, int sid)
 {
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
@@ -174,8 +188,12 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 		Log(CERR, "数据库链接失败");
 		return;
 	}
+	if (sid == 0)
+	{
+		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+	msg << sid
 		<< userid
 		<< sqlName
 		<< data;
@@ -184,7 +202,7 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_save_replace_login,
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data)
+void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, std::string&& data, int sid)
 {
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
@@ -198,8 +216,12 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 		Log(CERR, "数据库链接失败");
 		return;
 	}
+	if (sid == 0)
+	{
+		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+	msg << sid
 		<< userid
 		<< sqlName
 		<< data;
@@ -208,7 +230,7 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_save_replace_player,
 		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
-void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data)
+void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data, int sid)
 {
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
@@ -222,8 +244,12 @@ void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data
 		Log(CERR, "数据库链接失败");
 		return;
 	}
+	if (sid == 0)
+	{
+		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	}
 	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+	msg << sid
 		<< sqlName
 		<< data;
 

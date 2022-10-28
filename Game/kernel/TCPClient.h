@@ -21,6 +21,8 @@ public:
 public:
 	// 获取玩家预处理
 	PlayerPrepClient* GetPlayerPrepClient();
+	// 判断是否为跨服服务器
+	bool IsCross();
 
 private:
 	// 主线程运行都是单线程
@@ -41,8 +43,6 @@ private:
 	void HandleRecvData(ListItemData* pListItem);
 
 private:
-	// 判断是否为跨服服务器
-	bool IsCorss();
 	// 获取服务器配置
 	const CLogicCfg* GetServerCfg(ServiceType serverType);
 
