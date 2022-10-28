@@ -28,9 +28,9 @@ void PlayerCenter::Init()
 // ´´½¨½ÇÉ«
 void PlayerCenter::CreatePlayer(LoginData& loginData)
 {
-	m_cond.GetMutex().lock();
+	m_cond.GetMutex()->lock();
 	m_LoadPlayerList.push_back(loginData);
-	m_cond.GetMutex().unlock();
+	m_cond.GetMutex()->unlock();
 
 	m_cond.NotifyOne();
 }
@@ -82,7 +82,7 @@ bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginD
 {
 	RloadPlayerList.clear();
 
-	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
+	std::unique_lock<std::mutex> uniqLock(*m_cond.GetMutex());
 	m_cond.Wait(uniqLock, [&LloadPlayerList, &run]
 		{
 			if (LloadPlayerList.size() > 0 || !run)
