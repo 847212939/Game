@@ -2233,8 +2233,9 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 	if (player)
 	{
 		Netmsg msg;
-		msg << player->GetID();
-		msg << pData;
+		msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+			<< player->GetID()
+			<< pData;
 
 		SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
 			pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
