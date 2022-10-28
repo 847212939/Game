@@ -66,7 +66,7 @@ enum class ServiceType
 	SERVICE_TYPE_LOGIC				= 1,											// 逻辑服务器
 	SERVICE_TYPE_DB					= 2,											// DB服务器
 	SERVICE_TYPE_GATA				= 3,											// 网关服务器
-	SERVICE_TYPE_GAMECENTER			= 4,											// GameCenter
+	SERVICE_TYPE_CROSS				= 4,											// Cross
 	SERVICE_TYPE_LOGON				= 5,											// LOGON
 	SERVICE_TYPE_CLIENT				= 6,											// Client
 	SERVICE_TYPE_CLIENT_HEARTBEAT   = 7,											// ClientHeartbeat

@@ -28,6 +28,14 @@ TCPClient::~TCPClient()
 bool TCPClient::Init(ServiceType serverType)
 {
 	const CLogicCfg& logicCfg = G_CfgMgr->GetCBaseCfgMgr().GetLogicCfg();
+	if (serverType == ServiceType::SERVICE_TYPE_GAMECENTER)
+	{
+
+	}
+	else
+	{
+
+	}
 	int maxSocketCnt = G_CfgMgr->GetCBaseCfgMgr().GetMaxSocketCnt();
 
 	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str(), serverType))

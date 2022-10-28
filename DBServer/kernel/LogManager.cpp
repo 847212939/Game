@@ -136,7 +136,7 @@ void CGameLogManage::SetLogFileType(ServiceType serviceType)
 	{
 		nameStr += "GataServer";
 	}
-	else if (serviceType == ServiceType::SERVICE_TYPE_GAMECENTER)
+	else if (serviceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
 		nameStr += "GameCenterServer";
 	}

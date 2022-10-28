@@ -214,7 +214,7 @@ bool CTCPSocketManage::ConnectDBServer()
 bool CTCPSocketManage::ConnectServer()
 {
 	// 如果不是跨服服务器
-	if (m_iServiceType != ServiceType::SERVICE_TYPE_GAMECENTER)
+	if (m_iServiceType != ServiceType::SERVICE_TYPE_CROSS)
 	{
 		// 连接DB服务器
 		if (!ConnectDBServer())
