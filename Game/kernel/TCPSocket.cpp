@@ -2316,14 +2316,11 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 		{
 			return false;
 		}
-
-		return true;
 	}
 	else
 	{
 		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
 			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
-
 	}
 	
 	return true;
