@@ -44,7 +44,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 	}
 	return m_PlayerClientVec[index];
 }
-PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
+PlayerClient* PlayerCenter::GetPlayerLogicByUserid(uint64_t& userId)
 {
 	std::vector<unsigned int> playerClientSet;
 	G_NetClient->GetSocketSet(playerClientSet);
@@ -66,6 +66,22 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 	}
 
 	return nullptr;
+}
+PlayerClient* PlayerCenter::GetPlayerCrossByUserid(uint64_t& userId)
+{
+	MapPlayerClient::iterator it = m_MapPlayerClient.find(userId);
+	if (it == m_MapPlayerClient.end())
+	{
+		return nullptr;
+	}
+	return it->second;
+}
+PlayerClient* PlayerCenter::GetPlayerByUserid(uint64_t userId)
+{
+	return G_NetClient->GetServerType() ==
+		ServiceType::SERVICE_TYPE_CROSS ?
+		GetPlayerCrossByUserid(userId) :
+		GetPlayerLogicByUserid(userId);
 }
 void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
 {
@@ -103,7 +119,7 @@ bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginD
 
 	return true;
 }
-void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
+void PlayerCenter::HandleLogicLoadPlayer(LoginData& loginData)
 {
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
 	if (!pInfo)
@@ -152,6 +168,57 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 		(int)LoginSysMsgCmd::cs_login, 0, pInfo->bev, 0);
 
 	return;
+}
+void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
+{
+	const TCPSocketInfo* pServerTcpInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
+	if (!pServerTcpInfo)
+	{
+		Log(CERR, "Client information is empty index=%d", loginData.index);
+		return;
+	}
+	if (!pServerTcpInfo->isConnect)
+	{
+		Log(CINF, "!pInfo->isConnect");
+		G_NetClient->CloseSocket(loginData.index);
+		return;
+	}
+	PlayerClient* playerClient = GetPlayerClientByIndex(loginData.index);
+	if (playerClient)
+	{
+		new(playerClient) PlayerClient(loginData.index);
+	}
+	else
+	{
+		playerClient = new PlayerClient(loginData.index);
+	}
+
+	playerClient->SetID(loginData.userId);
+	playerClient->SetAnimalid(loginData.roleid);
+	playerClient->SetRefreshTime(10);
+	playerClient->SetLived(true);
+	playerClient->SetAnimaltype((HeroType)loginData.roleType);
+	playerClient->SetAnimalname(loginData.roleName);
+	playerClient->SetPlayername(loginData.netName);
+
+	m_PlayerClientVec[loginData.index] = playerClient;
+
+	playerClient->LoadMysql();
+	playerClient->CalAttrs();
+	playerClient->EnterScene();
+	playerClient->SetLoad(true);
+
+	G_NetClient->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
+		(int)LoginSysMsgCmd::cs_login, 0, pServerTcpInfo->bev, 0);
+
+	return;
+}
+void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
+{
+	G_NetClient->GetServerType() == 
+		ServiceType::SERVICE_TYPE_CROSS ? 
+		HandleCrossLoadPlayer(loginData) : 
+		HandleLogicLoadPlayer(loginData);
 }
 void PlayerCenter::HandlerPlayerThread()
 {

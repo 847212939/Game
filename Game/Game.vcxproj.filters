@@ -119,8 +119,11 @@
     <Filter Include="逻辑管理\活动系统\全天活动">
       <UniqueIdentifier>{c9e18bd9-bcd2-4bfa-b6ab-c2c1411d5576}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络管理\跨服管理">
+    <Filter Include="逻辑管理\登录跨服">
       <UniqueIdentifier>{07ad20ac-c5d2-4383-af70-52c17ce9607b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="逻辑管理\跨服登录">
+      <UniqueIdentifier>{4db73f5a-5a6c-4617-9a24-09b0c4832f50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +245,10 @@
       <Filter>网络管理\数据管理</Filter>
     </ClCompile>
     <ClCompile Include="Cross\CrossClient.cpp">
-      <Filter>网络管理\跨服管理</Filter>
+      <Filter>逻辑管理\登录跨服</Filter>
+    </ClCompile>
+    <ClCompile Include="Cross\CrossSys.cpp">
+      <Filter>逻辑管理\跨服登录</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,7 +385,10 @@
       <Filter>网络管理\数据管理</Filter>
     </ClInclude>
     <ClInclude Include="Cross\CrossClient.h">
-      <Filter>网络管理\跨服管理</Filter>
+      <Filter>逻辑管理\登录跨服</Filter>
+    </ClInclude>
+    <ClInclude Include="Cross\CrossSys.h">
+      <Filter>逻辑管理\跨服登录</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

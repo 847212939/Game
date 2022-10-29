@@ -37,6 +37,7 @@ using MapMonster			= std::map<int, MapMonsterKV>;
 using MapSkillData			= std::map<int, SkillData>;
 using MapLoginIn			= std::map<unsigned int, LoginData>;
 using MapServerId			= std::map<uint64_t, std::set<int>>;
+using MapPlayerClient		= std::map<uint64_t, PlayerClient*>;
 using MapServerTimerInfo	= std::unordered_map<unsigned int, ServerTimerInfo>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;

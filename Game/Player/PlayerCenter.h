@@ -22,7 +22,7 @@ public:
 	// 获取条件变量
 	ConditionVariable& GetConditionVariable();
 	// 根据userid获取玩家
-	PlayerClient* GetPlayerClientByUserid(uint64_t userId);
+	PlayerClient* GetPlayerByUserid(uint64_t userId);
 	// 根据index获取玩家
 	PlayerClient* GetPlayerClientByIndex(unsigned int index);
 
@@ -30,10 +30,17 @@ private:
 	// 玩家加载处理线程
 	void HandlerPlayerThread();
 	void HandleLoadPlayer(LoginData& loginData);
+	void HandleLogicLoadPlayer(LoginData& loginData);
+	void HandleCrossLoadPlayer(LoginData& loginData);
 	bool SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run);
+
+private:
+	PlayerClient* GetPlayerLogicByUserid(uint64_t& userId);
+	PlayerClient* GetPlayerCrossByUserid(uint64_t& userId);
 
 private:
 	ConditionVariable				m_cond;
 	ListLoginData					m_LoadPlayerList;
 	VectorPlayerClient				m_PlayerClientVec;
+	MapPlayerClient					m_MapPlayerClient;
 };

@@ -2,7 +2,7 @@
 
 enum class CrossClientMsgCmd
 {
-	cs_cross_login = 1,		// 跨服认证
+	cs_logic_to_cross_login		= 1,		// 本服发给跨服登录
 };
 
 class CrossClient
@@ -11,8 +11,11 @@ public:
 	CrossClient(PlayerClient* player);
 	~CrossClient();
 
-private:
+public:
 	void Network(PlayerInfo* playerInfo);
+
+private:
+	bool LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_Player;

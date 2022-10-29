@@ -98,7 +98,8 @@ extern "C"
 #include "Logic/ActivityHallSys.h"		// 活动系统
 #include "Logic/LoginSys.h"				// 登录系统
 
-#include "Cross/CrossClient.h"			// 跨服管理
+#include "Cross/CrossSys.h"				// 跨服登录
+#include "Cross/CrossClient.h"			// 登录跨服
 
 #include "Player/Attribute.h"			// 属性
 #include "Player/Animal.h"				// 动物
