@@ -2291,7 +2291,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 	{
 		return false;
 	}
-	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_Cross)
+	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross)
 	{
 		CDataLine* pDataLine = GetRecvDataLine();
 		if (!pDataLine)
