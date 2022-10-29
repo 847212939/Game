@@ -58,21 +58,28 @@ unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned 
 {
 	*pDataBuffer = nullptr;
 
-	std::unique_lock<std::mutex> uniqLock(m_mutex);
-	m_cond.wait(uniqLock, [this] {
-		return this->m_dataListCnt > 0;
-		});
+	if (m_dataListCnt <= 0)
+	{
+		std::unique_lock<std::mutex> uniqLock(m_mutex);
+		m_cond.wait(uniqLock, [this] {return this->m_dataListCnt > 0; });
 
-	*pDataBuffer = m_dataList.front();
-	m_dataList.pop_front();
-	--m_dataListCnt;
-	uniqLock.unlock();
+		*pDataBuffer = m_dataList.front();
+		m_dataList.pop_front();
+		--m_dataListCnt;
+	}
+	else
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		*pDataBuffer = m_dataList.front();
+		m_dataList.pop_front();
+		--m_dataListCnt;
+	}
 
 	if (!(*pDataBuffer))
 	{
 		return 0;
 	}
-	uDataKind =  (*pDataBuffer)->stDataHead.uDataKind;
+	uDataKind = (*pDataBuffer)->stDataHead.uDataKind;
 	unsigned int uDataSize = (*pDataBuffer)->stDataHead.uSize;
 
 	return uDataSize;
