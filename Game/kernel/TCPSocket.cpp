@@ -2227,18 +2227,18 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 	{
 		return false;
 	}
-
 	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(index);
-	if (player)
+	if (!player)
 	{
-		Netmsg msg;
-		msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
-			<< player->GetID()
-			<< pData;
-
-		SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
-			pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+		return false;
 	}
 
+	Netmsg msg;
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+		<< player->GetID()
+		<< pData;
+
+	SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
+		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
 	return true;
 }
