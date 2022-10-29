@@ -564,15 +564,32 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		return;
 	}
 
-	// 设置读超时，当做心跳。网关服务器才需要
-	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	if (m_CrossServerSock == fd)
 	{
-		timeval tvRead;
-		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
-		tvRead.tv_usec = 0;
-		bufferevent_set_timeouts(bev, &tvRead, nullptr);
+		if (m_CrossServerIndex < 0)
+		{
+			m_CrossServerIndex = index;
+		}
+	}
+	else if (m_DBServerSock == fd)
+	{
+		if (m_DBServerIndex < 0)
+		{
+			m_DBServerIndex = index;
+		}
+	}
+	else
+	{
+		// 设置读超时，当做心跳。网关服务器才需要
+		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+			timeval tvRead;
+			tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
+			tvRead.tv_usec = 0;
+			bufferevent_set_timeouts(bev, &tvRead, nullptr);
+		}
 	}
 
 	// 保存信息
@@ -604,15 +621,6 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
 	m_mutex.unlock(); //解锁
-
-	if (m_CrossServerIndex < 0 && m_CrossServerSock == fd)
-	{
-		m_CrossServerIndex = index;
-	}
-	if (m_DBServerIndex < 0 && m_DBServerSock == fd)
-	{
-		m_DBServerIndex = index;
-	}
 
 	if (IsServerMsg(index))
 	{
