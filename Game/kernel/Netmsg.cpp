@@ -57,3 +57,13 @@ std::string Netmsg::str()
 {
 	return m_os.str();
 }
+
+Netmsg& Netmsg::operator >> (std::string& t)
+{
+	if (!m_SplitsList.empty())
+	{
+		t = m_SplitsList.front();
+		m_SplitsList.pop_front();
+	}
+	return *this;
+}

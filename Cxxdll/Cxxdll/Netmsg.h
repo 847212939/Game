@@ -1,5 +1,4 @@
 #pragma once
-#include <list>
 
 class Netmsg
 {
@@ -20,21 +19,26 @@ protected:
 	/*
 	* @brief 禁用拷贝构造函数
 	*/
-	Netmsg(const Netmsg& my);
-	Netmsg& operator=(const Netmsg& my);
+	Netmsg(const Netmsg& msg);
+	Netmsg& operator=(const Netmsg& msg);
 
 public:
-	std::string str();
-	operator std::string();
 	template<class T>
 	Netmsg& operator << (T t);
 	template<class T>
 	Netmsg& operator >> (T& t);
+	Netmsg& operator >> (std::string& t);
+
+public:
+	std::string str();
+	operator std::string();
+	size_t size();
+	bool empty();
 
 private:
-	std::ostringstream		m_os;
-	std::istringstream		m_is;
-	std::list<std::string>	m_SplitsList;
+	std::ostringstream	m_os;
+	std::istringstream	m_is;
+	ListString			m_SplitsList;
 };
 
 template<class T>

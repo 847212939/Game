@@ -27,6 +27,7 @@ public:
 	Netmsg& operator << (T t);
 	template<class T>
 	Netmsg& operator >> (T& t);
+	Netmsg& operator >> (std::string& t);
 
 public:
 	std::string str();

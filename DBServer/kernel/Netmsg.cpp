@@ -39,6 +39,16 @@ Netmsg::Netmsg(std::string str, int count)
 	}
 }
 
+size_t Netmsg::size()
+{
+	return m_SplitsList.size();
+}
+
+bool Netmsg::empty()
+{
+	return m_SplitsList.empty();
+}
+
 Netmsg::operator std::string()
 {
 	return m_os.str();
@@ -46,4 +56,14 @@ Netmsg::operator std::string()
 std::string Netmsg::str()
 {
 	return m_os.str();
+}
+
+Netmsg& Netmsg::operator >> (std::string& t)
+{
+	if (!m_SplitsList.empty())
+	{
+		t = m_SplitsList.front();
+		m_SplitsList.pop_front();
+	}
+	return *this;
 }
