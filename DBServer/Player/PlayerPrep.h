@@ -70,7 +70,6 @@ private:
 	// 执行数据库语句线程
 	void HandlerExecuteSqlThread();
 	void HandleEexcuteMysql(std::string& sql);
-	bool SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool& run);
 	// 消息派发
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 

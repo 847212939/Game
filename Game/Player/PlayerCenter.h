@@ -38,7 +38,6 @@ private:
 	void HandleLoadPlayer(LoginData& loginData);
 	void HandleLogicLoadPlayer(LoginData& loginData);
 	void HandleCrossLoadPlayer(LoginData& loginData);
-	bool SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run);
 
 private:
 	PlayerClient* GetPlayerLogicByUserid(uint64_t& userId);

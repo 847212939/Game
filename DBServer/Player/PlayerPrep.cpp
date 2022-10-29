@@ -162,9 +162,10 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 
 	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
 
+	m_mutex.lock();
 	m_sqlList.push_back(sSql);
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
 {
@@ -178,9 +179,10 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
 
+	m_mutex.lock();
 	m_sqlList.push_back(sSql);
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std::string& data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
@@ -195,9 +197,10 @@ void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std:
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
+	m_mutex.lock();
 	m_sqlList.push_back(sSql);
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
@@ -216,9 +219,10 @@ void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
+	m_mutex.lock();
 	m_sqlList.push_back(sSql);
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::string& userid, std::string data,
 	std::string serveridName/* = "serverid"*/, std::string useridName/* = "userid"*/, std::string dataName/* = "data"*/)
@@ -234,18 +238,20 @@ void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::
 
 	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 
+	m_mutex.lock();
 	m_sqlList.push_back(sSql);
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
 {
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
-
+	
+	m_mutex.lock();
 	m_sqlList.push_back(sSql.str());
-
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 void PlayerPrep::LoadGlobalMysql(std::string sqlName, int serverid, std::string& outStr, std::string dataStr/* = "data"*/)
 {
@@ -375,29 +381,12 @@ void PlayerPrep::CreateLoginTable(std::string name, int cnt)
 }
 void PlayerPrep::CreateTableSql(const char* sql)
 {
+	m_mutex.lock();
 	m_sqlList.push_back(sql);
 	m_cond.notify_one();
+	m_mutex.unlock();
 }
 
-// 多线程下数据执行
-bool PlayerPrep::SwapMysqlList(ListString& LSqlList, ListString& RSqlList, bool& run)
-{
-	RSqlList.clear();
-
-	std::unique_lock<std::mutex> uniqLock(m_mutex);
-	m_cond.wait(uniqLock);
-	if (LSqlList.size() <= 0)
-	{
-		uniqLock.unlock();
-		return false;
-	}
-
-	RSqlList.swap(LSqlList);
-
-	uniqLock.unlock();
-
-	return true;
-}
 void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 {
 	try
@@ -411,20 +400,23 @@ void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 }
 void PlayerPrep::HandlerExecuteSqlThread()
 {
-	ListString sqlList;
-	ListString& mysqlList = m_sqlList;
+	std::string str;
 	bool& run = G_NetClient->GetRuninged();
-
 	while (run)
 	{
-		if (!SwapMysqlList(mysqlList, sqlList, run))
+		std::unique_lock<std::mutex> uniqLock(m_mutex);
+		while (m_sqlList.empty())
 		{
-			continue;
+			m_cond.wait(uniqLock);
 		}
-		while (!sqlList.empty())
+
+		std::string str = m_sqlList.front();
+		m_sqlList.pop_front();
+		uniqLock.unlock();
+
+		if (!str.empty())
 		{
-			HandleEexcuteMysql(sqlList.front());
-			sqlList.pop_front();
+			HandleEexcuteMysql(str);
 		}
 	}
 	Log(CINF, "save mysql thread end");

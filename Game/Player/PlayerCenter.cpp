@@ -96,25 +96,6 @@ std::condition_variable& PlayerCenter::GetConditionVariable()
 	return m_cond;
 }
 
-// 玩家加载线程
-bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginData& RloadPlayerList, bool& run)
-{
-	RloadPlayerList.clear();
-
-	std::unique_lock<std::mutex> uniqLock(m_mutex);
-	m_cond.wait(uniqLock);
-	if (LloadPlayerList.size() <= 0)
-	{
-		uniqLock.unlock();
-		return false;
-	}
-
-	RloadPlayerList.swap(LloadPlayerList);
-
-	uniqLock.unlock();
-
-	return true;
-}
 void PlayerCenter::HandleLogicLoadPlayer(LoginData& loginData)
 {
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
@@ -217,21 +198,19 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 void PlayerCenter::HandlerPlayerThread()
 {
 	bool& run = G_NetClient->GetRuninged();
-
-	ListLoginData loadPlayerList;
-	ListLoginData& playerList = m_LoadPlayerList;
-
 	while (run)
 	{
-		if (!SwapLoadPlayerList(playerList, loadPlayerList, run))
+		std::unique_lock<std::mutex> uniqLock(m_mutex);
+		while (m_LoadPlayerList.empty())
 		{
-			continue;
+			m_cond.wait(uniqLock);
 		}
-		while (!loadPlayerList.empty())
-		{
-			HandleLoadPlayer(loadPlayerList.front());
-			loadPlayerList.pop_front();
-		}
+
+		LoginData data = m_LoadPlayerList.front();
+		m_LoadPlayerList.pop_front();
+		uniqLock.unlock();
+
+		HandleLoadPlayer(data);
 	}
 	Log(CINF, "playerClient create thread end");
 }
