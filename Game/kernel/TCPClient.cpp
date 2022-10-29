@@ -210,7 +210,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(pSocketClose->uIndex);
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		return;

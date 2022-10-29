@@ -2228,7 +2228,7 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 		return false;
 	}
 
-	PlayerClient* player = G_PlayerCenterClient->GetPlayerClientByIndex(index);
+	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (player)
 	{
 		Netmsg msg;

@@ -154,7 +154,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 			Log(CERR, "服务器内部错误,请排查错误");
 			return false;
 		}
-		if (G_PlayerCenterClient->GetPlayerClientByIndex(loginData.index))
+		if (G_PlayerCenterClient->GetPlayerByIndex(loginData.index))
 		{
 			// 玩家在线
 			return false;

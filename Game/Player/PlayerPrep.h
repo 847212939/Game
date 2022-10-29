@@ -40,6 +40,10 @@ public:
 	void CreatePlayer(LoginData& loginData);
 
 private:
+	void MessageLogicDispatch(PlayerInfo* playerInfo);
+	void MessageCrossDispatch(PlayerInfo* playerInfo);
+
+private:
 	// 回调函数
 	MapNetFun		  m_NetCBFunMap;
 	// 定时器

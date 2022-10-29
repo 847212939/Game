@@ -24,7 +24,7 @@ public:
 	// 根据userid获取玩家
 	PlayerClient* GetPlayerByUserid(uint64_t userId);
 	// 根据index获取玩家
-	PlayerClient* GetPlayerClientByIndex(unsigned int index);
+	PlayerClient* GetPlayerByIndex(unsigned int index);
 
 private:
 	// 玩家加载处理线程
@@ -37,6 +37,8 @@ private:
 private:
 	PlayerClient* GetPlayerLogicByUserid(uint64_t& userId);
 	PlayerClient* GetPlayerCrossByUserid(uint64_t& userId);
+	void AddMapPlayerClient(uint64_t& userid, PlayerClient* player);
+	void DelMapPlayerClient(uint64_t& userid);
 
 private:
 	ConditionVariable				m_cond;

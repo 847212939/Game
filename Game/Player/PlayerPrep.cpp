@@ -19,8 +19,7 @@ void PlayerPrep::Init()
 	G_SceneClient->Init();
 }
 
-// 处理消息
-void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
+void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -63,7 +62,7 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
-	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(index);
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (!playerClient)
 	{
 		Log(CERR, "Dispatch message playerClient = null index = %d", index);
@@ -91,6 +90,81 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		return;
 	}
 	playerClient->MessageDispatch(cmd, playerInfo);
+}
+void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
+{
+	if (!playerInfo)
+	{
+		Log(CERR, "!playerInfo");
+		return;
+	}
+	SocketReadLine* pMsg = playerInfo->pMsg;
+	if (!pMsg)
+	{
+		Log(CERR, "!pMsg");
+		return;
+	}
+	int index = pMsg->uIndex;
+	TCPSocketInfo* pTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	if (!pTcpInfo)
+	{
+		Log(CERR, "!tcpInfo");
+		return;
+	}
+	MsgCmd cmd = (MsgCmd)pMsg->netMessageHead.uMainID;
+	if (cmd >= MsgCmd::MsgCmd_End || cmd <= MsgCmd::MsgCmd_Begin)
+	{
+		Log(CERR, "非法消息cmd=%d", (int)cmd);
+		return;
+	}
+	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
+	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
+		MsgCmd::MsgCmd_PlayerCenter == identification ||
+		MsgCmd::MsgCmd_Scene == identification)
+	{
+		CallBackFun(cmd, playerInfo);
+		return;
+	}
+	
+	Netmsg msg((char*)playerInfo->pData, 3);
+	if (msg.size() < 2)
+	{
+		Log(CERR, "逻辑服务器发送过来的协议不对 size=%d", (int)(msg.size()));
+		return;
+	}
+	int sid = 0;
+	uint64_t userid = 0;
+	msg >> sid >> userid;
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByUserid(userid);
+	if (!playerClient)
+	{
+		Log(CERR, "Dispatch message playerClient = null index = %d", index);
+		return;
+	}
+	if (!pTcpInfo->isConnect)
+	{
+		Log(CINF, "Dispatch message Link broken cmd = %d", (int)cmd);
+		return;
+	}
+	if (!playerClient->GetLoad())
+	{
+		Log(CERR, "Dispatch message mysql is unload index = %d", index);
+		return;
+	}
+	if (playerClient->GetIndex() != index)
+	{
+		Log(CERR, "dindex = %u, sindex = %d", playerClient->GetIndex(), index);
+		return;
+	}
+	playerClient->MessageDispatch(cmd, playerInfo);
+}
+// 处理消息
+void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
+{
+	G_NetClient->GetServerType() ==
+		ServiceType::SERVICE_TYPE_CROSS ?
+		MessageCrossDispatch(playerInfo) :
+		MessageLogicDispatch(playerInfo);
 }
 
 // 创建角色

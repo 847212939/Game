@@ -36,7 +36,7 @@ void PlayerCenter::CreatePlayer(LoginData& loginData)
 }
 
 // »ñÈ¡Íæ¼Ò
-PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
+PlayerClient* PlayerCenter::GetPlayerByIndex(unsigned int index)
 {
 	if (index >= m_PlayerClientVec.size() || index < 0)
 	{
@@ -139,7 +139,7 @@ void PlayerCenter::HandleLogicLoadPlayer(LoginData& loginData)
 		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
-	PlayerClient* playerClient = GetPlayerClientByIndex(loginData.index);
+	PlayerClient* playerClient = GetPlayerByIndex(loginData.index);
 	if (playerClient)
 	{
 		new(playerClient) PlayerClient(loginData.index);
@@ -183,7 +183,7 @@ void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
 		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
-	PlayerClient* playerClient = GetPlayerClientByIndex(loginData.index);
+	PlayerClient* playerClient = GetPlayerByUserid(loginData.userId);
 	if (playerClient)
 	{
 		new(playerClient) PlayerClient(loginData.index);
@@ -201,15 +201,12 @@ void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
 	playerClient->SetAnimalname(loginData.roleName);
 	playerClient->SetPlayername(loginData.netName);
 
-	m_PlayerClientVec[loginData.index] = playerClient;
+	AddMapPlayerClient(loginData.userId, playerClient);
 
 	playerClient->LoadMysql();
 	playerClient->CalAttrs();
 	playerClient->EnterScene();
 	playerClient->SetLoad(true);
-
-	G_NetClient->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
-		(int)LoginSysMsgCmd::cs_login, 0, pServerTcpInfo->bev, 0);
 
 	return;
 }
@@ -240,4 +237,24 @@ void PlayerCenter::HandlerPlayerThread()
 		}
 	}
 	Log(CINF, "playerClient create thread end");
+}
+
+void PlayerCenter::AddMapPlayerClient(uint64_t& userid, PlayerClient* player)
+{
+	auto it = m_MapPlayerClient.find(userid);
+	if (it != m_MapPlayerClient.end())
+	{
+		return;
+	}
+	m_MapPlayerClient.insert({ userid , player });
+}
+void PlayerCenter::DelMapPlayerClient(uint64_t& userid)
+{
+	auto it = m_MapPlayerClient.find(userid);
+	if (it != m_MapPlayerClient.end())
+	{
+		return;
+	}
+	SafeDelete(it->second);
+	m_MapPlayerClient.erase(it);
 }
