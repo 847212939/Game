@@ -27,6 +27,10 @@ public:
 	PlayerClient* GetPlayerByIndex(unsigned int index);
 	// 获取玩家队列
 	VectorPlayerClient& GetVectorPlayerClient();
+	// 添加跨服玩家
+	void AddMapPlayerClient(uint64_t& userid, PlayerClient* player);
+	// 删除跨服玩家
+	void DelMapPlayerClient(uint64_t& userid);
 
 private:
 	// 玩家加载处理线程
@@ -39,8 +43,6 @@ private:
 private:
 	PlayerClient* GetPlayerLogicByUserid(uint64_t& userId);
 	PlayerClient* GetPlayerCrossByUserid(uint64_t& userId);
-	void AddMapPlayerClient(uint64_t& userid, PlayerClient* player);
-	void DelMapPlayerClient(uint64_t& userid);
 
 private:
 	ConditionVariable				m_cond;

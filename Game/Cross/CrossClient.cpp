@@ -55,9 +55,11 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 	pLogicTcpInfo->isCross = true;
+	uint64_t userid = m_Player->GetID();
+	unsigned int logciIndex = playerInfo->pMsg->uIndex;
 
 	Netmsg msgCin;
-	msgCin << m_Player->GetID();
+	msgCin << userid;
 	msgCin << m_Player->GetAnimalid();
 	msgCin << m_Player->GetRefreshTime();
 	msgCin << m_Player->GetLived();
@@ -65,21 +67,37 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << m_Player->GetAnimalname().c_str();
 	msgCin << m_Player->GetPlayername().c_str();
 	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
-	msgCin << playerInfo->pMsg->uIndex;
-
-	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
-		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
+	msgCin << logciIndex;
 
 	SafeDelete(m_Player);
 	m_Player = new PlayerClient(playerInfo->pMsg->uIndex);
+	m_Player->SetID(userid);
+
 	VectorPlayerClient& playerClientVec = G_PlayerCenterClient->GetVectorPlayerClient();
 	playerClientVec[playerInfo->pMsg->uIndex] = nullptr;
 	playerClientVec[playerInfo->pMsg->uIndex] = m_Player;
+
+	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
+		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
 
 	return true;
 }
 
 void CrossClient::LogoutCross()
 {
-	Log(CINF, "ÍË³ö¿ç·þ");
+	int crossIndex = G_NetClient->GetCrossServerIndex();
+	if (crossIndex < 0)
+	{
+		return;
+	}
+	TCPSocketInfo* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(crossIndex);
+	if (!pCrossTcpInfo)
+	{
+		return;
+	}
+	Netmsg msgCin;
+	msgCin << m_Player->GetID();
+
+	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
+		(int)CrossClientMsgCmd::cs_logic_to_cross_logout, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
 }

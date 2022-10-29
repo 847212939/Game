@@ -32,6 +32,11 @@ void CrossSys::Network(PlayerInfo* playerInfo)
 		CrossLogin(msg, playerInfo);
 		break;
 	}
+	case CrossClientMsgCmd::cs_logic_to_cross_logout:
+	{
+		CrossLogout(msg, playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
@@ -71,6 +76,13 @@ bool CrossSys::CrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 	G_PlayerCenterClient->CreatePlayer(loginData);
 
-
 	return true;
+}
+
+bool CrossSys::CrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	uint64_t userid = 0;
+	msg >> userid;
+
+	G_PlayerCenterClient->DelMapPlayerClient(userid);
 }

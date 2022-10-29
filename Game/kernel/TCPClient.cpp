@@ -218,7 +218,6 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	{
 		return;
 	}
-
 	if (pSocketClose->isCross)
 	{
 		playerClient->GetCrossClient().LogoutCross();
@@ -228,7 +227,9 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 		playerClient->ExitGame(pSocketClose);
 	}
 	
+	VectorPlayerClient& playerClientVec = G_PlayerCenterClient->GetVectorPlayerClient();
 	SafeDelete(playerClient);
+	playerClientVec[pSocketClose->uIndex] = nullptr;
 }
 
 const CLogicCfg* TCPClient::GetServerCfg(ServiceType serverType)
