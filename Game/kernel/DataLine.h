@@ -25,6 +25,7 @@ public:
 	}
 
 private:
+	std::atomic<int>			m_dataListCnt;
 	std::list <ListItemData*>	m_dataList;
 	std::mutex					m_mutex;
 	std::condition_variable		m_cond;
