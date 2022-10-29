@@ -70,7 +70,10 @@ void CBaseCfgMgr::ReadCrossServerCfg(CLogicCfg* config)
 
 int CBaseCfgMgr::GetServerId() 
 { 
-	return m_serverID; 
+	return G_NetClient->GetServerType() ==
+		ServiceType::SERVICE_TYPE_CROSS ?
+		m_CrossServerID :
+		m_serverID;
 }
 
 int CBaseCfgMgr::GetTimerCnt() 
