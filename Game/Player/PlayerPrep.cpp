@@ -235,7 +235,8 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 }
 
 // ¶¨Ê±Æ÷
-bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
+bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, 
+	unsigned char timerType/* = SERVERTIMER_TYPE_PERISIST*/)
 {
 	if (!m_pServerTimer)
 	{

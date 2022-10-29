@@ -1295,8 +1295,8 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 
 	return true;
 }
-bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/, uint64_t userid/* = 0*/)
+bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/, uint64_t userid/* = 0*/)
 {
 	if (IsServerMsg(index))
 	{
@@ -1324,8 +1324,8 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 
 	return true;
 }
-bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/)
+bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/)
 {
 	if (GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
 	{
@@ -1345,8 +1345,8 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 		return SendLogicMsgLogic(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 }
-bool CTCPSocketManage::SendLogicMsgLogic(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
-	void* pBufferevent, unsigned int uIdentification/* = 0*/)
+bool CTCPSocketManage::SendLogicMsgLogic(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
 	{
@@ -1402,8 +1402,8 @@ bool CTCPSocketManage::SendLogicMsgLogic(int index, const char* pData, size_t si
 	return true;
 }
 #ifdef __WebSocket__
-bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
+bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
 	if (!pBufferevent)
 	{
@@ -2157,8 +2157,8 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 #endif
 
 // 网络消息派发
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
-	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
 	{
@@ -2170,8 +2170,8 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 		DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
 }
 // 跨服消息处理
-bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
-	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
@@ -2202,8 +2202,8 @@ bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMes
 	return true;
 }
 // 本服消息处理
-bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
-	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
 	if (!pTcpInfo)
