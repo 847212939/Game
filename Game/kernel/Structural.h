@@ -280,8 +280,10 @@ struct LoginData
 	int						roleid;
 	int						roleType;
 	int						serverId;
+	int						logicIndex;
 
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), netName(""), roleType(0), serverId(0) {}
+	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), 
+		netName(""), roleType(0), serverId(0), logicIndex(-1) {}
 	~LoginData() {}
 };
 

@@ -56,12 +56,16 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << m_Player->GetRefreshTime();
 	msgCin << m_Player->GetLived();
 	msgCin << (int)m_Player->GetAnimaltype();
-	msgCin << m_Player->GetAnimalname();
-	msgCin << m_Player->GetPlayername();
+	msgCin << m_Player->GetAnimalname().c_str();
+	msgCin << m_Player->GetPlayername().c_str();
 	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
-	
-	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_CrossLogin,
+	msgCin << playerInfo->pMsg->uIndex;
+
+	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
+
+	SafeDelete(m_Player);
+	m_Player = new PlayerClient(playerInfo->pMsg->uIndex);
 
 	return true;
 }

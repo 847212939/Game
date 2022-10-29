@@ -39,11 +39,38 @@ void CrossSys::Network(PlayerInfo* playerInfo)
 
 bool CrossSys::CrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 {
-	int serverid = 0;
 	uint64_t userid = 0;
+	int animalid = 0;
+	time_t refreshTime = 0;
+	bool lived = false;
+	int animaltype = 0;
+	std::string animalname;
+	std::string playername;
+	int serverid;
+	unsigned int logicIndex;
 
-	msg >> serverid >> userid;
+	msg >> userid
+		>> animalid
+		>> refreshTime
+		>> lived
+		>> animaltype
+		>> animalname
+		>> playername
+		>> serverid
+		>> logicIndex;
 
-	//G_PlayerCenterClient->CreatePlayer();
+	LoginData loginData;
+	loginData.index = playerInfo->pMsg->uIndex;
+	loginData.roleName = animalname;
+	loginData.netName = playername;
+	loginData.userId = userid;
+	loginData.roleid = animalid;
+	loginData.roleType = animaltype;
+	loginData.serverId = serverid;
+	loginData.logicIndex = logicIndex;
+
+	G_PlayerCenterClient->CreatePlayer(loginData);
+
+
 	return true;
 }

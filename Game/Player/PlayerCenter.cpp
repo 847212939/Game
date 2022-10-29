@@ -200,6 +200,7 @@ void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
 	playerClient->SetAnimaltype((HeroType)loginData.roleType);
 	playerClient->SetAnimalname(loginData.roleName);
 	playerClient->SetPlayername(loginData.netName);
+	playerClient->SetLogicIndex(loginData.logicIndex);
 
 	AddMapPlayerClient(loginData.userId, playerClient);
 
