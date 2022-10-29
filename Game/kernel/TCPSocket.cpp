@@ -2130,7 +2130,6 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 }
 #endif
 
-
 // 网络消息派发
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
@@ -2292,9 +2291,40 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 	{
 		return false;
 	}
-	
-	SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
-		pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
+	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_Cross)
+	{
+		CDataLine* pDataLine = GetRecvDataLine();
+		if (!pDataLine)
+		{
+			return false;
+		}
 
+		SocketReadLine msg;
+		msg.uHandleSize = data.size();
+		msg.uIndex = clientIndex;
+		msg.pBufferevent = pClientTcpInfo->bev;
+		msg.uAccessIP = 0;
+		msg.netMessageHead = *pHead;
+		msg.socketType = SocketType::SOCKET_TYPE_TCP;
+
+		std::unique_ptr<char[]> uniqueBuf(new char[msg.uHandleSize + sizeof(SocketReadLine)]);
+		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
+		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, msg.uHandleSize);
+
+		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), msg.uHandleSize + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+		if (addBytes == 0)
+		{
+			return false;
+		}
+
+		return true;
+	}
+	else
+	{
+		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
+			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
+
+	}
+	
 	return true;
 }
