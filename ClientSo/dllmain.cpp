@@ -1,6 +1,6 @@
 ﻿// dllmain.cpp : 定义 DLL 应用程序的入口点。
 #include "pch.h"
-//
+
 //#include "mainspace.h"
 //using namespace MainNameSpace;
 //bool run = false;
@@ -50,7 +50,7 @@
 //        return -1;
 //    }
 //
-//    //RegisterTimers(1, 1000);
+//    RegisterTimers(1, 1000);
 //    
 //    SendMsg((char*)"", 0, 7, 1, 3);
 //
@@ -59,10 +59,10 @@
 //    {
 //        if (!run)
 //        {
-//           /* if (InitSocket((char*)"127.0.0.1", 8888, 1) != 0)
+//            if (InitSocket((char*)"127.0.0.1", 8888, 1) != 0)
 //            {
 //                std::cout << "初始化网络失败" << std::endl;
-//            }*/
+//            }
 //        }
 //
 //        std::this_thread::sleep_for(std::chrono::seconds(1));

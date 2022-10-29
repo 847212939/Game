@@ -7,6 +7,9 @@ TCPClient::TCPClient() :
 	m_TimerCallBackFunc(nullptr),
 	m_CloseCallBackFunc(nullptr)
 {
+	RegisterNetType(TCPClient::SocketCallback, SysMsgCmd::HD_SOCKET_READ);
+	RegisterNetType(TCPClient::TimerCallback, SysMsgCmd::HD_TIMER_MESSAGE);
+	RegisterNetType(TCPClient::CloseSocketCallback, SysMsgCmd::HD_SOCKET_CLOSE);
 }
 TCPClient::~TCPClient()
 {
@@ -85,7 +88,7 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 	{
 		return;
 	}
-	SocketCallback((void*)pListItem->pData);
+	CallBackFun((SysMsgCmd)pListItem->stDataHead.uDataKind, (void*)pListItem->pData);
 
 	SafeDeleteArray(pListItem->pData);
 	SafeDelete(pListItem);
