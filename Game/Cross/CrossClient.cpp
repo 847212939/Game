@@ -69,8 +69,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	msgCin << logciIndex;
 
-	SafeDelete(m_Player);
-	m_Player = new PlayerClient(playerInfo->pMsg->uIndex);
+	new(m_Player) PlayerClient(playerInfo->pMsg->uIndex);
 	m_Player->SetID(userid);
 
 	VectorPlayerClient& playerClientVec = G_PlayerCenterClient->GetVectorPlayerClient();
