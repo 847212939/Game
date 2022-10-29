@@ -25,6 +25,8 @@ public:
 	PlayerClient* GetPlayerByUserid(uint64_t userId);
 	// 根据index获取玩家
 	PlayerClient* GetPlayerByIndex(unsigned int index);
+	// 添加奔赴玩家
+	void AddVectorPlayerClient(int index, PlayerClient* player);
 
 private:
 	// 玩家加载处理线程

@@ -34,7 +34,17 @@ void PlayerCenter::CreatePlayer(LoginData& loginData)
 
 	m_cond.NotifyOne();
 }
-
+void PlayerCenter::AddVectorPlayerClient(int index, PlayerClient* player)
+{
+	if (index >= m_PlayerClientVec.size() || index < 0)
+	{
+		return;
+	}
+	if (m_PlayerClientVec[index] == nullptr)
+	{
+		m_PlayerClientVec[index] = player;
+	}
+}
 // »ñÈ¡Íæ¼Ò
 PlayerClient* PlayerCenter::GetPlayerByIndex(unsigned int index)
 {

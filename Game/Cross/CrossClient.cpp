@@ -67,5 +67,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	SafeDelete(m_Player);
 	m_Player = new PlayerClient(playerInfo->pMsg->uIndex);
 
+	G_PlayerCenterClient->AddVectorPlayerClient(playerInfo->pMsg->uIndex, m_Player);
+
 	return true;
 }
