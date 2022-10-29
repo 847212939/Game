@@ -2222,12 +2222,25 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 	{
 		return false;
 	}
+	
+	return index == crossIndex ?
+		MsgForwardToClient(index, pHead, pData) :
+		MsgForwardToCross(index, pHead, pData);
+}
+// 客户端消息转发到跨服服务器
+bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* pData)
+{
+	int crossIndex = GetCrossServerIndex();
+	if (crossIndex <= 0)
+	{
+		return false;
+	}
 	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
 	if (!pCrossTcpInfo)
 	{
 		return false;
 	}
-	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(index);
+	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(clientIndex);
 	if (!player)
 	{
 		return false;
@@ -2240,5 +2253,31 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 
 	SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
 		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+	return true;
+}
+// 跨服消息转发到客户端
+bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData)
+{
+	Netmsg msg(pData, 2);
+	if (msg.size() < 2)
+	{
+		return false;
+	}
+	int clientIndex = 0;
+	std::string data;
+	msg >> clientIndex >> data;
+	if (clientIndex < 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pClientTcpInfo = GetTCPSocketInfo(clientIndex);
+	if (!pClientTcpInfo)
+	{
+		return false;
+	}
+	
+	SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
+		pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
+
 	return true;
 }

@@ -76,6 +76,8 @@ public:
 	bool IsServerMsg(int index);
 	// 跨服消息转发
 	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
+	bool MsgForwardToCross(int index, NetMessageHead* pHead, char* pData);
+	bool MsgForwardToClient(int index, NetMessageHead* pHead, char* pData);
 
 private:
 	// 设置tcp属性
