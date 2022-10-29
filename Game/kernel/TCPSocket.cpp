@@ -2300,7 +2300,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 		}
 
 		SocketReadLine msg;
-		msg.uHandleSize = data.size();
+		msg.uHandleSize = (unsigned int)data.size();
 		msg.uIndex = clientIndex;
 		msg.pBufferevent = pClientTcpInfo->bev;
 		msg.uAccessIP = 0;
