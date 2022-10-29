@@ -28,6 +28,7 @@ public:
 	void ReadTimerCntCfg(int cnt);
 	void ReadKeyCfg(std::string key);
 	void ReadOpenServerTime(std::string servertm);
+	void ReadCrossServerIDCfg(int id);
 
 public:
 	// »î¶¯

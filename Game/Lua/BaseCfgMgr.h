@@ -21,6 +21,7 @@ protected:
 
 public:
 	void ReadServerIDCfg(int id);
+	void ReadCrossServerIDCfg(int id);
 	void ReadTimerCntCfg(int cnt);
 	void ReadThreadCntCfg(int cnt);
 	void ReadLogPrintTmCfg(int tm);
@@ -52,6 +53,7 @@ private:
 	int			m_threadCnt;
 	int			m_maxSocketCnt;
 	int			m_TimerCnt;
+	int			m_CrossServerID;
 
 	CLogicCfg	m_LogicCfg;
 	CLogicCfg	m_DBServerCfg;

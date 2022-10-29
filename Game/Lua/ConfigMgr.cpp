@@ -33,6 +33,10 @@ void ConfigMgr::ReadServerIDCfg(int id)
 {
 	m_CBaseCfgMgr.ReadServerIDCfg(id);
 }
+void ConfigMgr::ReadCrossServerIDCfg(int id)
+{
+	m_CBaseCfgMgr.ReadCrossServerIDCfg(id);
+}
 void ConfigMgr::ReadLogPrintTmCfg(int tm)
 {
 	m_CBaseCfgMgr.ReadLogPrintTmCfg(tm);

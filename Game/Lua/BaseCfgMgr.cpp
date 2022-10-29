@@ -6,7 +6,8 @@ CBaseCfgMgr::CBaseCfgMgr() :
 	m_logPrintTm(0), 
 	m_maxSocketCnt(0), 
 	m_Exit(""), 
-	m_TimerCnt(0) 
+	m_TimerCnt(0),
+	m_CrossServerID(0)
 {
 
 }
@@ -20,7 +21,10 @@ void CBaseCfgMgr::ReadServerIDCfg(int id)
 { 
 	m_serverID = id; 
 }
-
+void CBaseCfgMgr::ReadCrossServerIDCfg(int id)
+{
+	m_CrossServerID = id;
+}
 void CBaseCfgMgr::ReadTimerCntCfg(int cnt) 
 {
 	m_TimerCnt = cnt;
