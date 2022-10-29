@@ -13,9 +13,6 @@ protected:
 public:
 	// 清理所有数据
 	bool CleanData();
-	// 获取队列大小
-	size_t GetDataCount();
-	std::list <ListItemData*>& GetDataList();
 	// 加入消息队列
 	unsigned int AddData(void* pData, unsigned int uDataSize, SysMsgCmd uDataKind = SysMsgCmd::HD_SYS_MSG_BEGIN);
 	// 提取消息数据
@@ -28,7 +25,6 @@ public:
 	}
 
 private:
-	unsigned int				m_dataListSize;
 	std::list <ListItemData*>	m_dataList;
 	std::mutex					m_mutex;
 	std::condition_variable		m_cond;

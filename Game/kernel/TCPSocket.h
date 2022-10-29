@@ -49,7 +49,7 @@ public:
 	int GetSocketIndex();
 	// 添加TCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
-	int AddServerSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	void ServerSocketInfo(PlatformSocketInfo* pTCPSocketInfo);
 	// 消息发送
 	bool BuffereventWrite(int index, void* data, unsigned int size);
 	//网络关闭处理
@@ -142,9 +142,9 @@ private:
 	// 获取套接字
 	SOCKFD GetNewSocket();
 	// 连接DB服务器
-	bool ConnectDBServer(SOCKFD& sock, int threadIndex);
+	bool ConnectDBServer(SOCKFD& sock);
 	// 连接跨服服务器
-	bool ConnectCrossServer(SOCKFD& sock, int threadIndex);
+	bool ConnectCrossServer(SOCKFD& sock);
 
 private:
 	// Socketpair
@@ -230,6 +230,8 @@ private:
 
 	SSL_CTX*		     m_ctx;
 
+	SOCKFD				 m_DBServerSock;
 	int					 m_DBServerIndex;
+	SOCKFD				 m_CrossServerSock;
 	int					 m_CrossServerIndex;
 };
