@@ -22,53 +22,52 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 
 	DataBaseSysMsgCmd uAssistantID = (DataBaseSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg msg((char*)playerInfo->pData);
 
 	switch (uAssistantID)
 	{
 	case DataBaseSysMsgCmd::cs_load_player:
 	{
-		LoadPlayerMysql(msg, playerInfo);
+		LoadPlayerMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_load_global:
 	{
-		LoadGlobalMysql(msg, playerInfo);
+		LoadGlobalMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_load_login:
 	{
-		LoadLoginMysql(msg, playerInfo);
+		LoadLoginMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_save_replace_player:
 	{
-		SaveReplacePlayerMysql(msg, playerInfo);
+		SaveReplacePlayerMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_save_replace_global:
 	{
-		SaveReplaceGlobalMysql(msg, playerInfo);
+		SaveReplaceGlobalMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_save_replace_login:
 	{
-		SaveReplaceLoginMysql(msg, playerInfo);
+		SaveReplaceLoginMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_global:
 	{
-		CreateGlobalMysql(msg, playerInfo);
+		CreateGlobalMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_player:
 	{
-		CreatePlayerMysql(msg, playerInfo);
+		CreatePlayerMysql(playerInfo);
 		break;
 	}
 	case DataBaseSysMsgCmd::cs_create_login:
 	{
-		CreateLoginMysql(msg, playerInfo);
+		CreateLoginMysql(playerInfo);
 		break;
 	}
 	default:
@@ -76,7 +75,7 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 	}
 }
 
-bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::CreateLoginMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -86,6 +85,7 @@ bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 2);
 
 	int cnt = 0;
 	std::string sqlName;
@@ -95,7 +95,7 @@ bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::CreateGlobalMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -105,6 +105,7 @@ bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 2);
 
 	int cnt = 0;
 	std::string sqlName;
@@ -114,7 +115,7 @@ bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::CreatePlayerMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -124,6 +125,7 @@ bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 2);
 
 	int cnt = 0;
 	std::string sqlName;
@@ -134,7 +136,7 @@ bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	return true;
 }
 
-bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -144,6 +146,7 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 6);
 
 	int serverid = 0;
 	std::string sqlName;
@@ -164,7 +167,7 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -174,6 +177,7 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 8);
 
 	int serverid = 0;
 	int index = 0;
@@ -200,7 +204,7 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -210,6 +214,7 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 5);
 
 	int serverid = 0;
 	std::string sqlName;
@@ -230,7 +235,7 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	return true;
 }
 
-bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::SaveReplaceGlobalMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -240,6 +245,8 @@ bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 3);
+
 	int serverid = 0;
 	std::string sqlName;
 	std::string data;
@@ -249,7 +256,7 @@ bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::SaveReplacePlayerMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -259,6 +266,8 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 4);
+
 	int serverid = 0;
 	uint64_t userid = 0;
 	std::string sqlName;
@@ -269,7 +278,7 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-bool DataBaseSys::SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
+bool DataBaseSys::SaveReplaceLoginMysql(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
@@ -279,6 +288,8 @@ bool DataBaseSys::SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+	Netmsg msg((char*)playerInfo->pData, 4);
+
 	int serverid = 0;
 	std::string userid;
 	std::string sqlName;

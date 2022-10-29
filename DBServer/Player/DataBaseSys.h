@@ -23,17 +23,17 @@ private:
 	void Network(PlayerInfo* playerInfo);
 
 private:
-	bool CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool CreateLoginMysql(PlayerInfo* playerInfo);
+	bool CreateGlobalMysql(PlayerInfo* playerInfo);
+	bool CreatePlayerMysql(PlayerInfo* playerInfo);
 
 private:
-	bool LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool LoadPlayerMysql(PlayerInfo* playerInfo);
+	bool LoadLoginMysql(PlayerInfo* playerInfo);
+	bool LoadGlobalMysql(PlayerInfo* playerInfo);
 
 private:
-	bool SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo);
-	bool SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo);
+	bool SaveReplaceGlobalMysql(PlayerInfo* playerInfo);
+	bool SaveReplacePlayerMysql(PlayerInfo* playerInfo);
+	bool SaveReplaceLoginMysql(PlayerInfo* playerInfo);
 };
