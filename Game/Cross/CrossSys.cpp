@@ -2,7 +2,7 @@
 
 CrossSys::CrossSys(PlayerPrepClient* ppc)
 {
-	RegisterNetwk(ppc, CrossSys::Network, MsgCmd::MsgCmd_Cross);
+	RegisterNetwk(ppc, CrossSys::Network, MsgCmd::MsgCmd_CrossLogin);
 }
 
 CrossSys::~CrossSys()

@@ -28,4 +28,5 @@ private:
 
 public:
 	BuildReference(LoginSys, LoginSys)			// 登录系统
+	BuildReference(CrossSys, CrossSys)			// 跨服系统
 };

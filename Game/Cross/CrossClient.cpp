@@ -2,7 +2,7 @@
 
 CrossClient::CrossClient(PlayerClient* player) : m_Player(player)
 {
-	RegisterNetwk(player, CrossClient::Network, MsgCmd::MsgCmd_Cross);
+	RegisterNetwk(player, CrossClient::Network, MsgCmd::MsgCmd_LoginCross);
 }
 
 CrossClient::~CrossClient()
@@ -60,7 +60,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << m_Player->GetPlayername();
 	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	
-	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Cross,
+	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
 
 	return true;
