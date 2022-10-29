@@ -44,7 +44,7 @@ void CBaseCfgMgr::ReadServerCfg(CServerCfg* config)
 
 int CBaseCfgMgr::GetThreadCnt() 
 {
-	return m_threadCnt;
+	return 2;
 }
 int CBaseCfgMgr::GetLogPrintTm() 
 { 

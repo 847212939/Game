@@ -294,15 +294,23 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	SOCKFD sock = 0;
-	if (!WaitConnect(0))
+	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
+	if (workBaseCount <= 1)
 	{
-		return false;
+		workBaseCount = 2;
+	}
+	SOCKFD sock = 0;
+	for (int i = 0; i < workBaseCount; i++)
+	{
+		if (!WaitConnect(i))
+		{
+			return false;
+		}
 	}
 	sock = GetNewSocket();
 	while (true)
 	{
-		if (ConnectLogicServer(sock, 0))
+		if (ConnectLogicServer(sock))
 		{
 			break;
 		}
@@ -310,79 +318,21 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	return true;
 }
-int CTCPSocketManage::AddServerSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
+void CTCPSocketManage::ServerSocketInfo(PlatformSocketInfo* tcpInfo)
 {
-	struct event_base* base = m_workBaseVec[threadIndex].base;
-	struct bufferevent* bev = nullptr;
-	SOCKFD fd = pTCPSocketInfo->acceptFd;
+	// 设置底层收发缓冲区
+	SetTcpRcvSndBUF(tcpInfo->acceptFd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
-	// 分配索引算法
-	int index = GetSocketIndex();
-	if (index < 0)
+	static int lastThreadIndex = 0;
+	lastThreadIndex = lastThreadIndex % m_workBaseVec.size();
+	// 投递到接收线程
+	if (send(m_workBaseVec[lastThreadIndex].write_fd, (const char*)(tcpInfo), 
+		sizeof(PlatformSocketInfo), 0) < sizeof(PlatformSocketInfo))
 	{
-		Log(CERR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		return index;
+		Log(CERR, "投递连接消息失败,fd=%d", tcpInfo->acceptFd);
 	}
-	bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
-	if (!bev)
-	{
-		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		return index;
-	}
-
-	// 设置应用层收发数据包，单次大小
-	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
-
-	// 生成回调函数参数，调用bufferevent_free要释放内存，否则内存泄露
-	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
-	pRecvThreadParam->pThis = this;
-	pRecvThreadParam->index = index;
-
-	// 添加事件，并设置好回调函数
-	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
-	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
-	{
-		Log(CERR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
-		return index;
-	}
-
-	// 保存信息
-	TCPSocketInfo tcpInfo;
-	memcpy(tcpInfo.ip, pTCPSocketInfo->ip, sizeof(tcpInfo.ip));
-	tcpInfo.acceptFd = pTCPSocketInfo->acceptFd;
-	tcpInfo.acceptMsgTime = pTCPSocketInfo->acceptMsgTime;
-	tcpInfo.bev = bev;
-	tcpInfo.isConnect = true;
-	tcpInfo.port = pTCPSocketInfo->port;
-	if (!tcpInfo.lock)
-	{
-		tcpInfo.lock = new std::mutex;
-	}
-	tcpInfo.bHandleAccptMsg = false;
-
-	m_mutex.lock();	//加锁
-	if (m_socketInfoVec[index].isConnect)
-	{
-		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
-		m_mutex.unlock(); //解锁
-		return index;
-	}
-	m_socketInfoVec[index] = tcpInfo;
-	m_heartBeatSocketSet.insert((unsigned int)index);
-	m_uCurSocketSize++;
-	m_mutex.unlock(); //解锁
-
-	return index;
 }
-bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock, int threadIndex)
+bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock)
 {
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
@@ -391,7 +341,7 @@ bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock, int threadIndex)
 
 	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		Log(CINF, "连接服DB失败");
+		Log(CINF, "连接逻辑服务器失败");
 		return false;
 	}
 
@@ -402,9 +352,11 @@ bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock, int threadIndex)
 	tcpInfo.port = m_ClientInfo.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	m_ServerIndex = AddServerSocketInfo(threadIndex, &tcpInfo);
+	m_ServerSock = sock;
 
-	Log(CINF, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
+	ServerSocketInfo(&tcpInfo);
+
+	Log(CINF, "连接逻辑服务器成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_ServerIndex, tcpInfo.acceptFd);
 	return true;
 }
@@ -543,6 +495,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_uCurSocketSize++;
 	m_mutex.unlock(); //解锁
 
+	if (m_ServerIndex < 0 && m_ServerSock == fd)
+	{
+		m_ServerIndex = index;
+	}
+
 	Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 		tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
 }
@@ -633,7 +590,44 @@ void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 {
 	Log(CERR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
 }
+bool CTCPSocketManage::VerifyConnection(char* data)
+{
+	if (!data)
+	{
+		return false;
+	}
+	int index = GetServerIndex();
+	if (index < 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
+	if (!pTcpInfo)
+	{
+		return false;
+	}
+	Netmsg is(data);
+	std::string str;
+	is >> str;
+	if (str.empty())
+	{
+		return false;
+	}
+	char* pEncrypt = Util::Encrypt((char*)str.c_str(), str.size());
+	if (!pEncrypt)
+	{
+		return false;
+	}
+	Netmsg msg;
+	msg << pEncrypt;
 
+	if (!SendMsg(GetServerIndex(), msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, pTcpInfo->bev))
+	{
+		return false;
+	}
+
+	return true;
+}
 // 网络消息派发
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
@@ -642,7 +636,23 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	{
 		return false;
 	}
-	
+	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
+	if (!pTcpInfo)
+	{
+		return false;
+	}
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
+	{
+		return true;
+	}
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
+	{
+		if (!VerifyConnection((char*)pData))
+		{
+			CloseSocket(index);
+			return false;
+		}
+	}
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{

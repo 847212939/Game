@@ -30,8 +30,8 @@ public:
 	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 	// 连接DB服务器
-	bool ConnectLogicServer(SOCKFD& sock, int threadIndex);
-	int AddServerSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	bool ConnectLogicServer(SOCKFD& sock);
+	void ServerSocketInfo(PlatformSocketInfo* pTCPSocketInfo);
 	// 连接服务器
 	bool ConnectServer();
 	// 等待连接
@@ -105,7 +105,8 @@ private:
 	// 派发数据包
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
-
+	// 消息验证
+	bool VerifyConnection(char* data);
 private:
 	// Socketpair
 	static int DgramSocketpair(struct addrinfo* addr_info, SOCKFD sock[2]);
@@ -142,5 +143,6 @@ private:
 	VectorWorkThreadInfo m_workBaseVec;
 
 	BuildReference(ClientInfo, ClientInfo)
-	BuildValue(SOCKFD, ServerIndex)
+	BuildValue(int, ServerIndex)
+	BuildValue(SOCKFD, ServerSock)
 };
