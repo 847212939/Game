@@ -1270,7 +1270,7 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 	return true;
 }
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
-	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/, uint64_t userid/* = 0*/)
 {
 	if (IsServerMsg(index))
 	{
@@ -1298,7 +1298,28 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 
 	return true;
 }
-bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
+bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/)
+{
+	if (GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid);
+		if (!player)
+		{
+			return false;
+		}
+		Netmsg msg;
+		msg << player->GetLogicIndex()
+			<< pData;
+
+		return SendLogicMsgLogic(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+	}
+	else
+	{
+		return SendLogicMsgLogic(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+	}
+}
+bool CTCPSocketManage::SendLogicMsgLogic(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/)
 {
 	if (!pBufferevent)
@@ -2118,14 +2139,10 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	{
 		return false;
 	}
-	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
-	{
-		return DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType);
-	}
-	else
-	{
-		return DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
-	}
+
+	return m_ServiceType == ServiceType::SERVICE_TYPE_CROSS ?
+		DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType):
+		DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
 }
 // 跨服消息处理
 bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size,

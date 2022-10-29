@@ -4,7 +4,8 @@ Player::Player(const unsigned int& index) :
 	Animal(),
 	m_Index(index),
 	m_Load(false),
-	m_Playername("")
+	m_Playername(""),
+	m_LogicIndex(-1)
 {
 }
 Player::~Player()
@@ -15,8 +16,7 @@ AnimalType Player::GetType()
 {
 	return AnimalType::at_player;
 }
-
-bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
+bool Player::SendLogicMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
 {
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(m_Index);
 	if (!pInfo)
@@ -25,6 +25,26 @@ bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID
 		return false;
 	}
 	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+}
+bool Player::SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
+{
+	const TCPSocketInfo* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(m_Index);
+	if (!pCrossTcpInfo)
+	{
+		Log(CERR, "Client information is empty index = %d", m_Index);
+		return false;
+	}
+	Netmsg msg;
+	msg << m_LogicIndex
+		<< pData;
+	return G_NetClient->SendMsg(m_Index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pCrossTcpInfo->bev, uIdentification);
+}
+bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
+{
+	return G_NetClient->GetServerType() ==
+		ServiceType::SERVICE_TYPE_CROSS ?
+		SendCrossMsg(pData, size, mainID, assistID, handleCode, uIdentification):
+		SendLogicMsg(pData, size, mainID, assistID, handleCode, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
