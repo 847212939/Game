@@ -826,13 +826,16 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	lock->unlock();
 }
 //网络关闭处理
-bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime)
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+	unsigned int uConnectTime, bool isCross)
 {
 	SocketCloseLine SocketClose;
 	SocketClose.uConnectTime = uConnectTime;
 	SocketClose.uIndex = uIndex;
 	SocketClose.uAccessIP = uAccessIP;
-	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), SysMsgCmd::HD_SOCKET_CLOSE) != 0);
+	SocketClose.isCross = isCross;
+	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), 
+		SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 bool CTCPSocketManage::CloseSocket(int index)
 {
@@ -850,6 +853,8 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	}
 
 	unsigned long uAccessIP = 0;
+
+	bool isCross = tcpInfo->isCross;
 
 	// 加锁
 	m_ConditionVariable.GetMutex().lock();
@@ -880,7 +885,9 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo->acceptFd);
-	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime);
+
+	// 玩家下线
+	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime, isCross);
 
 	// 清理登录内存
 	G_PlayerPrepClient->GetLoginSys().DelLoginInMap(index);

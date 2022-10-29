@@ -226,6 +226,7 @@ struct SocketCloseLine
 	unsigned int						uIndex;									//SOCKT 索引
 	unsigned long						uAccessIP;								//SOCKFD IP
 	unsigned int						uConnectTime;							//连接时间
+	bool								isCross;								//是否在跨服
 
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };

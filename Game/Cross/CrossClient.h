@@ -14,6 +14,10 @@ public:
 public:
 	void Network(PlayerInfo* playerInfo);
 
+public:
+	// ÍË³ö¿ç·þ
+	void LogoutCross();
+
 private:
 	bool LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo);
 

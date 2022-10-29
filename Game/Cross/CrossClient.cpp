@@ -44,11 +44,17 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	auto* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(crossIndex);
+	TCPSocketInfo* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(crossIndex);
 	if (!pCrossTcpInfo)
 	{
 		return false;
 	}
+	TCPSocketInfo* pLogicTcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	if (!pLogicTcpInfo)
+	{
+		return false;
+	}
+	pLogicTcpInfo->isCross = true;
 
 	Netmsg msgCin;
 	msgCin << m_Player->GetID();
@@ -70,4 +76,9 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	G_PlayerCenterClient->AddVectorPlayerClient(playerInfo->pMsg->uIndex, m_Player);
 
 	return true;
+}
+
+void CrossClient::LogoutCross()
+{
+	Log(CINF, "ÍË³ö¿ç·þ");
 }

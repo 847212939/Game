@@ -209,15 +209,25 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
-
+	if (!pSocketClose)
+	{
+		return;
+	}
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		return;
 	}
 
-	playerClient->ExitGame(pSocketClose);
-
+	if (pSocketClose->isCross)
+	{
+		playerClient->GetCrossClient().LogoutCross();
+	}
+	else
+	{
+		playerClient->ExitGame(pSocketClose);
+	}
+	
 	SafeDelete(playerClient);
 }
 
