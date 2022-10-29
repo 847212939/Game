@@ -1,4 +1,5 @@
 #include "pch.h"
+
 CDataLine::CDataLine() : m_dataListCnt(0)
 {
 	m_dataList.clear();
@@ -46,9 +47,8 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 	m_mutex.lock();
 	m_dataList.push_back(pListItem);
 	++m_dataListCnt;
+	m_cond.notify_all();
 	m_mutex.unlock();
-
-	m_cond.notify_one();
 
 	return pListItem->stDataHead.uSize;
 }
@@ -65,13 +65,15 @@ unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned 
 		*pDataBuffer = m_dataList.front();
 		m_dataList.pop_front();
 		--m_dataListCnt;
+		uniqLock.unlock();
 	}
 	else
 	{
-		std::lock_guard<std::mutex> guard(m_mutex);
+		m_mutex.lock();
 		*pDataBuffer = m_dataList.front();
 		m_dataList.pop_front();
 		--m_dataListCnt;
+		m_mutex.unlock();
 	}
 
 	if (!(*pDataBuffer))

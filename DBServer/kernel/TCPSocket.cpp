@@ -150,7 +150,7 @@ void CTCPSocketManage::ThreadAccept()
 	sin.sin_addr.s_addr = strlen(m_bindIP) == 0 ? INADDR_ANY : inet_addr(m_bindIP);
 
 	listener = evconnlistener_new_bind(m_listenerBase, ListenerCB, (void*)this,
-		LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE | LEV_OPT_THREADSAFE,
+		LEV_OPT_REUSEABLE | /*LEV_OPT_CLOSE_ON_FREE |*/ LEV_OPT_THREADSAFE,
 		-1, (struct sockaddr*)&sin, sizeof(sin));
 
 	if (!listener)
