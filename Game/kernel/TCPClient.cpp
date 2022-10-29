@@ -206,7 +206,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		Log(CERR, "Failed to process data£¬index=%d Out of range", index);
 	}
 }
-void TCPClient::CloseSocketCallback(void* pDataLineHead)
+void TCPClient::CloseSocketLogicCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 	if (!pSocketClose)
@@ -226,10 +226,33 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	{
 		playerClient->ExitGame(pSocketClose);
 	}
-	
+
 	VectorPlayerClient& playerClientVec = G_PlayerCenterClient->GetVectorPlayerClient();
 	SafeDelete(playerClient);
 	playerClientVec[pSocketClose->uIndex] = nullptr;
+}
+void TCPClient::CloseSocketCrossCallback(void* pDataLineHead)
+{
+	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
+	if (!pSocketClose)
+	{
+		return;
+	}
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByUserid(pSocketClose->userid);
+	if (!playerClient)
+	{
+		return;
+	}
+
+	playerClient->ExitGame(pSocketClose);
+
+	G_PlayerCenterClient->DelMapPlayerClient(pSocketClose->userid);
+}
+void TCPClient::CloseSocketCallback(void* pDataLineHead)
+{
+	GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
+		CloseSocketCrossCallback(pDataLineHead) :
+		CloseSocketLogicCallback(pDataLineHead);
 }
 
 const CLogicCfg* TCPClient::GetServerCfg(ServiceType serverType)

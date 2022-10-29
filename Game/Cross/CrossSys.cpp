@@ -84,7 +84,8 @@ bool CrossSys::CrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	uint64_t userid = 0;
 	msg >> userid;
 
-	G_PlayerCenterClient->DelMapPlayerClient(userid);
+	// 投递到关闭回调函数中
+	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, userid);
 
 	return true;
 }

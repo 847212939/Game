@@ -827,6 +827,13 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 }
 //网络关闭处理
 bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+	unsigned int uConnectTime, bool isCross, uint64_t userid/* = 0*/)
+{
+	return GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
+		OnCrossSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross, userid) :
+		OnLogicSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross);
+}
+bool CTCPSocketManage::OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
 	unsigned int uConnectTime, bool isCross)
 {
 	SocketCloseLine SocketClose;
@@ -834,7 +841,19 @@ bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int 
 	SocketClose.uIndex = uIndex;
 	SocketClose.uAccessIP = uAccessIP;
 	SocketClose.isCross = isCross;
-	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose), 
+	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose),
+		SysMsgCmd::HD_SOCKET_CLOSE) != 0);
+}
+bool CTCPSocketManage::OnCrossSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+	unsigned int uConnectTime, bool isCross, uint64_t& userid)
+{
+	SocketCloseLine SocketClose;
+	SocketClose.uConnectTime = uConnectTime;
+	SocketClose.uIndex = uIndex;
+	SocketClose.uAccessIP = uAccessIP;
+	SocketClose.isCross = isCross;
+	SocketClose.userid = userid;
+	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose),
 		SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
 bool CTCPSocketManage::CloseSocket(int index)

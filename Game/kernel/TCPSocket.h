@@ -40,6 +40,10 @@ public:
 	int AddServerSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
 	// 消息发送
 	bool BuffereventWrite(int index, void* data, unsigned int size);
+	//网络关闭处理
+	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, bool isCross, uint64_t userid = 0);
+	bool OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, bool isCross);
+	bool OnCrossSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, bool isCross, uint64_t& userid);
 
 public:
 	// 获取event_base
@@ -118,8 +122,6 @@ private:
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 
 private:
-	//网络关闭处理
-	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, unsigned int uConnectTime, bool isCross);
 	// 对称加密测试连接
 	bool VerifyConnection(int index, char* data);
 	// 等待连接

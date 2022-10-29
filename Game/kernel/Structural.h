@@ -227,6 +227,7 @@ struct SocketCloseLine
 	unsigned long						uAccessIP;								//SOCKFD IP
 	unsigned int						uConnectTime;							//连接时间
 	bool								isCross;								//是否在跨服
+	uint64_t							userid;									//玩家id
 
 	SocketCloseLine() { memset(this, 0, sizeof(SocketCloseLine)); }
 };
