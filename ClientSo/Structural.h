@@ -67,6 +67,13 @@ enum class SocketType
 	SOCKET_TYPE_WEBSOCKET       = 1,											//websocket
 };
 
+// 定时器类型
+enum SERVERTIMER_TYPE
+{
+	SERVERTIMER_TYPE_PERISIST = 0,											// 持久定时器
+	SERVERTIMER_TYPE_SINGLE = 1,											// 一次性定时器
+};
+
 /**
 * @brief 定义字段类型，
 * DB_INT:数字类型
@@ -235,6 +242,16 @@ struct ClientInfo
 	int port;
 	int timerCnt;
 	ClientInfo(std::string IP, int nPort, int cnt) : ip(IP), port(nPort), timerCnt(cnt) {}
-	ClientInfo() {}
+	ClientInfo() : port(0), timerCnt(0) {}
 	~ClientInfo() {}
+};
+
+// 定时器结构
+struct ServerTimerInfo
+{
+	unsigned int	elapse;														// 定时器间隔（单位毫秒）
+	long long		starttime;													// 起始时间（单位毫秒）
+	unsigned char	timertype;													// 定时器类型 SERVERTIMER_TYPE
+
+	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
 };

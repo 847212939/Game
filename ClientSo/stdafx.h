@@ -53,6 +53,7 @@
 #include "framework.h"
 #include "Macro.h"				// 宏
 #include "MessageCmd.h"			// 玩家消息定义
+#include "TimerCmd.h"			// 定时器
 #include "Structural.h"			// 结构
 #include "Alias.h"				// 别名
 #include "MysqlHelper.h"		// 数据库
@@ -62,8 +63,8 @@
 #include "Util.h"				// 工具类
 #include "Netmsg.h"				// 消息解析
 #include "LogManager.h"			// 日志管理类
+#include "ServerTimer.h"		// 定时器
 
-#include "DataBaseSys.h"		// 数据库操作
 #include "PlayerPrep.h"			// 信息在注册
 #include "PlayerPrepClient.h"	// 逻辑处理类
 

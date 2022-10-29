@@ -9,7 +9,4 @@ public:
 protected:
 	PlayerPrepClient(const PlayerPrepClient& my);
 	PlayerPrepClient& operator=(const PlayerPrepClient& my);
-
-public:
-	BuildReference(DataBaseSys, DataBaseSys)	// µÇÂ¼ÏµÍ³
 };

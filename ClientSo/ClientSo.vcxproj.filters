@@ -16,9 +16,6 @@
     <Filter Include="玩家管理\逻辑派生">
       <UniqueIdentifier>{25b8341b-798d-4aa7-8eb5-a84a4d87eb4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="逻辑管理">
-      <UniqueIdentifier>{17375b49-8247-49e0-ae92-092457e0fe61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="网络管理\工具管理">
       <UniqueIdentifier>{e8ceb95f-25c3-40c6-9f83-6ff979f1811b}</UniqueIdentifier>
     </Filter>
@@ -43,6 +40,9 @@
     <Filter Include="配置管理">
       <UniqueIdentifier>{7f3d889a-7402-4921-9130-5de81ca8b155}</UniqueIdentifier>
     </Filter>
+    <Filter Include="网络管理\定时管理">
+      <UniqueIdentifier>{bf5f1d51-31f2-4758-bb95-bb0b199d3fc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -53,9 +53,6 @@
     </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>系统入口</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBaseSys.h">
-      <Filter>逻辑管理</Filter>
     </ClInclude>
     <ClInclude Include="PlayerPrep.h">
       <Filter>玩家管理\逻辑基类</Filter>
@@ -108,13 +105,16 @@
     <ClInclude Include="mainspace.h">
       <Filter>系统入口</Filter>
     </ClInclude>
+    <ClInclude Include="ServerTimer.h">
+      <Filter>网络管理\定时管理</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>系统入口</Filter>
-    </ClCompile>
-    <ClCompile Include="DataBaseSys.cpp">
-      <Filter>逻辑管理</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrep.cpp">
       <Filter>玩家管理\逻辑基类</Filter>
@@ -157,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="mainspace.h.cpp">
       <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerTimer.cpp">
+      <Filter>网络管理\定时管理</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

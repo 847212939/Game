@@ -47,6 +47,7 @@ public:
 	std::string GetExit();
 	const CDbCfg& GetDbCfg();
 	const CServerCfg& GetServerCfg();
+	int GetTimerCnt();
 
 private:
 	int			m_logPrintTm;

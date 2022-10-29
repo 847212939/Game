@@ -173,3 +173,30 @@ else\
 {\
 	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
 }
+
+// ×¢²á¶¨Ê±Æ÷
+#define RegisterTimer(pobj, cmd, uElapse, timerType)\
+{\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éÐ´·¨"); \
+	}\
+	else\
+	{\
+		pobj->SetTimer(cmd, uElapse, timerType);\
+		pobj->AddTimerCallback(cmd);\
+	}\
+}
+// ·´×¢²á¶¨Ê±Æ÷
+#define UnRegisterTimer(pobj, cmd)\
+{\
+	if (!pobj)\
+	{\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "×¢²áÏûÏ¢Ê§°Ü Çë¼ì²éÐ´·¨"); \
+	}\
+	else\
+	{\
+		pobj->KillTimer(cmd);\
+		pobj->DelTimerCallback(cmd);\
+	}\
+}

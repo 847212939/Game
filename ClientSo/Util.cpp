@@ -70,12 +70,6 @@ int Util::GetRandRange(int iMin, int iMax)
 	return iMin + (int)(GetRandNum() % (iMax - iMin));
 }
 
-long long Util::GetSysMilliseconds()
-{
-	auto time_now = std::chrono::system_clock::now();
-	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
-	return duration_in_ms.count();
-}
 uint64_t Util::GetCfgSecond(const VectorInt& vec)
 {
 	if (vec.size() < 3)

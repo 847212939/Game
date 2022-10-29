@@ -1,5 +1,9 @@
 #pragma once
 
+typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
+typedef void (*TimerCallBackFunc)(int timer);
+typedef void (*CloseCallBackFunc)();
+
 template<typename T>
 using SetTemplate			= std::set<T>;
 using SetUint				= std::set<unsigned int>;
@@ -25,10 +29,9 @@ using MapMysqlFunc			= std::map<std::string, std::function<void(std::string&)>>;
 using MapTypeFunc			= std::map<SysMsgCmd, std::function<void(void* pDataLineHead)>>;
 using MapRecordData			= std::map<std::string, std::pair<FT, std::string>>;
 using MapServerId			= std::map<uint64_t, std::set<int>>;
+using MapServerTimerInfo	= std::unordered_map<unsigned int, ServerTimerInfo>;
+using MapTimerFunc			= std::map<TimerCmd, TimerCallBackFunc>;
 
 using LogLevelNames			= const std::array<const char*, LOG_END>;
 LogLevelNames levelNames	= { "[INF]", "[WAR]", "[ERR]", "[INF]","[ERR]", "[SYS]", };
 
-typedef void (*NetworkCallBackFunc)(REvent eve/*, char m_Source[]*/);
-typedef void (*TimerCallBackFunc)(int timer);
-typedef void (*CloseCallBackFunc)();

@@ -38,6 +38,9 @@ public:
 	bool WaitConnect(int threadIndex);
 	// 获取套接字
 	SOCKFD GetNewSocket();
+	//网络关闭处理
+	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
+		unsigned int uConnectTime, bool isCross, uint64_t userid = 0);
 
 public:
 	// 获取event_base

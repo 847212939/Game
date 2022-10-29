@@ -31,6 +31,8 @@ TCPClient::~TCPClient()
 bool TCPClient::InitNetwork(ClientInfo clientInfo)
 {
 	GetClientInfo() = clientInfo;
+
+	return true;
 }
 
 bool TCPClient::InitCallBack(NetworkCallBackFunc netFunc,
@@ -48,6 +50,8 @@ bool TCPClient::InitCallBack(NetworkCallBackFunc netFunc,
 	{
 		m_CloseCallBackFunc = closeFunc;
 	}
+
+	return true;
 }
 
 bool TCPClient::Init(ServiceType serverType)
@@ -111,7 +115,10 @@ void TCPClient::HandlerRecvDataListThread()
 
 	return;
 }
-
+TimerCallBackFunc TCPClient::GetTimerCallBackFunc()
+{
+	return m_TimerCallBackFunc;
+}
 PlayerPrepClient* TCPClient::GetPlayerPrepClient()
 {
 	return m_PlayerPrepClient;
@@ -134,9 +141,44 @@ void TCPClient::NotifyAll()
 	
 	RecvDataLine->GetConditionVariable().notify_all();
 	SendDataLine->GetConditionVariable().notify_all();
-	G_PlayerPrepClient->GetConditionVariable().notify_all();
 }
 
+void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)
+{
+	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
+	if (it == m_TypeFunMap.end())
+	{
+		m_TypeFunMap.insert(std::make_pair(cmd, fun));
+		return;
+	}
+
+	Log(CINF, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+}
+bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
+{
+	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
+	if (it == m_TypeFunMap.end())
+	{
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
+		return false;
+	}
+
+	it->second(pDataLineHead);
+	return true;
+}
+
+void TCPClient::TimerCallback(void* pDataLineHead)
+{
+	ServerTimerLine* WindowTimer = (ServerTimerLine*)pDataLineHead;
+	if (WindowTimer->uMainID == (unsigned int)MsgCmd::MsgCmd_Timer)
+	{
+		m_PlayerPrepClient->CallBackFun((TimerCmd)WindowTimer->uTimerID);
+	}
+	else
+	{
+		Log(CERR, "Timer message error");
+	}
+}
 void TCPClient::SocketCallback(void* pDataLineHead)
 {
 	//处理数据
@@ -153,10 +195,33 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 		Info.pMsg = pMsg;
 		Info.pData = pData;
 		Info.uSrverType = GetServerType();
-		m_PlayerPrepClient->MessageDispatch(&Info);
+
+		static REvent eve;
+		SocketReadLine* pMsg = reinterpret_cast<SocketReadLine*>(pDataLineHead);
+		std::string pData = static_cast<char*>(pDataLineHead) + sizeof(SocketReadLine);
+
+		Netmsg msg;
+		msg << pMsg->netMessageHead.uMainID
+			<< pMsg->netMessageHead.uAssistantID
+			<< pMsg->netMessageHead.uIdentification
+			<< pMsg->uHandleSize
+			<< pData.c_str();
+
+		memcpy(eve.m_Source, msg.str().c_str(), msg.str().size());
+
+		m_NetworkCallBackFunc(eve);
 	}
 	else
 	{
 		Log(CERR, "Failed to process data，index=%d Out of range", index);
 	}
+}
+void TCPClient::CloseSocketCallback(void* pDataLineHead)
+{
+	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
+	if (!pSocketClose)
+	{
+		return;
+	}
+	m_CloseCallBackFunc();
 }

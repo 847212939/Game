@@ -148,7 +148,6 @@
     <ClInclude Include="Alias.h" />
     <ClInclude Include="BaseCfgMgr.h" />
     <ClInclude Include="ConfigMgr.h" />
-    <ClInclude Include="DataBaseSys.h" />
     <ClInclude Include="DataLine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="LogManager.h" />
@@ -161,16 +160,17 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerPrep.h" />
     <ClInclude Include="PlayerPrepClient.h" />
+    <ClInclude Include="ServerTimer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Structural.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="TCPSocket.h" />
+    <ClInclude Include="TimerCmd.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseCfgMgr.cpp" />
     <ClCompile Include="ConfigMgr.cpp" />
-    <ClCompile Include="DataBaseSys.cpp" />
     <ClCompile Include="DataLine.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="LogManager.cpp" />
@@ -184,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="PlayerPrep.cpp" />
     <ClCompile Include="PlayerPrepClient.cpp" />
+    <ClCompile Include="ServerTimer.cpp" />
     <ClCompile Include="TCPClient.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Util.cpp" />

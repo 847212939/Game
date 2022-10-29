@@ -9,7 +9,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new())
+	m_eventBaseCfg(event_config_new()),
+	m_ServerIndex(-1)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -732,10 +733,23 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo->acceptFd);
 
+	// 玩家下线
+	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime, false);
+
 	Log(CINF, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
 		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 }
-
+//网络关闭处理
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
+	unsigned int uConnectTime, bool isCross, uint64_t userid/* = 0*/)
+{
+	SocketCloseLine SocketClose;
+	SocketClose.uConnectTime = uConnectTime;
+	SocketClose.uIndex = uIndex;
+	SocketClose.uAccessIP = uAccessIP;
+	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose),
+		SysMsgCmd::HD_SOCKET_CLOSE) != 0);
+}
 CDataLine* CTCPSocketManage::GetRecvDataLine()
 {
 	return m_pRecvDataLine;

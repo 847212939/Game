@@ -13,7 +13,10 @@ CBaseCfgMgr::~CBaseCfgMgr()
 {
 
 }
-
+int CBaseCfgMgr::GetTimerCnt()
+{
+	return 1;
+}
 void CBaseCfgMgr::ReadThreadCntCfg(int cnt) 
 {
 	m_threadCnt = cnt; 

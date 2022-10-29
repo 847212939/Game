@@ -69,7 +69,8 @@ namespace MainNameSpace
             return -1;
         }
 
-        pTcpClient->CloseSocketCallback(nullptr);
+        pTcpClient->Stop();
+        pTcpClient->NotifyAll();
 
         return 0;
     }
@@ -85,8 +86,18 @@ namespace MainNameSpace
         {
             return -1;
         }
-        if (!pTcpClient->SendMsg((const char*)pData, (size_t)size, mainID, assistID, 0,
-            (unsigned int)uIdentification))
+        SOCKFD serverIndex = pTcpClient->GetServerIndex();
+        if (serverIndex < 0)
+        {
+            return -1;
+        }
+        TCPSocketInfo* pTcpInfo = pTcpClient->GetTCPSocketInfo((int)serverIndex);
+        if (!pTcpInfo)
+        {
+            return -1;
+        }
+        if (!pTcpClient->SendMsg((int)serverIndex, pData, (size_t)size,
+            (MsgCmd)mainID, assistID, 0, pTcpInfo->bev, uIdentification))
         {
             return -1;
         }
@@ -104,11 +115,9 @@ namespace MainNameSpace
         {
             return -1;
         }
-        if (!pTcpClient->SetTimer(timerid, uElapse, SERVERTIMER_TYPE_PERISIST))
-        {
-            return -1;
-        }
-        pTcpClient->AddTimerCallback(timerid);
+
+        RegisterTimer(pTcpClient->GetPlayerPrepClient(), 
+            (TimerCmd)timerid, uElapse, SERVERTIMER_TYPE_PERISIST);
 
         return 0;
     }
@@ -124,11 +133,8 @@ namespace MainNameSpace
         {
             return -1;
         }
-        if (!pTcpClient->KillTimer(timerid))
-        {
-            return -1;
-        }
-        pTcpClient->DelTimerCallback(timerid);
+        
+        UnRegisterTimer(pTcpClient->GetPlayerPrepClient(), (TimerCmd)timerid);
 
         return 0;
     }
