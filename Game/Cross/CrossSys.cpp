@@ -85,4 +85,6 @@ bool CrossSys::CrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	msg >> userid;
 
 	G_PlayerCenterClient->DelMapPlayerClient(userid);
+
+	return true;
 }

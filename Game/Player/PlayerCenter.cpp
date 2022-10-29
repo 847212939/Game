@@ -255,7 +255,7 @@ void PlayerCenter::AddMapPlayerClient(uint64_t& userid, PlayerClient* player)
 void PlayerCenter::DelMapPlayerClient(uint64_t& userid)
 {
 	auto it = m_MapPlayerClient.find(userid);
-	if (it != m_MapPlayerClient.end())
+	if (it == m_MapPlayerClient.end())
 	{
 		return;
 	}
