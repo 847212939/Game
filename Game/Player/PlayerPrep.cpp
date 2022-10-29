@@ -33,6 +33,7 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		return;
 	}
 	int index = pMsg->uIndex;
+	MsgCmd cmd = (MsgCmd)pMsg->netMessageHead.uMainID;
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
@@ -43,15 +44,16 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
-			Log(CERR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
+			Log(CERR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink,"
+				"[cmd=%d,index=%d,ip=%s,port=%d]", (int)cmd, index, tcpInfo->ip, tcpInfo->port);
 			G_NetClient->CloseSocket(index);
 			return;
 		}
 	}
-	MsgCmd cmd = (MsgCmd)pMsg->netMessageHead.uMainID;
 	if (cmd >= MsgCmd::MsgCmd_End || cmd <= MsgCmd::MsgCmd_Begin)
 	{
-		Log(CERR, "非法消息cmd=%d", (int)cmd);
+		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]", 
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
@@ -65,28 +67,33 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (!playerClient)
 	{
-		Log(CERR, "Dispatch message playerClient = null index = %d", index);
+		Log(CERR, "!playerClient[cmd=%d,index=%d,ip=%s,port=%d]", 
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!pInfo)
 	{
-		Log(CERR, "Client information is empty index=%d", index);
+		Log(CERR, "!pInfo[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		Log(CINF, "Dispatch message Link broken cmd = %d", (int)cmd);
+		Log(CERR, "!pInfo->isConnect[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	if (!playerClient->GetLoad())
 	{
-		Log(CERR, "Dispatch message mysql is unload index = %d", index);
+		Log(CERR, "!playerClient->GetLoad()[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	if (playerClient->GetIndex() != index)
 	{
-		Log(CERR, "dindex = %u, sindex = %d", playerClient->GetIndex(), index);
+		Log(CERR, "playerClient->GetIndex() != index[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
 	playerClient->MessageDispatch(cmd, playerInfo);
