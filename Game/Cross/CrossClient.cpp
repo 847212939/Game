@@ -71,6 +71,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 	new(m_Player) PlayerClient(playerInfo->pMsg->uIndex);
 	m_Player->SetID(userid);
+	m_Player->SetIndex(playerInfo->pMsg->uIndex);
 
 	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces);
