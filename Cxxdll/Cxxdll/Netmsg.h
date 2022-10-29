@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 
 class Netmsg
 {
@@ -38,7 +39,7 @@ public:
 private:
 	std::ostringstream	m_os;
 	std::istringstream	m_is;
-	ListString			m_SplitsList;
+	std::list<std::string>			m_SplitsList;
 };
 
 template<class T>
