@@ -158,50 +158,34 @@ private:
 	// 发送TCP消息
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0, uint64_t userid = 0);
-#ifdef __WebSocket__
 	bool SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
-#endif
-#ifdef __WebSocketOpenssl__
 	bool SendLogicWssMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);
-#endif
-
-	// 最底层处理收到的数据函数
-	bool RecvData(bufferevent* bev, int index);
-	// 处理收到消息进行粘包
-	bool RecvLogicData(bufferevent* bev, int index);
-#ifdef __WebSocket__
-	bool RecvLogicWsData(bufferevent* bev, int index);
-#endif
-#ifdef __WebSocketOpenssl__
-	bool RecvLogicWssData(bufferevent* bev, int index);
-#endif
 
 	// 处理发送线程消息
 	void HandleSendMsg(ListItemData* pListItem);
 	// 处理发送线程消息
 	void HandleSendData(ListItemData* pListItem);
-#ifdef __WebSocket__
-	void HandleSendWsData(ListItemData * pListItem);
-#endif
-#ifdef __WebSocketOpenssl__
+	void HandleSendWsData(ListItemData* pListItem);
 	void HandleSendWssData(ListItemData* pListItem);
-#endif
 
-#ifdef __WebSocketOpenssl__
 private:
+	// 最底层处理收到的数据函数
+	bool RecvData(bufferevent* bev, int index);
+	// 处理收到消息进行粘包
+	bool RecvLogicData(bufferevent* bev, int index);
+	bool RecvLogicWsData(bufferevent* bev, int index);
+	bool RecvLogicWssData(bufferevent* bev, int index);
+
+private:
+	// 初始化openssl
 	bool OpensslInit();
-#endif
-
 	// websocket的第一次握手
-#ifdef __WebSocket__
 	bool HandShark(bufferevent* bev, int index);
-#endif
 
-	// websocket解析数据包函数
-#ifdef __WebSocket__
 private:
+	// websocket解析数据包函数
 	static int FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchOpcode(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchMask(char* msg, int& pos, WebSocketMsg& wbmsg);
@@ -209,7 +193,6 @@ private:
 	static int FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static int FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static void FetchPrint(const WebSocketMsg& wbmsg);
-#endif
 
 private:
 	// 添加TCPSocketInfo
@@ -241,14 +224,11 @@ private:
 	event_base*			 m_listenerBase;
 	ServiceType			 m_ServiceType;
 	std::mutex			 m_mutex;
-
 	SetUint				 m_heartBeatSocketSet;
 	VectorThread		 m_socketThread;
 	VectorTCPSocketInfo	 m_socketInfoVec;
 	VectorWorkThreadInfo m_workBaseVec;
-
 	SSL_CTX*		     m_ctx;
-
 	SOCKFD				 m_DBServerSock;
 	int					 m_DBServerIndex;
 	SOCKFD				 m_CrossServerSock;
