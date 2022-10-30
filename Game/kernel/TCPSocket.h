@@ -26,9 +26,21 @@ public:
 	void Sleepseconds(int seconds);
 
 public:
-	// 发送数据函数
+	/**
+	* @brief 发送数据函数.
+	* @param index 本服是客户端索引，跨服是本服索引
+	* @param pData 原始数据
+	* @param size 原始数据长度
+	* @param mainID 主协议
+	* @param assistID 辅助协议
+	* @param handleCode 辅助码
+	* @param pBufferevent libevent通信指针
+	* @param uIdentification 主协议标识是否是全局协议
+	* @param userid 跨服发送数据到客户端必须数据
+	* @param WSPackData 只针对websocket有用true原始数据false添加websocket头
+	*/
 	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
-		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
+		void* pBufferevent, unsigned int uIdentification = 0, uint64_t userid = 0, bool WSPackData = true);
 	// 关闭连接函数
 	bool CloseSocket(int index);
 	// 设置tcp为未连接状态

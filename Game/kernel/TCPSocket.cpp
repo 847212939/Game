@@ -1295,11 +1295,23 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 
 	return true;
 }
-bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
-	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, bool WSPackData/* = true*/)
+bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/, bool WSPackData/* = true*/)
 {
 	if (IsServerMsg(index))
 	{
+		if (GetServerType() == ServiceType::SERVICE_TYPE_CROSS && GetDBServerIndex() != index && userid > 0)
+		{
+			PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid); 
+			if (player)
+			{
+				Netmsg msg;
+				msg << player->GetLogicIndex()
+					<< pData;
+
+				return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+			}
+		}
 		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 	else
@@ -2051,7 +2063,7 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 	{
 		//发送数据
 		SendMsg(index, requestSendStr.c_str(), requestSendStr.size(),
-			MsgCmd::MsgCmd_HandShark, 0, 0, tcpInfo->bev, 0, tcpInfo->bHandleAccptMsg);
+			MsgCmd::MsgCmd_HandShark, 0, 0, tcpInfo->bev, 0, 0, tcpInfo->bHandleAccptMsg);
 	}
 	
 	return true;

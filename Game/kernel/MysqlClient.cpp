@@ -127,7 +127,7 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_player, 
-		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer, userid);
 }
 void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 {
