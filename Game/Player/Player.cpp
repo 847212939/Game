@@ -77,7 +77,7 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 }
 void Player::AddMysqlCallback(SLoadMysql loadMysql)
 {
-	auto* pTcpInfo = G_NetClient->GetTCPSocketInfo(m_Index);
+	TCPSocketInfo* pTcpInfo = G_NetClient->GetTCPSocketInfo(m_Index);
 	if (!pTcpInfo)
 	{
 		return;
