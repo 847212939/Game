@@ -11,7 +11,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	DPCC->Init();
+	G_PlayerCenterClient->Init();
 }
 
 // 分发消息
@@ -31,11 +31,11 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	if (MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
 	{
 		
-		DPPC->CallBackFun(cmd, playerInfo);
+		G_PlayerPrepClient->CallBackFun(cmd, playerInfo);
 	}
 	else
 	{
-		DPCC->MessageDispatch(cmd, playerInfo);
+		G_PlayerCenterClient->MessageDispatch(cmd, playerInfo);
 	}
 }
 

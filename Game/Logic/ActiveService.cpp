@@ -10,7 +10,7 @@ ActiveService::~ActiveService()
 
 bool ActiveService::Enter(CActivityList* cfg)
 {
-	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
+	ActivityHallSys& activeSys = G_SceneClient->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
 	{
 		return false;
@@ -21,7 +21,7 @@ bool ActiveService::Enter(CActivityList* cfg)
 
 bool ActiveService::Exit(CActivityList* cfg)
 {
-	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
+	ActivityHallSys& activeSys = G_SceneClient->GetActivityHallSys();
 	if (!activeSys.Exit(cfg, m_bmid))
 	{
 		return false;

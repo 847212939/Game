@@ -21,6 +21,6 @@ void PlayerPrepClient::SendOperateResults(SocketReadLine* pMsg, bool results/* =
 
 	Netmsg msg;
 	msg << (int)results;
-	DTCPC->SendMsg(pMsg->uIndex, msg.str().c_str(), msg.str().size(),
+	G_NetClient->SendMsg(pMsg->uIndex, msg.str().c_str(), msg.str().size(),
 		MsgCmd(pMsg->netMessageHead.uMainID), pMsg->netMessageHead.uAssistantID, 0, pMsg->pBufferevent, 0);
 }

@@ -44,7 +44,7 @@ bool ActivityHallSys::GetActiveOpen(int id)
 VectorTemplate<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityList* cfg, int& bmid)
 {
 	std::pair<int, int> pr; // type, index
-	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
+	ActivityHallCfg& activityHallCfg = G_CfgMgr->GetActivityHallCfg();
 
 	const CActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
 	if (!pConfig)
@@ -69,7 +69,7 @@ VectorTemplate<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityL
 // 清除上一次场景中怪物
 void ActivityHallSys::ClearBrushMonsterCfgVec(const CActivityBreakdown* pConfig, std::pair<int, int>& pr)
 {
-	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg(); 
+	ActivityHallCfg& activityHallCfg = G_CfgMgr->GetActivityHallCfg(); 
 	for (int i = 1; i < pr.second; i++)
 	{
 		VectorTemplate<CBrushMonsterCfg>* pVector = 
@@ -91,7 +91,7 @@ void ActivityHallSys::ClearBrushMonsterCfgVec(const CActivityBreakdown* pConfig,
 				Animal* pAnimal = pValue->back();
 				if (pAnimal)
 				{
-					DSC->DelSceneAnimalMap(config.sid, pAnimal);
+					G_SceneClient->DelSceneAnimalMap(config.sid, pAnimal);
 					SafeDelete(pAnimal);
 				}
 				pValue->pop_back();
@@ -118,7 +118,7 @@ bool ActivityHallSys::InitMonster(CBrushMonsterCfg& cfg)
 		animal->SetLived(true);
 		animal->SetRefreshTime(cfg.refreshTime);
 
-		if (!DSC->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
+		if (!G_SceneClient->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
 		{
 			SafeDelete(animal);
 			COUT_LOG(LOG_CERROR, "进入场景失败,请检查代码或者配置,重启服务器");
@@ -202,7 +202,7 @@ void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Ani
 				Animal* pAnimal = pos->second.back();
 				if (pAnimal)
 				{
-					DSC->DelSceneAnimalMap(sid, pAnimal);
+					G_SceneClient->DelSceneAnimalMap(sid, pAnimal);
 					SafeDelete(pAnimal);
 				}
 				pos->second.pop_back();
@@ -369,7 +369,7 @@ int ActivityHallSys::GetPreBrushMonsterId(const CActivityBreakdown* pConfig, int
 // 定时器回调
 void ActivityHallSys::TimerCallback()
 {
-	for (auto& cfg : CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())
+	for (auto& cfg : G_CfgMgr->GetActivityHallCfg().GetActivityListCfgSet())
 	{
 		if (!ActiveCallBackFun((ActType)cfg.type, const_cast<CActivityList*>(&cfg)))
 		{
@@ -425,7 +425,7 @@ bool ActivityHallSys::Enter(CActivityList* cfg, int& bmid)
 
 bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 {
-	ActivityHallCfg& activityHallCfg = CfgMgr->GetActivityHallCfg();
+	ActivityHallCfg& activityHallCfg = G_CfgMgr->GetActivityHallCfg();
 	VectorTemplate<CBrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
 	if (!pVector)
 	{
@@ -445,7 +445,7 @@ bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 			Animal* pAnimal = pValue->back();
 			if (pAnimal)
 			{
-				DSC->DelSceneAnimalMap(config.sid, pAnimal);
+				G_SceneClient->DelSceneAnimalMap(config.sid, pAnimal);
 				SafeDelete(pAnimal);
 			}
 			pValue->pop_back();

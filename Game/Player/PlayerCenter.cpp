@@ -10,7 +10,7 @@ PlayerCenter::~PlayerCenter()
 }
 void PlayerCenter::Init()
 {
-	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
+	int maxSocketCnt = G_BaseCfgMgr.GetMaxSocketCnt();
 
 	// 初始化分配内存
 	unsigned int playerSize = maxSocketCnt * 2;
@@ -22,7 +22,7 @@ void PlayerCenter::Init()
 		playerClient = nullptr;
 	}
 	
-	DTCPC->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	G_NetClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // 分发消息
@@ -44,7 +44,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
-	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
@@ -67,7 +67,7 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification)
 	{
-		DPPC->CallBackFun(cmd, playerInfo);
+		G_PlayerPrepClient->CallBackFun(cmd, playerInfo);
 	}
 	else
 	{
@@ -97,7 +97,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByIndex(unsigned int index)
 PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 {
 	std::vector<unsigned int> playerClientSet;
-	DTCPC->GetSocketSet(playerClientSet);
+	G_NetClient->GetSocketSet(playerClientSet);
 	for (int index : playerClientSet)
 	{
 		if (index >= m_PlayerClientVec.size() || index < 0)
@@ -120,7 +120,7 @@ PlayerClient* PlayerCenter::GetPlayerClientByUserid(uint64_t userId)
 void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
 {
 	// 获取在线玩家
-	DTCPC->GetSocketSet(socketVec);
+	G_NetClient->GetSocketSet(socketVec);
 }
 ConditionVariable& PlayerCenter::GetConditionVariable()
 {
@@ -155,7 +155,7 @@ bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginD
 }
 void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 {
-	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(loginData.index);
+	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loginData.index);
@@ -164,13 +164,13 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	if (loginData.index < 0 || loginData.index >= m_PlayerClientVec.size())
 	{
 		COUT_LOG(LOG_CINFO, "loginData.index < 0 || loginData.index >= m_PlayerClientVec.size()");
-		DTCPC->CloseSocket(loginData.index);
+		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
 		COUT_LOG(LOG_CINFO, "!pInfo->isConnect");
-		DTCPC->CloseSocket(loginData.index);
+		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
 	PlayerClient* playerClient = GetPlayerClientByIndex(loginData.index);
@@ -198,14 +198,14 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	playerClient->EnterScene();
 	playerClient->SetLoad(true);
 
-	DTCPC->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
+	G_NetClient->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
 		(int)LoginSysMsgCmd::cs_login, 0, pInfo->bev, 0);
 
 	return;
 }
 void PlayerCenter::HandlerPlayerThread()
 {
-	bool& run = DTCPC->GetRuninged();
+	bool& run = G_NetClient->GetRuninged();
 
 	ListLoginData loadPlayerList;
 	ListLoginData& playerList = m_LoadPlayerList;

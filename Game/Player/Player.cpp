@@ -18,13 +18,13 @@ AnimalType Player::GetType()
 
 bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
-	const TCPSocketInfo* pInfo = DTCPC->GetTCPSocketInfo(m_Index);
+	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(m_Index);
 	if (!pInfo)
 	{
 		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
-	return DTCPC->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
@@ -118,7 +118,7 @@ void Player::EnterScene()
 	EnterSceneCallBackFun();
 
 	// 玩家进入场景
-	DSC->EnterScene(this, GetSceneid(), Gettransform());
+	G_SceneClient->EnterScene(this, GetSceneid(), Gettransform());
 }
 void Player::CalAttrs()
 {

@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[BaseCfgMgr.GetTimerCnt()])
+PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[G_BaseCfgMgr.GetTimerCnt()])
 {
 }
 PlayerPrep::~PlayerPrep()
@@ -11,12 +11,12 @@ PlayerPrep::~PlayerPrep()
 // 初始化
 void PlayerPrep::Init()
 {
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
 	for (int i = 0; i < timerCnt; i++)
 	{
 		m_pServerTimer[i].Start();
 	}
-	DSC->Init();
+	G_SceneClient->Init();
 }
 
 // 处理消息
@@ -32,18 +32,18 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
-	auto* tcpInfo = DTCPC->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	auto* tcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!tcpInfo)
 	{
 		COUT_LOG(LOG_CERROR, "!tcpInfo");
 		return;
 	}
-	if (playerInfo->pMsg->uIndex != DTCPC->GetDBServerIndex())
+	if (playerInfo->pMsg->uIndex != G_NetClient->GetDBServerIndex())
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
 			COUT_LOG(LOG_CERROR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
-			DTCPC->CloseSocket(playerInfo->pMsg->uIndex);
+			G_NetClient->CloseSocket(playerInfo->pMsg->uIndex);
 			return;
 		}
 	}
@@ -83,14 +83,14 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 	}
 	else
 	{
-		DSC->MessageDispatch(cmd, playerInfo);
+		G_SceneClient->MessageDispatch(cmd, playerInfo);
 	}
 }
 
 // 创建角色
 void PlayerPrep::CreatePlayer(LoginData& loginData)
 {
-	DPCC->CreatePlayer(loginData);
+	G_PlayerCenterClient->CreatePlayer(loginData);
 }
 CServerTimer* PlayerPrep::GetCServerTimer()
 {
@@ -163,7 +163,7 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
@@ -183,7 +183,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 		return false;
 	}
 
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{

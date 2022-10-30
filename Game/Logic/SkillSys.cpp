@@ -12,10 +12,10 @@ SkillSys::~SkillSys()
 // 注册技能CD定时器
 void SkillSys::RegisterSkillTimer()
 {
-	if (!DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+	if (!G_PlayerPrepClient->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
+		G_BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
-		RegisterTimer(DPPC, SkillSys::SkillCdTimer,
+		RegisterTimer(G_PlayerPrepClient, SkillSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
 	}
 }
@@ -23,10 +23,10 @@ void SkillSys::RegisterSkillTimer()
 // 反注册技能CD定时器
 void SkillSys::UnRegisterSkillTimer()
 {
-	if (DPPC->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+	if (G_PlayerPrepClient->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
+		G_BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
-		UnRegisterTimer(DPPC, TimerCmd::TimerCmd_Skill);
+		UnRegisterTimer(G_PlayerPrepClient, TimerCmd::TimerCmd_Skill);
 	}
 }
 
@@ -59,8 +59,8 @@ bool SkillSys::CalHurt(Netmsg& msg, PlayerInfo* playerInfo)
 
 	msg >> sceneid >> hitedid >> behitedid >> skillpos >> norattack;
 
-	Animal* hited = DSC->GetSceneAnimal(sceneid, hitedid);
-	Animal* behited = DSC->GetSceneAnimal(sceneid, behitedid);
+	Animal* hited = G_SceneClient->GetSceneAnimal(sceneid, hitedid);
+	Animal* behited = G_SceneClient->GetSceneAnimal(sceneid, behitedid);
 	
 	if (norattack == 0)			// 普攻
 	{

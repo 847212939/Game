@@ -154,7 +154,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
 			return false;
 		}
-		if (DPCC->GetPlayerClientByIndex(loginData.index))
+		if (G_PlayerCenterClient->GetPlayerClientByIndex(loginData.index))
 		{
 			// 玩家在线
 			return false;
@@ -163,20 +163,20 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 	if (loginData.userId <= 0)
 	{
-		loginData.userId = DUtil->CreateUserId();
+		loginData.userId = G_Util->CreateUserId();
 	}
 
 	AddLoginInMap(loginData);
-	TCPSocketInfo* sockInfo = DTCPC->GetTCPSocketInfo(index);
+	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (sockInfo)
 	{
 		Netmsg msg;
 		msg << (int)true;
-		DTCPC->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
 	}
 
-	DPPC->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -194,7 +194,7 @@ bool LoginSys::NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo)
 	int serverid = 0;
 	msg >> serverid;
 
-	if (serverid != BaseCfgMgr.GetServerId())
+	if (serverid != G_BaseCfgMgr.GetServerId())
 	{
 		return false;
 	}
@@ -206,7 +206,7 @@ bool LoginSys::NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo)
 
 	pLoginData->serverId = serverid;
 
-	DPPC->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -246,7 +246,7 @@ bool LoginSys::NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string netname;
 	msg >> heroid >> netname;
 
-	const CHeroList* pCHeroList = CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
+	const CHeroList* pCHeroList = G_CfgMgr->GetSkillCfg().GetCHeroListCfg(heroid);
 	if (!pCHeroList)
 	{
 		return false;
@@ -263,7 +263,7 @@ bool LoginSys::NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo)
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
 
-	DPPC->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
 
 	return true;
 }
@@ -283,8 +283,8 @@ bool LoginSys::NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	DPPC->CreatePlayer(*pLoginData);
-	DPPC->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->CreatePlayer(*pLoginData);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
 
 	AddServerIdMap(pLoginData->userId, pLoginData->serverId);
 	SaveServerIds(pLoginData->userId);
@@ -359,7 +359,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 	}
 
 	std::string data = msg;
-	DTCPC->SendMsg(pMsg->uIndex, data.c_str(), data.size(),
+	G_NetClient->SendMsg(pMsg->uIndex, data.c_str(), data.size(),
 		MsgCmd(pMsg->netMessageHead.uMainID),
 		pMsg->netMessageHead.uAssistantID, 0,
 		pMsg->pBufferevent, 0);

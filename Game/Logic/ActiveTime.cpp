@@ -10,7 +10,7 @@ ActiveTime::~ActiveTime()
 
 bool ActiveTime::Enter(CActivityList* cfg)
 {
-	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
+	ActivityHallSys& activeSys = G_SceneClient->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
 	{
 		return false;

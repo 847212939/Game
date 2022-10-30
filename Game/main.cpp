@@ -6,29 +6,29 @@ int main()
 {
 	ServiceType type = ServiceType::SERVICE_TYPE_LOGIC;
 
-	LogMgr->SetLogFileType(type);
+	G_LogMgr->SetLogFileType(type);
 
-	if (!LuaMgr->InitCfgMgr())
+	if (!G_LuaMgr->InitCfgMgr())
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
-	if (!DUtil->InitTime())
-	{
-		COUT_LOG(LOG_CERROR, "main exit");
-		return -1;
-	}
-
-	IDGen& idGen = DUtil->GetIDGen();
-	idGen.Init((int)type, BaseCfgMgr.GetServerId());
-
-	if (!DTCPC->Init(type))
+	if (!G_Util->InitTime())
 	{
 		COUT_LOG(LOG_CERROR, "main exit");
 		return -1;
 	}
 
-	LogMgr->Init(std::ref(run));
+	IDGen& idGen = G_Util->GetIDGen();
+	idGen.Init((int)type, G_BaseCfgMgr.GetServerId());
+
+	if (!G_NetClient->Init(type))
+	{
+		COUT_LOG(LOG_CERROR, "main exit");
+		return -1;
+	}
+
+	G_LogMgr->Init(std::ref(run));
 
 	Util::Exit(std::ref(run));
 

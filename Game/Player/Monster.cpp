@@ -16,7 +16,7 @@ AnimalType Monster::GetType()
 
 void Monster::Init(int mid)
 {
-	SetID(DUtil->CreateUserId());
+	SetID(G_Util->CreateUserId());
 	SetMonsterid(mid);
 }
 

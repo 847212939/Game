@@ -11,7 +11,7 @@ ActiveSection::~ActiveSection()
 // 活动区间进入函数
 bool ActiveSection::Enter(CActivityList* cfg)
 {
-	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
+	ActivityHallSys& activeSys = G_SceneClient->GetActivityHallSys();
 	if (!activeSys.Enter(cfg, m_bmid))
 	{
 		return false;
@@ -22,7 +22,7 @@ bool ActiveSection::Enter(CActivityList* cfg)
 
 bool ActiveSection::Exit(CActivityList* cfg)
 {
-	ActivityHallSys& activeSys = DSC->GetActivityHallSys();
+	ActivityHallSys& activeSys = G_SceneClient->GetActivityHallSys();
 	if (!activeSys.Exit(cfg, m_bmid))
 	{
 		return false;

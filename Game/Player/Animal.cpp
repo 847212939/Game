@@ -75,7 +75,7 @@ void Animal::SetAttrValue(AttrsCmd attrType, int attr)
 // 根据技能位置确定技能配置
 const CSkillIdList* Animal::GetSkillIdListCfg(int skillpos)
 {
-	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
+	SkillCfg& skillCfg = G_CfgMgr->GetSkillCfg();
 	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
 	if (!pCHeroList)
 	{
@@ -102,7 +102,7 @@ int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
 		return 0;
 	}
 	int pos = 0;
-	SkillCfg& skillCfg = CfgMgr->GetSkillCfg();
+	SkillCfg& skillCfg = G_CfgMgr->GetSkillCfg();
 	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
 	if (!pCHeroList)
 	{

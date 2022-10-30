@@ -27,8 +27,8 @@ TCPClient::~TCPClient()
 }
 bool TCPClient::Init(ServiceType serverType)
 {
-	const CLogicCfg& logicCfg = BaseCfgMgr.GetLogicCfg();
-	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
+	const CLogicCfg& logicCfg = G_BaseCfgMgr.GetLogicCfg();
+	int maxSocketCnt = G_BaseCfgMgr.GetMaxSocketCnt();
 
 	if (!CTCPSocketManage::Init(maxSocketCnt, logicCfg.port, logicCfg.ip.c_str(), serverType))
 	{
@@ -49,12 +49,12 @@ bool TCPClient::Init(ServiceType serverType)
 	}
 
 	// 创建数据库
-	DPPC->InitMysqlTable();
+	G_PlayerPrepClient->InitMysqlTable();
 
 	// 注册全局数据库回调函数
-	DPPC->RegisterGlobalCallBack();
-	DSC->RegisterGlobalCallBack();
-	DPCC->RegisterGlobalCallBack();
+	G_PlayerPrepClient->RegisterGlobalCallBack();
+	G_SceneClient->RegisterGlobalCallBack();
+	G_PlayerCenterClient->RegisterGlobalCallBack();
 
 	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
 	return true;
@@ -126,17 +126,17 @@ void TCPClient::NotifyAll()
 		COUT_LOG(LOG_CERROR, "SendDataLine = null");
 		return;
 	}
-	CServerTimer* pCServerTimer = DPPC->GetCServerTimer();
+	CServerTimer* pCServerTimer = G_PlayerPrepClient->GetCServerTimer();
 	if (!pCServerTimer)
 	{
 		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
 		return;
 	}
-	int timerCnt = BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	DPCC->GetConditionVariable().NotifyAll();
+	G_PlayerCenterClient->GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
@@ -207,7 +207,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	SocketCloseLine* pSocketClose = (SocketCloseLine*)pDataLineHead;
 
-	PlayerClient* playerClient = DPCC->GetPlayerClientByIndex(pSocketClose->uIndex);
+	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
 		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);

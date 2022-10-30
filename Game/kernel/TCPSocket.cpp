@@ -94,7 +94,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 bool CTCPSocketManage::WaitConnect(int threadIndex)
 {
 	// 获取接收线程池数量
-	if (threadIndex >= BaseCfgMgr.GetThreadCnt())
+	if (threadIndex >= G_BaseCfgMgr.GetThreadCnt())
 	{
 		return false;
 	}
@@ -126,7 +126,7 @@ bool CTCPSocketManage::IsServerMsg(int index)
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	const CLogicCfg& DBserverCfg = BaseCfgMgr.GetDBServerCfg();
+	const CLogicCfg& DBserverCfg = G_BaseCfgMgr.GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
@@ -248,7 +248,7 @@ void CTCPSocketManage::ThreadAccept()
 	evconnlistener_set_error_cb(listener, AcceptErrorCB);
 
 	// 获取接收线程池数量
-	int workBaseCount = BaseCfgMgr.GetThreadCnt();
+	int workBaseCount = G_BaseCfgMgr.GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
 		workBaseCount = 8;
@@ -475,7 +475,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	tcpInfo.bev = bev;
 	tcpInfo.isConnect = true;
 	tcpInfo.port = pTCPSocketInfo->port;
-	tcpInfo.link = DUtil->CreateUserId() + (uint64_t)Util::GetRandNum();
+	tcpInfo.link = G_Util->CreateUserId() + (uint64_t)Util::GetRandNum();
 	if (!tcpInfo.lock)
 	{
 		tcpInfo.lock = new std::mutex;
@@ -782,7 +782,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime);
 
 	// 清理登录内存
-	DPPC->GetLoginSys().DelLoginInMap(index);
+	G_PlayerPrepClient->GetLoginSys().DelLoginInMap(index);
 
 	if (IsServerMsg(index))
 	{

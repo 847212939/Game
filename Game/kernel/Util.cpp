@@ -48,7 +48,7 @@ uint64_t Util::CreateUserId()
 // 对称加密
 char* Util::Encrypt(char* content, size_t length)
 {
-	std::string sKey = BaseCfgMgr.GetKey();
+	std::string sKey = G_BaseCfgMgr.GetKey();
 	for (size_t i = 0; i < length; i++)
 	{
 		content[i] ^= sKey[i % (sKey.size() - 1)];
@@ -57,7 +57,7 @@ char* Util::Encrypt(char* content, size_t length)
 }
 char* Util::Decrypt(char* content, size_t length)
 {
-	std::string sKey = BaseCfgMgr.GetKey();
+	std::string sKey = G_BaseCfgMgr.GetKey();
 	for (size_t i = 0; i < length; i++)
 	{
 		content[i] ^= sKey[i % (sKey.size() - 1)];
@@ -109,7 +109,7 @@ int Util::GetServiceDays()
 bool Util::InitTime()
 {
 	struct tm tm1;
-	std::string openServerTime = BaseCfgMgr.GetOpenServerTime();
+	std::string openServerTime = G_BaseCfgMgr.GetOpenServerTime();
 	if (sscanf(openServerTime.c_str(), "%4d-%2d-%2d %2d:%2d:%2d", 
 		&tm1.tm_year, 
 		&tm1.tm_mon, 
@@ -164,15 +164,15 @@ void Util::Exit(bool& run)
 	{
 		std::cin >> str;
 
-		if (str == BaseCfgMgr.GetExit())
+		if (str == G_BaseCfgMgr.GetExit())
 		{
 			run = false;
 			break;
 		}
 	}
 
-	DTCPC->Stop();
-	DTCPC->NotifyAll();
+	G_NetClient->Stop();
+	G_NetClient->NotifyAll();
 }
 
 ListString Util::StringSplit(std::string& str, std::string separator, size_t count/* = 0*/)
