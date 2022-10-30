@@ -16,7 +16,7 @@ protected:
 
 public:
 	// 获取随机数
-	static unsigned int GetRandNum();
+	static int GetRandNum();
 	// 获取[A,B)随机数,min<= 随机数 < iMax
 	static int GetRandRange(int iMin, int iMax);
 	// 程序退出

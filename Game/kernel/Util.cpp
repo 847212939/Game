@@ -17,9 +17,13 @@ Util::~Util()
 {
 
 }
+IDGen& Util::GetIDGen()
+{
+	return *m_IDGen;
+}
 
 // 获取随机数
-unsigned int Util::GetRandNum()
+int Util::GetRandNum()
 {
 	return m_mt();
 }
@@ -32,11 +36,6 @@ int Util::GetRandRange(int iMin, int iMax)
 	}
 
 	return iMin + (int)(GetRandNum() % (iMax - iMin));
-}
-
-IDGen& Util::GetIDGen()
-{
-	return *m_IDGen;
 }
 uint64_t Util::CreateUserId()
 {
