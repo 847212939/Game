@@ -94,6 +94,11 @@ bool DataBaseSys::CreateLoginMysql(PlayerInfo* playerInfo)
 		>> sqlName 
 		>> cnt;
 
+	if ((ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return true;
+	}
+
 	G_PlayerPrepClient->CreateLoginTable(sqlName, cnt);
 
 	return true;
@@ -117,6 +122,11 @@ bool DataBaseSys::CreateGlobalMysql(PlayerInfo* playerInfo)
 		>> sqlName 
 		>> cnt;
 
+	if ((ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return true;
+	}
+
 	G_PlayerPrepClient->CreateGlobalTable(sqlName, cnt);
 
 	return true;
@@ -139,6 +149,11 @@ bool DataBaseSys::CreatePlayerMysql(PlayerInfo* playerInfo)
 	msg >> serverType
 		>> sqlName 
 		>> cnt;
+
+	if ((ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return true;
+	}
 
 	G_PlayerPrepClient->CreatePlayerTable(sqlName, cnt);
 

@@ -24,6 +24,10 @@ SLoadMysql::SLoadMysql(std::string sqlname, MsgCmd mainID,
 // ´´½¨
 void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 {
+	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return;
+	}
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
@@ -46,6 +50,10 @@ void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 }
 void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 {
+	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return;
+	}
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
@@ -68,6 +76,10 @@ void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 }
 void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 {
+	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return;
+	}
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
