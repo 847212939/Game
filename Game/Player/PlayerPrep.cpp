@@ -90,7 +90,7 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
-	if (playerClient->GetIndex() != index)
+	if (playerClient->GetIndex() != index && index != G_NetClient->GetDBServerIndex())
 	{
 		Log(CERR, "playerClient->GetIndex() != index[cmd=%d,index=%d,ip=%s,port=%d]",
 			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
@@ -158,7 +158,7 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "Dispatch message mysql is unload index = %d", index);
 		return;
 	}
-	if (playerClient->GetIndex() != index)
+	if (playerClient->GetIndex() != index && index != G_NetClient->GetDBServerIndex())
 	{
 		Log(CERR, "dindex = %u, sindex = %d", playerClient->GetIndex(), index);
 		return;
