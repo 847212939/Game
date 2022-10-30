@@ -48,6 +48,14 @@ function ReadBaseCfg()
             ConfigMgr:ReadDBServerCfg(config)
             config:delete()
         end
+
+        if BaseCfg.CrossServer then
+            local config = CLogicCfg:new()
+            config.ip = BaseCfg.CrossServer.ip or 0
+            config.port = BaseCfg.CrossServer.port or 0
+            ConfigMgr:ReadCrossServerCfg(config)
+            config:delete()
+        end
     end
 end
 table.insert(ConfigMgrFnTable, ReadBaseCfg)

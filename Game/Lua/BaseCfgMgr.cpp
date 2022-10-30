@@ -59,6 +59,10 @@ void CBaseCfgMgr::ReadDBServerCfg(CLogicCfg* config)
 {
 	m_DBServerCfg = *config;
 }
+void CBaseCfgMgr::ReadCrossServerCfg(CLogicCfg* config)
+{
+	m_CrossServerCfg = *config;
+}
 
 int CBaseCfgMgr::GetServerId() 
 { 

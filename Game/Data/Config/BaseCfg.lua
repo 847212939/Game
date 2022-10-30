@@ -24,15 +24,23 @@ BaseCfg=
     --对称加密
     Skey = "LiuDaNaoDai",
 
+    -- 本服
     LogicCfg =
     {
         ip = "127.0.0.1",
         port = 8888, 
     },
+    -- 数据库服务器
     DBServerCfg =
     {
         ip = "127.0.0.1",
         port = 8889, 
+    },
+    -- 跨服服务器
+    CrossServer = 
+    {
+        ip = "127.0.0.1",
+        port = 8890, 
     },
 }
 

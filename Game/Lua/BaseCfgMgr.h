@@ -31,6 +31,7 @@ public:
 
 	void ReadLogicCfg(CLogicCfg* config);
 	void ReadDBServerCfg(CLogicCfg* config);
+	void ReadCrossServerCfg(CLogicCfg* config);
 
 public:
 	int GetServerId();
@@ -53,6 +54,7 @@ private:
 
 	CLogicCfg	m_LogicCfg;
 	CLogicCfg	m_DBServerCfg;
+	CLogicCfg	m_CrossServerCfg;
 	std::string m_Exit;
 	std::string m_Key;
 	std::string m_Servertm;

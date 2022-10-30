@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Sun Oct 30 17:54:17 2022.
+** Generated automatically by tolua++-1.0.92 on Sun Oct 30 18:05:39 2022.
 */
 
 #ifndef __cplusplus
@@ -297,6 +297,39 @@ static int tolua_Config_ConfigMgr_ReadDBServerCfg00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ReadDBServerCfg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ReadCrossServerCfg of class  ConfigMgr */
+#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadCrossServerCfg00
+static int tolua_Config_ConfigMgr_ReadCrossServerCfg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"CLogicCfg",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
+  CLogicCfg* config = ((CLogicCfg*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadCrossServerCfg'", NULL);
+#endif
+  {
+   self->ReadCrossServerCfg(config);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ReadCrossServerCfg'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2378,6 +2411,7 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetCBaseCfgMgr",tolua_Config_ConfigMgr_GetCBaseCfgMgr00);
    tolua_function(tolua_S,"ReadLogicCfg",tolua_Config_ConfigMgr_ReadLogicCfg00);
    tolua_function(tolua_S,"ReadDBServerCfg",tolua_Config_ConfigMgr_ReadDBServerCfg00);
+   tolua_function(tolua_S,"ReadCrossServerCfg",tolua_Config_ConfigMgr_ReadCrossServerCfg00);
    tolua_function(tolua_S,"ReadThreadCntCfg",tolua_Config_ConfigMgr_ReadThreadCntCfg00);
    tolua_function(tolua_S,"ReadServerIDCfg",tolua_Config_ConfigMgr_ReadServerIDCfg00);
    tolua_function(tolua_S,"ReadLogPrintTmCfg",tolua_Config_ConfigMgr_ReadLogPrintTmCfg00);
