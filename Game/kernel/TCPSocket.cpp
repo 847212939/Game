@@ -124,7 +124,48 @@ bool CTCPSocketManage::IsServerMsg(int index)
 	}
 	return false;
 }
-bool CTCPSocketManage::ConnectServer()
+bool CTCPSocketManage::ConnectCrossServer()
+{
+	const CLogicCfg& CrossServerCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
+	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock < 0)
+	{
+		Log(CINF, "连接服跨服失败");
+		return false;
+	}
+
+	sockaddr_in sin;
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(CrossServerCfg.port);
+	sin.sin_addr.s_addr = inet_addr(CrossServerCfg.ip.c_str());
+
+	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
+	{
+		Log(CINF, "连接服跨服失败");
+		return false;
+	}
+
+	// 获取连接信息
+	PlatformSocketInfo tcpInfo;
+	tcpInfo.acceptMsgTime = time(nullptr);
+	memcpy(tcpInfo.ip, CrossServerCfg.ip.c_str(), CrossServerCfg.ip.size());
+	tcpInfo.port = CrossServerCfg.port;
+	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
+
+	int threadIndex = 0;
+	if (!WaitConnect(threadIndex))
+	{
+		Log(CINF, "连接服跨服失败");
+		return false;
+	}
+
+	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+
+	Log(CINF, "连接服跨服成功 [ip=%s port=%d index=%d fd=%d]",
+		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
+	return true;
+}
+bool CTCPSocketManage::ConnectDBServer()
 {
 	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -163,6 +204,19 @@ bool CTCPSocketManage::ConnectServer()
 
 	Log(CINF, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
+	return true;
+}
+bool CTCPSocketManage::ConnectServer()
+{
+	if (!ConnectDBServer())
+	{
+		return false;
+	}
+	if (!ConnectCrossServer())
+	{
+		return false;
+	}
+
 	return true;
 }
 bool CTCPSocketManage::Stop()

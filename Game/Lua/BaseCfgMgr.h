@@ -42,6 +42,7 @@ public:
 	std::string GetExit();
 	const CLogicCfg& GetLogicCfg();
 	const CLogicCfg& GetDBServerCfg();
+	const CLogicCfg& GetCrossServerCfg();
 	std::string GetKey();
 	std::string GetOpenServerTime();
 

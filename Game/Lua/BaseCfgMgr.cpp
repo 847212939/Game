@@ -101,7 +101,10 @@ const CLogicCfg& CBaseCfgMgr::GetDBServerCfg()
 {
 	return m_DBServerCfg;
 }
-
+const CLogicCfg& CBaseCfgMgr::GetCrossServerCfg()
+{
+	return m_CrossServerCfg;
+}
 std::string CBaseCfgMgr::GetKey()
 {
 	return m_Key;

@@ -109,6 +109,10 @@ private:
 	bool IsServerMsg(int index);
 	// 等待连接
 	bool WaitConnect(int threadIndex);
+	// 连接DB服务器
+	bool ConnectDBServer();
+	// 连接跨服服务器
+	bool ConnectCrossServer();
 
 private:
 	// Socketpair
