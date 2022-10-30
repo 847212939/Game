@@ -44,8 +44,6 @@ private:
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 private:
-	// 数据库语链表
-	ListString        m_sqlList;	
 	// 回调函数
 	MapNetFun		  m_NetCBFunMap;
 	// 定时器
