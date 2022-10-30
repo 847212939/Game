@@ -1999,7 +1999,7 @@ int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 }
 void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 {
-	printf("WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
+	Log(CINF, "WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
 }
 #endif
