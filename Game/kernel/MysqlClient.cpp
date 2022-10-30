@@ -36,7 +36,9 @@ void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 	}
 
 	Netmsg msg;
-	msg << name << cnt;
+	msg << (int)G_NetClient->GetServerType()
+		<< name 
+		<< cnt;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_login,
@@ -56,7 +58,9 @@ void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 	}
 
 	Netmsg msg;
-	msg << name << cnt;
+	msg << (int)G_NetClient->GetServerType()
+		<< name 
+		<< cnt;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_global,
@@ -76,7 +80,9 @@ void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 	}
 
 	Netmsg msg;
-	msg << name << cnt;
+	msg << (int)G_NetClient->GetServerType()
+		<< name 
+		<< cnt;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_create_player,
@@ -97,7 +103,8 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << loadMysql.serverid
+	msg << (int)G_NetClient->GetServerType()
+		<< loadMysql.serverid
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID 
@@ -125,7 +132,8 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << loadMysql.serverid
+	msg << (int)G_NetClient->GetServerType()
+		<< loadMysql.serverid
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
@@ -149,7 +157,8 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << loadMysql.serverid
+	msg << (int)G_NetClient->GetServerType() 
+		<< loadMysql.serverid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
 		<< loadMysql.uAssistantID
@@ -178,7 +187,8 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	}
 	Netmsg msg;
-	msg << sid
+	msg << (int)G_NetClient->GetServerType()
+		<< sid
 		<< userid
 		<< sqlName
 		<< data;
@@ -204,7 +214,8 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	}
 	Netmsg msg;
-	msg << sid
+	msg << (int)G_NetClient->GetServerType()
+		<< sid
 		<< userid
 		<< sqlName
 		<< data;
@@ -230,7 +241,8 @@ void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data
 		sid = G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	}
 	Netmsg msg;
-	msg << sid
+	msg << (int)G_NetClient->GetServerType()
+		<< sid
 		<< sqlName
 		<< data;
 

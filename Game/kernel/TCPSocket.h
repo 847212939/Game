@@ -28,7 +28,7 @@ public:
 public:
 	// 发送数据函数
 	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
-		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true, uint64_t userid = 0);
+		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
 	// 关闭连接函数
 	bool CloseSocket(int index);
 	// 设置tcp为未连接状态
@@ -146,8 +146,6 @@ private:
 	// 发送TCP消息
 	bool SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, 
 		void* pBufferevent, unsigned int uIdentification = 0, uint64_t userid = 0);
-	bool SendLogicMsgLogic(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
-		void* pBufferevent, unsigned int uIdentification = 0);
 #ifdef __WebSocket__
 	bool SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool PackData = true);

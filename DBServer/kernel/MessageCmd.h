@@ -18,6 +18,9 @@ enum class MsgCmd
 	MsgCmd_Skill						= 11,	// 技能系统
 	MsgCmd_HandShark					= 12,	// WS握手
 	MsgCmd_DBServer						= 13,	// 数据库
+	MsgCmd_Player						= 14,	// 玩家
+	MsgCmd_LoginCross					= 15,	// 登录跨服
+	MsgCmd_CrossLogin					= 16,	// 跨服登录         
 
-	MsgCmd_End									// 消息结束                      
+	MsgCmd_End									// 消息结束      
 };
