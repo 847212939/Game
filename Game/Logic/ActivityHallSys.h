@@ -75,8 +75,8 @@ private:
 	MapMonster		m_MonsterMap;
 
 public:
-	GetClass(ActiveSection, ActiveSection)
-	GetClass(ActiveAlways, ActiveAlways)
-	GetClass(ActiveService, ActiveService)
-	GetClass(ActiveTime, ActiveTime)
+	BuildReference(ActiveSection, ActiveSection)
+	BuildReference(ActiveAlways, ActiveAlways)
+	BuildReference(ActiveService, ActiveService)
+	BuildReference(ActiveTime, ActiveTime)
 };

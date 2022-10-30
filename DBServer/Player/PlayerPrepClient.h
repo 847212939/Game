@@ -11,5 +11,5 @@ protected:
 	PlayerPrepClient& operator=(const PlayerPrepClient& my);
 
 public:
-	GetClass(DataBaseSys, DataBaseSys)	// 登录系统
+	BuildReference(DataBaseSys, DataBaseSys)	// 登录系统
 };

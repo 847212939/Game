@@ -44,8 +44,8 @@ private:
 	CBaseCfgMgr	m_CBaseCfgMgr;
 
 public:
-	GetClass(ActivityHallCfg, ActivityHallCfg)
-	GetClass(SkillCfg, SkillCfg)
+	BuildReference(ActivityHallCfg, ActivityHallCfg)
+	BuildReference(SkillCfg, SkillCfg)
 };
 
 // tolua++.exe -o LuaCfgMgr.cpp Config.pkg

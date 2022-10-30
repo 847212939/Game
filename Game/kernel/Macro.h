@@ -61,11 +61,6 @@ public:\
 	{\
 		return this->m_##Name;\
 	}\
-public:\
-	void Set##Name(type& _arg)\
-	{\
-		this->m_##Name=_arg;\
-	}\
 private:
 
 // ÅÐ¶Ï´óÐ¡º¯Êý
