@@ -18,8 +18,6 @@ public:
 	void MessageDispatch(PlayerInfo* playerInfo);
 	// 获取定时器
 	CServerTimer* GetCServerTimer();
-	// 获取条件变量
-	ConditionVariable& GetConditionVariable();
 
 public:
 	// 设置定时器
@@ -46,8 +44,6 @@ private:
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 
 private:
-	// 条件变量数据库用
-	ConditionVariable m_cond;
 	// 数据库语链表
 	ListString        m_sqlList;	
 	// 回调函数

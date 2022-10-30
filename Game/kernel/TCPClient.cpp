@@ -136,7 +136,6 @@ void TCPClient::NotifyAll()
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	DPPC->GetConditionVariable().NotifyAll();
 	DPCC->GetConditionVariable().NotifyAll();
 
 	for (int i = 0; i < timerCnt; i++)

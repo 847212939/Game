@@ -92,11 +92,6 @@ void PlayerPrep::CreatePlayer(LoginData& loginData)
 {
 	DPCC->CreatePlayer(loginData);
 }
-
-ConditionVariable& PlayerPrep::GetConditionVariable()
-{
-	return m_cond;
-}
 CServerTimer* PlayerPrep::GetCServerTimer()
 {
 	return m_pServerTimer;
