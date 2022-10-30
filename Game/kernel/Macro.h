@@ -72,8 +72,16 @@ private:
 #define RegisterLoginTable(name, cnt) MysqlClient::CreateLoginMysql(name, cnt);
 #define RegisterGlobalTable(name, cnt) MysqlClient::CreateGlobalMysql(name, cnt);
 #define RegisterPlayerTable(name, cnt) MysqlClient::CreatePlayerMysql(name, cnt);
-#define SavePlayerMysql(userid, name, data) MysqlClient::SaveReplacePlayerMysql(userid, name, data);
+
+// 注册保存全局数据库
 #define SaveGlobalMysql(name, data) MysqlClient::SaveReplaceGlobalMysql(name, cnt);
+#define RegisterGlobalMysql(loadMysql) MysqlClient::LoadGlobalMysql(loadMysql);
+
+// 注册保存玩家数据库
+#define SavePlayerMysql(userid, name, data) MysqlClient::SaveReplacePlayerMysql(userid, name, data);
+#define RegisterPlayerMysql(pobj, loadMysql)\
+if (!pobj){CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");}\
+else{pobj->AddMysqlCallback(loadMysql);}
 
 // 计算数组维数
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
@@ -188,17 +196,6 @@ if (!pobj)\
 else\
 {\
 	pobj->AddNetCallback(cmd, std::move(std::bind(&name, this, std::placeholders::_1)));\
-}
-
-// 注册数据库回调
-#define RegisterPlayerMysql(pobj, loadMysql)\
-if (!pobj)\
-{\
-	CLog::Write(LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
-}\
-else\
-{\
-	pobj->AddMysqlCallback(loadMysql);\
 }
 
 // 注册定时器
