@@ -21,6 +21,6 @@ bool ActiveTime::Enter(CActivityList* cfg)
 
 bool ActiveTime::Exit(CActivityList* cfg)
 {
-	COUT_LOG(LOG_CINFO, "ActiveTime::Exit");
+	Log(CINF, "ActiveTime::Exit");
 	return false;
 }

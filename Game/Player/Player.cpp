@@ -21,7 +21,7 @@ bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(m_Index);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index = %d", m_Index);
+		Log(CERR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
 	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
@@ -53,7 +53,7 @@ void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 void Player::AddMysqlCallback(SLoadMysql loadMysql)
 {
@@ -64,7 +64,7 @@ void Player::AddMysqlCallback(SLoadMysql loadMysql)
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code table = %s", loadMysql.sqlName.c_str());
+	Log(CERR, "There is already a callback for this message. Please check the code table = %s", loadMysql.sqlName.c_str());
 }
 void Player::ExitCallBackFun(SocketCloseLine* pSocketClose)
 {
@@ -78,7 +78,7 @@ void Player::NetCallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
 		return;
 	}
 

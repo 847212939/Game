@@ -34,7 +34,7 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		Log(CERR, "Player Info is null");
 		return;
 	}
 	HurtSysMsgCmd uAssistantID = (HurtSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
@@ -145,7 +145,7 @@ void SkillSys::AddNorSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
+		Log(CERR, "animal = null or pCSkillIdList = null");
 		return;
 	}
 	if (pCSkillIdList->skillCd > 0)
@@ -153,7 +153,7 @@ void SkillSys::AddNorSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 		int skillpos = animal->GetSkillIdPos(pCSkillIdList);
 		if (skillpos <= 0)
 		{
-			COUT_LOG(LOG_CERROR, "skillpos <= 0");
+			Log(CERR, "skillpos <= 0");
 			return;
 		}
 		int cnt = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_gs);
@@ -172,7 +172,7 @@ void SkillSys::AddSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 {
 	if (!animal || !pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
+		Log(CERR, "animal = null or pCSkillIdList = null");
 		return;
 	}
 	if (pCSkillIdList->skillCd > 0)
@@ -180,7 +180,7 @@ void SkillSys::AddSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 		int skillpos = animal->GetSkillIdPos(pCSkillIdList);
 		if (skillpos <= 0)
 		{
-			COUT_LOG(LOG_CERROR, "skillpos <= 0");
+			Log(CERR, "skillpos <= 0");
 			return;
 		}
 		int cnt = pCSkillIdList->skillCd - animal->GetAttrValue(AttrsCmd::attrs_scd);
@@ -200,7 +200,7 @@ void SkillSys::AddSkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdLis
 {
 	if (!animal || !pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "animal = null or pCSkillIdList = null");
+		Log(CERR, "animal = null or pCSkillIdList = null");
 		return;
 	}
 	if (pCSkillIdList->skillEffectCd > 0)
@@ -220,19 +220,19 @@ void SkillSys::NormalAttack(Animal* hited, Animal* behited, int skillpos)
 {
 	if (!hited || !behited)
 	{
-		COUT_LOG(LOG_CERROR, "hited = null or behited = null");
+		Log(CERR, "hited = null or behited = null");
 		return;
 	}
 	// 普通攻击默认槽位是0
 	if (!hited->GetSkillAcitve(0))
 	{
-		//COUT_LOG(LOG_CINFO, "技能还在冷却中");
+		//Log(CINF, "技能还在冷却中");
 		return;
 	}
 	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(0);
 	if (!pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		Log(CERR, "pCSkillIdList = null");
 		return;
 	}
 
@@ -244,18 +244,18 @@ void SkillSys::SkillAttack(Animal* hited, Animal* behited, int skillpos)
 {
 	if (!hited || !behited)
 	{
-		COUT_LOG(LOG_CERROR, "hited = null or behited = null");
+		Log(CERR, "hited = null or behited = null");
 		return;
 	}
 	if (!hited->GetSkillAcitve(skillpos))
 	{
-		//COUT_LOG(LOG_CINFO, "技能还在冷却中");
+		//Log(CINF, "技能还在冷却中");
 		return;
 	}
 	const CSkillIdList* pCSkillIdList = hited->GetSkillIdListCfg(skillpos);
 	if (!pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		Log(CERR, "pCSkillIdList = null");
 		return;
 	}
 

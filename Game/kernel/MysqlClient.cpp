@@ -13,13 +13,13 @@ void MysqlClient::CreateLoginMysql(std::string name, int cnt/* = 4096*/)
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 
@@ -35,13 +35,13 @@ void MysqlClient::CreateGlobalMysql(std::string name, int cnt/* = 4096*/)
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 
@@ -57,13 +57,13 @@ void MysqlClient::CreatePlayerMysql(std::string name, int cnt/* = 4096*/)
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 
@@ -81,13 +81,13 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;
@@ -106,19 +106,19 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 {
 	if (userid.empty())
 	{
-		COUT_LOG(LOG_CINFO, "用户名为空");
+		Log(CINF, "用户名为空");
 		return;
 	}
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;
@@ -138,13 +138,13 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;
@@ -165,13 +165,13 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;
@@ -189,13 +189,13 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;
@@ -213,13 +213,13 @@ void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data
 	int index = G_NetClient->GetDBServerIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "数据库链接失败");
+		Log(CERR, "数据库链接失败");
 		return;
 	}
 	Netmsg msg;

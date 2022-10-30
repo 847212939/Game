@@ -10,12 +10,12 @@ int main()
 
 	if (!G_LuaMgr->InitCfgMgr())
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		Log(CERR, "main exit");
 		return -1;
 	}
 	if (!G_Util->InitTime())
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		Log(CERR, "main exit");
 		return -1;
 	}
 
@@ -24,7 +24,7 @@ int main()
 
 	if (!G_NetClient->Init(type))
 	{
-		COUT_LOG(LOG_CERROR, "main exit");
+		Log(CERR, "main exit");
 		return -1;
 	}
 

@@ -12,12 +12,12 @@ void LoginSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info pMsg is null");
+		Log(CERR, "Player Info pMsg is null");
 		return;
 	}
 
@@ -151,7 +151,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		}
 		if (userid <= 0)
 		{
-			COUT_LOG(LOG_CERROR, "服务器内部错误,请排查错误");
+			Log(CERR, "服务器内部错误,请排查错误");
 			return false;
 		}
 		if (G_PlayerCenterClient->GetPlayerClientByIndex(loginData.index))

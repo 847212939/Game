@@ -12,12 +12,12 @@ void DataBaseSys::Network(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info pMsg is null");
+		Log(CERR, "Player Info pMsg is null");
 		return;
 	}
 

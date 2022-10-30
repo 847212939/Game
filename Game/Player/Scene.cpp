@@ -19,13 +19,13 @@ void Scene::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
+		Log(CERR, "playerInfo = null cmd = %d", (int)cmd);
 		return;
 	}
 	SocketReadLine* pMsg = playerInfo->pMsg;
 	if (!pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
 	if (MsgCmd::MsgCmd_Scene == (MsgCmd)pMsg->netMessageHead.uIdentification)
@@ -43,7 +43,7 @@ bool Scene::EnterScene(Animal* animal, int sceneid, Transform transform)
 {
 	if (!animal)
 	{
-		COUT_LOG(LOG_CERROR, "animal = null");
+		Log(CERR, "animal = null");
 		return false;
 	}
 

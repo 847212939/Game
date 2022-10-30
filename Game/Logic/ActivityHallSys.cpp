@@ -49,14 +49,14 @@ VectorTemplate<CBrushMonsterCfg>* ActivityHallSys::GetBrushMonsterCfg(CActivityL
 	const CActivityBreakdown* pConfig = activityHallCfg.GetActivityBreakdown(cfg->activityBreakdown);
 	if (!pConfig)
 	{
-		COUT_LOG(LOG_CINFO, "pConfig = null");
+		Log(CINF, "pConfig = null");
 		return nullptr;
 	}
 
 	bmid = GetBrushMonsterId(pConfig, pr);
 	if (bmid <= 0)
 	{
-		COUT_LOG(LOG_CINFO, "bmid <= 0");
+		Log(CINF, "bmid <= 0");
 		return nullptr;
 	}
 
@@ -121,7 +121,7 @@ bool ActivityHallSys::InitMonster(CBrushMonsterCfg& cfg)
 		if (!G_SceneClient->EnterScene(animal, cfg.sid, Transform(cfg.x, cfg.y)))
 		{
 			SafeDelete(animal);
-			COUT_LOG(LOG_CERROR, "进入场景失败,请检查代码或者配置,重启服务器");
+			Log(CERR, "进入场景失败,请检查代码或者配置,重启服务器");
 			return false;
 		}
 
@@ -138,7 +138,7 @@ bool ActivityHallSys::CreateMonster(std::vector<Animal*>* pValue, CBrushMonsterC
 {
 	if (!pValue || pValue->empty())
 	{
-		COUT_LOG(LOG_CERROR, "pValue = null");
+		Log(CERR, "pValue = null");
 		return false;
 	}
 	time_t cur = ::time(nullptr);
@@ -209,7 +209,7 @@ void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Ani
 			}
 			pos->second.clear();
 			pos->second.swap(value);
-			COUT_LOG(LOG_CERROR, "add monster is err sid = %d, mid = %d", sid, key.mid);
+			Log(CERR, "add monster is err sid = %d, mid = %d", sid, key.mid);
 		}
 	}
 }
@@ -238,7 +238,7 @@ bool ActivityHallSys::ActiveCallBackFun(ActType type, CActivityList* cfg)
 	MapActivityFunc::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
+		Log(CERR, "No corresponding callback function found cmd = %d", type);
 		return false;
 	}
 
@@ -255,7 +255,7 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(CActivi
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
 
 // 进入活动场景回调
@@ -264,7 +264,7 @@ bool ActivityHallSys::ActiveEnterCallBackFun(ActType type, CActivityList* cfg)
 	MapActivityFunc::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
+		Log(CERR, "No corresponding callback function found cmd = %d", type);
 		return false;
 	}
 
@@ -280,7 +280,7 @@ void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(CA
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
 
 bool ActivityHallSys::ActiveExitCallBackFun(ActType type, CActivityList* cfg)
@@ -288,7 +288,7 @@ bool ActivityHallSys::ActiveExitCallBackFun(ActType type, CActivityList* cfg)
 	MapActivityFunc::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", type);
+		Log(CERR, "No corresponding callback function found cmd = %d", type);
 		return false;
 	}
 
@@ -304,7 +304,7 @@ void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(CAc
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", type);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", type);
 }
 
 // 时间区间
@@ -407,7 +407,7 @@ bool ActivityHallSys::Enter(CActivityList* cfg, int& bmid)
 	VectorTemplate<CBrushMonsterCfg>* pVector = GetBrushMonsterCfg(cfg, bmid);
 	if (!pVector)
 	{
-		COUT_LOG(LOG_CINFO, "pVector = null");
+		Log(CINF, "pVector = null");
 		return false;
 	}
 	for (auto& config : *pVector)
@@ -429,7 +429,7 @@ bool ActivityHallSys::Exit(CActivityList* cfg, const int& bmid)
 	VectorTemplate<CBrushMonsterCfg>* pVector = activityHallCfg.GetBrushMonsterCfg(bmid);
 	if (!pVector)
 	{
-		COUT_LOG(LOG_CINFO, "pVector = null");
+		Log(CINF, "pVector = null");
 		return false;
 	}
 	for (auto& config : *pVector)

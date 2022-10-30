@@ -24,25 +24,25 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!playerInfo");
+		Log(CERR, "!playerInfo");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
+		Log(CERR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
 	auto* tcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!tcpInfo");
+		Log(CERR, "!tcpInfo");
 		return;
 	}
 	if (playerInfo->pMsg->uIndex != G_NetClient->GetDBServerIndex())
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
-			COUT_LOG(LOG_CERROR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
+			Log(CERR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink");
 			G_NetClient->CloseSocket(playerInfo->pMsg->uIndex);
 			return;
 		}
@@ -50,7 +50,7 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
-		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
+		Log(CERR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
 	// websocket服务器
@@ -67,13 +67,13 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
+		Log(CERR, "playerInfo = null cmd = %d", (int)cmd);
 		return;
 	}
 	SocketReadLine* pMsg = playerInfo->pMsg;
 	if (!pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
 	// 处理登录协议等.. 玩家没有创建
@@ -106,14 +106,14 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 
@@ -125,7 +125,7 @@ bool PlayerPrep::CallBackFun(TimerCmd cmd)
 	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 
@@ -151,7 +151,7 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 
 // 定时器
@@ -159,7 +159,7 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char
 {
 	if (!m_pServerTimer)
 	{
-		COUT_LOG(LOG_CERROR, "no timer run");
+		Log(CERR, "no timer run");
 		return false;
 	}
 
@@ -167,7 +167,7 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
-		COUT_LOG(LOG_CERROR, "timer error");
+		Log(CERR, "timer error");
 		return false;
 	}
 
@@ -179,7 +179,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 {
 	if (!m_pServerTimer)
 	{
-		COUT_LOG(LOG_CERROR, "no timer run");
+		Log(CERR, "no timer run");
 		return false;
 	}
 
@@ -187,7 +187,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
-		COUT_LOG(LOG_CERROR, "timer error");
+		Log(CERR, "timer error");
 		return false;
 	}
 

@@ -17,14 +17,14 @@ bool MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
-		COUT_LOG(LOG_CERROR, "MoveSys sub player is null");
+		Log(CERR, "MoveSys sub player is null");
 		return false;
 	}
 
 	unsigned int x = 0, y = 0;
 	msg >> x >> y;
 
-	COUT_LOG(LOG_CINFO, "x = %u, y = %u", x, y);
+	Log(CINF, "x = %u, y = %u", x, y);
 
 	return true;
 }
@@ -45,12 +45,12 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "player info pMsg is null or player info sock info is null");
+		Log(CERR, "player info pMsg is null or player info sock info is null");
 		return;
 	}
 
@@ -78,7 +78,7 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 
 void MoveSys::Exit(SocketCloseLine* socketCloseLine)
 {
-	COUT_LOG(LOG_CINFO, "玩家退出");
+	Log(CINF, "玩家退出");
 }
 
 bool MoveSys::MoveCoo(Netmsg& msg, PlayerInfo* playerInfo)

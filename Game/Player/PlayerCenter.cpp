@@ -30,39 +30,39 @@ void PlayerCenter::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message playerClient info = null cmd = %d", cmd);
+		Log(CERR, "Dispatch message playerClient info = null cmd = %d", cmd);
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message sock msg = null cmd = %d", cmd);
+		Log(CERR, "Dispatch message sock msg = null cmd = %d", cmd);
 		return;
 	}
 	PlayerClient* playerClient = GetPlayerClientByIndex(playerInfo->pMsg->uIndex);
 	if (!playerClient)
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
+		Log(CERR, "Dispatch message playerClient = null index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
+		Log(CERR, "Client information is empty index=%d", playerInfo->pMsg->uIndex);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		COUT_LOG(LOG_CINFO, "Dispatch message Link broken cmd = %d", cmd);
+		Log(CINF, "Dispatch message Link broken cmd = %d", cmd);
 		return;
 	}
 	if (!playerClient->GetLoad())
 	{
-		COUT_LOG(LOG_CERROR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
+		Log(CERR, "Dispatch message mysql is unload index = %u", playerInfo->pMsg->uIndex);
 		return;
 	}
 	if (playerClient->GetIndex() != playerInfo->pMsg->uIndex)
 	{
-		COUT_LOG(LOG_CERROR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
+		Log(CERR, "dindex = %u, sindex = %u", playerClient->GetIndex(), playerInfo->pMsg->uIndex);
 		return;
 	}
 	if (MsgCmd::MsgCmd_PlayerCenter == (MsgCmd)playerInfo->pMsg->netMessageHead.uIdentification)
@@ -158,18 +158,18 @@ void PlayerCenter::HandleLoadPlayer(LoginData& loginData)
 	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
 	if (!pInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Client information is empty index=%d", loginData.index);
+		Log(CERR, "Client information is empty index=%d", loginData.index);
 		return;
 	}
 	if (loginData.index < 0 || loginData.index >= m_PlayerClientVec.size())
 	{
-		COUT_LOG(LOG_CINFO, "loginData.index < 0 || loginData.index >= m_PlayerClientVec.size()");
+		Log(CINF, "loginData.index < 0 || loginData.index >= m_PlayerClientVec.size()");
 		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
 	if (!pInfo->isConnect)
 	{
-		COUT_LOG(LOG_CINFO, "!pInfo->isConnect");
+		Log(CINF, "!pInfo->isConnect");
 		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
@@ -222,5 +222,5 @@ void PlayerCenter::HandlerPlayerThread()
 			loadPlayerList.pop_front();
 		}
 	}
-	COUT_LOG(LOG_CINFO, "playerClient create thread end");
+	Log(CINF, "playerClient create thread end");
 }

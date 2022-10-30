@@ -390,7 +390,7 @@ void CTCPSocketManage::SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize
 
 	/*if (bufferevent_set_max_single_write(bev, sndBufSize) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "bufferevent_set_max_single_write fail,fd=%d", fd);
+		Log(CERR, "bufferevent_set_max_single_write fail,fd=%d", fd);
 	}*/
 }
 

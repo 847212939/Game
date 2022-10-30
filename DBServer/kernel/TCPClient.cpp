@@ -41,7 +41,7 @@ bool TCPClient::Init(ServiceType serverType)
 
 	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
-	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
+	Log(CINF, "Server initialization succeeded");
 	return true;
 }
 
@@ -69,7 +69,7 @@ void TCPClient::HandlerRecvDataListThread()
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == nullptr");
+		Log(CERR, "CDataLine error pDataLine == nullptr");
 		return;
 	}
 	while (run)
@@ -85,7 +85,7 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "recv data thread end");
+	Log(CINF, "recv data thread end");
 
 	return;
 }
@@ -103,12 +103,12 @@ void TCPClient::NotifyAll()
 	CDataLine* SendDataLine = GetSendDataLine();
 	if (!RecvDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "RecvDataLine = null");
+		Log(CERR, "RecvDataLine = null");
 		return;
 	}
 	if (!SendDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "SendDataLine = null");
+		Log(CERR, "SendDataLine = null");
 		return;
 	}
 	
@@ -137,6 +137,6 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	}
 	else
 	{
-		COUT_LOG(LOG_CERROR, "Failed to process data£¬index=%d Out of range", index);
+		Log(CERR, "Failed to process data£¬index=%d Out of range", index);
 	}
 }

@@ -39,7 +39,7 @@ void ConfigMgr::ReadLogPrintTmCfg(int tm)
 }
 void ConfigMgr::CoutLog(int level, const char* log)
 {
-	COUT_LOG(level, log);
+	Log(level, log);
 }
 void ConfigMgr::ReadMaxSocketCntCfg(int cnt)
 {

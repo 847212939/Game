@@ -32,12 +32,12 @@ void SkillLvSys::NetWork(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "Player Info is null");
+		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "player info pMsg is null or player info sock info is null");
+		Log(CERR, "player info pMsg is null or player info sock info is null");
 		return;
 	}
 

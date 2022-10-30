@@ -19,7 +19,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 {
 	if (timeonce != 100 && timeonce != 1000)
 	{
-		COUT_LOG(LOG_CERROR, "timeonce=%d 不满足要求", timeonce);
+		Log(CERR, "timeonce=%d 不满足要求", timeonce);
 		return false;
 	}
 
@@ -61,25 +61,25 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 	struct TimerParam* param = (struct TimerParam*)arg;
 	if (param == nullptr)
 	{
-		COUT_LOG(LOG_CERROR, "TimeoutCB 参数为空");
+		Log(CERR, "TimeoutCB 参数为空");
 		return;
 	}
 	CServerTimer* pCServerTimer = param->pCServerTimer;
 	if (!pCServerTimer)
 	{
-		COUT_LOG(LOG_CERROR, "pCServerTimer 参数为空");
+		Log(CERR, "pCServerTimer 参数为空");
 		return;
 	}
 	struct event_base* base = param->base;
 	if (!base)
 	{
-		COUT_LOG(LOG_CERROR, "base 参数为空");
+		Log(CERR, "base 参数为空");
 		return;
 	}
 	CDataLine* pCDataLine = G_NetClient->GetRecvDataLine();
 	if (!pCDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "pDataLine == nullptr");
+		Log(CERR, "pDataLine == nullptr");
 		return;
 	}
 	if (!pCServerTimer->m_bRun)
@@ -117,7 +117,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 
 bool CServerTimer::Stop()
 {
-	COUT_LOG(LOG_CINFO, "CServerTimer thread exit.");
+	Log(CINF, "CServerTimer thread exit.");
 
 	m_bRun = false;
 	m_timerMap.clear();

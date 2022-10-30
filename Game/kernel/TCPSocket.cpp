@@ -19,25 +19,25 @@ CTCPSocketManage::CTCPSocketManage() :
 	GetSystemInfo(&si);
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Init socket dll err");
+		Log(CERR, "Init socket dll err");
 	}
 	if (event_config_set_flag(m_eventBaseCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
 	{
-		COUT_LOG(LOG_CERROR, "Init iocp is err");
+		Log(CERR, "Init iocp is err");
 	}
 	if (evthread_use_windows_threads() != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Init iocp thread is err");
+		Log(CERR, "Init iocp thread is err");
 	}
 	if (event_config_set_num_cpus_hint(m_eventBaseCfg, si.dwNumberOfProcessors) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Set the number of CPU is err");
+		Log(CERR, "Set the number of CPU is err");
 	}
 #elif defined(_WIN64)
 #elif defined(__linux__)
 	if (evthread_use_pthreads() != 0)
 	{
-		COUT_LOG(LOG_CERROR, "Init thread is err");
+		Log(CERR, "Init thread is err");
 	}
 #elif defined(__unix__)
 #elif defined(__ANDROID__)
@@ -61,7 +61,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 {
 	if (maxCount <= 0 || port <= 1000)
 	{
-		COUT_LOG(LOG_CERROR, "invalid params input maxCount=%d port=%d", maxCount, port);
+		Log(CERR, "invalid params input maxCount=%d port=%d", maxCount, port);
 		return false;
 	}
 	m_uMaxSocketSize = maxCount;
@@ -111,7 +111,7 @@ bool CTCPSocketManage::WaitConnect(int threadIndex)
 					break;
 				}
 			}
-			COUT_LOG(LOG_CINFO, "等待链接DB服务器");
+			Log(CINF, "等待链接DB服务器");
 		}
 	}
 	return true;
@@ -130,7 +130,7 @@ bool CTCPSocketManage::ConnectServer()
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
-		COUT_LOG(LOG_CINFO, "连接服DB失败");
+		Log(CINF, "连接服DB失败");
 		return false;
 	}
 
@@ -141,7 +141,7 @@ bool CTCPSocketManage::ConnectServer()
 
 	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		COUT_LOG(LOG_CINFO, "连接服DB失败");
+		Log(CINF, "连接服DB失败");
 		return false;
 	}
 
@@ -155,23 +155,23 @@ bool CTCPSocketManage::ConnectServer()
 	int threadIndex = 0;
 	if (!WaitConnect(threadIndex))
 	{
-		COUT_LOG(LOG_CINFO, "连接服DB失败");
+		Log(CINF, "连接服DB失败");
 		return false;
 	}
 
 	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
-	COUT_LOG(LOG_CINFO, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
+	Log(CINF, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
 	return true;
 }
 bool CTCPSocketManage::Stop()
 {
-	COUT_LOG(LOG_CINFO, "service tcp stop begin");
+	Log(CINF, "service tcp stop begin");
 
 	if (!m_running)
 	{
-		COUT_LOG(LOG_CERROR, "TCPSocketManage is not running");
+		Log(CERR, "TCPSocketManage is not running");
 		return false;
 	}
 
@@ -193,7 +193,7 @@ bool CTCPSocketManage::Stop()
 		}
 	}
 
-	COUT_LOG(LOG_INFO, "service tcp stop end");
+	Log(INF, "service tcp stop end");
 
 	return true;
 }
@@ -201,7 +201,7 @@ bool CTCPSocketManage::Start()
 {
 	if (m_running == true)
 	{
-		COUT_LOG(LOG_CERROR, "service tcp already have been running");
+		Log(CERR, "service tcp already have been running");
 		return false;
 	}
 
@@ -226,7 +226,7 @@ void CTCPSocketManage::ThreadAccept()
 
 	if (!m_listenerBase)
 	{
-		COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
+		Log(CERR, "TCP Could not initialize libevent!");
 		return;
 	}
 
@@ -241,7 +241,7 @@ void CTCPSocketManage::ThreadAccept()
 
 	if (!listener)
 	{
-		COUT_LOG(LOG_INFO, "Could not create a listener! 尝试换个端口或者稍等一会。");
+		Log(INF, "Could not create a listener! 尝试换个端口或者稍等一会。");
 		return;
 	}
 
@@ -270,7 +270,7 @@ void CTCPSocketManage::ThreadAccept()
 		SOCKFD fd[2];
 		if (Socketpair(AF_INET, SOCK_STREAM, 0, fd) < 0)
 		{
-			COUT_LOG(LOG_CERROR, "Socketpair");
+			Log(CERR, "Socketpair");
 			return;
 		}
 
@@ -284,7 +284,7 @@ void CTCPSocketManage::ThreadAccept()
 		//workInfo.base = event_base_new_with_config(m_eventBaseCfg);
 		if (!workInfo.base)
 		{
-			COUT_LOG(LOG_CERROR, "TCP Could not initialize libevent!");
+			Log(CERR, "TCP Could not initialize libevent!");
 			return;
 		}
 
@@ -292,13 +292,13 @@ void CTCPSocketManage::ThreadAccept()
 			ThreadLibeventProcess, (void*)&uniqueParam[i]);
 		if (!workInfo.event)
 		{
-			COUT_LOG(LOG_CERROR, "TCP Could not create event!");
+			Log(CERR, "TCP Could not create event!");
 			return;
 		}
 
 		if (event_add(workInfo.event, nullptr) < 0)
 		{
-			COUT_LOG(LOG_CERROR, "TCP event_add ERROR");
+			Log(CERR, "TCP event_add ERROR");
 			return;
 		}
 
@@ -338,7 +338,7 @@ void CTCPSocketManage::ThreadAccept()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "accept thread end");
+	Log(CINF, "accept thread end");
 
 	return;
 }
@@ -347,7 +347,7 @@ void CTCPSocketManage::ThreadRSSocket(void* pThreadData)
 	RecvThreadParam* param = (RecvThreadParam*)pThreadData;
 	if (!param)
 	{
-		COUT_LOG(LOG_CERROR, "thread param is null");
+		Log(CERR, "thread param is null");
 		return;
 	}
 
@@ -364,7 +364,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	if (threadIndex < 0 || threadIndex >= pThis->m_workBaseVec.size()
 		|| readfd != pThis->m_workBaseVec[threadIndex].read_fd)
 	{
-		COUT_LOG(LOG_CERROR, "######  threadIndex = %d", threadIndex);
+		Log(CERR, "######  threadIndex = %d", threadIndex);
 		return;
 	}
 
@@ -373,7 +373,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	int realAllSize = recv(readfd, buf, sizeof(buf), 0);
 	if (realAllSize < sizeof(PlatformSocketInfo) || realAllSize % sizeof(PlatformSocketInfo) != 0)
 	{
-		COUT_LOG(LOG_CERROR, "ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld",
+		Log(CERR, "ThreadLibeventProcess error size=%d,sizeof(PlatformSocketInfo)=%lld",
 			realAllSize, sizeof(PlatformSocketInfo));
 		event_add(pThis->m_workBaseVec[threadIndex].event, nullptr);
 		return;
@@ -405,7 +405,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	int index = GetSocketIndex();
 	if (index < 0)
 	{
-		COUT_LOG(LOG_CERROR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		Log(CERR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		return index;
 	}
@@ -416,7 +416,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 		ssl = SSL_new(m_ctx);
 		if (!ssl)
 		{
-			COUT_LOG(LOG_CERROR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+			Log(CERR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 			return index;
 		}
 		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
@@ -429,7 +429,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	}
 	if (!bev)
 	{
-		COUT_LOG(LOG_CERROR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		return index;
 	}
@@ -446,7 +446,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		Log(CERR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
@@ -486,7 +486,7 @@ int CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCP
 	if (m_socketInfoVec[index].isConnect)
 	{
 		m_ConditionVariable.GetMutex().unlock(); //解锁
-		COUT_LOG(LOG_CERROR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
@@ -539,7 +539,7 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 
 	if (pThis->GetCurSocketSize() >= pThis->m_uMaxSocketSize)
 	{
-		COUT_LOG(LOG_CERROR, "服务器已经满：fd=%d [ip:%s %d][人数：%u/%u]", fd,
+		Log(CERR, "服务器已经满：fd=%d [ip:%s %d][人数：%u/%u]", fd,
 			tcpInfo.ip, tcpInfo.port, pThis->GetCurSocketSize(), pThis->m_uMaxSocketSize);
 
 		// 分配失败
@@ -568,7 +568,7 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd,
 		(const char*)(&tcpInfo), sizeof(tcpInfo), 0) < sizeof(tcpInfo))
 	{
-		COUT_LOG(LOG_CERROR, "投递连接消息失败,fd=%d", fd);
+		Log(CERR, "投递连接消息失败,fd=%d", fd);
 	}
 
 	lastThreadIndex++;
@@ -598,18 +598,18 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 	}
 	else if (events & BEV_EVENT_TIMEOUT) // 长时间没有收到，客户端发过来的数据，读取数据超时
 	{
-		COUT_LOG(LOG_INFO, "心跳踢人 index=%d fd=%d", index, pThis->m_socketInfoVec[index].acceptFd);
+		Log(INF, "心跳踢人 index=%d fd=%d", index, pThis->m_socketInfoVec[index].acceptFd);
 	}
 	else
 	{
-		COUT_LOG(LOG_CERROR, "Got an error on the connection,events=%d", events);
+		Log(CERR, "Got an error on the connection,events=%d", events);
 	}
 
 	pThis->RemoveTCPSocketStatus(index, true);
 }
 void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 {
-	COUT_LOG(LOG_CERROR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
+	Log(CERR, "accept error:%s", evutil_socket_error_to_string(EVUTIL_SOCKET_ERROR()));
 }
 
 // 测试连接
@@ -639,7 +639,7 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data)
 	
 	tcpInfo->link = (uint64_t)MsgCmd::MsgCmd_Testlink;
 
-	COUT_LOG(LOG_CINFO, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
+	Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, tcpInfo->bev);
 
 	return true;
@@ -737,7 +737,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		Log(CERR, "index=%d 超出范围", index);
 		return;
 	}
 
@@ -786,11 +786,11 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 
 	if (IsServerMsg(index))
 	{
-		COUT_LOG(LOG_CERROR, "服务器异常断开链接请检查游戏逻辑 index=%d",index);
+		Log(CERR, "服务器异常断开链接请检查游戏逻辑 index=%d",index);
 	}
 	else
 	{
-		COUT_LOG(LOG_CINFO, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
+		Log(CINF, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
 			tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 	}
 }
@@ -932,12 +932,12 @@ void CTCPSocketManage::SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize
 {
 	if (bufferevent_get_max_single_read(bev) < rcvBufSize && bufferevent_set_max_single_read(bev, rcvBufSize) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "bufferevent_set_max_single_read fail,bev=%p", bev);
+		Log(CERR, "bufferevent_set_max_single_read fail,bev=%p", bev);
 	}
 
 	/*if (bufferevent_set_max_single_write(bev, sndBufSize) < 0)
 	{
-		COUT_LOG(LOG_CERROR, "bufferevent_set_max_single_write fail,fd=%d", fd);
+		Log(CERR, "bufferevent_set_max_single_write fail,fd=%d", fd);
 	}*/
 }
 
@@ -1144,7 +1144,7 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		Log(CERR, "index=%d 超出范围", index);
 		return false;
 	}
 	if (!tcpInfo->lock)
@@ -1157,7 +1157,7 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 		{
 			if (bufferevent_write(tcpInfo->bev, data, size) < 0)
 			{
-				COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
+				Log(CERR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 			}
 		}
 	}
@@ -1198,18 +1198,18 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 {
 	if (!pBufferevent)
 	{
-		COUT_LOG(LOG_CERROR, "!pBufferevent");
+		Log(CERR, "!pBufferevent");
 		return false;
 	}
 	if (!IsConnected(index))
 	{
-		COUT_LOG(LOG_CERROR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
+		Log(CERR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
 		return false;
 	}
 
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
-		COUT_LOG(LOG_CERROR, "invalid message size size=%lld", size);
+		Log(CERR, "invalid message size size=%lld", size);
 		return false;
 	}
 
@@ -1242,7 +1242,7 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 
 		if (addBytes == 0)
 		{
-			COUT_LOG(LOG_CERROR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+			Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
 			return false;
 		}
 	}
@@ -1255,12 +1255,12 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 {
 	if (!pBufferevent)
 	{
-		COUT_LOG(LOG_CERROR, "!pBufferevent");
+		Log(CERR, "!pBufferevent");
 		return false;
 	}
 	if (!IsConnected(index))
 	{
-		COUT_LOG(LOG_CERROR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
+		Log(CERR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
 		return false;
 	}
 	// 不包装数据
@@ -1268,7 +1268,7 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 	{
 		if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE)
 		{
-			COUT_LOG(LOG_CERROR, "invalid message size size=%lld", size);
+			Log(CERR, "invalid message size size=%lld", size);
 			return false;
 		}
 		// 整合一下数据
@@ -1292,7 +1292,7 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 
 			if (addBytes == 0)
 			{
-				COUT_LOG(LOG_CERROR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+				Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
 				return false;
 			}
 		}
@@ -1302,7 +1302,7 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 	{
 		if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 		{
-			COUT_LOG(LOG_CERROR, "invalid message size size=%lld", size);
+			Log(CERR, "invalid message size size=%lld", size);
 			return false;
 		}
 
@@ -1335,7 +1335,7 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 
 			if (addBytes == 0)
 			{
-				COUT_LOG(LOG_CERROR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+				Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
 				return false;
 			}
 		}
@@ -1359,7 +1359,7 @@ void CTCPSocketManage::ThreadSendMsg()
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "send list is null");
+		Log(CERR, "send list is null");
 		return;
 	}
 	while (m_running)
@@ -1375,7 +1375,7 @@ void CTCPSocketManage::ThreadSendMsg()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "send data thread end");
+	Log(CINF, "send data thread end");
 
 	return;
 }
@@ -1444,7 +1444,7 @@ void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		Log(CERR, "index=%d 超出范围", index);
 		return;
 	}
 	// websocket 握手
@@ -1461,7 +1461,7 @@ void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 			{
 				if (bufferevent_write(tcpInfo->bev, pData, size) < 0)
 				{
-					COUT_LOG(LOG_CERROR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
+					Log(CERR, "发送数据失败，index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 				}
 				// 标记已经处理握手
 				tcpInfo->bHandleAccptMsg = true;
@@ -1507,7 +1507,7 @@ void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 		}
 		else
 		{
-			COUT_LOG(LOG_CERROR, "web socket send to big size=%d", size);
+			Log(CERR, "web socket send to big size=%d", size);
 			return;
 		}
 
@@ -1597,7 +1597,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		Log(CERR, "RecvData error bev == nullptr");
 		return false;
 	}
 
@@ -1618,7 +1618,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
 		// 消息格式不正确
-		COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d", index);
+		Log(CERR, "消息格式不正确,index=%d", index);
 		CloseSocket(index);
 		return false;
 	}
@@ -1629,7 +1629,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
 			// 消息格式不正确
-			COUT_LOG(LOG_CERROR, "消息格式不正确");
+			Log(CERR, "消息格式不正确");
 			CloseSocket(index);
 			return false;
 		}
@@ -1637,7 +1637,7 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 		if (realSize < 0)
 		{
 			// 数据包不够包头
-			COUT_LOG(LOG_CERROR, "数据包不够包头");
+			Log(CERR, "数据包不够包头");
 			CloseSocket(index);
 			return false;
 		}
@@ -1661,13 +1661,13 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
 	{
-		COUT_LOG(LOG_CERROR, "RecvData error bev == nullptr");
+		Log(CERR, "RecvData error bev == nullptr");
 		return false;
 	}
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		COUT_LOG(LOG_CERROR, "index=%d 超出范围", index);
+		Log(CERR, "index=%d 超出范围", index);
 		return false;
 	}
 	if (!tcpInfo->bHandleAccptMsg)
@@ -1720,7 +1720,7 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 		if (wbmsg.dataLength > SOCKET_RECV_BUF_SIZE)
 		{
 			// 消息格式不正确
-			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,maxsize=%u,wbmsg.dataLength=%u",
+			Log(CERR, "消息格式不正确,index=%d,maxsize=%u,wbmsg.dataLength=%u",
 				index, SOCKET_RECV_BUF_SIZE, wbmsg.dataLength);
 			CloseSocket(index);
 			return false;
@@ -1743,7 +1743,7 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 		{
 			// 消息格式不正确
 			CloseSocket(index);
-			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,pNetHead->uMessageSize=%u,wbmsg.payloadLength=%u",
+			Log(CERR, "消息格式不正确,index=%d,pNetHead->uMessageSize=%u,wbmsg.payloadLength=%u",
 				index, pNetHead->uMessageSize, wbmsg.payloadLength);
 			return false;
 		}
@@ -1753,7 +1753,7 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 		{
 			// 消息格式不正确
 			CloseSocket(index);
-			COUT_LOG(LOG_CERROR, "消息格式不正确,index=%d,messageSize=%u", index, messageSize);
+			Log(CERR, "消息格式不正确,index=%d,messageSize=%u", index, messageSize);
 			return false;
 		}
 
@@ -1762,7 +1762,7 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 		{
 			// 数据包不够包头
 			CloseSocket(index);
-			COUT_LOG(LOG_CERROR, "数据包不够包头,index=%d,realSize=%d", index, realSize);
+			Log(CERR, "数据包不够包头,index=%d,realSize=%d", index, realSize);
 			return false;
 		}
 
@@ -1805,29 +1805,29 @@ bool CTCPSocketManage::OpensslInit()
 	m_ctx = SSL_CTX_new(SSLv23_server_method());//SSLv23_server_method or SSLv23_client_method 
 	if (nullptr == m_ctx)
 	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_new error");
+		Log(CERR, "SSL_CTX_new error");
 		return false;
 	}
 	SSL_CTX_set_verify(m_ctx, SSL_VERIFY_NONE, nullptr);//取消验证前端证书
 	// 设置信任根证书
 	if (SSL_CTX_load_verify_locations(m_ctx, CA_CERT_FILE, NULL) <= 0)
 	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_load_verify_locations kill myself,%s", ERR_error_string(ERR_get_error(), NULL));
+		Log(CERR, "SSL_CTX_load_verify_locations kill myself,%s", ERR_error_string(ERR_get_error(), NULL));
 		return false;
 	}
 	if (1 != SSL_CTX_use_certificate_file(m_ctx, SERVER_CERT_FILE, SSL_FILETYPE_PEM))//加载证书
 	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_use_certificate_file error");
+		Log(CERR, "SSL_CTX_use_certificate_file error");
 		return false;
 	}
 	if (1 != SSL_CTX_use_PrivateKey_file(m_ctx, SERVER_KEY_FILE, SSL_FILETYPE_PEM))//加载密钥
 	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_use_PrivateKey_file error");
+		Log(CERR, "SSL_CTX_use_PrivateKey_file error");
 		return false;
 	}
 	if (1 != SSL_CTX_check_private_key(m_ctx))//验证密钥
 	{
-		COUT_LOG(LOG_CERROR, "SSL_CTX_check_private_key error");
+		Log(CERR, "SSL_CTX_check_private_key error");
 		return false;
 	}
 
@@ -1862,7 +1862,7 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 	else
 	{
 		CloseSocket(index);
-		COUT_LOG(LOG_CINFO, "消息格式不正确,request=%s", request.c_str());
+		Log(CINF, "消息格式不正确,request=%s", request.c_str());
 		return false;
 	}
 

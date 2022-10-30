@@ -29,7 +29,7 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 	}
 	if (m_dataListSize > MAX_DATALINE_LEN)
 	{
-		COUT_LOG(LOG_CERROR, "队列已满(%d)", MAX_DATALINE_LEN);
+		Log(CERR, "队列已满(%d)", MAX_DATALINE_LEN);
 		return 0;
 	}
 	ListItemData* pListItem = new ListItemData;

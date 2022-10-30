@@ -7,7 +7,7 @@ function LoadConfig()
 	for i = 1, cnt do
 		ConfigMgrFnTable[i]()
 	end
-    ConfigMgr:CoutLog(LOG_CINFO, "Load Config cnt = " .. tostring(cnt))
+    ConfigMgr:CoutLog(CINF, "Load Config cnt = " .. tostring(cnt))
     return ConfigMgr
 end
 
@@ -20,7 +20,7 @@ function GetLength(t)
 end
 
 function ReadBaseCfg()
-    ConfigMgr:CoutLog(LOG_CINFO, "Load BaseCfg")
+    ConfigMgr:CoutLog(CINF, "Load BaseCfg")
     local BaseCfg = require "BaseCfg"
 
     if BaseCfg then

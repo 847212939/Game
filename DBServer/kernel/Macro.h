@@ -78,7 +78,7 @@ private:
 	}\
 	catch (...)\
 	{\
-		CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+		CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 	}\
 	pData = nullptr;\
 } 
@@ -94,7 +94,7 @@ private:
 		}\
 		catch (...)\
 		{\
-			CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+			CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 		}\
 	}\
 }
@@ -110,48 +110,48 @@ private:
 		}\
 		catch(...)\
 		{\
-			CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
+			CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "DELETE ERR");\
 		}\
 		pData = nullptr;\
 	}\
 }
 
 // 日志打印
-#define COUT_LOG(logtype, ...)\
-if (logtype == LOG_ERROR)\
+#define Log(logtype, ...)\
+if (logtype == ERR)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), ERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (logtype == LOG_INFO)\
+else if (logtype == INF)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), INF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (logtype == LOG_WARN)\
+else if (logtype == WAR)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_WARN, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), WAR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (logtype == LOG_CERROR)\
+else if (logtype == CERR)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (logtype == LOG_CINFO)\
+else if (logtype == CINF)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CINF, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (logtype == LOG_ERROR_SYS)\
+else if (logtype == SYS)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_ERROR_SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
 else\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); \
 }
 
 // 注册数据库回调
 #define RegisterMysql(pobj, name, sql)\
 if (!pobj)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\
@@ -162,7 +162,7 @@ else\
 #define RegisterNetwk(pobj, name, cmd)\
 if (!pobj)\
 {\
-	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
+	CLog::Write(G_LogMgr->GetErrorLog().c_str(), CERR, __FILE__, __LINE__, __FUNCTION__, "注册消息失败 请检查写法");\
 }\
 else\
 {\

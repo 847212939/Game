@@ -35,7 +35,7 @@ void PlayerPrep::Init()
 {
 	if (!InitDB())
 	{
-		COUT_LOG(LOG_CERROR, "Failed to initialize database");
+		Log(CERR, "Failed to initialize database");
 		return;
 	}
 
@@ -53,7 +53,7 @@ bool PlayerPrep::InitDB()
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "连接数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "连接数据库失败:%s", excep.errorInfo.c_str());
 		return false;
 	}
 
@@ -65,7 +65,7 @@ bool PlayerPrep::InitDB()
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "连接数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "连接数据库失败:%s", excep.errorInfo.c_str());
 		return false;
 	}
 
@@ -77,18 +77,18 @@ void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "!playerInfo");
+		Log(CERR, "!playerInfo");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
+		Log(CERR, "!playerInfo->pMsg || !playerInfo->pTcpSockInfo");
 		return;
 	}
 	unsigned int uMainID = playerInfo->pMsg->netMessageHead.uMainID;
 	if (uMainID >= (unsigned int)MsgCmd::MsgCmd_End || uMainID <= (unsigned int)MsgCmd::MsgCmd_Begin)
 	{
-		COUT_LOG(LOG_CERROR, "没有找到消息类型 cmd = %d", uMainID);
+		Log(CERR, "没有找到消息类型 cmd = %d", uMainID);
 		return;
 	}
 	MessageDispatch((MsgCmd)uMainID, playerInfo);
@@ -97,13 +97,13 @@ void PlayerPrep::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		COUT_LOG(LOG_CERROR, "playerInfo = null cmd = %d", (int)cmd);
+		Log(CERR, "playerInfo = null cmd = %d", (int)cmd);
 		return;
 	}
 	SocketReadLine* pMsg = playerInfo->pMsg;
 	if (!pMsg)
 	{
-		COUT_LOG(LOG_CERROR, "pMsg = null cmd = %d", (int)cmd);
+		Log(CERR, "pMsg = null cmd = %d", (int)cmd);
 		return;
 	}
 	if (MsgCmd::MsgCmd_DBServer == (MsgCmd)pMsg->netMessageHead.uIdentification)
@@ -135,14 +135,14 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 		return;
 	}
 
-	COUT_LOG(LOG_CERROR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 
@@ -259,7 +259,7 @@ void PlayerPrep::LoadGlobalMysql(std::string sqlName, int serverid, std::string&
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return;
 	}
 
@@ -289,7 +289,7 @@ void PlayerPrep::LoadLoginMysql(std::string sqlName, int serverid, std::string& 
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return;
 	}
 
@@ -319,7 +319,7 @@ void PlayerPrep::LoadPlayerMysql(std::string sqlName, int serverid, uint64_t use
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return;
 	}
 	if (queryData.size() <= 0)
@@ -347,7 +347,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "加载数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "加载数据库失败:%s", excep.errorInfo.c_str());
 		return false;
 	}
 
@@ -413,7 +413,7 @@ void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 	}
 	catch (MysqlHelper_Exception& excep)
 	{
-		COUT_LOG(LOG_CERROR, "执行数据库失败:%s", excep.errorInfo.c_str());
+		Log(CERR, "执行数据库失败:%s", excep.errorInfo.c_str());
 	}
 }
 void PlayerPrep::HandlerExecuteSqlThread()
@@ -434,5 +434,5 @@ void PlayerPrep::HandlerExecuteSqlThread()
 			sqlList.pop_front();
 		}
 	}
-	COUT_LOG(LOG_CINFO, "save mysql thread end");
+	Log(CINF, "save mysql thread end");
 }

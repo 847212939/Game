@@ -22,6 +22,6 @@ bool ActiveAlways::Enter(CActivityList* cfg)
 
 bool ActiveAlways::Exit(CActivityList* cfg)
 {
-	COUT_LOG(LOG_CINFO, "ActiveAlways::Exit");
+	Log(CINF, "ActiveAlways::Exit");
 	return false;
 }

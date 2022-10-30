@@ -23,12 +23,12 @@ public:
 
 enum LogLevel
 {
-	LOG_INFO = 0,							//info
-	LOG_WARN,								//warnning
-	LOG_ERROR,								//error
-	LOG_CINFO,								//info Console tip
-	LOG_CERROR,								//error Console
-	LOG_ERROR_SYS,							//error system
+	INF = 0,							//info
+	WAR,								//warnning
+	ERR,								//error
+	CINF,								//info Console tip
+	CERR,								//error Console
+	SYS,							//error system
 	LOG_END,
 };
 

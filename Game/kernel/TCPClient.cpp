@@ -56,7 +56,7 @@ bool TCPClient::Init(ServiceType serverType)
 	G_SceneClient->RegisterGlobalCallBack();
 	G_PlayerCenterClient->RegisterGlobalCallBack();
 
-	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
+	Log(CINF, "Server initialization succeeded");
 	return true;
 }
 
@@ -84,7 +84,7 @@ void TCPClient::HandlerRecvDataListThread()
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "CDataLine error pDataLine == nullptr");
+		Log(CERR, "CDataLine error pDataLine == nullptr");
 		return;
 	}
 	while (run)
@@ -100,7 +100,7 @@ void TCPClient::HandlerRecvDataListThread()
 		}
 	}
 
-	COUT_LOG(LOG_CINFO, "recv data thread end");
+	Log(CINF, "recv data thread end");
 
 	return;
 }
@@ -118,18 +118,18 @@ void TCPClient::NotifyAll()
 	CDataLine* SendDataLine = GetSendDataLine();
 	if (!RecvDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "RecvDataLine = null");
+		Log(CERR, "RecvDataLine = null");
 		return;
 	}
 	if (!SendDataLine)
 	{
-		COUT_LOG(LOG_CERROR, "SendDataLine = null");
+		Log(CERR, "SendDataLine = null");
 		return;
 	}
 	CServerTimer* pCServerTimer = G_PlayerPrepClient->GetCServerTimer();
 	if (!pCServerTimer)
 	{
-		COUT_LOG(LOG_CERROR, "pCServerTimer = null");
+		Log(CERR, "pCServerTimer = null");
 		return;
 	}
 	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
@@ -153,14 +153,14 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 		return;
 	}
 
-	COUT_LOG(LOG_CINFO, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CINF, "There is already a callback for this message. Please check the code cmd = %d", cmd);
 }
 bool TCPClient::CallBackFun(SysMsgCmd cmd, void* pDataLineHead)
 {
 	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
-		COUT_LOG(LOG_CERROR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
 		return false;
 	}
 
@@ -177,7 +177,7 @@ void TCPClient::TimerCallback(void* pDataLineHead)
 	}
 	else
 	{
-		COUT_LOG(LOG_CERROR, "Timer message error");
+		Log(CERR, "Timer message error");
 	}
 }
 void TCPClient::SocketCallback(void* pDataLineHead)
@@ -200,7 +200,7 @@ void TCPClient::SocketCallback(void* pDataLineHead)
 	}
 	else
 	{
-		COUT_LOG(LOG_CERROR, "Failed to process data£¬index=%d Out of range", index);
+		Log(CERR, "Failed to process data£¬index=%d Out of range", index);
 	}
 }
 void TCPClient::CloseSocketCallback(void* pDataLineHead)
@@ -210,7 +210,7 @@ void TCPClient::CloseSocketCallback(void* pDataLineHead)
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerClientByIndex(pSocketClose->uIndex);
 	if (!playerClient)
 	{
-		COUT_LOG(LOG_CINFO, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
+		Log(CINF, "TCP close playerClient is null index = %d", pSocketClose->uIndex);
 		return;
 	}
 

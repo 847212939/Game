@@ -2670,12 +2670,12 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ReadHeroList",tolua_Config_ConfigMgr_ReadHeroList00);
    tolua_function(tolua_S,"ReadSkillIdList",tolua_Config_ConfigMgr_ReadSkillIdList00);
   tolua_endmodule(tolua_S);
-  tolua_constant(tolua_S,"LOG_INFO",LOG_INFO);
-  tolua_constant(tolua_S,"LOG_WARN",LOG_WARN);
-  tolua_constant(tolua_S,"LOG_ERROR",LOG_ERROR);
-  tolua_constant(tolua_S,"LOG_CINFO",LOG_CINFO);
-  tolua_constant(tolua_S,"LOG_CERROR",LOG_CERROR);
-  tolua_constant(tolua_S,"LOG_ERROR_SYS",LOG_ERROR_SYS);
+  tolua_constant(tolua_S,"INF",INF);
+  tolua_constant(tolua_S,"WAR",WAR);
+  tolua_constant(tolua_S,"ERR",ERR);
+  tolua_constant(tolua_S,"CINF",CINF);
+  tolua_constant(tolua_S,"CERR",CERR);
+  tolua_constant(tolua_S,"SYS",SYS);
   tolua_constant(tolua_S,"LOG_END",LOG_END);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"CLogicCfg","CLogicCfg","",tolua_collect_CLogicCfg);

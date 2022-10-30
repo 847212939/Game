@@ -26,7 +26,7 @@ void Animal::AdditionAttributes(MapAttrsCmdInt& attrs)
 	{
 		if ((AttrsCmd)it->first <= AttrsCmd::attrs_begin || (AttrsCmd)it->first >= AttrsCmd::attrs_end)
 		{
-			COUT_LOG(LOG_CERROR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
+			Log(CERR, "未知属性 请检查AttrsCmd.h头文件 属性为id:%d", it->first);
 			continue;
 		}
 		m_AttrsMap[(AttrsCmd)it->first] += it->second;
@@ -79,12 +79,12 @@ const CSkillIdList* Animal::GetSkillIdListCfg(int skillpos)
 	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
 	if (!pCHeroList)
 	{
-		COUT_LOG(LOG_CERROR, "pCHeroList = null");
+		Log(CERR, "pCHeroList = null");
 		return nullptr;
 	}
 	if (skillpos > pCHeroList->skillId.size() || skillpos <= 0)
 	{
-		COUT_LOG(LOG_CERROR, "skillid > pCHeroList->skillId.size() || skillid <= 0");
+		Log(CERR, "skillid > pCHeroList->skillId.size() || skillid <= 0");
 		return nullptr;
 	}
 
@@ -98,7 +98,7 @@ int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
 {
 	if (!pCSkillIdList)
 	{
-		COUT_LOG(LOG_CERROR, "pCSkillIdList = null");
+		Log(CERR, "pCSkillIdList = null");
 		return 0;
 	}
 	int pos = 0;
@@ -106,7 +106,7 @@ int Animal::GetSkillIdPos(const CSkillIdList* pCSkillIdList)
 	const CHeroList* pCHeroList = skillCfg.GetCHeroListCfg(m_Animalid);
 	if (!pCHeroList)
 	{
-		COUT_LOG(LOG_CERROR, "pCHeroList = null");
+		Log(CERR, "pCHeroList = null");
 		return 0;
 	}
 	for (auto& skillid : pCHeroList->skillId)

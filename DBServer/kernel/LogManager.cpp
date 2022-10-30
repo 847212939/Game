@@ -35,11 +35,11 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 #ifdef __DEBUG__
 	// 输出到控制台
-	if (level == LOG_CINFO)
+	if (level == CINF)
 	{
 		std::cout << buf << std::endl;
 	}
-	else if (level == LOG_CERROR)
+	else if (level == CERR)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
 		std::cout << buf << " {" << pFuncName << ":" << line << "}" << std::endl;
@@ -318,7 +318,7 @@ void CGameLogManage::HandlerLogThread(bool& run)
 			Fflush(logBuf);
 		}
 	}
-	COUT_LOG(LOG_CINFO, "log thread end");
+	Log(CINF, "log thread end");
 }
 
 void CGameLogManage::Init(bool& run)

@@ -32,19 +32,19 @@ bool CLuaMgr::InitCfgMgr()
 {
     if (m_pLua)
     {
-        COUT_LOG(LOG_CERROR, "Duplicate creation m_pLua");
+        Log(CERR, "Duplicate creation m_pLua");
         return false;
     }
     if (m_ConfigMgr)
     {
-        COUT_LOG(LOG_CERROR, "Duplicate creation m_ConfigMgr");
+        Log(CERR, "Duplicate creation m_ConfigMgr");
         return false;
     }
     int tolua_Config_open(lua_State * tolua_S);
     m_pLua = luaL_newstate();
     if (!m_pLua)
     {
-        COUT_LOG(LOG_CERROR, "Create lua vm err");
+        Log(CERR, "Create lua vm err");
         return false;
     }
 
@@ -57,18 +57,18 @@ bool CLuaMgr::InitCfgMgr()
     if (iRet)
     {
         const char* pErrorMsg = lua_tostring(m_pLua, -1);
-        COUT_LOG(LOG_CERROR, pErrorMsg);
+        Log(CERR, pErrorMsg);
         return false;
     }
     if (!lua_isuserdata(m_pLua, -1))
     {
-        COUT_LOG(LOG_CERROR, "Lua is not user data");
+        Log(CERR, "Lua is not user data");
         return false;
     }
     m_ConfigMgr = *(ConfigMgr**)lua_touserdata(m_pLua, -1);
     if (!m_ConfigMgr)
     {
-        COUT_LOG(LOG_CERROR, "ConfigMgr create err");
+        Log(CERR, "ConfigMgr create err");
         return false;
     }
 
