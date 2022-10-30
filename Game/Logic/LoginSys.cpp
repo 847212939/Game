@@ -194,7 +194,7 @@ bool LoginSys::NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo)
 	int serverid = 0;
 	msg >> serverid;
 
-	if (serverid != G_BaseCfgMgr.GetServerId())
+	if (serverid != G_CfgMgr->GetCBaseCfgMgr().GetServerId())
 	{
 		return false;
 	}

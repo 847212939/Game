@@ -80,7 +80,7 @@ void Util::Exit(bool& run)
 	{
 		std::cin >> str;
 
-		if (str == G_BaseCfgMgr.GetExit())
+		if (str == G_CfgMgr->GetCBaseCfgMgr().GetExit())
 		{
 			run = false;
 			break;

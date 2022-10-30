@@ -10,7 +10,7 @@ PlayerCenter::~PlayerCenter()
 }
 void PlayerCenter::Init()
 {
-	int maxSocketCnt = G_BaseCfgMgr.GetMaxSocketCnt();
+	int maxSocketCnt = G_CfgMgr->GetCBaseCfgMgr().GetMaxSocketCnt();
 
 	// 初始化分配内存
 	unsigned int playerSize = maxSocketCnt * 2;

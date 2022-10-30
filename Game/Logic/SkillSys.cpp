@@ -13,7 +13,7 @@ SkillSys::~SkillSys()
 void SkillSys::RegisterSkillTimer()
 {
 	if (!G_PlayerPrepClient->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		G_BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+		G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
 		RegisterTimer(G_PlayerPrepClient, SkillSys::SkillCdTimer,
 			TimerCmd::TimerCmd_Skill, 100, SERVERTIMER_TYPE_PERISIST);
@@ -24,7 +24,7 @@ void SkillSys::RegisterSkillTimer()
 void SkillSys::UnRegisterSkillTimer()
 {
 	if (G_PlayerPrepClient->GetCServerTimer()[(int)(unsigned int)TimerCmd::TimerCmd_Skill % 
-		G_BaseCfgMgr.GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
+		G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt()].ExistsTimer((unsigned int)TimerCmd::TimerCmd_Skill))
 	{
 		UnRegisterTimer(G_PlayerPrepClient, TimerCmd::TimerCmd_Skill);
 	}

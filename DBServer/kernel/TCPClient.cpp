@@ -25,8 +25,8 @@ TCPClient::~TCPClient()
 
 bool TCPClient::Init(ServiceType serverType)
 {
-	const CServerCfg& serverCfg = G_BaseCfgMgr.GetServerCfg();
-	int maxSocketCnt = G_BaseCfgMgr.GetMaxSocketCnt();
+	const CServerCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetServerCfg();
+	int maxSocketCnt = G_CfgMgr->GetCBaseCfgMgr().GetMaxSocketCnt();
 
 	if (!CTCPSocketManage::Init(maxSocketCnt, serverCfg.port, serverCfg.ip.c_str(), serverType))
 	{

@@ -91,7 +91,7 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId() 
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId() 
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID 
@@ -122,7 +122,7 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId()
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< userid
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
@@ -148,7 +148,7 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId()
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
 		<< loadMysql.uAssistantID
@@ -175,7 +175,7 @@ void MysqlClient::SaveReplaceLoginMysql(std::string& userid, std::string sqlName
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId()
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< userid
 		<< sqlName
 		<< data;
@@ -199,7 +199,7 @@ void MysqlClient::SaveReplacePlayerMysql(uint64_t userid, std::string sqlName, s
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId()
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< userid
 		<< sqlName
 		<< data;
@@ -223,7 +223,7 @@ void MysqlClient::SaveReplaceGlobalMysql(std::string sqlName, std::string&& data
 		return;
 	}
 	Netmsg msg;
-	msg << G_BaseCfgMgr.GetServerId()
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< sqlName
 		<< data;
 

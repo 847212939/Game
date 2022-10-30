@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[G_BaseCfgMgr.GetTimerCnt()])
+PlayerPrep::PlayerPrep() : m_pServerTimer(new CServerTimer[G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt()])
 {
 }
 PlayerPrep::~PlayerPrep()
@@ -11,7 +11,7 @@ PlayerPrep::~PlayerPrep()
 // ³õÊ¼»¯
 void PlayerPrep::Init()
 {
-	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
 	for (int i = 0; i < timerCnt; i++)
 	{
 		m_pServerTimer[i].Start();
@@ -163,7 +163,7 @@ bool PlayerPrep::SetTimer(TimerCmd uTimerID, unsigned int uElapse, unsigned char
 		return false;
 	}
 
-	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{
@@ -183,7 +183,7 @@ bool PlayerPrep::KillTimer(TimerCmd uTimerID)
 		return false;
 	}
 
-	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
 
 	if (timerCnt <= 0 || timerCnt > MAX_TIMER_THRED_NUMS)
 	{

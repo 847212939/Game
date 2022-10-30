@@ -94,7 +94,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 bool CTCPSocketManage::WaitConnect(int threadIndex)
 {
 	// 获取接收线程池数量
-	if (threadIndex >= G_BaseCfgMgr.GetThreadCnt())
+	if (threadIndex >= G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt())
 	{
 		return false;
 	}
@@ -126,7 +126,7 @@ bool CTCPSocketManage::IsServerMsg(int index)
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	const CLogicCfg& DBserverCfg = G_BaseCfgMgr.GetDBServerCfg();
+	const CLogicCfg& DBserverCfg = G_CfgMgr->GetCBaseCfgMgr().GetDBServerCfg();
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
@@ -248,7 +248,7 @@ void CTCPSocketManage::ThreadAccept()
 	evconnlistener_set_error_cb(listener, AcceptErrorCB);
 
 	// 获取接收线程池数量
-	int workBaseCount = G_BaseCfgMgr.GetThreadCnt();
+	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
 		workBaseCount = 8;

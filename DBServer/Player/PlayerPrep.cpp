@@ -43,7 +43,7 @@ void PlayerPrep::Init()
 }
 bool PlayerPrep::InitDB()
 {
-	const CDbCfg& dbCfg = G_BaseCfgMgr.GetDbCfg();
+	const CDbCfg& dbCfg = G_CfgMgr->GetCBaseCfgMgr().GetDbCfg();
 
 	// Á´½ÓÊý¾Ý¿â
 	m_CMysqlHelperSave.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);
