@@ -39,8 +39,6 @@ public:
 	CDataLine* GetRecvDataLine();
 	// 获取发送dataline
 	CDataLine* GetSendDataLine();
-	// 获取条件变量
-	ConditionVariable& GetConditionVariable();
 	// 获取运行线程
 	std::vector<std::thread*>& GetSockeThreadVec();
 	// 获取运行状态
@@ -124,7 +122,7 @@ private:
 	event_config*		 m_eventBaseCfg;
 	event_base*			 m_listenerBase;
 	ServiceType			 m_ServiceType;
-	ConditionVariable	 m_ConditionVariable;
+	std::mutex			 m_mutex;
 
 	SetUint				 m_heartBeatSocketSet;
 	VectorThread		 m_socketThread;
