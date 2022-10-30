@@ -110,8 +110,13 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 	{
 		return;
 	}
-	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
-	if (!tcpInfo)
+	TCPSocketInfo* pDBTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	TCPSocketInfo* pTcpInfo = G_NetClient->GetTCPSocketInfo(loadMysql.uIndex);
+	if (!pDBTcpInfo || !pTcpInfo)
+	{
+		return;
+	}
+	if (pTcpInfo->isCross)
 	{
 		return;
 	}
@@ -127,7 +132,7 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_player, 
-		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer, userid);
+		0, pDBTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer, userid);
 }
 void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 {
@@ -140,8 +145,13 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 	{
 		return;
 	}
-	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
-	if (!tcpInfo)
+	TCPSocketInfo* pDBTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	TCPSocketInfo* pTcpInfo = G_NetClient->GetTCPSocketInfo(loadMysql.uIndex);
+	if (!pDBTcpInfo || !pTcpInfo)
+	{
+		return;
+	}
+	if (pTcpInfo->isCross)
 	{
 		return;
 	}
@@ -157,7 +167,7 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_login,
-		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+		0, pDBTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
 void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 {
@@ -166,8 +176,13 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 	{
 		return;
 	}
-	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
-	if (!tcpInfo)
+	TCPSocketInfo* pDBTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	TCPSocketInfo* pTcpInfo = G_NetClient->GetTCPSocketInfo(loadMysql.uIndex);
+	if (!pDBTcpInfo || !pTcpInfo)
+	{
+		return;
+	}
+	if (pTcpInfo->isCross)
 	{
 		return;
 	}
@@ -182,7 +197,7 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_global,
-		0, tcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
+		0, pDBTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_DBServer);
 }
 
 // ±£´æ
