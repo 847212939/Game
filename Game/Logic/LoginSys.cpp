@@ -94,11 +94,17 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	int serverid = 0;
-	uint64_t userid = 0;
-	msg >> serverid >> userid;
+	unsigned int uIndex = 0;
+	msg >> serverid
+		>> uIndex;
 
+	LoginData* pLoginData = GetLoginInMap(uIndex);
+	if (!pLoginData)
+	{
+		return false;
+	}
 	std::set<int>* serverIdVec = nullptr;
-	auto useridIt = m_ServerIdMap.find(userid);
+	auto useridIt = m_ServerIdMap.find(pLoginData->userId);
 	if (useridIt != m_ServerIdMap.end())
 	{
 		serverIdVec = &(useridIt->second);
@@ -106,8 +112,8 @@ bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	else
 	{
 		std::set<int> tmpServerIdVec;
-		m_ServerIdMap.insert({ userid , tmpServerIdVec });
-		serverIdVec = &(m_ServerIdMap.find(userid)->second);
+		m_ServerIdMap.insert({ pLoginData->userId , tmpServerIdVec });
+		serverIdVec = &(m_ServerIdMap.find(pLoginData->userId)->second);
 	}
 	if (!serverIdVec)
 	{
@@ -343,6 +349,7 @@ void LoginSys::SaveServerIds(uint64_t userid)
 	}
 
 	Netmsg msg;
+	msg << userid;
 	msg << (int)useridIt->second.size();
 	for (auto id : useridIt->second)
 	{
