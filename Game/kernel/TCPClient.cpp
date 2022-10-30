@@ -115,8 +115,6 @@ PlayerPrepClient* TCPClient::GetPlayerPrepClient()
 
 void TCPClient::NotifyAll()
 {
-	GetConditionVariable().NotifyAll();
-
 	CDataLine* RecvDataLine = GetRecvDataLine();
 	CDataLine* SendDataLine = GetSendDataLine();
 	if (!RecvDataLine)

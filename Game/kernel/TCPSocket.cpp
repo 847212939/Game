@@ -534,20 +534,20 @@ int  CTCPSocketManage::AddServerSocketInfo(int threadIndex, PlatformSocketInfo* 
 	}
 	tcpInfo.bHandleAccptMsg = false;
 
-	m_ConditionVariable.GetMutex().lock();	//加锁
+	m_mutex.lock();	//加锁
 	if (m_socketInfoVec[index].isConnect)
 	{
 		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
-		m_ConditionVariable.GetMutex().unlock(); //解锁
+		m_mutex.unlock(); //解锁
 		return index;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
-	m_ConditionVariable.GetMutex().unlock(); //解锁
+	m_mutex.unlock(); //解锁
 
 	return index;
 }
@@ -637,20 +637,20 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	tcpInfo.bHandleAccptMsg = false;
 
-	m_ConditionVariable.GetMutex().lock();	//加锁
+	m_mutex.lock();	//加锁
 	if (m_socketInfoVec[index].isConnect)
 	{
 		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
-		m_ConditionVariable.GetMutex().unlock(); //解锁
+		m_mutex.unlock(); //解锁
 		return;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
-	m_ConditionVariable.GetMutex().unlock(); //解锁
+	m_mutex.unlock(); //解锁
 
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
@@ -876,7 +876,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	bool isCross = tcpInfo->isCross;
 
 	// 加锁
-	m_ConditionVariable.GetMutex().lock();
+	m_mutex.lock();
 	// 重复调用
 	if (!tcpInfo->isConnect)
 	{
@@ -900,7 +900,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 和发送线程相关的锁
 	tcpInfo->Reset(m_ServiceType);
 	// 解锁多线程
-	m_ConditionVariable.GetMutex().unlock();
+	m_mutex.unlock();
 
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo->acceptFd);
@@ -946,7 +946,7 @@ void CTCPSocketManage::GetSocketSet(std::vector<unsigned int>& vec)
 {
 	vec.clear();
 
-	std::lock_guard<std::mutex> guard(m_ConditionVariable.GetMutex());
+	std::lock_guard<std::mutex> guard(m_mutex);
 
 	for (auto iter = m_heartBeatSocketSet.begin(); iter != m_heartBeatSocketSet.end(); iter++)
 	{
@@ -984,10 +984,6 @@ ServiceType CTCPSocketManage::GetServerType()
 {
 	return m_ServiceType;
 }
-ConditionVariable& CTCPSocketManage::GetConditionVariable()
-{
-	return m_ConditionVariable;
-}
 event_base* CTCPSocketManage::GetEventBase()
 {
 	return m_listenerBase;
@@ -1009,7 +1005,7 @@ bool CTCPSocketManage::IsConnected(int index)
 // 分配索引算法
 int CTCPSocketManage::GetSocketIndex()
 {
-	std::lock_guard<std::mutex> guard(m_ConditionVariable.GetMutex());
+	std::lock_guard<std::mutex> guard(m_mutex);
 
 	m_uCurSocketIndex = m_uCurSocketIndex % m_socketInfoVec.size();
 	int index = -1;
