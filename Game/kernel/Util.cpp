@@ -10,9 +10,7 @@ Util* Util::Instance()
 	static Util g_mgr;
 	return &g_mgr;
 }
-Util::Util() : 
-	m_IDGen(new IDGen), 
-	m_TCPClient(new TCPClient)
+Util::Util() : m_IDGen(new IDGen), m_TCPClient(new TCPClient)
 {
 }
 Util::~Util() 
@@ -71,36 +69,6 @@ long long Util::GetSysMilliseconds()
 	auto duration_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now.time_since_epoch());
 	return duration_in_ms.count();
 }
-uint64_t Util::GetCfgSecond(const VectorInt& vec)
-{
-	if (vec.size() < 3)
-	{
-		return 0;
-	}
-
-	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
-}
-uint64_t Util::GetCfgSecondEnd(const VectorInt& vec)
-{
-	if (vec.size() < 6)
-	{
-		return 0;
-	}
-
-	return ((uint64_t)vec[3]) * 60 * 60 + ((uint64_t)vec[4]) * 60 + (uint64_t)vec[5];
-}
-uint64_t Util::GetSysSecond()
-{
-	time_t tick = ::time(nullptr);
-	struct tm tm;
-	tm = *localtime(&tick);
-
-	return ((uint64_t)tm.tm_hour) * 60 * 60 + ((uint64_t)tm.tm_min) * 60 + (uint64_t)tm.tm_sec;
-}
-uint64_t Util::GetOpenServerTime()
-{
-	return m_OpenServerTimeSecond;
-}
 int Util::GetServiceDays()
 {
 	// 开服天数
@@ -131,6 +99,36 @@ bool Util::InitTime()
 	m_OpenServerTimeSecond = mktime(&tm);
 
 	return true;
+}
+uint64_t Util::GetCfgSecond(const VectorInt& vec)
+{
+	if (vec.size() < 3)
+	{
+		return 0;
+	}
+
+	return ((uint64_t)vec[0]) * 60 * 60 + ((uint64_t)vec[1]) * 60 + (uint64_t)vec[2];
+}
+uint64_t Util::GetCfgSecondEnd(const VectorInt& vec)
+{
+	if (vec.size() < 6)
+	{
+		return 0;
+	}
+
+	return ((uint64_t)vec[3]) * 60 * 60 + ((uint64_t)vec[4]) * 60 + (uint64_t)vec[5];
+}
+uint64_t Util::GetSysSecond()
+{
+	time_t tick = ::time(nullptr);
+	struct tm tm;
+	tm = *localtime(&tick);
+
+	return ((uint64_t)tm.tm_hour) * 60 * 60 + ((uint64_t)tm.tm_min) * 60 + (uint64_t)tm.tm_sec;
+}
+uint64_t Util::GetOpenServerTime()
+{
+	return m_OpenServerTimeSecond;
 }
 
 TCPClient* Util::GetTCPClient()
