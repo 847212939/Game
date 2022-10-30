@@ -88,7 +88,9 @@ public:
 	bool IsServerMsg(int index);
 	// 跨服消息转发
 	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
+	// 客户端消息转发到跨服服务器
 	bool MsgForwardToCross(int index, NetMessageHead* pHead, char* pData);
+	// 跨服消息转发到客户端
 	bool MsgForwardToClient(int index, NetMessageHead* pHead, char* pData);
 
 private:
