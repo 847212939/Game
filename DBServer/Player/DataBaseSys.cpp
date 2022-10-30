@@ -85,7 +85,7 @@ bool DataBaseSys::CreateLoginMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 2);
+	Netmsg msg((char*)playerInfo->pData, 3);
 
 	int serverType = 0;
 	int cnt = 0;
@@ -113,7 +113,7 @@ bool DataBaseSys::CreateGlobalMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 2);
+	Netmsg msg((char*)playerInfo->pData, 3);
 
 	int serverType = 0;
 	int cnt = 0;
@@ -141,7 +141,7 @@ bool DataBaseSys::CreatePlayerMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 2);
+	Netmsg msg((char*)playerInfo->pData, 3);
 
 	int serverType = 0;
 	int cnt = 0;
@@ -170,7 +170,7 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 6);
+	Netmsg msg((char*)playerInfo->pData, 7);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -212,7 +212,7 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 8);
+	Netmsg msg((char*)playerInfo->pData, 9);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -263,7 +263,7 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 5);
+	Netmsg msg((char*)playerInfo->pData, 6);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -300,7 +300,7 @@ bool DataBaseSys::SaveReplaceGlobalMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 3);
+	Netmsg msg((char*)playerInfo->pData, 4);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -325,7 +325,7 @@ bool DataBaseSys::SaveReplacePlayerMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 4);
+	Netmsg msg((char*)playerInfo->pData, 5);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -353,7 +353,7 @@ bool DataBaseSys::SaveReplaceLoginMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 4);
+	Netmsg msg((char*)playerInfo->pData, 5);
 
 	int serverType = 0;
 	int serverid = 0;
