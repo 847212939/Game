@@ -20,10 +20,6 @@ public:
 	// 初始化
 	bool Init(int maxCount, int port, const char* ip = nullptr, 
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
-	// 连接服务器
-	bool ConnectServer();
-	// 休眠
-	void Sleepseconds(int seconds);
 
 public:
 	/**
@@ -47,8 +43,7 @@ public:
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
 	// 分配socketIndex算法
 	int GetSocketIndex();
-	// 添加TCPSocketInfo
-	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	// 转到内部消息
 	void ServerSocketInfo(PlatformSocketInfo* pTCPSocketInfo);
 	// 消息发送
 	bool BuffereventWrite(int index, void* data, unsigned int size);
@@ -134,6 +129,11 @@ private:
 	bool DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 
+public:
+	// 连接服务器
+	bool ConnectServer();
+	// 休眠
+	void Sleepseconds(int seconds);
 private:
 	// 对称加密测试连接
 	bool VerifyConnection(int index, char* data);
@@ -208,6 +208,23 @@ private:
 	static int FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg);
 	static void FetchPrint(const WebSocketMsg& wbmsg);
 #endif
+
+private:
+	// 添加TCPSocketInfo
+	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
+	// 获取bufferevent
+	struct bufferevent* GetBufferEvent(struct event_base* base, SOCKFD& fd, SSL* ssl);
+	// 设置内部服务器index
+	void SetServerIndex(SOCKFD& fd, int index);
+	// 设置客户端心跳
+	void SetHeartbeat(struct bufferevent* bev, int index);
+	// 保存TCPSocketInfo
+	bool SaveTCPSocketInfo(PlatformSocketInfo* pTCPSocketInfo, struct bufferevent* bev, int index, TCPSocketInfo& tcpInfo);
+	// AddTCPSocketInfo后后续处理
+	void AddTCPSocketInfoAfter(int index, TCPSocketInfo& tcpInfo, SSL* ssl);
+public:
+	// 是否是内部服务器索引
+	bool IsServerIndex(int index);
 
 private:
 	bool				 m_running;

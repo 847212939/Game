@@ -242,7 +242,7 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	else
 	{
-		sock = GetNewSocket();
+		/*sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectDBServer(sock))
@@ -252,7 +252,7 @@ bool CTCPSocketManage::ConnectServer()
 			Sleepseconds(5);
 		}
 
-		/*sock = GetNewSocket();
+		sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectCrossServer(sock, 1))
@@ -504,96 +504,59 @@ void CTCPSocketManage::ServerSocketInfo(PlatformSocketInfo* tcpInfo)
 		Log(CERR, "投递连接消息失败,fd=%d", tcpInfo->acceptFd);
 	}
 }
-void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
+struct bufferevent* CTCPSocketManage::GetBufferEvent(struct event_base* base, SOCKFD& fd, SSL* ssl)
 {
-	struct event_base* base = m_workBaseVec[threadIndex].base;
-	struct bufferevent* bev = nullptr;
-	SOCKFD fd = pTCPSocketInfo->acceptFd;
-#ifdef __WebSocketOpenssl__
-	SSL* ssl = nullptr;
-#endif
-
-	// 分配索引算法
-	int index = GetSocketIndex();
-	if (index < 0)
-	{
-		Log(CERR, "分配索引失败！！！fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		return;
-	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
 #ifdef __WebSocketOpenssl__
 		ssl = SSL_new(m_ctx);
 		if (!ssl)
 		{
-			Log(CERR, "SSL_new null fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-			return;
+			Log(CERR, "SSL_new null");
+			return nullptr;
 		}
-		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
+		return bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
 			BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
 #endif
 	}
 	else
 	{
-		bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
-	}
-	if (!bev)
-	{
-		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		return;
+		return bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 	}
 
-	// 设置应用层收发数据包，单次大小
-	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
-
-	// 生成回调函数参数，调用bufferevent_free要释放内存，否则内存泄露
-	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
-	pRecvThreadParam->pThis = this;
-	pRecvThreadParam->index = index;
-
-	// 添加事件，并设置好回调函数
-	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
-	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
+	return nullptr;
+}
+void CTCPSocketManage::SetServerIndex(SOCKFD& fd, int index)
+{
+	if (m_CrossServerSock == fd && m_CrossServerIndex < 0)
 	{
-		Log(CERR, "add event fail!!!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
-		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
-		return;
+		m_CrossServerIndex = index;
 	}
-
-	if (m_CrossServerSock == fd)
+	else if (m_DBServerSock == fd && m_DBServerIndex < 0)
 	{
-		if (m_CrossServerIndex < 0)
-		{
-			m_CrossServerIndex = index;
-		}
+		m_DBServerIndex = index;
 	}
-	else if (m_DBServerSock == fd)
+}
+bool CTCPSocketManage::IsServerIndex(int index)
+{
+	return index == m_CrossServerIndex || index == m_DBServerIndex;
+}
+void CTCPSocketManage::SetHeartbeat(struct bufferevent* bev, int index)
+{
+	// 设置读超时，当做心跳。网关服务器才需要
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
+		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		if (m_DBServerIndex < 0)
-		{
-			m_DBServerIndex = index;
-		}
+		timeval tvRead;
+		tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
+		tvRead.tv_usec = 0;
+		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
-	else
-	{
-		// 设置读超时，当做心跳。网关服务器才需要
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
-			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
-			m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
-			timeval tvRead;
-			tvRead.tv_sec = CHECK_HEAETBEAT_SECS * KEEP_ACTIVE_HEARTBEAT_COUNT;
-			tvRead.tv_usec = 0;
-			bufferevent_set_timeouts(bev, &tvRead, nullptr);
-		}
-	}
-
+}
+bool CTCPSocketManage::SaveTCPSocketInfo(PlatformSocketInfo* pTCPSocketInfo, struct bufferevent* bev, int index, TCPSocketInfo& tcpInfo)
+{
 	// 保存信息
-	TCPSocketInfo tcpInfo;
 	memcpy(tcpInfo.ip, pTCPSocketInfo->ip, sizeof(tcpInfo.ip));
 	tcpInfo.acceptFd = pTCPSocketInfo->acceptFd;
 	tcpInfo.acceptMsgTime = pTCPSocketInfo->acceptMsgTime;
@@ -610,36 +573,88 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_mutex.lock();	//加锁
 	if (m_socketInfoVec[index].isConnect)
 	{
-		Log(CERR, "分配索引失败,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
-		closesocket(fd);
+		Log(CERR, "分配索引失败,fd=%d,ip=%s", pTCPSocketInfo->acceptFd, pTCPSocketInfo->ip);
+		closesocket(pTCPSocketInfo->acceptFd);
 		bufferevent_free(bev);
-		SafeDelete(pRecvThreadParam);
 		m_mutex.unlock(); //解锁
-		return;
+		return false;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
 	m_mutex.unlock(); //解锁
 
-	if (IsServerMsg(index))
+	return true;
+}
+void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo)
+{
+	struct event_base* base = m_workBaseVec[threadIndex].base;
+	SOCKFD fd = pTCPSocketInfo->acceptFd;
+	struct bufferevent* bev = nullptr;
+	SSL* ssl = nullptr;
+
+	// 分配索引算法
+	int index = GetSocketIndex();
+	if (index < 0)
+	{
+		Log(CERR, "分配索引失败");
+		closesocket(fd);
+		return;
+	}
+	bev = GetBufferEvent(base, fd, ssl);
+	if (!bev)
+	{
+		Log(CERR, "!bev");
+		closesocket(fd);
+		return;
+	}
+
+	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
+
+	// 生成回调函数参数，调用bufferevent_free要释放内存，否则内存泄露
+	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
+	pRecvThreadParam->pThis = this;
+	pRecvThreadParam->index = index;
+
+	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
+	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
+	{
+		Log(CERR, "bufferevent_enable(bev, EV_READ | EV_ET) < 0");
+		closesocket(fd);
+		bufferevent_free(bev);
+		SafeDelete(pRecvThreadParam);
+		return;
+	}
+	// 返回只读的不改变原先的值
+	TCPSocketInfo tcpInfo;
+	if (!SaveTCPSocketInfo(pTCPSocketInfo, bev, index, tcpInfo))
+	{
+		SafeDelete(pRecvThreadParam);
+		return;
+	}
+	SetServerIndex(fd, index);
+	if (!IsServerIndex(index))
+	{
+		SetHeartbeat(bev, index);
+	}
+	// 后续处理
+	AddTCPSocketInfoAfter(index, tcpInfo, ssl);
+
+	return;
+}
+void CTCPSocketManage::AddTCPSocketInfoAfter(int index, TCPSocketInfo& tcpInfo, SSL* ssl)
+{
+	if (IsServerIndex(index))
 	{
 		return;
 	}
-	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		return;
-	}
-	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-	{
-#ifdef __WebSocketOpenssl__
 		TCPSocketInfo* tcpInfo1 = GetTCPSocketInfo(index);
 		if (tcpInfo1)
 		{
 			tcpInfo1->ssl = ssl;
 		}
-#endif
-		return;
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
@@ -652,11 +667,8 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	{
 		Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
 			tcpInfo.ip, tcpInfo.port, index, tcpInfo.acceptFd, tcpInfo.bev);
-		return;
 	}
-	return;
 }
-
 void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockaddr* sa, int socklen, void* data)
 {
 	CTCPSocketManage* pThis = (CTCPSocketManage*)data;
@@ -788,11 +800,9 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	link = 0;
 	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-#ifdef __WebSocketOpenssl__
 		SSL_shutdown(ssl);
 		SSL_free(ssl);
 		ssl = nullptr;
-#endif
 	}
 	isCross = false;
 
@@ -886,15 +896,12 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 清理登录内存
 	G_PlayerPrepClient->GetLoginSys().DelLoginInMap(index);
 
-	if (IsServerMsg(index))
+	if (IsServerIndex(index))
 	{
-		Log(CERR, "服务器异常断开链接请检查游戏逻辑 index=%d",index);
+		Log(CINF, "服务器异常断开链接请检查游戏逻辑 index=%d", index);
 	}
-	else
-	{
-		Log(CINF, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
-			tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
-	}
+	Log(CINF, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
+		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 }
 
 CDataLine* CTCPSocketManage::GetRecvDataLine()
@@ -1268,42 +1275,45 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/, bool WSPackData/* = true*/)
 {
-	if (IsServerMsg(index))
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
-		if (GetServerType() == ServiceType::SERVICE_TYPE_CROSS && GetDBServerIndex() != index && userid > 0)
-		{
-			PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid); 
-			if (player)
-			{
-				Netmsg msg;
-				msg << player->GetLogicIndex()
-					<< pData;
-
-				return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
-			}
-		}
 		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
-	else
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-		{
-#ifdef __WebSocket__
-			return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
-		}
-		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
-#ifdef __WebSocketOpenssl__
-			return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
-#endif
-		}
-		else
+		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		// 向DB发送消息
+		if (index == GetDBServerIndex())
 		{
 			return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 		}
-	}
+		// 向本服发送消息
+		else
+		{
+			if (userid <= 0)
+			{
+				return false;
+			}
+			PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid);
+			if (!player)
+			{
+				return false;
+			}
 
+			Netmsg msg;
+			msg << player->GetLogicIndex()
+				<< pData;
+			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+		}
+	}
+	
 	return true;
 }
 bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
@@ -1319,7 +1329,6 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 		Log(CERR, "socketIdx close, index=%d, mainID=%d assistID=%d", index, mainID, assistID);
 		return false;
 	}
-
 	if (size < 0 || size > MAX_TEMP_SENDBUF_SIZE - sizeof(NetMessageHead))
 	{
 		Log(CERR, "invalid message size size=%lld", size);
@@ -1344,25 +1353,21 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 	}
 
 	// 投递到发送队列
-	if (m_pSendDataLine)
+	SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
+	pLineHead->dataLineHead.uSize = pHead->uMessageSize;
+	pLineHead->socketIndex = index;
+	pLineHead->pBufferevent = pBufferevent;
+
+	unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
+
+	if (addBytes == 0)
 	{
-		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
-		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
-		pLineHead->socketIndex = index;
-		pLineHead->pBufferevent = pBufferevent;
-
-		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
-
-		if (addBytes == 0)
-		{
-			Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
-			return false;
-		}
+		Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+		return false;
 	}
 
 	return true;
 }
-#ifdef __WebSocket__
 bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
 	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
@@ -1394,20 +1399,17 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 		}
 
 		// 投递到发送队列
-		if (m_pSendDataLine)
+		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
+		pLineHead->dataLineHead.uSize = (unsigned int)size;
+		pLineHead->socketIndex = index;
+		pLineHead->pBufferevent = pBufferevent;
+
+		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + (unsigned int)size);
+
+		if (addBytes == 0)
 		{
-			SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
-			pLineHead->dataLineHead.uSize = (unsigned int)size;
-			pLineHead->socketIndex = index;
-			pLineHead->pBufferevent = pBufferevent;
-
-			unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + (unsigned int)size);
-
-			if (addBytes == 0)
-			{
-				Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
-				return false;
-			}
+			Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+			return false;
 		}
 	}
 	// 包装数据
@@ -1437,33 +1439,27 @@ bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size,
 		}
 
 		// 投递到发送队列
-		if (m_pSendDataLine)
+		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
+		pLineHead->dataLineHead.uSize = pHead->uMessageSize;
+		pLineHead->socketIndex = index;
+		pLineHead->pBufferevent = pBufferevent;
+
+		unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
+
+		if (addBytes == 0)
 		{
-			SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
-			pLineHead->dataLineHead.uSize = pHead->uMessageSize;
-			pLineHead->socketIndex = index;
-			pLineHead->pBufferevent = pBufferevent;
-
-			unsigned int addBytes = m_pSendDataLine->AddData(pLineHead, sizeof(SendDataLineHead) + pHead->uMessageSize);
-
-			if (addBytes == 0)
-			{
-				Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
-				return false;
-			}
+			Log(CERR, "投递消息失败,mainID=%d,assistID=%d", mainID, assistID);
+			return false;
 		}
 	}
 
 	return true;
 }
-#endif
-#ifdef __WebSocketOpenssl__
 bool CTCPSocketManage::SendLogicWssMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
 	return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, PackData);
 }
-#endif
 
 // 发送线程消息处理发送
 void CTCPSocketManage::ThreadSendMsg()
@@ -1506,28 +1502,21 @@ void CTCPSocketManage::HandleSendMsg(ListItemData* pListItem)
 	{
 		return;
 	}
-	if (IsServerMsg(pSocketSend->socketIndex))
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
 		HandleSendData(pListItem);
 	}
-	else
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
-		{
-#ifdef __WebSocket__
-			HandleSendWsData(pListItem);
-#endif
-		}
-		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
-#ifdef __WebSocketOpenssl__
-			HandleSendWssData(pListItem);
-#endif
-		}
-		else
-		{
-			HandleSendData(pListItem);
-		}
+		HandleSendWsData(pListItem);
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		HandleSendWssData(pListItem);
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		HandleSendData(pListItem);
 	}
 
 	SafeDeleteArray(pListItem->pData);
@@ -1545,7 +1534,6 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 		return;
 	}
 }
-#ifdef __WebSocket__
 void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 {
 	SendDataLineHead* pSocketSend = reinterpret_cast<SendDataLineHead*>(pListItem->pData);
@@ -1656,53 +1644,43 @@ void CTCPSocketManage::HandleSendWsData(ListItemData* pListItem)
 	}
 	return;
 }
-#endif
-#ifdef __WebSocketOpenssl__
 void CTCPSocketManage::HandleSendWssData(ListItemData* pListItem)
 {
 	HandleSendWsData(pListItem);
 }
-#endif
 
 // 接收消息进行解包处理
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 {
-	if (IsServerMsg(index))
+	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
 		if (!RecvLogicData(bev, index))
 		{
 			return false;
 		}
 	}
-	else
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
-		if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
+		if (!RecvLogicWsData(bev, index))
 		{
-#ifdef __WebSocket__
-			if (!RecvLogicWsData(bev, index))
-			{
-				return false;
-			}
-#endif
-		}
-		else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
-		{
-#ifdef __WebSocketOpenssl__
-			if (!RecvLogicWssData(bev, index))
-			{
-				return false;
-			}
-#endif
-		}
-		else
-		{
-			if (!RecvLogicData(bev, index))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
-	
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+	{
+		if (!RecvLogicWssData(bev, index))
+		{
+			return false;
+		}
+	}
+	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		if (!RecvLogicData(bev, index))
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
@@ -1768,7 +1746,6 @@ bool CTCPSocketManage::RecvLogicData(bufferevent* bev, int index)
 	evbuffer_drain(input, realAllSize - handleRemainSize);
 	return true;
 }
-#ifdef __WebSocket__
 bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
@@ -1898,16 +1875,12 @@ bool CTCPSocketManage::RecvLogicWsData(bufferevent* bev, int index)
 
 	return true;
 }
-#endif
-#ifdef __WebSocketOpenssl__
 bool CTCPSocketManage::RecvLogicWssData(bufferevent* bev, int index)
 {
 	return RecvLogicWsData(bev, index);
 }
-#endif
 
 // 进行openssl握手
-#ifdef __WebSocketOpenssl__
 bool CTCPSocketManage::OpensslInit()
 {
 	SSL_library_init();//初始化库
@@ -1945,9 +1918,6 @@ bool CTCPSocketManage::OpensslInit()
 
 	return true;
 }
-#endif
-
-#ifdef __WebSocket__
 bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 {
 	struct evbuffer* input = bufferevent_get_input(bev);
@@ -2037,9 +2007,7 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 	
 	return true;
 }
-#endif
 
-#ifdef __WebSocket__
 int CTCPSocketManage::FetchFin(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.fin = (unsigned char)msg[pos] >> 7;
@@ -2114,7 +2082,6 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 	Log(CINF, "WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
 }
-#endif
 
 // 网络消息派发
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, 

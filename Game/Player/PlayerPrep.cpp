@@ -40,7 +40,7 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "!tcpInfo");
 		return;
 	}
-	if (!G_NetClient->IsServerMsg(index))
+	if (!G_NetClient->IsServerIndex(index))
 	{
 		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
 		{
