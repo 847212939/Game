@@ -20,7 +20,7 @@ int main()
 	}
 
 	IDGen& idGen = G_Util->GetIDGen();
-	idGen.Init((int)type, G_BaseCfgMgr.GetServerId());
+	idGen.Init((int)type, G_CfgMgr->GetCBaseCfgMgr().GetServerId());
 
 	if (!G_NetClient->Init(type))
 	{

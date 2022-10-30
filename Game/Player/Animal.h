@@ -30,19 +30,19 @@ public:
 	void SetSkillAcitve(int pos, bool active);
 
 public:
-	GetSetMem(int, Sceneid)				// 场景id
-	GetSetMem(uint64_t, ID)				// 唯一ID
-	GetSetMem(Transform, transform)		// 坐标
-	GetSetMem(bool, Lived)				// 是否复活
-	GetSetMem(time_t, ResuTime)			// 复活时间
-	GetSetMem(time_t, RefreshTime)		// 刷新时间
-	GetSetMem(int, Animalid)			// 动物id区分是什么动物
-	GetSetMem(HeroType, Animaltype)		// 英雄分类
-	GetSetMem(std::string, Animalname)	// 英雄name
+	BuildValue(int, Sceneid)				// 场景id
+	BuildValue(uint64_t, ID)				// 唯一ID
+	BuildValue(Transform, transform)		// 坐标
+	BuildValue(bool, Lived)				// 是否复活
+	BuildValue(time_t, ResuTime)			// 复活时间
+	BuildValue(time_t, RefreshTime)		// 刷新时间
+	BuildValue(int, Animalid)			// 动物id区分是什么动物
+	BuildValue(HeroType, Animaltype)		// 英雄分类
+	BuildValue(std::string, Animalname)	// 英雄name
 
-	GetSetMem(int, Silencetime)			// 技能沉默时间(单位毫秒/100)
-	GetSetMem(int, Striketime)			// 技能击飞时间(单位毫秒/100)
-	GetSetMem(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
+	BuildValue(int, Silencetime)			// 技能沉默时间(单位毫秒/100)
+	BuildValue(int, Striketime)			// 技能击飞时间(单位毫秒/100)
+	BuildValue(int, Confinementtime)		// 技能禁锢时间(单位毫秒/100)
 
 public:
 	MapAttrsCmdInt	m_AttrsMap;				// 属性集合

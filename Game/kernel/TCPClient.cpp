@@ -132,7 +132,7 @@ void TCPClient::NotifyAll()
 		Log(CERR, "pCServerTimer = null");
 		return;
 	}
-	int timerCnt = G_BaseCfgMgr.GetTimerCnt();
+	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
 
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();

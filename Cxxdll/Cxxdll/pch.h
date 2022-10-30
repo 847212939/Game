@@ -11,7 +11,7 @@
 #define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
 // Get Set mem cpy
-#define GetSetMem(type,Name)\
+#define BuildValue(type,Name)\
 private:\
 	type m_##Name;\
 public:\
@@ -27,13 +27,18 @@ public:\
 private:
 
 // 类型返回以引用方式
-#define GetClass(type,Name)\
+#define BuildReference(type,Name)\
 private:\
 	type m_##Name;\
 public:\
 	type& Get##Name()\
 	{\
 		return this->m_##Name;\
+	}\
+public:\
+	void Set##Name(type& _arg)\
+	{\
+		this->m_##Name=_arg;\
 	}\
 private:
 

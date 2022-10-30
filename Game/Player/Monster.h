@@ -14,5 +14,5 @@ public:
 	void Death();
 
 public:
-	GetSetMem(int, Monsterid)
+	BuildValue(int, Monsterid)
 };

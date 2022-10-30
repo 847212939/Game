@@ -27,5 +27,5 @@ private:
 	SceneClient	m_SceneClient;
 
 public:
-	GetClass(LoginSys, LoginSys)	// 登录系统
+	BuildReference(LoginSys, LoginSys)	// 登录系统
 };

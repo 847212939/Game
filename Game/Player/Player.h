@@ -55,11 +55,11 @@ public:
 
 public:
 	// 玩家网名
-	GetSetMem(std::string, Playername)
+	BuildValue(std::string, Playername)
 	// 玩家是否初始化完成
-	GetSetMem(bool, Load)
+	BuildValue(bool, Load)
 	// 玩家是否初始化完成
-	GetSetMem(unsigned int, Index)
+	BuildValue(unsigned int, Index)
 
 private:
 	// 回调函数集合

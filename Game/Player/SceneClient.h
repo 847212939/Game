@@ -20,6 +20,6 @@ private:
 	PlayerCenterClient	m_PlayerCenterClient;
 
 public:
-	GetClass(ActivityHallSys, ActivityHallSys)		// 活动系统
-	GetClass(SkillSys, SkillSys)					// 技能系统 
+	BuildReference(ActivityHallSys, ActivityHallSys)		// 活动系统
+	BuildReference(SkillSys, SkillSys)					// 技能系统 
 };
