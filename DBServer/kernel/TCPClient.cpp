@@ -25,8 +25,8 @@ TCPClient::~TCPClient()
 
 bool TCPClient::Init(ServiceType serverType)
 {
-	const CServerCfg& serverCfg = BaseCfgMgr.GetServerCfg();
-	int maxSocketCnt = BaseCfgMgr.GetMaxSocketCnt();
+	const CServerCfg& serverCfg = G_BaseCfgMgr.GetServerCfg();
+	int maxSocketCnt = G_BaseCfgMgr.GetMaxSocketCnt();
 
 	if (!CTCPSocketManage::Init(maxSocketCnt, serverCfg.port, serverCfg.ip.c_str(), serverType))
 	{
@@ -114,7 +114,7 @@ void TCPClient::NotifyAll()
 	
 	RecvDataLine->GetConditionVariable().NotifyAll();
 	SendDataLine->GetConditionVariable().NotifyAll();
-	DPPC->GetConditionVariable().NotifyAll();
+	G_PlayerPrepClient->GetConditionVariable().NotifyAll();
 }
 
 void TCPClient::SocketCallback(void* pDataLineHead)

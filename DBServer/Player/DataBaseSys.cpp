@@ -91,7 +91,7 @@ bool DataBaseSys::CreateLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string sqlName;
 	msg >> sqlName >> cnt;
 
-	DPPC->CreateLoginTable(sqlName, cnt);
+	G_PlayerPrepClient->CreateLoginTable(sqlName, cnt);
 
 	return true;
 }
@@ -110,7 +110,7 @@ bool DataBaseSys::CreateGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string sqlName;
 	msg >> sqlName >> cnt;
 
-	DPPC->CreateGlobalTable(sqlName, cnt);
+	G_PlayerPrepClient->CreateGlobalTable(sqlName, cnt);
 
 	return true;
 }
@@ -129,7 +129,7 @@ bool DataBaseSys::CreatePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string sqlName;
 	msg >> sqlName >> cnt;
 
-	DPPC->CreatePlayerTable(sqlName, cnt);
+	G_PlayerPrepClient->CreatePlayerTable(sqlName, cnt);
 
 	return true;
 }
@@ -154,12 +154,12 @@ bool DataBaseSys::LoadPlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	unsigned int uIdentification = 0;
 
 	msg >> serverid >> userid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
-	DPPC->LoadPlayerMysql(sqlName, serverid, userid, outStr);
+	G_PlayerPrepClient->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
 	msgCout << serverid << userid << outStr;
 
-	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -186,7 +186,7 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	unsigned int uIdentification = 0;
 
 	msg >> serverid >> userid >> passWord >> index >> sqlName >> uMainID >> uAssistantID >> uIdentification;
-	DPPC->LoadLoginMysql(sqlName, serverid, userid, outStr);
+	G_PlayerPrepClient->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
 	msgCout << userid << passWord << index;
@@ -195,7 +195,7 @@ bool DataBaseSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		msgCout << outStr;
 	}
 
-	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -219,12 +219,12 @@ bool DataBaseSys::LoadGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	unsigned int uIdentification = 0;
 
 	msg >> serverid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
-	DPPC->LoadGlobalMysql(sqlName, serverid, outStr);
+	G_PlayerPrepClient->LoadGlobalMysql(sqlName, serverid, outStr);
 
 	Netmsg msgCout;
 	msgCout << outStr;
 
-	DTCPC->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -245,7 +245,7 @@ bool DataBaseSys::SaveReplaceGlobalMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> sqlName >> data;
-	DPPC->SaveReplaceGlobalMysql(sqlName, serverid, data);
+	G_PlayerPrepClient->SaveReplaceGlobalMysql(sqlName, serverid, data);
 
 	return true;
 }
@@ -265,7 +265,7 @@ bool DataBaseSys::SaveReplacePlayerMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> userid >> sqlName >> data;
-	DPPC->SaveReplacePlayerMysql(sqlName, serverid, userid, data);
+	G_PlayerPrepClient->SaveReplacePlayerMysql(sqlName, serverid, userid, data);
 
 	return true;
 }
@@ -285,7 +285,7 @@ bool DataBaseSys::SaveReplaceLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	std::string data;
 
 	msg >> serverid >> userid >> sqlName >> data;
-	DPPC->SaveReplaceLoginMysql(sqlName, serverid, userid, data);
+	G_PlayerPrepClient->SaveReplaceLoginMysql(sqlName, serverid, userid, data);
 
 	return true;
 }

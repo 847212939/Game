@@ -49,9 +49,9 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 	sprintf(buf + strlen(buf), " {%s:%d}\n", pFuncName, line);
 
-	std::string strPath = LogMgr->GetLogPath() + pLogfile;
+	std::string strPath = G_LogMgr->GetLogPath() + pLogfile;
 
-	FILE* fp = LogMgr->GetLogFileFp(std::move(pLogfile));
+	FILE* fp = G_LogMgr->GetLogFileFp(std::move(pLogfile));
 	if (!fp)
 	{
 		fp = fopen(strPath.c_str(), "a+");
@@ -59,11 +59,11 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 		{
 			return;
 		}
-		LogMgr->AddLogFileFp(pLogfile, fp);
+		G_LogMgr->AddLogFileFp(pLogfile, fp);
 	}
 
-	std::list<std::pair<FILE*, std::string>>& logMap = LogMgr->GetLogMap();
-	std::lock_guard<std::mutex> guard(LogMgr->GetMutex());
+	std::list<std::pair<FILE*, std::string>>& logMap = G_LogMgr->GetLogMap();
+	std::lock_guard<std::mutex> guard(G_LogMgr->GetMutex());
 	logMap.push_back(std::make_pair(fp, buf));
 }
 
@@ -307,7 +307,7 @@ void CGameLogManage::Fflush(char* logBuf)
 void CGameLogManage::HandlerLogThread(bool& run)
 {
 	char* logBuf = new char[LOG_BUF_LEN];
-	int tm = BaseCfgMgr.GetLogPrintTm();
+	int tm = G_BaseCfgMgr.GetLogPrintTm();
 
 	while (run)
 	{

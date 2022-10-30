@@ -80,15 +80,15 @@ void Util::Exit(bool& run)
 	{
 		std::cin >> str;
 
-		if (str == BaseCfgMgr.GetExit())
+		if (str == G_BaseCfgMgr.GetExit())
 		{
 			run = false;
 			break;
 		}
 	}
 
-	DTCPC->Stop();
-	DTCPC->NotifyAll();
+	G_NetClient->Stop();
+	G_NetClient->NotifyAll();
 }
 
 ListString Util::StringSplit(std::string& str, std::string separator, size_t count/* = 0*/)
