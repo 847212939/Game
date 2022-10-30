@@ -555,6 +555,7 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	// 重复调用
 	if (!tcpInfo->isConnect)
 	{
+		m_mutex.unlock();
 		return;
 	}
 	// 如果锁没有分配内存，就分配
