@@ -152,7 +152,7 @@ bool CTCPSocketManage::ConnectCrossServer()
 	tcpInfo.port = CrossServerCfg.port;
 	tcpInfo.acceptFd = sock;	//服务器accept返回套接字用来和客户端通信
 
-	int threadIndex = 0;
+	int threadIndex = 1;
 	if (!WaitConnect(threadIndex))
 	{
 		Log(CINF, "连接服跨服失败");
@@ -208,13 +208,18 @@ bool CTCPSocketManage::ConnectDBServer()
 }
 bool CTCPSocketManage::ConnectServer()
 {
+	// 连接DB服务器
 	if (!ConnectDBServer())
 	{
 		return false;
 	}
-	if (!ConnectCrossServer())
+	// 连接跨服服务器
+	if (m_iServiceType != ServiceType::SERVICE_TYPE_GAMECENTER)
 	{
-		return false;
+		if (!ConnectCrossServer())
+		{
+			return false;
+		}
 	}
 
 	return true;
