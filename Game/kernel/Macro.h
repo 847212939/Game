@@ -146,28 +146,28 @@ else{pobj->AddMysqlCallback(loadMysql);}
 }
 
 // ÈÕÖ¾´òÓ¡
-#define COUT_LOG(ERRTYPE, ...)\
-if (ERRTYPE == LOG_ERROR)\
+#define COUT_LOG(logtype, ...)\
+if (logtype == LOG_ERROR)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (ERRTYPE == LOG_INFO)\
+else if (logtype == LOG_INFO)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (ERRTYPE == LOG_WARN)\
+else if (logtype == LOG_WARN)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_WARN, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (ERRTYPE == LOG_CERROR)\
+else if (logtype == LOG_CERROR)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (ERRTYPE == LOG_CINFO)\
+else if (logtype == LOG_CINFO)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_CINFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
-else if (ERRTYPE == LOG_ERROR_SYS)\
+else if (logtype == LOG_ERROR_SYS)\
 {\
 	CLog::Write(G_LogMgr->GetErrorLog().c_str(), LOG_ERROR_SYS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);\
 }\
