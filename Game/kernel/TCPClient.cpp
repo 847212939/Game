@@ -38,14 +38,24 @@ bool TCPClient::Init(ServiceType serverType)
 	{
 		return false;
 	}
+
+	m_PlayerPrepClient->Init();
+	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+
+	// 连接服务器
 	if (!ConnectServer())
 	{
 		return false;
 	}
 
-	m_PlayerPrepClient->Init();
-	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
-	
+	// 创建数据库
+	DPPC->InitMysqlTable();
+
+	// 注册全局数据库回调函数
+	DPPC->RegisterGlobalCallBack();
+	DSC->RegisterGlobalCallBack();
+	DPCC->RegisterGlobalCallBack();
+
 	COUT_LOG(LOG_CINFO, "Server initialization succeeded");
 	return true;
 }

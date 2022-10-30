@@ -161,9 +161,6 @@ bool CTCPSocketManage::ConnectServer()
 
 	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
-	DPPC->InitMysqlTable();
-	DPPC->GetConditionVariable().NotifyAll();
-
 	COUT_LOG(LOG_CINFO, "连接服DB成功 [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
 	return true;

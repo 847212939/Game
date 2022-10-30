@@ -11,6 +11,8 @@ protected:
 	SceneClient& operator=(const SceneClient& my);
 
 public:
+	// 注册场景相关的数据库回调
+	void RegisterGlobalCallBack();
 	// 获取玩家中心
 	PlayerCenterClient* GetPlayerCenterClient();
 

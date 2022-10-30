@@ -9,6 +9,7 @@ public:
 public:
 	// 建立数据库
 	void InitMysqlTable();
+	void RegisterGlobalCallBack();
 
 protected:
 	PlayerPrepClient(const PlayerPrepClient& my);
