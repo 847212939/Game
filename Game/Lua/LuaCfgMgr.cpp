@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Config
-** Generated automatically by tolua++-1.0.92 on Sun Oct 30 17:20:54 2022.
+** Generated automatically by tolua++-1.0.92 on Sun Oct 30 17:54:17 2022.
 */
 
 #ifndef __cplusplus
@@ -17,13 +17,6 @@ TOLUA_API int  tolua_Config_open (lua_State* tolua_S);
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus
-
-static int tolua_collect_CSkillIdList (lua_State* tolua_S)
-{
- CSkillIdList* self = (CSkillIdList*) tolua_tousertype(tolua_S,1,0);
-	Mtolua_delete(self);
-	return 0;
-}
 
 static int tolua_collect_CActivityList (lua_State* tolua_S)
 {
@@ -46,9 +39,9 @@ static int tolua_collect_CBrushMonsterCfg (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_CDbCfg (lua_State* tolua_S)
+static int tolua_collect_CSkillIdList (lua_State* tolua_S)
 {
- CDbCfg* self = (CDbCfg*) tolua_tousertype(tolua_S,1,0);
+ CSkillIdList* self = (CSkillIdList*) tolua_tousertype(tolua_S,1,0);
 	Mtolua_delete(self);
 	return 0;
 }
@@ -84,11 +77,10 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CBaseCfgMgr");
  tolua_usertype(tolua_S,"CLogicCfg");
  tolua_usertype(tolua_S,"MapAttrsCmdInt");
- tolua_usertype(tolua_S,"CActivityList");
- tolua_usertype(tolua_S,"CDbCfg");
+ tolua_usertype(tolua_S,"CHeroList");
  tolua_usertype(tolua_S,"ConfigMgr");
  tolua_usertype(tolua_S,"CSkillIdList");
- tolua_usertype(tolua_S,"CHeroList");
+ tolua_usertype(tolua_S,"CActivityList");
 }
 
 /* method: new of class  ConfigMgr */
@@ -305,39 +297,6 @@ static int tolua_Config_ConfigMgr_ReadDBServerCfg00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ReadDBServerCfg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: ReadDbCfg of class  ConfigMgr */
-#ifndef TOLUA_DISABLE_tolua_Config_ConfigMgr_ReadDbCfg00
-static int tolua_Config_ConfigMgr_ReadDbCfg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"ConfigMgr",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"CDbCfg",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  ConfigMgr* self = (ConfigMgr*)  tolua_tousertype(tolua_S,1,0);
-  CDbCfg* config = ((CDbCfg*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReadDbCfg'", NULL);
-#endif
-  {
-   self->ReadDbCfg(config);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ReadDbCfg'.",&tolua_err);
  return 0;
 #endif
 }
@@ -904,242 +863,6 @@ static int tolua_Config_CLogicCfg_delete00(lua_State* tolua_S)
 #endif
  {
   CLogicCfg* self = (CLogicCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
-#endif
-  Mtolua_delete(self);
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: ip of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_ip
-static int tolua_get_CDbCfg_ip(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
-#endif
-  tolua_pushcppstring(tolua_S,(const char*)self->ip);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: ip of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_ip
-static int tolua_set_CDbCfg_ip(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'ip'",NULL);
-  if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->ip = ((std::string)  tolua_tocppstring(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: user of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_user
-static int tolua_get_CDbCfg_user(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
-#endif
-  tolua_pushcppstring(tolua_S,(const char*)self->user);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: user of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_user
-static int tolua_set_CDbCfg_user(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'user'",NULL);
-  if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->user = ((std::string)  tolua_tocppstring(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: passwd of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_passwd
-static int tolua_get_CDbCfg_passwd(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
-#endif
-  tolua_pushcppstring(tolua_S,(const char*)self->passwd);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: passwd of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_passwd
-static int tolua_set_CDbCfg_passwd(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'passwd'",NULL);
-  if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->passwd = ((std::string)  tolua_tocppstring(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: database of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_database
-static int tolua_get_CDbCfg_database(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
-#endif
-  tolua_pushcppstring(tolua_S,(const char*)self->database);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: database of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_database
-static int tolua_set_CDbCfg_database(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'database'",NULL);
-  if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->database = ((std::string)  tolua_tocppstring(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: port of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_get_CDbCfg_port
-static int tolua_get_CDbCfg_port(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
-#endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->port);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: port of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_set_CDbCfg_port
-static int tolua_set_CDbCfg_port(lua_State* tolua_S)
-{
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'port'",NULL);
-  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->port = ((int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_new00
-static int tolua_Config_CDbCfg_new00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"CDbCfg",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   CDbCfg* tolua_ret = (CDbCfg*)  Mtolua_new((CDbCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CDbCfg");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new_local of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_new00_local
-static int tolua_Config_CDbCfg_new00_local(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"CDbCfg",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   CDbCfg* tolua_ret = (CDbCfg*)  Mtolua_new((CDbCfg)());
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CDbCfg");
-    tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: delete of class  CDbCfg */
-#ifndef TOLUA_DISABLE_tolua_Config_CDbCfg_delete00
-static int tolua_Config_CDbCfg_delete00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"CDbCfg",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  CDbCfg* self = (CDbCfg*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", NULL);
 #endif
@@ -2655,7 +2378,6 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetCBaseCfgMgr",tolua_Config_ConfigMgr_GetCBaseCfgMgr00);
    tolua_function(tolua_S,"ReadLogicCfg",tolua_Config_ConfigMgr_ReadLogicCfg00);
    tolua_function(tolua_S,"ReadDBServerCfg",tolua_Config_ConfigMgr_ReadDBServerCfg00);
-   tolua_function(tolua_S,"ReadDbCfg",tolua_Config_ConfigMgr_ReadDbCfg00);
    tolua_function(tolua_S,"ReadThreadCntCfg",tolua_Config_ConfigMgr_ReadThreadCntCfg00);
    tolua_function(tolua_S,"ReadServerIDCfg",tolua_Config_ConfigMgr_ReadServerIDCfg00);
    tolua_function(tolua_S,"ReadLogPrintTmCfg",tolua_Config_ConfigMgr_ReadLogPrintTmCfg00);
@@ -2689,22 +2411,6 @@ TOLUA_API int tolua_Config_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_Config_CLogicCfg_new00_local);
    tolua_function(tolua_S,".call",tolua_Config_CLogicCfg_new00_local);
    tolua_function(tolua_S,"delete",tolua_Config_CLogicCfg_delete00);
-  tolua_endmodule(tolua_S);
-  #ifdef __cplusplus
-  tolua_cclass(tolua_S,"CDbCfg","CDbCfg","",tolua_collect_CDbCfg);
-  #else
-  tolua_cclass(tolua_S,"CDbCfg","CDbCfg","",NULL);
-  #endif
-  tolua_beginmodule(tolua_S,"CDbCfg");
-   tolua_variable(tolua_S,"ip",tolua_get_CDbCfg_ip,tolua_set_CDbCfg_ip);
-   tolua_variable(tolua_S,"user",tolua_get_CDbCfg_user,tolua_set_CDbCfg_user);
-   tolua_variable(tolua_S,"passwd",tolua_get_CDbCfg_passwd,tolua_set_CDbCfg_passwd);
-   tolua_variable(tolua_S,"database",tolua_get_CDbCfg_database,tolua_set_CDbCfg_database);
-   tolua_variable(tolua_S,"port",tolua_get_CDbCfg_port,tolua_set_CDbCfg_port);
-   tolua_function(tolua_S,"new",tolua_Config_CDbCfg_new00);
-   tolua_function(tolua_S,"new_local",tolua_Config_CDbCfg_new00_local);
-   tolua_function(tolua_S,".call",tolua_Config_CDbCfg_new00_local);
-   tolua_function(tolua_S,"delete",tolua_Config_CDbCfg_delete00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"CActivityList","CActivityList","",tolua_collect_CActivityList);

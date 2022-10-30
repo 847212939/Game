@@ -15,7 +15,6 @@ public:
 	CBaseCfgMgr& GetCBaseCfgMgr();
 	void ReadLogicCfg(CLogicCfg* config);
 	void ReadDBServerCfg(CLogicCfg* config);
-	void ReadDbCfg(CDbCfg* config);
 	void ReadThreadCntCfg(int cnt);
 	void ReadServerIDCfg(int id);
 	void ReadLogPrintTmCfg(int tm);
@@ -45,7 +44,7 @@ enum LogLevel
 	ERR,								//error
 	CINF,								//info Console tip
 	CERR,								//error Console
-	SYS,							//error system
+	SYS,								//error system
 	LOG_END,
 };
 
@@ -56,18 +55,6 @@ struct CLogicCfg
 
 	CLogicCfg();
 	~CLogicCfg();
-};
-
-struct CDbCfg
-{
-	std::string ip;
-	std::string user;
-	std::string passwd;
-	std::string database;
-	int port;
-
-	CDbCfg();
-	~CDbCfg();
 };
 
 struct CActivityList

@@ -34,15 +34,6 @@ BaseCfg=
         ip = "127.0.0.1",
         port = 8889, 
     },
-
-    DbCfg =
-    {
-        ip = "127.0.0.1",
-        user = "root",
-        passwd = "",
-        database = "game",
-        port = 3366,
-    },
 }
 
 return BaseCfg

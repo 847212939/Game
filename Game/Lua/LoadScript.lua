@@ -48,17 +48,6 @@ function ReadBaseCfg()
             ConfigMgr:ReadDBServerCfg(config)
             config:delete()
         end
-
-        if BaseCfg.DbCfg then
-            local config = CDbCfg:new()
-            config.ip = BaseCfg.DbCfg.ip or 0
-            config.user = BaseCfg.DbCfg.user or 0
-            config.passwd = BaseCfg.DbCfg.passwd or 0
-            config.database = BaseCfg.DbCfg.database or 0
-            config.port = BaseCfg.DbCfg.port or 0
-            ConfigMgr:ReadDbCfg(config)
-            config:delete()
-        end
     end
 end
 table.insert(ConfigMgrFnTable, ReadBaseCfg)

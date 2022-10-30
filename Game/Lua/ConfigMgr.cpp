@@ -21,10 +21,6 @@ void ConfigMgr::ReadDBServerCfg(CLogicCfg* config)
 {
 	m_CBaseCfgMgr.ReadDBServerCfg(config);
 }
-void ConfigMgr::ReadDbCfg(CDbCfg* config) 
-{ 
-	m_CBaseCfgMgr.ReadDbCfg(config); 
-}
 void ConfigMgr::ReadThreadCntCfg(int cnt) 
 { 
 	m_CBaseCfgMgr.ReadThreadCntCfg(cnt); 
