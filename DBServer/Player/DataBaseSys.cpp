@@ -87,9 +87,12 @@ bool DataBaseSys::CreateLoginMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 2);
 
+	int serverType = 0;
 	int cnt = 0;
 	std::string sqlName;
-	msg >> sqlName >> cnt;
+	msg >> serverType
+		>> sqlName 
+		>> cnt;
 
 	G_PlayerPrepClient->CreateLoginTable(sqlName, cnt);
 
@@ -107,9 +110,12 @@ bool DataBaseSys::CreateGlobalMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 2);
 
+	int serverType = 0;
 	int cnt = 0;
 	std::string sqlName;
-	msg >> sqlName >> cnt;
+	msg >> serverType
+		>> sqlName 
+		>> cnt;
 
 	G_PlayerPrepClient->CreateGlobalTable(sqlName, cnt);
 
@@ -127,9 +133,12 @@ bool DataBaseSys::CreatePlayerMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 2);
 
+	int serverType = 0;
 	int cnt = 0;
 	std::string sqlName;
-	msg >> sqlName >> cnt;
+	msg >> serverType
+		>> sqlName 
+		>> cnt;
 
 	G_PlayerPrepClient->CreatePlayerTable(sqlName, cnt);
 
@@ -148,6 +157,7 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 6);
 
+	int serverType = 0;
 	int serverid = 0;
 	std::string sqlName;
 	std::string outStr;
@@ -156,11 +166,21 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
 
-	msg >> serverid >> userid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	msg >> serverType
+		>> serverid 
+		>> userid 
+		>> sqlName 
+		>> uMainID 
+		>> uAssistantID 
+		>> uIdentification;
+
 	G_PlayerPrepClient->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
-	msgCout << serverid << userid << outStr;
+	msgCout 
+		<< serverid 
+		<< userid 
+		<< outStr;
 
 	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
@@ -179,6 +199,7 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 8);
 
+	int serverType = 0;
 	int serverid = 0;
 	int index = 0;
 	std::string sqlName;
@@ -189,11 +210,24 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
 
-	msg >> serverid >> userid >> passWord >> index >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	msg >> serverType
+		>> serverid 
+		>> userid 
+		>> passWord 
+		>> index 
+		>> sqlName 
+		>> uMainID 
+		>> uAssistantID 
+		>> uIdentification;
+
 	G_PlayerPrepClient->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
 	Netmsg msgCout;
-	msgCout << userid << passWord << index;
+	msgCout 
+		<< userid 
+		<< passWord 
+		<< index;
+
 	if (!outStr.empty())
 	{
 		msgCout << outStr;
@@ -216,6 +250,7 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 5);
 
+	int serverType = 0;
 	int serverid = 0;
 	std::string sqlName;
 	std::string outStr;
@@ -223,7 +258,12 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
 
-	msg >> serverid >> sqlName >> uMainID >> uAssistantID >> uIdentification;
+	msg >> serverType
+		>> serverid 
+		>> sqlName 
+		>> uMainID 
+		>> uAssistantID 
+		>> uIdentification;
 	G_PlayerPrepClient->LoadGlobalMysql(sqlName, serverid, outStr);
 
 	Netmsg msgCout;
@@ -247,11 +287,15 @@ bool DataBaseSys::SaveReplaceGlobalMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 3);
 
+	int serverType = 0;
 	int serverid = 0;
 	std::string sqlName;
 	std::string data;
 
-	msg >> serverid >> sqlName >> data;
+	msg >> serverType
+		>> serverid 
+		>> sqlName 
+		>> data;
 	G_PlayerPrepClient->SaveReplaceGlobalMysql(sqlName, serverid, data);
 
 	return true;
@@ -268,12 +312,18 @@ bool DataBaseSys::SaveReplacePlayerMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 4);
 
+	int serverType = 0;
 	int serverid = 0;
 	uint64_t userid = 0;
 	std::string sqlName;
 	std::string data;
 
-	msg >> serverid >> userid >> sqlName >> data;
+	msg >> serverType
+		>> serverid 
+		>> userid 
+		>> sqlName 
+		>> data;
+
 	G_PlayerPrepClient->SaveReplacePlayerMysql(sqlName, serverid, userid, data);
 
 	return true;
@@ -290,12 +340,18 @@ bool DataBaseSys::SaveReplaceLoginMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, 4);
 
+	int serverType = 0;
 	int serverid = 0;
 	std::string userid;
 	std::string sqlName;
 	std::string data;
 
-	msg >> serverid >> userid >> sqlName >> data;
+	msg >> serverType
+		>> serverid 
+		>> userid 
+		>> sqlName 
+		>> data;
+
 	G_PlayerPrepClient->SaveReplaceLoginMysql(sqlName, serverid, userid, data);
 
 	return true;
