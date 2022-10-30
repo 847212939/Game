@@ -170,7 +170,7 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 7);
+	Netmsg msg((char*)playerInfo->pData, 8);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -180,24 +180,31 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
+	unsigned int uIndex = 0;
 
 	msg >> serverType
-		>> serverid 
-		>> userid 
-		>> sqlName 
-		>> uMainID 
-		>> uAssistantID 
-		>> uIdentification;
+		>> serverid
+		>> userid
+		>> sqlName
+		>> uMainID
+		>> uAssistantID
+		>> uIdentification
+		>> uIndex;
 
 	G_PlayerPrepClient->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
-	Netmsg msgCout;
-	msgCout 
-		<< serverid 
-		<< userid 
-		<< outStr;
+	Netmsg cin;
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	cin << serverid;
+	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
+		cin << userid:
+		cin << uIndex;
+	if (!outStr.empty())
+	{
+		cin << outStr;
+	}
+
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, cin.str().c_str(), cin.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -212,11 +219,10 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 9);
+	Netmsg msg((char*)playerInfo->pData, 10);
 
 	int serverType = 0;
 	int serverid = 0;
-	int index = 0;
 	std::string sqlName;
 	std::string outStr;
 	std::string userid;
@@ -224,31 +230,34 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
+	unsigned int uIndex = 0;
 
 	msg >> serverType
-		>> serverid 
-		>> userid 
-		>> passWord 
-		>> index 
-		>> sqlName 
-		>> uMainID 
-		>> uAssistantID 
-		>> uIdentification;
+		>> serverid
+		>> userid
+		>> passWord
+		>> sqlName
+		>> uMainID
+		>> uAssistantID
+		>> uIdentification
+		>> uIndex;
 
 	G_PlayerPrepClient->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
-	Netmsg msgCout;
-	msgCout 
-		<< userid 
-		<< passWord 
-		<< index;
+	Netmsg cin;
 
+	cin << serverid
+		<< userid
+		<< passWord;
+	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
+		cin << userid :
+		cin << uIndex;
 	if (!outStr.empty())
 	{
-		msgCout << outStr;
+		cin << outStr;
 	}
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, cin.str().c_str(), cin.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -263,7 +272,7 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, 6);
+	Netmsg msg((char*)playerInfo->pData, 7);
 
 	int serverType = 0;
 	int serverid = 0;
@@ -272,19 +281,19 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
+	unsigned int uIndex = 0;
 
 	msg >> serverType
-		>> serverid 
-		>> sqlName 
-		>> uMainID 
-		>> uAssistantID 
-		>> uIdentification;
+		>> serverid
+		>> sqlName
+		>> uMainID
+		>> uAssistantID
+		>> uIdentification
+		>> uIndex;
+
 	G_PlayerPrepClient->LoadGlobalMysql(sqlName, serverid, outStr);
 
-	Netmsg msgCout;
-	msgCout << outStr;
-
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCout.str().c_str(), msgCout.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, outStr.c_str(), outStr.size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;

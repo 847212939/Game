@@ -6,7 +6,8 @@ SkillLvSys::SkillLvSys(PlayerClient* playerClient) : m_PlayerClient(playerClient
 	RegisterAttrs(playerClient, SkillLvSys::CalAttrs);
 	RegisterEnter(playerClient, SkillLvSys::EnterScene);
 	RegisterNetwk(playerClient, SkillLvSys::NetWork, MsgCmd::MsgCmd_Skill);
-	RegisterPlayerMysql(m_PlayerClient, SLoadMysql("skill", MsgCmd::MsgCmd_Skill, (unsigned int)SkillLvSysCmd::cs_load));
+	RegisterPlayerMysql(m_PlayerClient, SLoadMysql(m_PlayerClient->GetIndex(), "skill", 
+		MsgCmd::MsgCmd_Skill, (unsigned int)SkillLvSysCmd::cs_load));
 }
 
 SkillLvSys::~SkillLvSys()

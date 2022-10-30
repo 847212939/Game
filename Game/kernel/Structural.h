@@ -420,8 +420,9 @@ struct SLoadMysql
 	unsigned int uMainID;
 	unsigned int uAssistantID;
 	unsigned int uIdentification;
+	unsigned int uIndex;
 
-	SLoadMysql(std::string sqlname, MsgCmd mainID, 
+	SLoadMysql(unsigned int index, std::string sqlname, MsgCmd mainID,
 		unsigned int assistantID, MsgCmd identification = MsgCmd::MsgCmd_Player, int sid = 0);
 	~SLoadMysql() {}
 };

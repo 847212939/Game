@@ -85,8 +85,8 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	std::string idPw = id + "\n" + pw + "\n" + std::to_string(playerInfo->pMsg->uIndex);
-	MysqlClient::LoadLoginMysql(idPw, SLoadMysql("useraccount", MsgCmd::MsgCmd_Login,
+	std::string idPw = id + "\n" + pw;
+	MysqlClient::LoadLoginMysql(idPw, SLoadMysql(playerInfo->pMsg->uIndex, "useraccount", MsgCmd::MsgCmd_Login,
 		(unsigned int)LoginSysMsgCmd::cs_load, MsgCmd::MsgCmd_PlayerPreproces));
 	
 	return true;
@@ -128,30 +128,38 @@ bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 }
 bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
-	int index = 0;
-	std::string id, pw;
-	msg >> id >> pw >> index;
+	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return false;
+	}
+	int serverid = 0;
+	unsigned int uIndex = 0;
+	std::string account;
+	std::string password;
+	msg >> serverid
+		>> account
+		>> password
+		>> uIndex;
 
 	LoginData loginData;
-	loginData.index = index;
-	loginData.id = id;
-	loginData.pw = pw;
+	loginData.index = uIndex;
+	loginData.id = account;
+	loginData.pw = password;
 
 	if (!msg.empty())
 	{
 		uint64_t userid = 0;
-		std::string passwaed;
+		std::string sqlPasswaed;
 
-		msg >> passwaed >> userid;
+		msg >> sqlPasswaed >> userid;
 
-		if (pw != passwaed)
+		if (password != sqlPasswaed)
 		{
 			// 密码不正确
 			return false;
 		}
 		if (userid <= 0)
 		{
-			Log(CERR, "服务器内部错误,请排查错误");
 			return false;
 		}
 		if (G_PlayerCenterClient->GetPlayerByIndex(loginData.index))
@@ -167,12 +175,12 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 
 	AddLoginInMap(loginData);
-	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo(index);
+	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo((int)uIndex);
 	if (sockInfo)
 	{
 		Netmsg msg;
 		msg << (int)true;
-		G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
+		G_NetClient->SendMsg((int)uIndex, msg.str().c_str(), msg.str().size(),
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
 	}
 
@@ -226,7 +234,7 @@ bool LoginSys::NetcRequestServerList(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	LoadServerIds(pLoginData->userId);
+	LoadServerIds(playerInfo, pLoginData->userId);
 	SendServerIds(pLoginData->userId, playerInfo->pMsg);
 
 	return true;
@@ -318,9 +326,9 @@ LoginData* LoginSys::GetLoginInMap(unsigned int index)
 	return &it->second;
 }
 
-void LoginSys::LoadServerIds(uint64_t userid)
+void LoginSys::LoadServerIds(PlayerInfo* playerInfo, uint64_t userid)
 {
-	SLoadMysql loadMysql("serverlist", MsgCmd::MsgCmd_Login, 
+	SLoadMysql loadMysql(playerInfo->pMsg->uIndex, "serverlist", MsgCmd::MsgCmd_Login,
 		(unsigned int)LoginSysMsgCmd::cs_load_server_list, 
 		MsgCmd::MsgCmd_PlayerPreproces);
 

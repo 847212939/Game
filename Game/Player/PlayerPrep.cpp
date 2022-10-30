@@ -64,6 +64,22 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
+	if (G_NetClient->GetDBServerIndex() == index)
+	{
+		Netmsg cin((char*)playerInfo->pData, 3);
+		if (cin.size() < 2)
+		{
+			Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
+				(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			return;
+		}
+		int serverid = 0;
+		unsigned int uIndex = 0;
+		cin >> serverid
+			>> uIndex;
+
+		index = (int)uIndex;
+	}
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (!playerClient)
 	{
@@ -132,35 +148,40 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
-	
-	Netmsg msg((char*)playerInfo->pData, 3);
-	if (msg.size() < 2)
+	Netmsg cin((char*)playerInfo->pData, 3);
+	if (cin.size() < 2)
 	{
-		Log(CERR, "逻辑服务器发送过来的协议不对 size=%d", (int)(msg.size()));
+		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port);
 		return;
 	}
-	int sid = 0;
+	int serverid = 0;
 	uint64_t userid = 0;
-	msg >> sid >> userid;
+	cin >> serverid
+		>> userid;
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByUserid(userid);
 	if (!playerClient)
 	{
-		Log(CERR, "Dispatch message playerClient = null index = %d", index);
+		Log(CERR, "!playerClient[cmd=%d,index=%d,ip=%s,port=%d,userid=%lld]",
+			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port, userid);
 		return;
 	}
 	if (!pTcpInfo->isConnect)
 	{
-		Log(CINF, "Dispatch message Link broken cmd = %d", (int)cmd);
+		Log(CERR, "!pTcpInfo->isConnect[cmd=%d,index=%d,ip=%s,port=%d,userid=%lld]",
+			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port, userid);
 		return;
 	}
 	if (!playerClient->GetLoad())
 	{
-		Log(CERR, "Dispatch message mysql is unload index = %d", index);
+		Log(CERR, "!playerClient->GetLoad()[cmd=%d,index=%d,ip=%s,port=%d,userid=%lld]",
+			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port, userid);
 		return;
 	}
 	if (playerClient->GetIndex() != index && index != G_NetClient->GetDBServerIndex())
 	{
-		Log(CERR, "dindex = %u, sindex = %d", playerClient->GetIndex(), index);
+		Log(CERR, "!playerClient->GetIndex() != index && index != G_NetClient->GetDBServerIndex()"
+			"[cmd=%d,index=%d,ip=%s,port=%d,userid=%lld]", (int)cmd, index, pTcpInfo->ip, pTcpInfo->port, userid);
 		return;
 	}
 	playerClient->MessageDispatch(cmd, playerInfo);

@@ -6,7 +6,7 @@ MoveSys::MoveSys(PlayerClient* playerClient) : m_PlayerClient(playerClient)
 	RegisterAttrs(m_PlayerClient, MoveSys::CalAttrs);
 	RegisterEnter(m_PlayerClient, MoveSys::EnterScene);
 	RegisterNetwk(m_PlayerClient, MoveSys::NetWork, MsgCmd::MsgCmd_Move);
-	RegisterPlayerMysql(m_PlayerClient, SLoadMysql("move", MsgCmd::MsgCmd_Move, (unsigned int)MoveSysMsgCmd::cs_Load_mysql));
+	RegisterPlayerMysql(m_PlayerClient, SLoadMysql(m_PlayerClient->GetIndex(), "move", MsgCmd::MsgCmd_Move, (unsigned int)MoveSysMsgCmd::cs_Load_mysql));
 }
 
 MoveSys::~MoveSys()

@@ -7,8 +7,9 @@ MysqlClient::~MysqlClient()
 {
 }
 
-SLoadMysql::SLoadMysql(std::string sqlname, MsgCmd mainID, 
+SLoadMysql::SLoadMysql(unsigned int index, std::string sqlname, MsgCmd mainID,
 	unsigned int assistantID, MsgCmd identification, int sid) :
+	uIndex(index),
 	sqlName(sqlname),
 	uMainID(static_cast<unsigned int>(mainID)),
 	uAssistantID(assistantID),
@@ -119,9 +120,10 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 		<< loadMysql.serverid
 		<< userid
 		<< loadMysql.sqlName
-		<< loadMysql.uMainID 
-		<< loadMysql.uAssistantID 
-		<< loadMysql.uIdentification;
+		<< loadMysql.uMainID
+		<< loadMysql.uAssistantID
+		<< loadMysql.uIdentification
+		<< loadMysql.uIndex;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_player, 
@@ -150,7 +152,8 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
 		<< loadMysql.uAssistantID
-		<< loadMysql.uIdentification;
+		<< loadMysql.uIdentification
+		<< loadMysql.uIndex;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_login,
@@ -174,7 +177,8 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 		<< loadMysql.sqlName
 		<< loadMysql.uMainID
 		<< loadMysql.uAssistantID
-		<< loadMysql.uIdentification;
+		<< loadMysql.uIdentification
+		<< loadMysql.uIndex;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_global,
