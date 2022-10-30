@@ -88,9 +88,6 @@
     <ClCompile Include="Lua\ConfigMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
-    <ClCompile Include="Lua\LuaCfgMgr.cpp">
-      <Filter>配置管理\配置管理</Filter>
-    </ClCompile>
     <ClCompile Include="Lua\LuaMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="Player\PlayerPrep.cpp">
       <Filter>玩家管理\逻辑基类</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaCfgMgr.cpp">
+      <Filter>配置管理\配置管理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
