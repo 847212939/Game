@@ -27,5 +27,6 @@ private:
 	SceneClient	m_SceneClient;
 
 public:
-	BuildReference(LoginSys, LoginSys)	// 登录系统
+	BuildReference(CrossClient, CrossClient)	// 跨服客户端
+	BuildReference(LoginSys, LoginSys)			// 登录系统
 };

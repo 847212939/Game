@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cross\CrossClient.cpp" />
     <ClCompile Include="kernel\base64.cpp" />
     <ClCompile Include="kernel\DataLine.cpp" />
     <ClCompile Include="kernel\IDGen.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cross\CrossClient.h" />
     <ClInclude Include="kernel\Alias.h" />
     <ClInclude Include="kernel\AttrsCmd.h" />
     <ClInclude Include="kernel\base64.h" />

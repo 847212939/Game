@@ -208,14 +208,15 @@ bool CTCPSocketManage::ConnectDBServer()
 }
 bool CTCPSocketManage::ConnectServer()
 {
-	// 连接DB服务器
-	if (!ConnectDBServer())
-	{
-		return false;
-	}
-	// 连接跨服服务器
+	// 如果不是跨服服务器
 	if (m_iServiceType != ServiceType::SERVICE_TYPE_GAMECENTER)
 	{
+		// 连接DB服务器
+		if (!ConnectDBServer())
+		{
+			return false;
+		}
+		// 连接跨服服务器
 		if (!ConnectCrossServer())
 		{
 			return false;

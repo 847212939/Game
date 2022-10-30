@@ -3,7 +3,8 @@
 PlayerPrepClient::PlayerPrepClient() : 
 	PlayerPrep(), 
 	m_SceneClient(this),
-	m_LoginSys(this)
+	m_LoginSys(this),
+	m_CrossClient(this)
 {
 }
 PlayerPrepClient::~PlayerPrepClient()
