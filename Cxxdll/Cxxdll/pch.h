@@ -10,7 +10,7 @@
 #define CfgMgr		LuaMgr->GetConfigMgr()
 #define BaseCfgMgr	CfgMgr->GetCBaseCfgMgr()
 
-// Get Set mem
+// Get Set mem cpy
 #define GetSetMem(type,Name)\
 private:\
 	type m_##Name;\
