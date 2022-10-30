@@ -11,7 +11,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
 	m_ctx(nullptr),
-	m_DBServerIndex(-1)
+	m_DBServerIndex(-1),
+	m_CrossServerIndex(-1)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -122,6 +123,10 @@ bool CTCPSocketManage::IsServerMsg(int index)
 	{
 		return true;
 	}
+	if (index == GetCrossServerIndex())
+	{
+		return true;
+	}
 	return false;
 }
 bool CTCPSocketManage::ConnectCrossServer()
@@ -159,10 +164,10 @@ bool CTCPSocketManage::ConnectCrossServer()
 		return false;
 	}
 
-	m_DBServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
+	m_CrossServerIndex = AddTCPSocketInfo(threadIndex, &tcpInfo, ServiceType::SERVICE_TYPE_DB);
 
 	Log(CINF, "连接服跨服成功 [ip=%s port=%d index=%d fd=%d]",
-		tcpInfo.ip, tcpInfo.port, m_DBServerIndex, tcpInfo.acceptFd);
+		tcpInfo.ip, tcpInfo.port, m_CrossServerIndex, tcpInfo.acceptFd);
 	return true;
 }
 bool CTCPSocketManage::ConnectDBServer()
@@ -870,6 +875,10 @@ unsigned int CTCPSocketManage::GetCurSocketSize()
 int CTCPSocketManage::GetDBServerIndex()
 {
 	return m_DBServerIndex;
+}
+int CTCPSocketManage::GetCrossServerIndex()
+{
+	return m_CrossServerIndex;
 }
 void CTCPSocketManage::GetSocketSet(std::vector<unsigned int>& vec)
 {

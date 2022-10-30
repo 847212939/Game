@@ -67,6 +67,8 @@ public:
 	unsigned int GetCurSocketSize();
 	// 获取DBServer索引
 	int GetDBServerIndex();
+	// 获取跨服服务器索引
+	int GetCrossServerIndex();
 
 private:
 	// 设置tcp属性
@@ -199,4 +201,5 @@ private:
 	SSL_CTX*		     m_ctx;
 
 	int					m_DBServerIndex;
+	int					m_CrossServerIndex;
 };
