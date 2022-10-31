@@ -54,62 +54,30 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 	return pListItem->stDataHead.uSize;
 }
 
-unsigned int CDataLine::GetData(void** pDataBuffer, bool& run, unsigned int& uDataKind)
+unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned int& uDataKind)
 {
 	*pDataBuffer = nullptr;
 
 	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [this, &run] { if (this->m_dataListSize > 0 || !run) { return true; } return false; });
-
-	if (m_dataListSize <= 0)
+	m_cond.Wait(uniqLock, [this, &run] { if (this->GetDataCount() > 0 || !run) { return true; } return false; });
+	if (this->GetDataCount() <= 0 || m_dataList.size() <= 0)
 	{
 		uniqLock.unlock();
 		return 0;
 	}
-
-	ListItemData* pListItem = m_dataList.front();
+	*pDataBuffer = m_dataList.front();
 	m_dataList.pop_front();
-
 	m_dataListSize--;
-
 	uniqLock.unlock();
 
-	uDataKind = pListItem->stDataHead.uDataKind;
-	unsigned int uDataSize = pListItem->stDataHead.uSize;
-
-	//投递数据，外部一定要释放内存，否则内存泄漏
-	*pDataBuffer = reinterpret_cast<DataLineHead*>(pListItem->pData);
-
-	//删除队列中的数据
-	SafeDelete(pListItem);
+	if (!(*pDataBuffer))
+	{
+		return 0;
+	}
+	uDataKind =  (*pDataBuffer)->stDataHead.uDataKind;
+	unsigned int uDataSize = (*pDataBuffer)->stDataHead.uSize;
 
 	return uDataSize;
-}
-
-bool CDataLine::SwapDataList(std::list <ListItemData*>& dataList, bool& run)
-{
-	dataList.clear();
-	std::list <ListItemData*>& mDataList = m_dataList;
-	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [&mDataList, &run]
-		{
-			if (mDataList.size() > 0 || !run)
-			{
-				return true;
-			}
-			return false;
-		});
-	if (m_dataListSize <= 0)
-	{
-		uniqLock.unlock();
-		return false;
-	}
-
-	dataList.swap(m_dataList);
-	m_dataListSize = 0;
-	uniqLock.unlock();
-
-	return true;
 }
 
 bool CDataLine::CleanData()
@@ -142,4 +110,9 @@ ConditionVariable& CDataLine::GetConditionVariable()
 size_t CDataLine::GetDataCount()
 {
 	return m_dataListSize;
+}
+
+std::list <ListItemData*>& CDataLine::GetDataList()
+{
+	return m_dataList;
 }

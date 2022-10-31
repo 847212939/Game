@@ -1495,24 +1495,23 @@ bool CTCPSocketManage::SendLogicWssMsg(int index, const char* pData, size_t size
 // 发送线程消息处理发送
 void CTCPSocketManage::ThreadSendMsg()
 {
-	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetSendDataLine();
 	if (!pDataLine)
 	{
 		Log(CERR, "send list is null");
 		return;
 	}
+	//数据缓存
+	ListItemData* pListItem = NULL;
+	unsigned int uDataKind = 0;
 	while (m_running)
 	{
-		if (!pDataLine->SwapDataList(dataList, m_running))
+		unsigned int bytes = pDataLine->GetData(&pListItem, m_running, uDataKind);
+		if (bytes == 0 || pListItem == NULL)
 		{
 			continue;
 		}
-		while (!dataList.empty())
-		{
-			HandleSendMsg(dataList.front());
-			dataList.pop_front();
-		}
+		HandleSendMsg(pListItem);
 	}
 
 	Log(CINF, "send data thread end");

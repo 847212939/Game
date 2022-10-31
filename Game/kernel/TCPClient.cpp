@@ -83,24 +83,22 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 void TCPClient::HandlerRecvDataListThread()
 {
 	bool& run = GetRuninged();
-	std::list <ListItemData*> dataList;
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
 		Log(CERR, "CDataLine error pDataLine == nullptr");
 		return;
 	}
-	while (run)
+	ListItemData* pListItem = NULL;
+	unsigned int uDataKind = 0;
+	while (true)
 	{
-		if (!pDataLine->SwapDataList(dataList, run))
+		unsigned int bytes = pDataLine->GetData(&pListItem, run, uDataKind);
+		if (bytes == 0 || pListItem == NULL)
 		{
 			continue;
 		}
-		while (!dataList.empty())
-		{
-			HandleRecvData(dataList.front());
-			dataList.pop_front();
-		}
+		HandleRecvData(pListItem);
 	}
 
 	Log(CINF, "recv data thread end");

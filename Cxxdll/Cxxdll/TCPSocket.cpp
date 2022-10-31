@@ -472,17 +472,16 @@ void CTCPSocketManage::ThreadSendMsgThread()
 		m_running = false;
 		return;
 	}
+	ListItemData* pListItem = NULL;
+	unsigned int uDataKind = 0;
 	while (true)
 	{
-		if (!pDataLine->SwapDataList(dataList, m_running))
+		unsigned int bytes = pDataLine->GetData(&pListItem, m_running, uDataKind);
+		if (bytes == 0 || pListItem == NULL)
 		{
 			continue;
 		}
-		while (!dataList.empty())
-		{
-			HandleSendData(dataList.front());
-			dataList.pop_front();
-		}
+		HandleSendData(pListItem);
 	}
 
 	return;
