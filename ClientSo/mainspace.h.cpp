@@ -34,6 +34,10 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
     {
+        if (!g_Util)
+        {
+            return -1;
+        }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
@@ -55,6 +59,10 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL UnInitCxxnet()
     {
+        if (!g_Util)
+        {
+            return -1;
+        }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
@@ -68,6 +76,10 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL SendMsg(char* pData, int size, int mainID, int assistID, int uIdentification)
     {
+        if (!g_Util)
+        {
+            return -1;
+        }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
@@ -83,6 +95,10 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL RegisterTimers(int timerid, int uElapse)
     {
+        if (!g_Util)
+        {
+            return -1;
+        }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
@@ -99,6 +115,10 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL UnRegisterTimers(int timerid)
     {
+        if (!g_Util)
+        {
+            return -1;
+        }
         TCPClient* pTcpClient = g_Util->GetTCPClient();
         if (!pTcpClient)
         {
