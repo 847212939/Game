@@ -34,9 +34,23 @@ namespace MainNameSpace
 
     EXPORT_DLL int EXPORT_STDCALL InitCxxnet(NetworkCallBackFunc netFunc, TimerCallBackFunc timerFunc, CloseCallBackFunc closeFunc)
     {
+        TCPClient* pTcpClient = g_Util->GetTCPClient();
+        if (!pTcpClient)
+        {
+            return -1;
+        }
         if (!g_Util->InitCxxnet(netFunc, timerFunc, closeFunc))
         {
             return -1;
+        }
+
+        while (true)
+        {
+            if (pTcpClient->GetRuninged() && pTcpClient->GetScoketbev())
+            {
+                break;
+            }
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
         }
         return 0;
     }

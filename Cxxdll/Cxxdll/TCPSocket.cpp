@@ -6,7 +6,6 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
 	m_ServiceType(ServiceType::SERVICE_TYPE_END),
-	m_ConnectServerBase(NULL),
 	m_socket(0),
 	m_port(0),
 	m_timerCnt(0),
@@ -60,7 +59,6 @@ bool CTCPSocketManage::Stop()
 		return false;
 	}
 	m_running = false;
-	event_base_loopbreak(m_ConnectServerBase);
 
 	return true;
 }
@@ -110,16 +108,25 @@ bool CTCPSocketManage::Start()
 
 bool CTCPSocketManage::ConnectServer()
 {
-	m_ConnectServerBase = event_base_new();
+	struct event_base* base = event_base_new();
 
-	//struct sockaddr_in6 sin6; ipv6
-	struct sockaddr_in sin;
-	memset(&sin, 0, sizeof(sin));
+	SockFd sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock < 0)
+	{
+		return false;
+	}
+
+	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(m_port);
-	evutil_inet_pton(sin.sin_family, m_ip.c_str(), (void*)&sin.sin_addr);
+	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
 
-	m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, -1, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
+	{
+		return false;
+	}
+
+	m_Socketbev = bufferevent_socket_new(base, sock, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
@@ -129,14 +136,7 @@ bool CTCPSocketManage::ConnectServer()
 	if (bufferevent_enable(m_Socketbev, EV_READ | EV_ET) < 0)
 	{
 		bufferevent_free(m_Socketbev);
-		event_base_free(m_ConnectServerBase);
-		return false;
-	}
-
-	if (0 != bufferevent_socket_connect(m_Socketbev, (struct sockaddr*)&sin, sizeof(sin)))
-	{
-		bufferevent_free(m_Socketbev);
-		event_base_free(m_ConnectServerBase);
+		event_base_free(base);
 		return false;
 	}
 
@@ -148,12 +148,12 @@ bool CTCPSocketManage::ConnectServer()
 		tvRead.tv_usec = 0;
 		bufferevent_set_timeouts(m_Socketbev, &tvRead, nullptr);
 	}
-	
+
 	m_Connected = true;
 
-	event_base_dispatch(m_ConnectServerBase);
+	event_base_dispatch(base);
 	bufferevent_free(m_Socketbev);
-	event_base_free(m_ConnectServerBase);
+	event_base_free(base);
 
 	return true;
 }

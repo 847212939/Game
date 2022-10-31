@@ -19,7 +19,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     }
     return TRUE;
 }
-
+//
 //bool run = false;
 //
 //void NetworkCallBack1(REvent eve)
@@ -69,17 +69,17 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 //
 //    RegisterTimers(1, 1000);
 //    
-//
 //    SendMsg((char*)"", 0, 7, 1, 3);
+//
 //
 //    while (true)
 //    {
 //        if (!run)
 //        {
-//            if (InitSocket((char*)"127.0.0.1", 8888, 1) != 0)
+//           /* if (InitSocket((char*)"127.0.0.1", 8888, 1) != 0)
 //            {
 //                std::cout << "初始化网络失败" << std::endl;
-//            }
+//            }*/
 //        }
 //
 //        std::this_thread::sleep_for(std::chrono::seconds(1));
