@@ -126,7 +126,7 @@ bool CTCPSocketManage::ConnectServer()
 		return false;
 	}
 
-	m_Socketbev = bufferevent_socket_new(base, m_socket, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	m_Socketbev = bufferevent_socket_new(base, m_socket, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);

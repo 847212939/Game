@@ -493,7 +493,7 @@ int  CTCPSocketManage::AddServerSocketInfo(int threadIndex, PlatformSocketInfo* 
 		closesocket(fd);
 		return index;
 	}
-	bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 	if (!bev)
 	{
 		Log(CERR, "Error constructing bufferevent!,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
@@ -578,12 +578,12 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 			return;
 		}
 		bev = bufferevent_openssl_socket_new(base, fd, ssl, BUFFEREVENT_SSL_ACCEPTING,
-			/*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
+			BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE/* | BEV_OPT_DEFER_CALLBACKS*/);
 #endif
 	}
 	else
 	{
-		bev = bufferevent_socket_new(base, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+		bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_THREADSAFE);
 	}
 	if (!bev)
 	{
