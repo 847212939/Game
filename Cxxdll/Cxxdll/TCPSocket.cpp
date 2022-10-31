@@ -110,8 +110,8 @@ bool CTCPSocketManage::ConnectServer()
 {
 	struct event_base* base = event_base_new();
 
-	SockFd sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock < 0)
+	m_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if (m_socket < 0)
 	{
 		return false;
 	}
@@ -121,12 +121,12 @@ bool CTCPSocketManage::ConnectServer()
 	sin.sin_port = htons(m_port);
 	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
 
-	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
+	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
 		return false;
 	}
 
-	m_Socketbev = bufferevent_socket_new(base, sock, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	m_Socketbev = bufferevent_socket_new(base, m_socket, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
