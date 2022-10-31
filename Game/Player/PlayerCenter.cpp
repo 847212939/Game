@@ -28,11 +28,11 @@ void PlayerCenter::Init()
 // 创建角色
 void PlayerCenter::CreatePlayer(LoginData& loginData)
 {
-	m_cond.GetMutex().lock();
+	m_mutex.lock();
 	m_LoadPlayerList.push_back(loginData);
-	m_cond.GetMutex().unlock();
+	m_mutex.unlock();
 
-	m_cond.NotifyOne();
+	m_cond.notify_all();
 }
 VectorPlayerClient& PlayerCenter::GetVectorPlayerClient()
 {
@@ -91,7 +91,7 @@ void PlayerCenter::GetSocketSet(std::vector<unsigned int>& socketVec)
 	// 获取在线玩家
 	G_NetClient->GetSocketSet(socketVec);
 }
-ConditionVariable& PlayerCenter::GetConditionVariable()
+std::condition_variable& PlayerCenter::GetConditionVariable()
 {
 	return m_cond;
 }
@@ -101,15 +101,8 @@ bool PlayerCenter::SwapLoadPlayerList(ListLoginData& LloadPlayerList, ListLoginD
 {
 	RloadPlayerList.clear();
 
-	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [&LloadPlayerList, &run]
-		{
-			if (LloadPlayerList.size() > 0 || !run)
-			{
-				return true;
-			}
-			return false;
-		});
+	std::unique_lock<std::mutex> uniqLock(m_mutex);
+	m_cond.wait(uniqLock);
 	if (LloadPlayerList.size() <= 0)
 	{
 		uniqLock.unlock();

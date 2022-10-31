@@ -74,7 +74,6 @@ extern "C"
 #include "kernel/Structural.h"			// 结构
 #include "kernel/IDGen.h"				// 唯一ID
 #include "kernel/Alias.h"				// 别名
-#include "kernel/ConditionVariable.h"	// 条件变量
 #include "kernel/DataLine.h"			// 数据处理
 #include "kernel/TCPSocket.h"			// 网络基类
 #include "kernel/TCPClient.h"			// 网络客户端

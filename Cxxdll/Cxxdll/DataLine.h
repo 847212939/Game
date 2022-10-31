@@ -1,6 +1,5 @@
 #pragma 
 #include "Structural.h"
-#include "ConditionVariable.h"
 
 class CDataLine
 {
@@ -17,15 +16,20 @@ public:
 	bool CleanData();
 	// 获取队列大小
 	size_t GetDataCount();
-	// 获取条件变量
-	ConditionVariable& GetConditionVariable();
 	// 加入消息队列
 	unsigned int AddData(void* pData, unsigned int uDataSize, SysMsgCmd uDataKind = SysMsgCmd::HD_SYS_MSG_BEGIN);
 	// 提取消息数据
 	unsigned int GetData(ListItemData** pDataBuffer, bool& run, unsigned int& uDataKind);
 
+public:
+	std::condition_variable& GetConditionVariable()
+	{
+		return m_cond;
+	}
+
 private:
 	unsigned int				m_dataListSize;
 	std::list <ListItemData*>	m_dataList;
-	ConditionVariable			m_cond;
+	std::mutex					m_mutex;
+	std::condition_variable		m_cond;
 };

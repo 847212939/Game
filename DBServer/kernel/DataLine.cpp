@@ -44,12 +44,12 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 
 	memcpy(pListItem->pData, pData, uDataSize);
 
-	m_cond.GetMutex().lock();
+	m_mutex.lock();
 	m_dataList.push_back(pListItem);
 	m_dataListSize++;
-	m_cond.GetMutex().unlock();
+	m_mutex.unlock();
 
-	m_cond.NotifyOne();
+	m_cond.notify_one();
 
 	return pListItem->stDataHead.uSize;
 }
@@ -58,15 +58,8 @@ unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned 
 {
 	*pDataBuffer = nullptr;
 
-	std::unique_lock<std::mutex> uniqLock(m_cond.GetMutex());
-	m_cond.Wait(uniqLock, [this, &run]
-	{
-		if (this->m_dataList.size() > 0 || !run)
-		{
-			return true;
-		}
-		return false;
-	});
+	std::unique_lock<std::mutex> uniqLock(m_mutex);
+	m_cond.wait(uniqLock);
 	if (this->GetDataCount() <= 0 || m_dataList.size() <= 0)
 	{
 		uniqLock.unlock();
@@ -90,7 +83,7 @@ unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned 
 bool CDataLine::CleanData()
 {
 	ListItemData* pListItem = nullptr;
-	std::lock_guard<std::mutex> guard(m_cond.GetMutex());
+	std::lock_guard<std::mutex> guard(m_mutex);
 
 	while (m_dataList.size() > 0)
 	{
@@ -107,11 +100,6 @@ bool CDataLine::CleanData()
 	m_dataListSize = 0;
 
 	return true;
-}
-
-ConditionVariable& CDataLine::GetConditionVariable()
-{
-	return m_cond;
 }
 
 size_t CDataLine::GetDataCount()

@@ -67,9 +67,6 @@
     <Filter Include="网络管理\数据管理">
       <UniqueIdentifier>{2a45e5ea-321f-4bf5-b592-c90b432da8c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络管理\条件变量">
-      <UniqueIdentifier>{e4d06a7c-873c-41cb-9fe8-29cd847989ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="逻辑管理">
       <UniqueIdentifier>{d8ddf144-a217-436d-812c-c3a133d5ffd8}</UniqueIdentifier>
     </Filter>
@@ -266,9 +263,6 @@
     </ClInclude>
     <ClInclude Include="kernel\TCPSocket.h">
       <Filter>网络管理\网络处理</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\ConditionVariable.h">
-      <Filter>网络管理\条件变量</Filter>
     </ClInclude>
     <ClInclude Include="kernel\LogManager.h">
       <Filter>网络管理\日志管理</Filter>

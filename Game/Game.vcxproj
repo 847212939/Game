@@ -207,7 +207,6 @@
     <ClInclude Include="kernel\Alias.h" />
     <ClInclude Include="kernel\AttrsCmd.h" />
     <ClInclude Include="kernel\base64.h" />
-    <ClInclude Include="kernel\ConditionVariable.h" />
     <ClInclude Include="kernel\DataLine.h" />
     <ClInclude Include="kernel\IDGen.h" />
     <ClInclude Include="kernel\LogManager.h" />

@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="DataLine.h" />
     <ClInclude Include="Netmsg.h" />
     <ClInclude Include="pch.h" />

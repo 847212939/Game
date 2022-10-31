@@ -23,9 +23,6 @@
     <Filter Include="网络管理\数据管理">
       <UniqueIdentifier>{ac12b9cc-d786-45a4-805e-0f751fe47483}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络管理\条件变量">
-      <UniqueIdentifier>{403c4f45-0821-4063-a597-aa745dd81686}</UniqueIdentifier>
-    </Filter>
     <Filter Include="网络管理\网络处理">
       <UniqueIdentifier>{f87a9dd5-f4dd-42e5-ba6e-987210208cf0}</UniqueIdentifier>
     </Filter>
@@ -128,9 +125,6 @@
     </ClInclude>
     <ClInclude Include="kernel\MysqlHelper.h">
       <Filter>网络管理\数据管理</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\ConditionVariable.h">
-      <Filter>网络管理\条件变量</Filter>
     </ClInclude>
     <ClInclude Include="kernel\TCPClient.h">
       <Filter>网络管理\网络处理</Filter>

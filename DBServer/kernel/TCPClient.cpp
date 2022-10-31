@@ -108,9 +108,9 @@ void TCPClient::NotifyAll()
 		return;
 	}
 	
-	RecvDataLine->GetConditionVariable().NotifyAll();
-	SendDataLine->GetConditionVariable().NotifyAll();
-	G_PlayerPrepClient->GetConditionVariable().NotifyAll();
+	RecvDataLine->GetConditionVariable().notify_all();
+	SendDataLine->GetConditionVariable().notify_all();
+	G_PlayerPrepClient->GetConditionVariable().notify_all();
 }
 
 void TCPClient::SocketCallback(void* pDataLineHead)

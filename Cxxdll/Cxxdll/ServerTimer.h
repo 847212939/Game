@@ -1,6 +1,5 @@
 #pragma once
 #include "Structural.h"
-#include "ConditionVariable.h"
 
 class CServerTimer
 {
@@ -28,9 +27,10 @@ private:
 	void TimeoutCB(evutil_socket_t fd, short event);
 
 private:
-	int					m_timeOnce;
-	volatile bool		m_bRun;
-	ConditionVariable	m_cond;
-	ServerTimerInfomap  m_timerMap;
-	struct event_base*  m_base;
+	int							m_timeOnce;
+	volatile bool				m_bRun;
+	std::mutex					m_mutex;
+	std::condition_variable		m_cond;
+	ServerTimerInfomap			m_timerMap;
+	struct event_base*			m_base;
 };

@@ -20,7 +20,7 @@ public:
 	// 获取在线玩家
 	void GetSocketSet(std::vector<unsigned int>& socketVec);
 	// 获取条件变量
-	ConditionVariable& GetConditionVariable();
+	std::condition_variable& GetConditionVariable();
 	// 根据userid获取玩家
 	PlayerClient* GetPlayerByUserid(uint64_t userId);
 	// 根据index获取玩家
@@ -45,7 +45,8 @@ private:
 	PlayerClient* GetPlayerCrossByUserid(uint64_t& userId);
 
 private:
-	ConditionVariable				m_cond;
+	std::mutex						m_mutex;
+	std::condition_variable			m_cond;
 	ListLoginData					m_LoadPlayerList;
 	VectorPlayerClient				m_PlayerClientVec;
 	MapPlayerClient					m_MapPlayerClient;

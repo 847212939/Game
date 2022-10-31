@@ -10,9 +10,6 @@
     <Filter Include="网络架构\网络消息">
       <UniqueIdentifier>{2cb0ea4e-1c91-4128-bc16-fd4bd9db4562}</UniqueIdentifier>
     </Filter>
-    <Filter Include="网络架构\条件变量">
-      <UniqueIdentifier>{aa63288c-8027-46e0-b16f-54d3a8a5ddff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="网络架构\定时管理">
       <UniqueIdentifier>{e5f74034-a017-451b-8a5a-3a1e1f1ae631}</UniqueIdentifier>
     </Filter>
@@ -39,9 +36,6 @@
   <ItemGroup>
     <ClInclude Include="ServerTimer.h">
       <Filter>网络架构\定时管理</Filter>
-    </ClInclude>
-    <ClInclude Include="ConditionVariable.h">
-      <Filter>网络架构\条件变量</Filter>
     </ClInclude>
     <ClInclude Include="TCPSocket.h">
       <Filter>网络架构\网络消息</Filter>

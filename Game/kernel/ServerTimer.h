@@ -28,8 +28,9 @@ private:
 	static void TimeoutCB(evutil_socket_t fd, short event, void* arg);
 
 private:
-	int					m_timeOnce;
-	volatile bool		m_bRun;
-	ConditionVariable	m_cond;
-	MapServerTimerInfo  m_timerMap;
+	int							m_timeOnce;
+	volatile bool				m_bRun;
+	std::mutex					m_mutex;
+	std::condition_variable		m_cond;
+	MapServerTimerInfo			m_timerMap;
 };

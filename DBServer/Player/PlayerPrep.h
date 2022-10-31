@@ -58,7 +58,7 @@ public:
 	// 获取加载数据库
 	CMysqlHelper& GetLoadCMysqlHelper();
 	// 获取条件变量
-	ConditionVariable& GetConditionVariable();
+	std::condition_variable& GetConditionVariable();
 
 public:
 	// 网络消息回调
@@ -76,13 +76,14 @@ private:
 
 private:
 	// 条件变量数据库用
-	ConditionVariable m_cond;
+	std::mutex					m_mutex;
+	std::condition_variable		m_cond;
 	// 数据库语链表
-	ListString        m_sqlList;	
+	ListString					m_sqlList;	
 	// 回调函数
-	MapNetFun		  m_NetCBFunMap;
+	MapNetFun					m_NetCBFunMap;
 	// 数据库加载专用
-	CMysqlHelper      m_CMysqlHelperLoad;
+	CMysqlHelper				m_CMysqlHelperLoad;
 	// 数据库保存专用
-	CMysqlHelper      m_CMysqlHelperSave;	
+	CMysqlHelper				m_CMysqlHelperSave;	
 };

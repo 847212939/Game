@@ -61,7 +61,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)
 
 	// lock
 	{
-		m_cond.GetMutex().lock();
+		m_mutex.lock();
 		for (ServerTimerInfomap::iterator iter = m_timerMap.begin(); iter != m_timerMap.end();)
 		{
 			if ((currTime >= iter->second.starttime) && 
@@ -81,7 +81,7 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event)
 
 			iter++;
 		}
-		m_cond.GetMutex().unlock();
+		m_mutex.unlock();
 	}
 }
 
@@ -108,7 +108,7 @@ bool CServerTimer::SetTimer(unsigned int uTimerID, unsigned int uElapse, unsigne
 	info.starttime = Util::GetSysMilliseconds() / m_timeOnce * m_timeOnce + uElapse;
 	info.timertype = timerType;
 
-	std::lock_guard<std::mutex> guard(m_cond.GetMutex());
+	std::lock_guard<std::mutex> guard(m_mutex);
 
 	m_timerMap[uTimerID] = info;
 
@@ -122,7 +122,7 @@ bool CServerTimer::KillTimer(unsigned int uTimerID)
 		return false;
 	}
 
-	std::lock_guard<std::mutex> guard(m_cond.GetMutex());
+	std::lock_guard<std::mutex> guard(m_mutex);
 
 	auto iter = m_timerMap.find(uTimerID);
 	if (iter == m_timerMap.end())

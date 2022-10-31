@@ -133,9 +133,9 @@ void TCPClient::NotifyAll()
 	}
 	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
 
-	RecvDataLine->GetConditionVariable().NotifyAll();
-	SendDataLine->GetConditionVariable().NotifyAll();
-	G_PlayerCenterClient->GetConditionVariable().NotifyAll();
+	RecvDataLine->GetConditionVariable().notify_all();
+	SendDataLine->GetConditionVariable().notify_all();
+	G_PlayerCenterClient->GetConditionVariable().notify_all();
 
 	for (int i = 0; i < timerCnt; i++)
 	{
