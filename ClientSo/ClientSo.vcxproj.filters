@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="网络管理">
+      <UniqueIdentifier>{665214bd-6e21-4285-bfdf-39c4bb30b8c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="系统入口">
+      <UniqueIdentifier>{1a90feeb-22f3-4334-8dcb-61741214fbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家管理">
+      <UniqueIdentifier>{61873f86-7b73-4c21-b4e8-d38f2da07e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家管理\逻辑基类">
+      <UniqueIdentifier>{9e30a250-e7a6-4872-a027-dde69a2bf783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家管理\逻辑派生">
+      <UniqueIdentifier>{25b8341b-798d-4aa7-8eb5-a84a4d87eb4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="逻辑管理">
+      <UniqueIdentifier>{17375b49-8247-49e0-ae92-092457e0fe61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\工具管理">
+      <UniqueIdentifier>{e8ceb95f-25c3-40c6-9f83-6ff979f1811b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\公共定义">
+      <UniqueIdentifier>{68c1df09-4a74-47e6-821f-94112fccd3ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\日志管理">
+      <UniqueIdentifier>{5d036a74-acd0-47cb-8371-8f9a4f7353c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\数据管理">
+      <UniqueIdentifier>{fb90f9c9-de56-4c76-bb7a-84ecc072413e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\网络处理">
+      <UniqueIdentifier>{cc402368-4254-4cf3-88f3-1bb0d8fe00b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息队列">
+      <UniqueIdentifier>{89d2b690-97ef-4d8c-9fba-dfaeeb02c3bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="网络管理\消息解析">
+      <UniqueIdentifier>{f5f71501-62a8-492e-832c-b36e17bf1821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置管理">
+      <UniqueIdentifier>{7f3d889a-7402-4921-9130-5de81ca8b155}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseSys.h">
+      <Filter>逻辑管理</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPrep.h">
+      <Filter>玩家管理\逻辑基类</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPrepClient.h">
+      <Filter>玩家管理\逻辑派生</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>网络管理\工具管理</Filter>
+    </ClInclude>
+    <ClInclude Include="Alias.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageCmd.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="Structural.h">
+      <Filter>网络管理\公共定义</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
+      <Filter>网络管理\日志管理</Filter>
+    </ClInclude>
+    <ClInclude Include="MysqlHelper.h">
+      <Filter>网络管理\数据管理</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPClient.h">
+      <Filter>网络管理\网络处理</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>网络管理\网络处理</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLine.h">
+      <Filter>网络管理\消息队列</Filter>
+    </ClInclude>
+    <ClInclude Include="Netmsg.h">
+      <Filter>网络管理\消息解析</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCfgMgr.h">
+      <Filter>配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigMgr.h">
+      <Filter>配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaMgr.h">
+      <Filter>配置管理</Filter>
+    </ClInclude>
+    <ClInclude Include="mainspace.h">
+      <Filter>系统入口</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBaseSys.cpp">
+      <Filter>逻辑管理</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPrep.cpp">
+      <Filter>玩家管理\逻辑基类</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPrepClient.cpp">
+      <Filter>玩家管理\逻辑派生</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>网络管理\工具管理</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>网络管理\日志管理</Filter>
+    </ClCompile>
+    <ClCompile Include="MysqlHelper.cpp">
+      <Filter>网络管理\数据管理</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPClient.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>网络管理\网络处理</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLine.cpp">
+      <Filter>网络管理\消息队列</Filter>
+    </ClCompile>
+    <ClCompile Include="Netmsg.cpp">
+      <Filter>网络管理\消息解析</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCfgMgr.cpp">
+      <Filter>配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigMgr.cpp">
+      <Filter>配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaMgr.cpp">
+      <Filter>配置管理</Filter>
+    </ClCompile>
+    <ClCompile Include="mainspace.h.cpp">
+      <Filter>系统入口</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
