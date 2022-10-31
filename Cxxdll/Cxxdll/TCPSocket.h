@@ -30,7 +30,7 @@ public:
 	struct bufferevent* GetScoketbev();
 
 private:
-	bool ConnectServer(SockFd& fd);
+	bool ConnectServer();
 
 private:
 	static void SetTcpRcvSndBUF(SockFd fd, int rcvBufSize, int sndBufSize);
@@ -42,7 +42,6 @@ private:
 	bool OnSocketCloseEvent(unsigned int uIndex);
 
 private:
-	void ConnectServerThread(SockFd& fd);
 	void ThreadSendMsgThread();
 	void HandleSendData(ListItemData* pListItem);
 

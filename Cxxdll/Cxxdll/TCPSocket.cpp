@@ -95,30 +95,6 @@ bool CTCPSocketManage::Start()
 	{
 		return false;
 	}
-	m_socket = socket(AF_INET, SOCK_STREAM, 0);
-	if (m_socket < 0)
-	{
-		return false;
-	}
-
-	sockaddr_in sin;
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(m_port);
-
-#if defined(_WIN32)
-	sin.sin_addr.S_un.S_addr = inet_addr(m_ip.c_str());
-#elif defined(_WIN64)
-#elif defined(__linux__)
-	sin.sin_addr.s_addr = inet_addr(m_ip.c_str());
-#elif defined(__unix__)
-#elif defined(__ANDROID__)
-#elif defined(__APPLE__)
-#endif
-
-	if (connect(m_socket, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
-	{
-		return false;
-	}
 
 	m_ServiceType = ServiceType::SERVICE_TYPE_BEGIN;
 	m_running = true;
@@ -126,16 +102,24 @@ bool CTCPSocketManage::Start()
 	std::thread threadSendMsgThread(&CTCPSocketManage::ThreadSendMsgThread, this);
 	threadSendMsgThread.detach();
 
-	std::thread connectServerThread(&CTCPSocketManage::ConnectServerThread, this, std::ref(m_socket));
+	std::thread connectServerThread(&CTCPSocketManage::ConnectServer, this);
 	connectServerThread.detach();
 
 	return true;
 }
 
-bool CTCPSocketManage::ConnectServer(SockFd& fd)
+bool CTCPSocketManage::ConnectServer()
 {
-	m_ConnectServerBase = event_base_new_with_config(m_eventBaseCfg);
-	m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, fd, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
+	m_ConnectServerBase = event_base_new();
+
+	//struct sockaddr_in6 sin6; ipv6
+	struct sockaddr_in sin;
+	memset(&sin, 0, sizeof(sin));
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(m_port);
+	evutil_inet_pton(sin.sin_family, m_ip.c_str(), (void*)&sin.sin_addr);
+
+	m_Socketbev = bufferevent_socket_new(m_ConnectServerBase, -1, /*BEV_OPT_CLOSE_ON_FREE | */BEV_OPT_THREADSAFE);
 
 	// 设置应用层收发数据包，单次大小
 	SetMaxSingleReadAndWrite(m_Socketbev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
@@ -145,6 +129,14 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	if (bufferevent_enable(m_Socketbev, EV_READ | EV_ET) < 0)
 	{
 		bufferevent_free(m_Socketbev);
+		event_base_free(m_ConnectServerBase);
+		return false;
+	}
+
+	if (0 != bufferevent_socket_connect(m_Socketbev, (struct sockaddr*)&sin, sizeof(sin)))
+	{
+		bufferevent_free(m_Socketbev);
+		event_base_free(m_ConnectServerBase);
 		return false;
 	}
 
@@ -159,20 +151,11 @@ bool CTCPSocketManage::ConnectServer(SockFd& fd)
 	
 	m_Connected = true;
 
-	return true;
-}
-
-void CTCPSocketManage::ConnectServerThread(SockFd& fd)
-{
-	if (!ConnectServer(std::ref(m_socket)))
-	{
-		m_running = false;
-		return;
-	}
-
 	event_base_dispatch(m_ConnectServerBase);
 	bufferevent_free(m_Socketbev);
 	event_base_free(m_ConnectServerBase);
+
+	return true;
 }
 
 void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
