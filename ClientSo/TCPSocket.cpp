@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 CTCPSocketManage::CTCPSocketManage() :
 	m_bindIP(""),
@@ -74,7 +74,7 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
 
-	// ³õÊ¼»¯·ÖÅäÄÚ´æ
+	// åˆå§‹åŒ–åˆ†é…å†…å­˜
 	unsigned int socketInfoVecSize = m_uMaxSocketSize * 2;
 	m_socketInfoVec.resize((size_t)socketInfoVecSize);
 
@@ -163,20 +163,20 @@ void CTCPSocketManage::ThreadAccept()
 
 	if (!listener)
 	{
-		Log(INF, "Could not create a listener! ³¢ÊÔ»»¸ö¶Ë¿Ú»òÕßÉÔµÈÒ»»á¡£");
+		Log(INF, "Could not create a listener! å°è¯•æ¢ä¸ªç«¯å£æˆ–è€…ç¨ç­‰ä¸€ä¼šã€‚");
 		return;
 	}
 
 	evconnlistener_set_error_cb(listener, AcceptErrorCB);
 
-	// »ñÈ¡½ÓÊÕÏß³Ì³ØÊıÁ¿
+	// è·å–æ¥æ”¶çº¿ç¨‹æ± æ•°é‡
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
 		workBaseCount = 2;
 	}
 
-	// ³õÊ¼¹¤×÷Ïß³ÌĞÅÏ¢
+	// åˆå§‹å·¥ä½œçº¿ç¨‹ä¿¡æ¯
 	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount],
 		[](RecvThreadParam* p)
 		{
@@ -228,7 +228,7 @@ void CTCPSocketManage::ThreadAccept()
 	}
 
 	std::vector<std::thread> threadVev;
-	// ¿ª±Ù¹¤×÷Ïß³Ì³Ø
+	// å¼€è¾Ÿå·¥ä½œçº¿ç¨‹æ± 
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
@@ -255,7 +255,7 @@ void CTCPSocketManage::ThreadAccept()
 		}
 		if (workInfo.event)
 		{
-			// ²»ÖªµÀÎªÊ²Ã´ÍË³öÊ±·¢Éú±ÀÀ£
+			// ä¸çŸ¥é“ä¸ºä»€ä¹ˆé€€å‡ºæ—¶å‘ç”Ÿå´©æºƒ
 			//event_free(workInfo.event);
 		}
 	}
@@ -266,7 +266,7 @@ void CTCPSocketManage::ThreadAccept()
 }
 bool CTCPSocketManage::WaitConnect(int threadIndex)
 {
-	// »ñÈ¡½ÓÊÕÏß³Ì³ØÊıÁ¿
+	// è·å–æ¥æ”¶çº¿ç¨‹æ± æ•°é‡
 	if (threadIndex >= G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt())
 	{
 		return false;
@@ -293,7 +293,7 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
-		Log(CINF, "ÉêÇësocketÊ§°Ü");
+		Log(CINF, "ç”³è¯·socketå¤±è´¥");
 		return false;
 	}
 
@@ -327,16 +327,16 @@ bool CTCPSocketManage::ConnectServer()
 }
 void CTCPSocketManage::ServerSocketInfo(PlatformSocketInfo* tcpInfo)
 {
-	// ÉèÖÃµ×²ãÊÕ·¢»º³åÇø
+	// è®¾ç½®åº•å±‚æ”¶å‘ç¼“å†²åŒº
 	SetTcpRcvSndBUF(tcpInfo->acceptFd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
 	static int lastThreadIndex = 0;
 	lastThreadIndex = lastThreadIndex % m_workBaseVec.size();
-	// Í¶µİµ½½ÓÊÕÏß³Ì
+	// æŠ•é€’åˆ°æ¥æ”¶çº¿ç¨‹
 	if (send(m_workBaseVec[lastThreadIndex].write_fd, (const char*)(tcpInfo), 
 		sizeof(PlatformSocketInfo), 0) < sizeof(PlatformSocketInfo))
 	{
-		Log(CERR, "Í¶µİÁ¬½ÓÏûÏ¢Ê§°Ü,fd=%d", tcpInfo->acceptFd);
+		Log(CERR, "æŠ•é€’è¿æ¥æ¶ˆæ¯å¤±è´¥,fd=%d", tcpInfo->acceptFd);
 	}
 }
 bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock)
@@ -348,22 +348,22 @@ bool CTCPSocketManage::ConnectLogicServer(SOCKFD& sock)
 
 	if (connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in)) < 0)
 	{
-		Log(CINF, "Á¬½ÓÂß¼­·şÎñÆ÷Ê§°Ü");
+		Log(CINF, "è¿æ¥é€»è¾‘æœåŠ¡å™¨å¤±è´¥");
 		return false;
 	}
 
-	// »ñÈ¡Á¬½ÓĞÅÏ¢
+	// è·å–è¿æ¥ä¿¡æ¯
 	PlatformSocketInfo tcpInfo;
 	tcpInfo.acceptMsgTime = time(nullptr);
 	memcpy(tcpInfo.ip, m_ClientInfo.ip.c_str(), m_ClientInfo.ip.size());
 	tcpInfo.port = m_ClientInfo.port;
-	tcpInfo.acceptFd = sock;	//·şÎñÆ÷accept·µ»ØÌ×½Ó×ÖÓÃÀ´ºÍ¿Í»§¶ËÍ¨ĞÅ
+	tcpInfo.acceptFd = sock;	//æœåŠ¡å™¨acceptè¿”å›å¥—æ¥å­—ç”¨æ¥å’Œå®¢æˆ·ç«¯é€šä¿¡
 
 	m_ServerSock = sock;
 
 	ServerSocketInfo(&tcpInfo);
 
-	Log(CINF, "Á¬½ÓÂß¼­·şÎñÆ÷³É¹¦ [ip=%s port=%d index=%d fd=%d]",
+	Log(CINF, "è¿æ¥é€»è¾‘æœåŠ¡å™¨æˆåŠŸ [ip=%s port=%d index=%d fd=%d]",
 		tcpInfo.ip, tcpInfo.port, m_ServerIndex, tcpInfo.acceptFd);
 	return true;
 }
@@ -376,7 +376,7 @@ void CTCPSocketManage::ThreadRSSocket(void* pThreadData)
 		return;
 	}
 
-	// ´¦ÓÚ¼àÌı×´Ì¬
+	// å¤„äºç›‘å¬çŠ¶æ€
 	event_base_dispatch(param->pThis->m_workBaseVec[param->index].base);
 
 	return;
@@ -409,7 +409,7 @@ void CTCPSocketManage::ThreadLibeventProcess(evutil_socket_t readfd, short which
 	{
 		PlatformSocketInfo* pTCPSocketInfo = (PlatformSocketInfo*)(buf + i * sizeof(PlatformSocketInfo));
 
-		// ´¦ÀíÁ¬½Ó
+		// å¤„ç†è¿æ¥
 		pThis->AddTCPSocketInfo(threadIndex, pTCPSocketInfo);
 	}
 
@@ -425,11 +425,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	SSL* ssl = nullptr;
 #endif
 
-	// ·ÖÅäË÷ÒıËã·¨
+	// åˆ†é…ç´¢å¼•ç®—æ³•
 	int index = GetSocketIndex();
 	if (index < 0)
 	{
-		Log(CERR, "·ÖÅäË÷ÒıÊ§°Ü£¡£¡£¡fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		Log(CERR, "åˆ†é…ç´¢å¼•å¤±è´¥ï¼ï¼ï¼fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		return;
 	}
@@ -443,15 +443,15 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		return;
 	}
 
-	// ÉèÖÃÓ¦ÓÃ²ãÊÕ·¢Êı¾İ°ü£¬µ¥´Î´óĞ¡
+	// è®¾ç½®åº”ç”¨å±‚æ”¶å‘æ•°æ®åŒ…ï¼Œå•æ¬¡å¤§å°
 	SetMaxSingleReadAndWrite(bev, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
-	// Éú³É»Øµ÷º¯Êı²ÎÊı£¬µ÷ÓÃbufferevent_freeÒªÊÍ·ÅÄÚ´æ£¬·ñÔòÄÚ´æĞ¹Â¶
+	// ç”Ÿæˆå›è°ƒå‡½æ•°å‚æ•°ï¼Œè°ƒç”¨bufferevent_freeè¦é‡Šæ”¾å†…å­˜ï¼Œå¦åˆ™å†…å­˜æ³„éœ²
 	RecvThreadParam* pRecvThreadParam = new RecvThreadParam;
 	pRecvThreadParam->pThis = this;
 	pRecvThreadParam->index = index;
 
-	// Ìí¼ÓÊÂ¼ş£¬²¢ÉèÖÃºÃ»Øµ÷º¯Êı
+	// æ·»åŠ äº‹ä»¶ï¼Œå¹¶è®¾ç½®å¥½å›è°ƒå‡½æ•°
 	bufferevent_setcb(bev, ReadCB, nullptr, EventCB, (void*)pRecvThreadParam);
 	if (bufferevent_enable(bev, EV_READ | EV_ET) < 0)
 	{
@@ -462,7 +462,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		return;
 	}
 
-	// ÉèÖÃ¶Á³¬Ê±£¬µ±×öĞÄÌø¡£Íø¹Ø·şÎñÆ÷²ÅĞèÒª
+	// è®¾ç½®è¯»è¶…æ—¶ï¼Œå½“åšå¿ƒè·³ã€‚ç½‘å…³æœåŠ¡å™¨æ‰éœ€è¦
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC ||
 		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS ||
 		m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
@@ -473,7 +473,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 		bufferevent_set_timeouts(bev, &tvRead, nullptr);
 	}
 
-	// ±£´æĞÅÏ¢
+	// ä¿å­˜ä¿¡æ¯
 	TCPSocketInfo tcpInfo;
 	memcpy(tcpInfo.ip, pTCPSocketInfo->ip, sizeof(tcpInfo.ip));
 	tcpInfo.acceptFd = pTCPSocketInfo->acceptFd;
@@ -487,11 +487,11 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	}
 	tcpInfo.bHandleAccptMsg = false;
 
-	m_mutex.lock();	//¼ÓËø
+	m_mutex.lock();	//åŠ é”
 	if (m_socketInfoVec[index].isConnect)
 	{
-		m_mutex.unlock(); //½âËø
-		Log(CERR, "·ÖÅäË÷ÒıÊ§°Ü,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
+		m_mutex.unlock(); //è§£é”
+		Log(CERR, "åˆ†é…ç´¢å¼•å¤±è´¥,fd=%d,ip=%s", fd, pTCPSocketInfo->ip);
 		closesocket(fd);
 		bufferevent_free(bev);
 		SafeDelete(pRecvThreadParam);
@@ -500,7 +500,7 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
-	m_mutex.unlock(); //½âËø
+	m_mutex.unlock(); //è§£é”
 
 	if (m_ServerIndex < 0 && m_ServerSock == fd)
 	{
@@ -515,25 +515,25 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 {
 	CTCPSocketManage* pThis = (CTCPSocketManage*)data;
 
-	// »ñÈ¡Á¬½ÓĞÅÏ¢
+	// è·å–è¿æ¥ä¿¡æ¯
 	struct sockaddr_in* addrClient = (struct sockaddr_in*)sa;
 	PlatformSocketInfo tcpInfo;
 	tcpInfo.acceptMsgTime = time(nullptr);
 	strcpy(tcpInfo.ip, inet_ntoa(addrClient->sin_addr));
 	tcpInfo.port = ntohs(addrClient->sin_port);
-	tcpInfo.acceptFd = fd;	//·şÎñÆ÷accept·µ»ØÌ×½Ó×ÖÓÃÀ´ºÍ¿Í»§¶ËÍ¨ĞÅ
+	tcpInfo.acceptFd = fd;	//æœåŠ¡å™¨acceptè¿”å›å¥—æ¥å­—ç”¨æ¥å’Œå®¢æˆ·ç«¯é€šä¿¡
 
 	if (pThis->GetCurSocketSize() >= pThis->m_uMaxSocketSize)
 	{
-		Log(CERR, "·şÎñÆ÷ÒÑ¾­Âú£ºfd=%d [ip:%s %d][ÈËÊı£º%u/%u]", fd,
+		Log(CERR, "æœåŠ¡å™¨å·²ç»æ»¡ï¼šfd=%d [ip:%s %d][äººæ•°ï¼š%u/%u]", fd,
 			tcpInfo.ip, tcpInfo.port, pThis->GetCurSocketSize(), pThis->m_uMaxSocketSize);
 
-		// ·ÖÅäÊ§°Ü
+		// åˆ†é…å¤±è´¥
 		NetMessageHead netHead;
 
 		netHead.uMainID = 100;
 		netHead.uAssistantID = 3;
-		netHead.uHandleCode = ERROR_SERVICE_FULL;//·şÎñÆ÷ÈËÊıÒÑÂú
+		netHead.uHandleCode = ERROR_SERVICE_FULL;//æœåŠ¡å™¨äººæ•°å·²æ»¡
 		netHead.uMessageSize = sizeof(NetMessageHead);
 
 		sendto(fd, (char*)&netHead, sizeof(NetMessageHead), 0, (sockaddr*)&sa, sizeof(sockaddr_in));
@@ -543,18 +543,18 @@ void CTCPSocketManage::ListenerCB(evconnlistener* listener, evutil_socket_t fd, 
 		return;
 	}
 
-	// ÉèÖÃµ×²ãÊÕ·¢»º³åÇø
+	// è®¾ç½®åº•å±‚æ”¶å‘ç¼“å†²åŒº
 	SetTcpRcvSndBUF(fd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
-	// memcachedÖĞÏß³Ì¸ºÔØ¾ùºâËã·¨
+	// memcachedä¸­çº¿ç¨‹è´Ÿè½½å‡è¡¡ç®—æ³•
 	static int lastThreadIndex = 0;
 	lastThreadIndex = lastThreadIndex % pThis->m_workBaseVec.size();
 
-	// Í¶µİµ½½ÓÊÕÏß³Ì
+	// æŠ•é€’åˆ°æ¥æ”¶çº¿ç¨‹
 	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd,
 		(const char*)(&tcpInfo), sizeof(tcpInfo), 0) < sizeof(tcpInfo))
 	{
-		Log(CERR, "Í¶µİÁ¬½ÓÏûÏ¢Ê§°Ü,fd=%d", fd);
+		Log(CERR, "æŠ•é€’è¿æ¥æ¶ˆæ¯å¤±è´¥,fd=%d", fd);
 	}
 
 	lastThreadIndex++;
@@ -565,7 +565,7 @@ void CTCPSocketManage::ReadCB(bufferevent* bev, void* data)
 	CTCPSocketManage* pThis = param->pThis;
 	int index = param->index;
 
-	// ´¦ÀíÊı¾İ£¬°üÍ·½âÎö
+	// å¤„ç†æ•°æ®ï¼ŒåŒ…å¤´è§£æ
 	pThis->RecvData(bev, index);
 }
 void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
@@ -576,15 +576,15 @@ void CTCPSocketManage::EventCB(bufferevent* bev, short events, void* data)
 
 	if (events & BEV_EVENT_EOF)
 	{
-		// Õı³£½áÊø
+		// æ­£å¸¸ç»“æŸ
 	}
 	else if (events & BEV_EVENT_ERROR)
 	{
-		// windowsÕı³£½áÊø
+		// windowsæ­£å¸¸ç»“æŸ
 	}
-	else if (events & BEV_EVENT_TIMEOUT) // ³¤Ê±¼äÃ»ÓĞÊÕµ½£¬¿Í»§¶Ë·¢¹ıÀ´µÄÊı¾İ£¬¶ÁÈ¡Êı¾İ³¬Ê±
+	else if (events & BEV_EVENT_TIMEOUT) // é•¿æ—¶é—´æ²¡æœ‰æ”¶åˆ°ï¼Œå®¢æˆ·ç«¯å‘è¿‡æ¥çš„æ•°æ®ï¼Œè¯»å–æ•°æ®è¶…æ—¶
 	{
-		Log(INF, "ĞÄÌøÌßÈË index=%d fd=%d", index, pThis->m_socketInfoVec[index].acceptFd);
+		Log(INF, "å¿ƒè·³è¸¢äºº index=%d fd=%d", index, pThis->m_socketInfoVec[index].acceptFd);
 	}
 	else
 	{
@@ -635,7 +635,7 @@ bool CTCPSocketManage::VerifyConnection(char* data)
 
 	return true;
 }
-// ÍøÂçÏûÏ¢ÅÉ·¢
+// ç½‘ç»œæ¶ˆæ¯æ´¾å‘
 bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData, int size, 
 	SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
@@ -648,11 +648,11 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	{
 		return false;
 	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //ĞÄÌø°ü
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //å¿ƒè·³åŒ…
 	{
 		return true;
 	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //²âÊÔÁ¬½Ó°ü
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //æµ‹è¯•è¿æ¥åŒ…
 	{
 		if (!VerifyConnection((char*)pData))
 		{
@@ -691,7 +691,7 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 
 void TCPSocketInfo::Reset(ServiceType& serviceType)
 {
-	// ºÍ·¢ËÍÏß³ÌÏà¹ØµÄËø
+	// å’Œå‘é€çº¿ç¨‹ç›¸å…³çš„é”
 	lock->lock();
 
 	isConnect = false;
@@ -699,7 +699,7 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	bev = nullptr;
 	bHandleAccptMsg = false;
 
-	// ½âËø·¢ËÍÏß³Ì
+	// è§£é”å‘é€çº¿ç¨‹
 	lock->unlock();
 }
 bool CTCPSocketManage::CloseSocket(int index)
@@ -713,21 +713,21 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		Log(CERR, "index=%d ³¬³ö·¶Î§", index);
+		Log(CERR, "index=%d è¶…å‡ºèŒƒå›´", index);
 		return;
 	}
 
 	unsigned long uAccessIP = 0;
 
-	// ¼ÓËø
+	// åŠ é”
 	m_mutex.lock();
-	// ÖØ¸´µ÷ÓÃ
+	// é‡å¤è°ƒç”¨
 	if (!tcpInfo->isConnect)
 	{
 		m_mutex.unlock();
 		return;
 	}
-	// Èç¹ûËøÃ»ÓĞ·ÖÅäÄÚ´æ£¬¾Í·ÖÅä
+	// å¦‚æœé”æ²¡æœ‰åˆ†é…å†…å­˜ï¼Œå°±åˆ†é…
 	if (!tcpInfo->lock)
 	{
 		tcpInfo->lock = new std::mutex;
@@ -735,28 +735,28 @@ void CTCPSocketManage::RemoveTCPSocketStatus(int index, bool isClientAutoClose/*
 	uAccessIP = inet_addr(tcpInfo->ip);
 	m_uCurSocketSize--;
 	m_heartBeatSocketSet.erase((unsigned int)index);
-	// ÊÍ·Å²ÎÊıÄÚ´æ
+	// é‡Šæ”¾å‚æ•°å†…å­˜
 	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
 	bufferevent_getcb(tcpInfo->bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
 	if (pRecvThreadParam)
 	{
 		SafeDelete(pRecvThreadParam);
 	}
-	// ºÍ·¢ËÍÏß³ÌÏà¹ØµÄËø
+	// å’Œå‘é€çº¿ç¨‹ç›¸å…³çš„é”
 	tcpInfo->Reset(m_ServiceType);
-	// ½âËø¶àÏß³Ì
+	// è§£é”å¤šçº¿ç¨‹
 	m_mutex.unlock();
 
-	// Èç¹ûÃ»ÓĞÉèÖÃBEV_OPT_CLOSE_ON_FREE Ñ¡Ïî£¬Ôò¹Ø±Õsocket
+	// å¦‚æœæ²¡æœ‰è®¾ç½®BEV_OPT_CLOSE_ON_FREE é€‰é¡¹ï¼Œåˆ™å…³é—­socket
 	closesocket(tcpInfo->acceptFd);
 
-	// Íæ¼ÒÏÂÏß
+	// ç©å®¶ä¸‹çº¿
 	OnSocketCloseEvent(uAccessIP, index, (unsigned int)tcpInfo->acceptMsgTime, false);
 
 	Log(CINF, "TCP close [ip=%s port=%d index=%d fd=%d isClientAutoClose:%d acceptTime=%lld]",
 		tcpInfo->ip, tcpInfo->port, index, tcpInfo->acceptFd, isClientAutoClose, tcpInfo->acceptMsgTime);
 }
-//ÍøÂç¹Ø±Õ´¦Àí
+//ç½‘ç»œå…³é—­å¤„ç†
 bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross, uint64_t userid/* = 0*/)
 {
@@ -839,7 +839,7 @@ bool CTCPSocketManage::IsConnected(int index)
 	}
 	return tcpInfo->isConnect;
 }
-// ·ÖÅäË÷ÒıËã·¨
+// åˆ†é…ç´¢å¼•ç®—æ³•
 int CTCPSocketManage::GetSocketIndex()
 {
 	std::lock_guard<std::mutex> guard(m_mutex);
@@ -916,7 +916,7 @@ int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2
 	int opt = 1;
 
 	listener = server = client = INVALID_SOCKET;
-	listener = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //´´½¨·şÎñÆ÷socket²¢½øĞĞ°ó¶¨¼àÌıµÈ
+	listener = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //åˆ›å»ºæœåŠ¡å™¨socketå¹¶è¿›è¡Œç»‘å®šç›‘å¬ç­‰
 	if (INVALID_SOCKET == listener)
 	{
 		goto fail;
@@ -937,7 +937,7 @@ int CTCPSocketManage::StreamSocketpair(struct addrinfo* addr_info, SOCKFD sock[2
 		goto fail;
 	}
 
-	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //´´½¨¿Í»§¶Ësocket£¬²¢Á¬½Ó·şÎñÆ÷
+	client = socket(addr_info->ai_family, addr_info->ai_socktype, addr_info->ai_protocol); //åˆ›å»ºå®¢æˆ·ç«¯socketï¼Œå¹¶è¿æ¥æœåŠ¡å™¨
 
 	if (INVALID_SOCKET == client)
 	{
@@ -1101,14 +1101,14 @@ int CTCPSocketManage::Socketpair(int family, int type, int protocol, SOCKFD recv
 	return result;
 }
 
-// ÏûÏ¢·¢ËÍ
+// æ¶ˆæ¯å‘é€
 bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size)
 {
-	//·¢ËÍÊı¾İ
+	//å‘é€æ•°æ®
 	TCPSocketInfo* tcpInfo = GetTCPSocketInfo(index);
 	if (!tcpInfo)
 	{
-		Log(CERR, "index=%d ³¬³ö·¶Î§", index);
+		Log(CERR, "index=%d è¶…å‡ºèŒƒå›´", index);
 		return false;
 	}
 	if (!tcpInfo->lock)
@@ -1121,7 +1121,7 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 		{
 			if (bufferevent_write(tcpInfo->bev, data, size) < 0)
 			{
-				Log(CERR, "·¢ËÍÊı¾İÊ§°Ü£¬index=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
+				Log(CERR, "å‘é€æ•°æ®å¤±è´¥ï¼Œindex=%d socketfd=%d bev=%p,", index, tcpInfo->acceptFd, tcpInfo->bev);
 			}
 		}
 	}
@@ -1148,10 +1148,10 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 		return false;
 	}
 
-	// ÕûºÏÒ»ÏÂÊı¾İ
+	// æ•´åˆä¸€ä¸‹æ•°æ®
 	std::unique_ptr<char[]> SendBuf(new char[sizeof(SendDataLineHead) + sizeof(NetMessageHead) + size]);
 
-	// Æ´½Ó°üÍ·
+	// æ‹¼æ¥åŒ…å¤´
 	NetMessageHead* pHead = reinterpret_cast<NetMessageHead*>((char*)SendBuf.get() + sizeof(SendDataLineHead));
 	pHead->uMainID = (unsigned int)mainID;
 	pHead->uAssistantID = assistID;
@@ -1159,13 +1159,13 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	pHead->uHandleCode = handleCode;
 	pHead->uIdentification = uIdentification;
 
-	// °üÌå
+	// åŒ…ä½“
 	if (pData && size > 0)
 	{
 		memcpy(SendBuf.get() + sizeof(SendDataLineHead) + sizeof(NetMessageHead), pData, size);
 	}
 
-	// Í¶µİµ½·¢ËÍ¶ÓÁĞ
+	// æŠ•é€’åˆ°å‘é€é˜Ÿåˆ—
 	if (m_pSendDataLine)
 	{
 		SendDataLineHead* pLineHead = reinterpret_cast<SendDataLineHead*>(SendBuf.get());
@@ -1177,7 +1177,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 
 		if (addBytes == 0)
 		{
-			Log(CERR, "Í¶µİÏûÏ¢Ê§°Ü,mainID=%d,assistID=%d", mainID, assistID);
+			Log(CERR, "æŠ•é€’æ¶ˆæ¯å¤±è´¥,mainID=%d,assistID=%d", mainID, assistID);
 			return false;
 		}
 	}
@@ -1185,7 +1185,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	return true;
 }
 
-// ·¢ËÍÏß³ÌÏûÏ¢´¦Àí·¢ËÍ
+// å‘é€çº¿ç¨‹æ¶ˆæ¯å¤„ç†å‘é€
 void CTCPSocketManage::ThreadSendMsg()
 {
 	CDataLine* pDataLine = GetSendDataLine();
@@ -1239,7 +1239,7 @@ void CTCPSocketManage::HandleSendData(ListItemData* pListItem)
 	}
 }
 
-// ½ÓÊÕÏûÏ¢½øĞĞ½â°ü´¦Àí
+// æ¥æ”¶æ¶ˆæ¯è¿›è¡Œè§£åŒ…å¤„ç†
 bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 {
 	if (bev == nullptr)
@@ -1259,50 +1259,50 @@ bool CTCPSocketManage::RecvData(bufferevent* bev, int index)
 		return false;
 	}
 
-	// Ê£Óà´¦ÀíÊı¾İ
+	// å‰©ä½™å¤„ç†æ•°æ®
 	size_t handleRemainSize = realAllSize;
 
-	// ½â³ö°üÍ·
+	// è§£å‡ºåŒ…å¤´
 	NetMessageHead* pNetHead = (NetMessageHead*)recvBuf.get();
 
-	// ´íÎóÅĞ¶Ï
+	// é”™è¯¯åˆ¤æ–­
 	if (handleRemainSize >= sizeof(NetMessageHead) && pNetHead->uMessageSize > SOCKET_RECV_BUF_SIZE)
 	{
-		// ÏûÏ¢¸ñÊ½²»ÕıÈ·
+		// æ¶ˆæ¯æ ¼å¼ä¸æ­£ç¡®
 		CloseSocket(index);
-		Log(CERR, "ÏûÏ¢¸ñÊ½²»ÕıÈ·,index=%d", index);
+		Log(CERR, "æ¶ˆæ¯æ ¼å¼ä¸æ­£ç¡®,index=%d", index);
 		return false;
 	}
 
-	// Õ³°ü´¦Àí
+	// ç²˜åŒ…å¤„ç†
 	while (handleRemainSize >= sizeof(NetMessageHead) && handleRemainSize >= pNetHead->uMessageSize)
 	{
 		unsigned int messageSize = pNetHead->uMessageSize;
 		if (messageSize > MAX_TEMP_SENDBUF_SIZE)
 		{
-			// ÏûÏ¢¸ñÊ½²»ÕıÈ·
+			// æ¶ˆæ¯æ ¼å¼ä¸æ­£ç¡®
 			CloseSocket(index);
-			Log(CERR, "ÏûÏ¢¸ñÊ½²»ÕıÈ·");
+			Log(CERR, "æ¶ˆæ¯æ ¼å¼ä¸æ­£ç¡®");
 			return false;
 		}
 
 		int realSize = messageSize - sizeof(NetMessageHead);
 		if (realSize < 0)
 		{
-			// Êı¾İ°ü²»¹»°üÍ·
+			// æ•°æ®åŒ…ä¸å¤ŸåŒ…å¤´
 			CloseSocket(index);
-			Log(CERR, "Êı¾İ°ü²»¹»°üÍ·");
+			Log(CERR, "æ•°æ®åŒ…ä¸å¤ŸåŒ…å¤´");
 			return false;
 		}
 
 		void* pData = nullptr;
 		if (realSize > 0)
 		{
-			// Ã»Êı¾İ¾ÍÎªnullptr
+			// æ²¡æ•°æ®å°±ä¸ºnullptr
 			pData = (void*)(recvBuf.get() + realAllSize - handleRemainSize + sizeof(NetMessageHead));
 		}
 
-		// ÅÉ·¢Êı¾İ
+		// æ´¾å‘æ•°æ®
 		DispatchPacket(bev, index, pNetHead, pData, realSize, SocketType::SOCKET_TYPE_TCP);
 
 		handleRemainSize -= messageSize;
