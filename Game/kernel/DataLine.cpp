@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-CDataLine::CDataLine() : m_dataListCnt(0)
+CDataLine::CDataLine()
 {
 	m_dataList.clear();
 }
@@ -46,9 +46,9 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 
 	m_mutex.lock();
 	m_dataList.push_back(pListItem);
-	++m_dataListCnt;
-	m_cond.notify_all();
 	m_mutex.unlock();
+
+	m_cond.notify_one();
 
 	return pListItem->stDataHead.uSize;
 }
@@ -57,26 +57,12 @@ unsigned int CDataLine::GetData(ListItemData** pDataBuffer, bool& run, unsigned 
 {
 	*pDataBuffer = nullptr;
 
-	if (m_dataListCnt <= 0)
-	{
-		std::unique_lock<std::mutex> uniqLock(m_mutex);
-		while (m_dataList.empty())
-		{
-			m_cond.wait(uniqLock);
-		}
-		*pDataBuffer = m_dataList.front();
-		m_dataList.pop_front();
-		--m_dataListCnt;
-		uniqLock.unlock();
-	}
-	else
-	{
-		m_mutex.lock();
-		*pDataBuffer = m_dataList.front();
-		m_dataList.pop_front();
-		--m_dataListCnt;
-		m_mutex.unlock();
-	}
+	std::unique_lock<std::mutex> uniqLock(m_mutex);
+	m_cond.wait(uniqLock, [this] {return this->m_dataList.size() > 0; });
+
+	*pDataBuffer = m_dataList.front();
+	m_dataList.pop_front();
+	uniqLock.unlock();
 
 	if (!(*pDataBuffer))
 	{
@@ -105,4 +91,9 @@ bool CDataLine::CleanData()
 		SafeDelete(pListItem);
 	}
 	return true;
+}
+
+std::condition_variable& CDataLine::GetConditionVariable()
+{
+	return m_cond;
 }

@@ -32,7 +32,7 @@ void PlayerCenter::CreatePlayer(LoginData& loginData)
 	m_LoadPlayerList.push_back(loginData);
 	m_mutex.unlock();
 
-	m_cond.notify_all();
+	m_cond.notify_one();
 }
 VectorPlayerClient& PlayerCenter::GetVectorPlayerClient()
 {
@@ -201,10 +201,7 @@ void PlayerCenter::HandlerPlayerThread()
 	while (run)
 	{
 		std::unique_lock<std::mutex> uniqLock(m_mutex);
-		while (m_LoadPlayerList.empty())
-		{
-			m_cond.wait(uniqLock);
-		}
+		m_cond.wait(uniqLock, [this] {return this->m_LoadPlayerList.size() > 0; });
 
 		LoginData data = m_LoadPlayerList.front();
 		m_LoadPlayerList.pop_front();

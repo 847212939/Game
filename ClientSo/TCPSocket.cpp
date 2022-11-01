@@ -108,6 +108,13 @@ bool CTCPSocketManage::Stop()
 		}
 	}
 
+	int timerCnt = G_CfgMgr->GetCBaseCfgMgr().GetTimerCnt();
+	for (int i = 0; i < timerCnt; i++)
+	{
+		G_PlayerPrepClient->GetCServerTimer()[i].SetTimerRun(false);
+	}
+
+
 	Log(INF, "service tcp stop end");
 
 	return true;

@@ -17,15 +17,9 @@ public:
 	unsigned int AddData(void* pData, unsigned int uDataSize, SysMsgCmd uDataKind = SysMsgCmd::HD_SYS_MSG_BEGIN);
 	// 提取消息数据
 	unsigned int GetData(ListItemData** pDataBuffer, bool& run, unsigned int& uDataKind);
-
-public:
-	std::condition_variable& GetConditionVariable()
-	{
-		return m_cond;
-	}
+	std::condition_variable& GetConditionVariable();
 
 private:
-	std::atomic<int>			m_dataListCnt;
 	std::list <ListItemData*>	m_dataList;
 	std::mutex					m_mutex;
 	std::condition_variable		m_cond;
