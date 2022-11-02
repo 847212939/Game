@@ -53,6 +53,14 @@ namespace MainNameSpace
         {
             return -1;
         }
+        while (!pTcpClient->GetIsConnect())
+        {
+            if (pTcpClient->GetIsConnect())
+            {
+                break;
+            }
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
+        }
 
         return 0;
     }

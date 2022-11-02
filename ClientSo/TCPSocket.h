@@ -1,111 +1,111 @@
-ï»¿#pragma once
+#pragma once
 
 class CTCPSocketManage
 {
 public:
-	// æ„é€ å‡½æ•°
+	// ¹¹Ôìº¯Êı
 	CTCPSocketManage();
 	virtual ~CTCPSocketManage();
 
 protected:
-	// ç¦ç”¨æ‹·è´æ„é€ å‡½æ•°
+	// ½ûÓÃ¿½±´¹¹Ôìº¯Êı
 	CTCPSocketManage(const CTCPSocketManage& my);
 	CTCPSocketManage& operator=(const CTCPSocketManage& my);
 
 public:
-	// åœæ­¢æœåŠ¡
+	// Í£Ö¹·şÎñ
 	bool Stop();
-	// å¼€å§‹æœåŠ¡
+	// ¿ªÊ¼·şÎñ
 	bool Start();
-	// åˆå§‹åŒ–
+	// ³õÊ¼»¯
 	bool Init(int maxCount, int port, const char* ip = nullptr, 
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
-	// å‘é€æ•°æ®å‡½æ•°
+	// ·¢ËÍÊı¾İº¯Êı
 	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, bool WSPackData = true);
-	// å…³é—­è¿æ¥å‡½æ•°
+	// ¹Ø±ÕÁ¬½Óº¯Êı
 	bool CloseSocket(int index);
-	// è®¾ç½®tcpä¸ºæœªè¿æ¥çŠ¶æ€
+	// ÉèÖÃtcpÎªÎ´Á¬½Ó×´Ì¬
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
-	// è¿æ¥DBæœåŠ¡å™¨
+	// Á¬½ÓDB·şÎñÆ÷
 	bool ConnectLogicServer(SOCKFD& sock);
 	void ServerSocketInfo(PlatformSocketInfo* pTCPSocketInfo);
-	// è¿æ¥æœåŠ¡å™¨
+	// Á¬½Ó·şÎñÆ÷
 	bool ConnectServer();
-	// ç­‰å¾…è¿æ¥
+	// µÈ´ıÁ¬½Ó
 	bool WaitConnect(int threadIndex);
-	// è·å–å¥—æ¥å­—
+	// »ñÈ¡Ì×½Ó×Ö
 	SOCKFD GetNewSocket();
-	//ç½‘ç»œå…³é—­å¤„ç†
+	//ÍøÂç¹Ø±Õ´¦Àí
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 		unsigned int uConnectTime, bool isCross, uint64_t userid = 0);
 
 public:
-	// è·å–event_base
+	// »ñÈ¡event_base
 	event_base* GetEventBase();
-	// è·å–æœåŠ¡å™¨ç±»å‹
+	// »ñÈ¡·şÎñÆ÷ÀàĞÍ
 	ServiceType GetServerType();
-	// è·å–æ¥æ”¶dataline
+	// »ñÈ¡½ÓÊÕdataline
 	CDataLine* GetRecvDataLine();
-	// è·å–å‘é€dataline
+	// »ñÈ¡·¢ËÍdataline
 	CDataLine* GetSendDataLine();
-	// è·å–è¿è¡Œçº¿ç¨‹
+	// »ñÈ¡ÔËĞĞÏß³Ì
 	std::vector<std::thread*>& GetSockeThreadVec();
-	// è·å–è¿è¡ŒçŠ¶æ€
+	// »ñÈ¡ÔËĞĞ×´Ì¬
 	bool& GetRuninged();
-	// æ˜¯å¦è¿æ¥
+	// ÊÇ·ñÁ¬½Ó
 	bool IsConnected(int index);
-	// è·å–socketSet
+	// »ñÈ¡socketSet
 	void GetSocketSet(std::vector<unsigned int>& vec);
-	// è·å–TCPSocketInfo
+	// »ñÈ¡TCPSocketInfo
 	TCPSocketInfo* GetTCPSocketInfo(int index);
-	// è·å–socketVector
+	// »ñÈ¡socketVector
 	const std::vector<TCPSocketInfo>& GetSocketVector();
-	// è·å–è¿æ¥ip
+	// »ñÈ¡Á¬½Óip
 	const char* GetSocketIP(int index);
-	// è·å–å½“å‰socketè¿æ¥æ€»æ•°
+	// »ñÈ¡µ±Ç°socketÁ¬½Ó×ÜÊı
 	unsigned int GetCurSocketSize();
 
 private:
-	// è®¾ç½®tcpå±æ€§
-	// è®¾ç½®tcpæ”¶å‘ç¼“å†²åŒº
+	// ÉèÖÃtcpÊôĞÔ
+	// ÉèÖÃtcpÊÕ·¢»º³åÇø
 	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
-	// è®¾ç½®åº”ç”¨å±‚å•æ¬¡è¯»å–æ•°æ®åŒ…çš„å¤§å° bufferevent_set_max_single_read
+	// ÉèÖÃÓ¦ÓÃ²ãµ¥´Î¶ÁÈ¡Êı¾İ°üµÄ´óĞ¡ bufferevent_set_max_single_read
 	static void SetMaxSingleReadAndWrite(bufferevent* bev, int rcvBufSize, int sndBufSize);
 
 private:
-	// çº¿ç¨‹å‡½æ•°
-	// SOCKET è¿æ¥åº”ç­”çº¿ç¨‹
+	// Ïß³Ìº¯Êı
+	// SOCKET Á¬½ÓÓ¦´ğÏß³Ì
 	void ThreadAccept();
-	// SOCKET æ•°æ®å‘é€çº¿ç¨‹
+	// SOCKET Êı¾İ·¢ËÍÏß³Ì
 	void ThreadSendMsg();
-	// SOCKET æ•°æ®æ¥æ”¶çº¿ç¨‹
+	// SOCKET Êı¾İ½ÓÊÕÏß³Ì
 	static void ThreadRSSocket(void* pThreadData);
 
 private:
-	// é™æ€å›è°ƒæ–¹æ³•
-	// æ–°çš„æ•°æ®åˆ°æ¥ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
+	// ¾²Ì¬»Øµ÷·½·¨
+	// ĞÂµÄÊı¾İµ½À´£¬ThreadRSSocketÏß³Ìº¯Êı
 	static void ReadCB(struct bufferevent*, void*);
-	// è¿æ¥å…³é—­ç­‰ç­‰é”™è¯¯æ¶ˆæ¯ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
+	// Á¬½Ó¹Ø±ÕµÈµÈ´íÎóÏûÏ¢£¬ThreadRSSocketÏß³Ìº¯Êı
 	static void EventCB(struct bufferevent*, short, void*);
-	// acceptå¤±è´¥ï¼ŒThreadAcceptçº¿ç¨‹å‡½æ•°
+	// acceptÊ§°Ü£¬ThreadAcceptÏß³Ìº¯Êı
 	static void AcceptErrorCB(struct evconnlistener* listener, void*);
-	// æ–°çš„è¿æ¥åˆ°æ¥ï¼ŒThreadRSSocketçº¿ç¨‹å‡½æ•°
+	// ĞÂµÄÁ¬½Óµ½À´£¬ThreadRSSocketÏß³Ìº¯Êı
 	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
-	// æ–°çš„è¿æ¥åˆ°æ¥ï¼ŒThreadAcceptçº¿ç¨‹å‡½æ•°
+	// ĞÂµÄÁ¬½Óµ½À´£¬ThreadAcceptÏß³Ìº¯Êı
 	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
-	// åˆ†é…socketIndexç®—æ³•
+	// ·ÖÅäsocketIndexËã·¨
 	int GetSocketIndex();
-	// æ·»åŠ TCPSocketInfo
+	// Ìí¼ÓTCPSocketInfo
 	void AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTCPSocketInfo);
-	// æ´¾å‘æ•°æ®åŒ…
+	// ÅÉ·¢Êı¾İ°ü
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
-	// æ¶ˆæ¯éªŒè¯
+	// ÏûÏ¢ÑéÖ¤
 	bool VerifyConnection(char* data);
 private:
 	// Socketpair
@@ -114,14 +114,17 @@ private:
 	static int Socketpair(int family, int type, int protocol, SOCKFD recv[2]);
 
 private:
-	// å‘é€TCPæ¶ˆæ¯
+	// ·¢ËÍTCPÏûÏ¢
 	bool BuffereventWrite(int index, void* data, unsigned int size);
-	// æœ€åº•å±‚å¤„ç†æ”¶åˆ°çš„æ•°æ®å‡½æ•°
+	// ×îµ×²ã´¦ÀíÊÕµ½µÄÊı¾İº¯Êı
 	bool RecvData(bufferevent* bev, int index);
-	// å¤„ç†å‘é€çº¿ç¨‹æ¶ˆæ¯
+	// ´¦Àí·¢ËÍÏß³ÌÏûÏ¢
 	void HandleSendMsg(ListItemData* pListItem);
-	// å¤„ç†å‘é€çº¿ç¨‹æ¶ˆæ¯
+	// ´¦Àí·¢ËÍÏß³ÌÏûÏ¢
 	void HandleSendData(ListItemData* pListItem);
+
+public:
+	bool GetIsConnect();
 
 private:
 	bool				 m_running;
@@ -141,6 +144,7 @@ private:
 	VectorThread		 m_socketThread;
 	VectorTCPSocketInfo	 m_socketInfoVec;
 	VectorWorkThreadInfo m_workBaseVec;
+	bool				 m_IsConnect;
 
 	BuildReference(ClientInfo, ClientInfo)
 	BuildValue(int, ServerIndex)

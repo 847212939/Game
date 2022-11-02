@@ -242,7 +242,7 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	else
 	{
-		/*sock = GetNewSocket();
+		sock = GetNewSocket();
 		while (true)
 		{
 			if (ConnectDBServer(sock))
@@ -252,15 +252,15 @@ bool CTCPSocketManage::ConnectServer()
 			Sleepseconds(5);
 		}
 
-		sock = GetNewSocket();
-		while (true)
-		{
-			if (ConnectCrossServer(sock, 1))
-			{
-				break;
-			}
-			Sleepseconds(5);
-		}*/
+		//sock = GetNewSocket();
+		//while (true)
+		//{
+		//	if (ConnectCrossServer(sock, 1))
+		//	{
+		//		break;
+		//	}
+		//	Sleepseconds(5);
+		//}
 	}
 
 	return true;
