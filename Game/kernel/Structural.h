@@ -384,7 +384,6 @@ struct SkillCDData
 	~SkillCDData() {}
 };
 
-#ifdef __WebSocket__
 struct WebSocketMsg
 {
 	uint8_t fin;
@@ -411,7 +410,6 @@ struct WebSocketMsg
 		payload = nullptr;
 	}
 };
-#endif
 
 struct SLoadMysql
 {
