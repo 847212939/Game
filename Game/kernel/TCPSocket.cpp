@@ -215,12 +215,12 @@ void CTCPSocketManage::Sleepseconds(int seconds)
 }
 bool CTCPSocketManage::ConnectServer()
 {
+	SOCKFD sock = 0;
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
 		workBaseCount = 8;
 	}
-	SOCKFD sock = 0;
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		if (!WaitConnect(i))
