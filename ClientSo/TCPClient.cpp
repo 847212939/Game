@@ -13,18 +13,6 @@ TCPClient::TCPClient() :
 }
 TCPClient::~TCPClient()
 {
-	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	while (!threadVec.empty())
-	{
-		std::vector<std::thread*>::iterator it = threadVec.begin();
-		if (*it)
-		{
-			(*it)->join();
-			SafeDelete(*it);
-		}
-
-		threadVec.erase(it);
-	}
 	if (m_PlayerPrepClient)
 	{
 		SafeDelete(m_PlayerPrepClient);

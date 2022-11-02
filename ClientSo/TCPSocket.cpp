@@ -93,6 +93,19 @@ bool CTCPSocketManage::Stop()
 		G_PlayerPrepClient->GetCServerTimer()[i].SetTimerRun(false);
 	}
 
+	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
+	while (!threadVec.empty())
+	{
+		std::vector<std::thread*>::iterator it = threadVec.begin();
+		if (*it)
+		{
+			(*it)->join();
+			SafeDelete(*it);
+		}
+
+		threadVec.erase(it);
+	}
+
 	Log(INF, "service tcp stop end");
 
 	return true;
