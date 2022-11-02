@@ -351,9 +351,6 @@ void CTCPSocketManage::AddTCPSocketInfo(int threadIndex, PlatformSocketInfo* pTC
 	struct event_base* base = m_workBaseVec[threadIndex].base;
 	struct bufferevent* bev = nullptr;
 	SOCKFD fd = pTCPSocketInfo->acceptFd;
-#ifdef __WebSocketOpenssl__
-	SSL* ssl = nullptr;
-#endif
 
 	// ·ÖÅäË÷ÒýËã·¨
 	int index = GetSocketIndex();
