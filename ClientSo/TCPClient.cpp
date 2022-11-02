@@ -92,7 +92,7 @@ void TCPClient::HandlerRecvDataListThread()
 	}
 	ListItemData* pListItem = NULL;
 	unsigned int uDataKind = 0;
-	while (true)
+	while (run)
 	{
 		unsigned int bytes = pDataLine->GetData(&pListItem, run, uDataKind);
 		if (bytes == 0 || pListItem == NULL)
@@ -132,6 +132,19 @@ void TCPClient::NotifyAll()
 	
 	RecvDataLine->GetConditionVariable().notify_all();
 	SendDataLine->GetConditionVariable().notify_all();
+
+	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
+	while (!threadVec.empty())
+	{
+		std::vector<std::thread*>::iterator it = threadVec.begin();
+		if (*it)
+		{
+			(*it)->join();
+			SafeDelete(*it);
+		}
+
+		threadVec.erase(it);
+	}
 }
 
 void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun)

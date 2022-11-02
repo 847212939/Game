@@ -10,7 +10,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_ServerIndex(-1),
 	m_IsConnect(false),
 	m_ServerSock(-1),
-	m_ServiceType(ServiceType::SERVICE_TYPE_BEGIN)
+	m_ServiceType(ServiceType::SERVICE_TYPE_BEGIN),
+	m_RecvThreadParam(nullptr)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -45,6 +46,10 @@ CTCPSocketManage::~CTCPSocketManage()
 #elif defined(__ANDROID__)
 #elif defined(__APPLE__)
 #endif
+	if (m_RecvThreadParam)
+	{
+		SafeDeleteArray(m_RecvThreadParam);
+	}
 }
 
 bool CTCPSocketManage::Init(int maxCount, ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
@@ -93,19 +98,6 @@ bool CTCPSocketManage::Stop()
 		G_PlayerPrepClient->GetCServerTimer()[i].SetTimerRun(false);
 	}
 
-	std::vector<std::thread*>& threadVec = GetSockeThreadVec();
-	while (!threadVec.empty())
-	{
-		std::vector<std::thread*>::iterator it = threadVec.begin();
-		if (*it)
-		{
-			(*it)->join();
-			SafeDelete(*it);
-		}
-
-		threadVec.erase(it);
-	}
-
 	Log(INF, "service tcp stop end");
 
 	return true;
@@ -122,9 +114,9 @@ bool CTCPSocketManage::Start()
 	m_uCurSocketSize = 0;
 	m_uCurSocketIndex = 0;
 
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsg, this));
-	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadAccept, this));
+	ThreadAccept();
 
+	m_socketThread.push_back(new std::thread(&CTCPSocketManage::ThreadSendMsg, this));
 	return true;
 }
 
@@ -138,15 +130,13 @@ void CTCPSocketManage::ThreadAccept()
 	}
 
 	// 初始工作线程信息
-	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount],[](RecvThreadParam* p)
-	{
-		SafeDeleteArray(p);
-	});
+	m_RecvThreadParam = new RecvThreadParam[workBaseCount];
+
 	int socketPairBufSize = sizeof(PlatformSocketInfo) * MAX_POST_CONNECTED_COUNT;
 	for (int i = 0; i < workBaseCount; i++)
 	{
-		uniqueParam[i].index = i;
-		uniqueParam[i].pThis = this;
+		m_RecvThreadParam[i].index = i;
+		m_RecvThreadParam[i].pThis = this;
 
 		WorkThreadInfo workInfo;
 		SOCKFD fd[2];
@@ -170,7 +160,7 @@ void CTCPSocketManage::ThreadAccept()
 		}
 
 		workInfo.event = event_new(workInfo.base, workInfo.read_fd, EV_READ,
-			ThreadLibeventProcess, (void*)&uniqueParam[i]);
+			ThreadLibeventProcess, (void*)&m_RecvThreadParam[i]);
 		if (!workInfo.event)
 		{
 			Log(CERR, "TCP Could not create event!");
@@ -186,24 +176,11 @@ void CTCPSocketManage::ThreadAccept()
 		m_workBaseVec.push_back(workInfo);
 	}
 
-	std::vector<std::thread> threadVev;
 	// 开辟工作线程池
 	for (int i = 0; i < workBaseCount; i++)
 	{
-		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
+		m_socketThread.push_back(new std::thread(ThreadRSSocket, (void*)&m_RecvThreadParam[i]));
 	}
-
-	for (int i = 0; i < workBaseCount; i++)
-	{
-		threadVev[i].join();
-
-		WorkThreadInfo& workInfo = m_workBaseVec[i];
-
-		closesocket(workInfo.read_fd);
-		closesocket(workInfo.write_fd);
-	}
-
-	Log(CINF, "accept thread end");
 
 	return;
 }
@@ -1133,7 +1110,7 @@ void CTCPSocketManage::ThreadSendMsg()
 	}
 	ListItemData* pListItem = NULL;
 	unsigned int uDataKind = 0;
-	while (true)
+	while (m_running)
 	{
 		unsigned int bytes = pDataLine->GetData(&pListItem, m_running, uDataKind);
 		if (bytes == 0 || pListItem == NULL)

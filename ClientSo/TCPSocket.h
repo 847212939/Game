@@ -138,6 +138,7 @@ private:
 	VectorTCPSocketInfo	 m_socketInfoVec;
 	VectorWorkThreadInfo m_workBaseVec;
 	bool				 m_IsConnect;
+	RecvThreadParam*	 m_RecvThreadParam;
 
 	BuildReference(ClientInfo, ClientInfo)
 	BuildValue(int, ServerIndex)

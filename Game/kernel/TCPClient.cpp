@@ -91,7 +91,7 @@ void TCPClient::HandlerRecvDataListThread()
 	}
 	ListItemData* pListItem = NULL;
 	unsigned int uDataKind = 0;
-	while (true)
+	while (run)
 	{
 		unsigned int bytes = pDataLine->GetData(&pListItem, run, uDataKind);
 		if (bytes == 0 || pListItem == NULL)

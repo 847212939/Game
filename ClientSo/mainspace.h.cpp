@@ -55,7 +55,7 @@ namespace MainNameSpace
         }
         if (!pTcpClient->GetIsConnect())
         {
-            std::this_thread::sleep_for(std::chrono::microseconds(2));
+            std::this_thread::sleep_for(std::chrono::microseconds(5));
         }
         if (!pTcpClient->GetIsConnect())
         {

@@ -1012,7 +1012,7 @@ void CTCPSocketManage::ThreadSendMsg()
 	}
 	ListItemData* pListItem = NULL;
 	unsigned int uDataKind = 0;
-	while (true)
+	while (m_running)
 	{
 		unsigned int bytes = pDataLine->GetData(&pListItem, m_running, uDataKind);
 		if (bytes == 0 || pListItem == NULL)
