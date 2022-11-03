@@ -5,10 +5,11 @@ class Netmsg
 public:
 	/*
 	* @brief 消息拆分构造函数
-	* @param str 原始字符串
+	* @param data 原始字符串
+	* @param size 字符串长度
 	* @param count 拆分为几个子串
 	*/
-	Netmsg(std::string str, int count = 0);
+	Netmsg(char* data, int len, int count);
 	/*
 	* @brief 消息拆分构造函数
 	*/

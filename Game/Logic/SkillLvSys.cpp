@@ -43,7 +43,7 @@ void SkillLvSys::NetWork(PlayerInfo* playerInfo)
 	}
 
 	SkillLvSysCmd uAssistantID = (SkillLvSysCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg msg((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 0);
 
 	switch (uAssistantID)
 	{

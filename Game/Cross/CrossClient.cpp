@@ -23,7 +23,7 @@ void CrossClient::Network(PlayerInfo* playerInfo)
 	}
 
 	CrossClientMsgCmd uAssistantID = (CrossClientMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg msg((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 0);
 
 	switch (uAssistantID)
 	{

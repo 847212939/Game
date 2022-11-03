@@ -87,11 +87,11 @@ public:
 	// 是否是内部消息
 	bool IsServerMsg(int index);
 	// 跨服消息转发
-	bool MsgForward(int index, NetMessageHead* pHead, char* pData);
+	bool MsgForward(int index, NetMessageHead* pHead, char* pData, int len);
 	// 客户端消息转发到跨服服务器
-	bool MsgForwardToCross(int index, NetMessageHead* pHead, char* pData);
+	bool MsgForwardToCross(int index, NetMessageHead* pHead, char* pData, int len);
 	// 跨服消息转发到客户端
-	bool MsgForwardToClient(int index, NetMessageHead* pHead, char* pData);
+	bool MsgForwardToClient(int index, NetMessageHead* pHead, char* pData, int len);
 
 private:
 	// 设置tcp属性
@@ -138,7 +138,7 @@ public:
 	void Sleepseconds(int seconds);
 private:
 	// 对称加密测试连接
-	bool VerifyConnection(int index, char* data);
+	bool VerifyConnection(int index, char* data, int len);
 	// 等待连接
 	bool WaitConnect(int threadIndex);
 	// 获取套接字

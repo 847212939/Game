@@ -66,7 +66,7 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 	}
 	if (G_NetClient->GetDBServerIndex() == index)
 	{
-		Netmsg cin((char*)playerInfo->pData, 3);
+		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
 		if (cin.size() < 2)
 		{
 			Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
@@ -148,7 +148,7 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
-	Netmsg cin((char*)playerInfo->pData, 3);
+	Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
 	if (cin.size() < 2)
 	{
 		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",

@@ -37,7 +37,7 @@ void SkillSys::Network(PlayerInfo* playerInfo)
 		return;
 	}
 	HurtSysMsgCmd uAssistantID = (HurtSysMsgCmd)playerInfo->pMsg->netMessageHead.uAssistantID;
-	Netmsg msg((char*)playerInfo->pData);
+	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 0);
 
 	switch (uAssistantID)
 	{

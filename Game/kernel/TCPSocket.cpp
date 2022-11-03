@@ -754,13 +754,13 @@ void CTCPSocketManage::AcceptErrorCB(evconnlistener* listener, void* data)
 }
 
 // 测试连接
-bool CTCPSocketManage::VerifyConnection(int index, char* data)
+bool CTCPSocketManage::VerifyConnection(int index, char* data, int len)
 {
 	if (!data)
 	{
 		return false;
 	}
-	Netmsg msg(data);
+	Netmsg msg(data, len, 0);
 	std::string str;
 	msg >> str;
 	if (str.empty())
@@ -2140,7 +2140,7 @@ bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMes
 	}
 	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
 	{
-		if (!VerifyConnection(index, (char*)pData))
+		if (!VerifyConnection(index, (char*)pData, size))
 		{
 			RemoveTCPSocketStatus(index);
 		}
@@ -2148,7 +2148,7 @@ bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMes
 	}
 	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS && pTcpInfo->isCross)
 	{
-		return MsgForward(index, pHead, (char*)pData);
+		return MsgForward(index, pHead, (char*)pData, size);
 	}
 
 	CDataLine* pDataLine = GetRecvDataLine();
@@ -2181,7 +2181,7 @@ bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMes
 }
 
 // 跨服消息转发
-bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
+bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData, int len)
 {
 	int crossIndex = GetCrossServerIndex();
 	if (crossIndex <= 0)
@@ -2190,11 +2190,11 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData)
 	}
 	
 	return index == crossIndex ?
-		MsgForwardToClient(index, pHead, pData) :
-		MsgForwardToCross(index, pHead, pData);
+		MsgForwardToClient(index, pHead, pData, len) :
+		MsgForwardToCross(index, pHead, pData, len);
 }
 // 客户端消息转发到跨服服务器
-bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* pData)
+bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* pData, int len)
 {
 	int crossIndex = GetCrossServerIndex();
 	if (crossIndex <= 0)
@@ -2222,9 +2222,9 @@ bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead,
 	return true;
 }
 // 跨服消息转发到客户端
-bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData)
+bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData, int len)
 {
-	Netmsg msg(pData, 2);
+	Netmsg msg(pData, len, 2);
 	if (msg.size() < 2)
 	{
 		return false;
