@@ -8,9 +8,10 @@ Netmsg::~Netmsg()
 {
 
 }
-Netmsg::Netmsg(std::string str, int count)
+Netmsg::Netmsg(char* data, int len, int count)
 {
 	std::string separator = "\n";
+	std::string str(data, len);
 
 	size_t pos = 0, cnt = 0;
 	size_t size = str.size();
