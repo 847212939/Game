@@ -1,7 +1,8 @@
 #include "pch.h"
 
+bool CTCPSocketManage::m_running = false;
+
 CTCPSocketManage::CTCPSocketManage() :
-	m_running(false),
 	m_uMaxSocketSize(0),
 	m_uCurSocketSize(0),
 	m_uCurSocketIndex(0),
@@ -730,10 +731,6 @@ TCPSocketInfo* CTCPSocketManage::GetTCPSocketInfo(int index)
 	}
 
 	return &m_socketInfoVec[index];
-}
-bool& CTCPSocketManage::GetRuninged()
-{
-	return m_running;
 }
 ServiceType CTCPSocketManage::GetServerType()
 {

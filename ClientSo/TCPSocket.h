@@ -50,8 +50,6 @@ public:
 	CDataLine* GetSendDataLine();
 	// 获取运行线程
 	std::vector<std::thread*>& GetSockeThreadVec();
-	// 获取运行状态
-	bool& GetRuninged();
 	// 是否连接
 	bool IsConnected(int index);
 	// 获取socketSet
@@ -123,8 +121,9 @@ private:
 public:
 	bool GetIsConnect();
 
+public:
+	static	bool		 m_running;
 private:
-	bool				 m_running;
 	unsigned int		 m_uMaxSocketSize;
 	unsigned int		 m_uCurSocketSize;
 	unsigned int		 m_uCurSocketIndex;

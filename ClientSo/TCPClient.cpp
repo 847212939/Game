@@ -83,7 +83,6 @@ void TCPClient::HandleRecvData(ListItemData* pListItem)
 }
 void TCPClient::HandlerRecvDataListThread()
 {
-	bool& run = GetRuninged();
 	CDataLine* pDataLine = GetRecvDataLine();
 	if (!pDataLine)
 	{
@@ -92,9 +91,9 @@ void TCPClient::HandlerRecvDataListThread()
 	}
 	ListItemData* pListItem = NULL;
 	unsigned int uDataKind = 0;
-	while (run)
+	while (CTCPSocketManage::m_running)
 	{
-		unsigned int bytes = pDataLine->GetData(&pListItem, run, uDataKind);
+		unsigned int bytes = pDataLine->GetData(&pListItem, CTCPSocketManage::m_running, uDataKind);
 		if (bytes == 0 || pListItem == NULL)
 		{
 			continue;
