@@ -142,7 +142,7 @@ void PlayerCenter::HandleLogicLoadPlayer(LoginData& loginData)
 	playerClient->SetLoad(true);
 
 	G_NetClient->SendMsg(loginData.index, nullptr, 0, MsgCmd::MsgCmd_Login,
-		(int)LoginSysMsgCmd::cs_login, 0, pInfo->bev, 0);
+		(int)LoginSysMsgCmd::cs_login, 0, pInfo->bev, 0, loginData.userId);
 
 	return;
 }

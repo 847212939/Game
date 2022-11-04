@@ -25,7 +25,7 @@ bool Player::SendLogicMsg(const char* pData, size_t size, MsgCmd mainID, int ass
 		Log(CERR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
-	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification);
+	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pInfo->bev, uIdentification, GetID());
 }
 bool Player::SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification/* = 0*/)
 {
@@ -35,10 +35,7 @@ bool Player::SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int ass
 		Log(CERR, "Client information is empty index = %d", m_Index);
 		return false;
 	}
-	Netmsg msg;
-	msg << m_LogicIndex
-		<< pData;
-	return G_NetClient->SendMsg(m_Index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pCrossTcpInfo->bev, uIdentification);
+	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pCrossTcpInfo->bev, uIdentification, GetID());
 }
 bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification)
 {
