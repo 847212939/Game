@@ -45,7 +45,7 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 
 			index = (int)uIndex;
 
-			playerInfo->pData = (void*)dataMsg.c_str();
+			memcpy(playerInfo->pData, dataMsg.c_str(), dataMsg.size());
 			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
 		}
 		else if (G_NetClient->GetDBServerIndex() == index)
@@ -64,7 +64,7 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 
 			index = (int)uIndex;
 
-			playerInfo->pData = (void*)dataMsg.c_str();
+			memcpy(playerInfo->pData, dataMsg.c_str(), dataMsg.size());
 			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
 		}
 	}
@@ -188,7 +188,7 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		>> userid
 		>> dataMsg;
 
-	playerInfo->pData = (void*)dataMsg.c_str();
+	memcpy(playerInfo->pData, dataMsg.c_str(), dataMsg.size());
 	playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
 
 	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
