@@ -50,8 +50,10 @@ public:
 	//网络关闭处理
 	bool OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
 		unsigned int uConnectTime, bool isCross, uint64_t userid = 0);
+	//网络关闭处理
 	bool OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
 		unsigned int uConnectTime, bool isCross);
+	//网络关闭处理
 	bool OnCrossSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
 		unsigned int uConnectTime, bool isCross, uint64_t& userid);
 
