@@ -170,41 +170,47 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
+
 	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 8);
 
-	int serverType = 0;
-	int serverid = 0;
-	std::string sqlName;
-	std::string outStr;
-	uint64_t userid = 0;
+	// 1.要发送的协议
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
-	unsigned int uIndex = 0;
-
-	msg >> serverType
-		>> serverid
-		>> userid
-		>> sqlName
-		>> uMainID
+	msg >> uMainID
 		>> uAssistantID
-		>> uIdentification
+		>> uIdentification;
+
+	// 2.玩家id，本服索引
+	uint64_t userid = 0;
+	unsigned int uIndex = 0;
+	msg >> userid
 		>> uIndex;
 
+	// 3.服务器类型，服务器id
+	int serverType = 0;
+	int serverid = 0;
+	msg >> serverType
+		>> serverid;
+
+	// 4.数据库名称
+	std::string sqlName;
+	msg >> sqlName;
+
+	std::string outStr;
 	G_PlayerPrepClient->LoadPlayerMysql(sqlName, serverid, userid, outStr);
 
-	Netmsg cin;
-
-	cin << serverid;
+	// 1.发送的数据
+	msg << serverid;
 	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
-		cin << userid:
-		cin << uIndex;
+	msg << userid:
+	msg << uIndex;
 	if (!outStr.empty())
 	{
-		cin << outStr;
+		msg << outStr;
 	}
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, cin.str().c_str(), cin.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -219,45 +225,48 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	{
 		return false;
 	}
-	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 10);
+	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 9);
 
-	int serverType = 0;
-	int serverid = 0;
-	std::string sqlName;
-	std::string outStr;
-	std::string userid;
-	std::string passWord;
+	// 1.要发送的协议
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
-	unsigned int uIndex = 0;
-
-	msg >> serverType
-		>> serverid
-		>> userid
-		>> passWord
-		>> sqlName
-		>> uMainID
+	msg >> uMainID
 		>> uAssistantID
-		>> uIdentification
+		>> uIdentification;
+
+	// 2.玩家账号密码，本服索引
+	std::string userid;
+	std::string passWord;
+	unsigned int uIndex = 0;
+	msg >> userid
+		>> passWord
 		>> uIndex;
 
+	// 3.服务器类型，服务器id
+	int serverType = 0;
+	int serverid = 0;
+	msg >> serverType
+		>> serverid;
+
+	// 4.数据库名称
+	std::string sqlName;
+	msg >> sqlName;
+
+	std::string outStr;
 	G_PlayerPrepClient->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
-	Netmsg cin;
-
-	cin << serverid
-		<< userid
-		<< passWord;
+	msg << serverid;
 	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
-		cin << userid :
-		cin << uIndex;
+	msg << userid:
+	msg << uIndex;
+	msg << passWord;
 	if (!outStr.empty())
 	{
-		cin << outStr;
+		msg << outStr;
 	}
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, cin.str().c_str(), cin.str().size(), (MsgCmd)uMainID,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);
 
 	return true;
@@ -274,24 +283,40 @@ bool DataBaseSys::LoadGlobalMysql(PlayerInfo* playerInfo)
 	}
 	Netmsg msg((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 7);
 
-	int serverType = 0;
-	int serverid = 0;
-	std::string sqlName;
-	std::string outStr;
+	// 1.要发送的协议
 	unsigned int uMainID = 0;
 	unsigned int uAssistantID = 0;
 	unsigned int uIdentification = 0;
-	unsigned int uIndex = 0;
-
-	msg >> serverType
-		>> serverid
-		>> sqlName
-		>> uMainID
+	msg >> uMainID
 		>> uAssistantID
-		>> uIdentification
-		>> uIndex;
+		>> uIdentification;
 
+	// 2.服务器类型，服务器id
+	int serverType = 0;
+	int serverid = 0;
+	msg >> serverType
+		>> serverid;
+
+	// 3.数据库名称
+	std::string sqlName;
+	msg >> sqlName;
+
+	// 4.本服索引
+	unsigned int uIndex = 0;
+	msg >> uIndex;
+
+	std::string outStr;
 	G_PlayerPrepClient->LoadGlobalMysql(sqlName, serverid, outStr);
+
+	uint64_t userid = 0;
+	msg << serverid;
+	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
+		msg << userid:
+		msg << uIndex;
+	if (!outStr.empty())
+	{
+		msg << outStr;
+	}
 
 	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, outStr.c_str(), outStr.size(), (MsgCmd)uMainID,
 		uAssistantID, 0, playerInfo->pMsg->pBufferevent, uIdentification);

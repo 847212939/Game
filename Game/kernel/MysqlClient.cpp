@@ -121,14 +121,22 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 		return;
 	}
 	Netmsg msg;
-	msg << (int)G_NetClient->GetServerType()
-		<< loadMysql.serverid
-		<< userid
-		<< loadMysql.sqlName
-		<< loadMysql.uMainID
+
+	// 1.要发送的协议
+	msg << loadMysql.uMainID
 		<< loadMysql.uAssistantID
-		<< loadMysql.uIdentification
+		<< loadMysql.uIdentification;
+
+	// 2.玩家id，本服索引
+	msg << userid
 		<< loadMysql.uIndex;
+
+	// 3.服务器类型，服务器id
+	msg << (int)G_NetClient->GetServerType()
+		<< loadMysql.serverid;
+
+	// 4.数据库名称
+	msg << loadMysql.sqlName;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_player, 
@@ -136,6 +144,11 @@ void MysqlClient::LoadPlayerMysql(uint64_t userid, SLoadMysql& loadMysql)
 }
 void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 {
+	if (G_NetClient->GetServerType() == 
+		ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return;
+	}
 	if (userid.empty())
 	{
 		return;
@@ -155,15 +168,23 @@ void MysqlClient::LoadLoginMysql(std::string& userid, SLoadMysql loadMysql)
 	{
 		return;
 	}
+	
+	// 1.要发送的协议
 	Netmsg msg;
-	msg << (int)G_NetClient->GetServerType()
-		<< loadMysql.serverid
-		<< userid
-		<< loadMysql.sqlName
-		<< loadMysql.uMainID
+	msg << loadMysql.uMainID
 		<< loadMysql.uAssistantID
-		<< loadMysql.uIdentification
+		<< loadMysql.uIdentification;
+
+	// 2.玩家账号密码，本服索引
+	msg << userid
 		<< loadMysql.uIndex;
+	
+	// 3.服务器类型，服务器id
+	msg << (int)G_NetClient->GetServerType()
+		<< loadMysql.serverid;
+
+	// 4.数据库名称
+	msg << loadMysql.sqlName;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_login,
@@ -182,18 +203,22 @@ void MysqlClient::LoadGlobalMysql(SLoadMysql& loadMysql)
 	{
 		return;
 	}
-	if (pTcpInfo->isCross)
-	{
-		return;
-	}
 	Netmsg msg;
-	msg << (int)G_NetClient->GetServerType() 
-		<< loadMysql.serverid
-		<< loadMysql.sqlName
-		<< loadMysql.uMainID
+
+	// 1.要发送的协议
+	msg << loadMysql.uMainID
 		<< loadMysql.uAssistantID
-		<< loadMysql.uIdentification
-		<< loadMysql.uIndex;
+		<< loadMysql.uIdentification;
+
+	// 2.服务器类型，服务器id
+	msg << (int)G_NetClient->GetServerType()
+		<< loadMysql.serverid;
+
+	// 3.数据库名称
+	msg << loadMysql.sqlName;
+
+	// 4.本服索引
+	msg << loadMysql.uIndex;
 
 	G_NetClient->SendMsg(index, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_DBServer, (int)DataBaseSysMsgCmd::cs_load_global,
