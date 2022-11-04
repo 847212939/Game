@@ -1318,7 +1318,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 
 			Netmsg msg;
 			msg << player->GetLogicIndex()
-				<< pData;
+				<< std::string(pData, size);
 			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
 		}
 	}
@@ -2227,7 +2227,7 @@ bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead,
 	Netmsg msg;
 	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
 		<< player->GetID()
-		<< pData;
+		<< std::string(pData, len);
 
 	SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
 		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
