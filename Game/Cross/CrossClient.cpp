@@ -93,7 +93,7 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (G_NetClient->GetServerType() != ServiceType::SERVICE_TYPE_CROSS)
 	{
-		return;
+		return false;
 	}
 	
 	TCPSocketInfo* pLogicTcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
@@ -126,7 +126,7 @@ bool CrossClient::CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		return;
+		return false;
 	}
 	uint64_t userid = 0;
 	int animalid = 0;
