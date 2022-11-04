@@ -88,8 +88,10 @@ bool CrossSys::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 bool CrossSys::LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 {
+	int serverid = 0;
 	uint64_t userid = 0;
-	msg >> userid;
+	msg >> serverid
+		>> userid;
 
 	PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid);
 	if (!player)
