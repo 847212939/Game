@@ -2271,7 +2271,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 
 		std::unique_ptr<char[]> uniqueBuf(new char[msg.uHandleSize + sizeof(SocketReadLine)]);
 		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
-		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, msg.uHandleSize);
+		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), data.c_str(), msg.uHandleSize);
 
 		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), msg.uHandleSize + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
 		if (addBytes == 0)
