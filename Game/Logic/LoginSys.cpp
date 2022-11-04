@@ -10,14 +10,17 @@ LoginSys::~LoginSys()
 
 void LoginSys::Network(PlayerInfo* playerInfo)
 {
+	if (G_NetClient->GetServerType() == 
+		ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return;
+	}
 	if (!playerInfo)
 	{
-		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		Log(CERR, "Player Info pMsg is null");
 		return;
 	}
 
