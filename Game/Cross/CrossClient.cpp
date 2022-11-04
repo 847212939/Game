@@ -111,7 +111,6 @@ bool CrossClient::LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 	uint64_t userid = m_Player->GetID();
-	Netmsg msg;
 	msg << userid;
 
 	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(),
