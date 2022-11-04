@@ -32,7 +32,9 @@ private:
 	void SocketCallback(void* pDataLineHead);
 	// 断开链接回调函数
 	void CloseSocketCallback(void* pDataLineHead);
+	// 本服断开链接回调函数
 	void CloseSocketLogicCallback(void* pDataLineHead); 
+	// 跨服断开链接回调函数
 	void CloseSocketCrossCallback(void* pDataLineHead);
 	// 回调到TimerCallback or SocketCallback or CloseSocketCallback 中
 	bool CallBackFun(SysMsgCmd cmd, void* pDataLineHead);
@@ -40,8 +42,9 @@ private:
 	void AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pDataLineHead)>&& fun);
 
 private:
-	// 接收队列中消息的分发
+	// 接收队列中消息的分发线程
 	void HandlerRecvDataListThread();
+	// 消息分发处理函数
 	void HandleRecvData(ListItemData* pListItem);
 
 private:
