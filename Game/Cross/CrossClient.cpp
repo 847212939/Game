@@ -120,6 +120,9 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, 0, userid);
 
+	// 跨服删除玩家
+	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, userid);
+
 	return true;
 }
 // 跨服返回本服数据
@@ -155,8 +158,10 @@ bool CrossClient::CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
+	pClientTcpInfo->isCross = false;
+
 	LoginData loginData;
-	loginData.index = playerInfo->pMsg->uIndex;
+	loginData.index = logicIndex;
 	loginData.roleName = animalname;
 	loginData.netName = playername;
 	loginData.userId = userid;
@@ -165,6 +170,7 @@ bool CrossClient::CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	loginData.serverId = serverid;
 	loginData.logicIndex = 0;
 
+	// 创建玩家
 	G_PlayerCenterClient->CreatePlayer(loginData);
 
 	Log(CINF, "userid=%lld的玩家退出跨服", userid);

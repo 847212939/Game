@@ -5,7 +5,8 @@ Player::Player(const unsigned int& index) :
 	m_Index(index),
 	m_Load(false),
 	m_Playername(""),
-	m_LogicIndex(-1)
+	m_LogicIndex(-1),
+	m_Serverid(0)
 {
 }
 Player::~Player()

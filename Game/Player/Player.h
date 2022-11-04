@@ -64,6 +64,8 @@ public:
 	BuildValue(unsigned int, Index)
 	// 玩家逻辑服的索引
 	BuildValue(unsigned int, LogicIndex)
+	// serverid
+	BuildValue(int, Serverid)
 
 private:
 	// 回调函数集合

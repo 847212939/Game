@@ -148,15 +148,15 @@ void PlayerCenter::HandleLogicLoadPlayer(LoginData& loginData)
 }
 void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
 {
-	const TCPSocketInfo* pServerTcpInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
-	if (!pServerTcpInfo)
+	const TCPSocketInfo* pLogicServerTcpInfo = G_NetClient->GetTCPSocketInfo(loginData.index);
+	if (!pLogicServerTcpInfo)
 	{
-		Log(CERR, "Client information is empty index=%d", loginData.index);
+		Log(CERR, "!pLogicServerTcpInfo logicServerindex=%d", loginData.index);
 		return;
 	}
-	if (!pServerTcpInfo->isConnect)
+	if (!pLogicServerTcpInfo->isConnect)
 	{
-		Log(CINF, "!pInfo->isConnect");
+		Log(CINF, "!pInfo->isConnect logicServerindex=%d", loginData.index);
 		G_NetClient->CloseSocket(loginData.index);
 		return;
 	}
@@ -178,6 +178,7 @@ void PlayerCenter::HandleCrossLoadPlayer(LoginData& loginData)
 	playerClient->SetAnimalname(loginData.roleName);
 	playerClient->SetPlayername(loginData.netName);
 	playerClient->SetLogicIndex(loginData.logicIndex);
+	playerClient->SetServerid(loginData.serverId);
 
 	AddMapPlayerClient(loginData.userId, playerClient);
 
