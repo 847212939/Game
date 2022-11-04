@@ -40,7 +40,11 @@ public:
 	void CreatePlayer(LoginData& loginData);
 
 private:
+	// 本服消息处理
+	bool MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocketInfo* tcpInfo);
+	// 派发本服消息
 	void MessageLogicDispatch(PlayerInfo* playerInfo);
+	// 派发跨服消息
 	void MessageCrossDispatch(PlayerInfo* playerInfo);
 
 private:

@@ -19,6 +19,58 @@ void PlayerPrep::Init()
 	G_SceneClient->Init();
 }
 
+bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocketInfo* tcpInfo)
+{
+	if (!G_NetClient->IsServerIndex(index))
+	{
+		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
+		{
+			G_NetClient->CloseSocket(index);
+			return false;
+		}
+	}
+	else
+	{
+		if (G_NetClient->GetCrossServerIndex() == index)
+		{
+			Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 2);
+			if (cin.size() < 1)
+			{
+				return false;
+			}
+			unsigned int uIndex = 0;
+			std::string dataMsg;
+			cin >> uIndex
+				>> dataMsg;
+
+			index = (int)uIndex;
+
+			playerInfo->pData = (void*)dataMsg.c_str();
+			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
+		}
+		else if (G_NetClient->GetDBServerIndex() == index)
+		{
+			Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
+			if (cin.size() < 2)
+			{
+				return false;
+			}
+			int serverid = 0;
+			unsigned int uIndex = 0;
+			std::string dataMsg;
+			cin >> serverid
+				>> uIndex
+				>> dataMsg;
+
+			index = (int)uIndex;
+
+			playerInfo->pData = (void*)dataMsg.c_str();
+			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
+		}
+	}
+
+	return true;
+}
 void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
@@ -40,61 +92,17 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "!tcpInfo");
 		return;
 	}
-	if (!G_NetClient->IsServerIndex(index))
-	{
-		if (tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink)
-		{
-			Log(CERR, "!tcpInfo->link != (uint64_t)MsgCmd::MsgCmd_Testlink,"
-				"[cmd=%d,index=%d,ip=%s,port=%d]", (int)cmd, index, tcpInfo->ip, tcpInfo->port);
-			G_NetClient->CloseSocket(index);
-			return;
-		}
-	}
 	if (cmd >= MsgCmd::MsgCmd_End || cmd <= MsgCmd::MsgCmd_Begin)
 	{
-		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]", 
+		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
 			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
-	if (G_NetClient->GetCrossServerIndex() == index)
+	if (!MessageLogicMachin(index, playerInfo, tcpInfo))
 	{
-		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 2); 
-		if (cin.size() < 1)
-		{
-			Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
-				(int)cmd, index, tcpInfo->ip, tcpInfo->port);
-			return;
-		}
-		unsigned int uIndex = 0;
-		std::string dataMsg;
-		cin >> uIndex
-			>> dataMsg;
-
-		index = (int)uIndex;
-
-		playerInfo->pData = (void*)dataMsg.c_str();
-		playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
-	}
-	else if (G_NetClient->GetDBServerIndex() == index)
-	{
-		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
-		if (cin.size() < 2)
-		{
-			Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
-				(int)cmd, index, tcpInfo->ip, tcpInfo->port);
-			return;
-		}
-		int serverid = 0;
-		unsigned int uIndex = 0;
-		std::string dataMsg;
-		cin >> serverid
-			>> uIndex
-			>> dataMsg;
-
-		index = (int)uIndex;
-
-		playerInfo->pData = (void*)dataMsg.c_str();
-		playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
+		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+		return;
 	}
 	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
 	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
