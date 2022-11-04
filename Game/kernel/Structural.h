@@ -259,6 +259,15 @@ struct ServerTimerInfo
 	ServerTimerInfo() : elapse(10), starttime(0), timertype(SERVERTIMER_TYPE_PERISIST) {}
 };
 
+// 内部消息拆分头
+struct ServerMsgData
+{
+	int serverid;
+	unsigned int uIndex;
+
+	ServerMsgData() : serverid(0), uIndex(0) {}
+};
+
 // 玩家信息
 struct PlayerInfo
 {
@@ -266,6 +275,7 @@ struct PlayerInfo
 	void*					pData;				// 玩家发送过来的数据
 	ServiceType				uSrverType;			// 服务器类型
 	uint64_t				userId;				// 玩家id
+	ServerMsgData			serMsgData;			// 内部消息拆分头
 
 	PlayerInfo() : pMsg(nullptr), pData(nullptr), uSrverType(ServiceType::SERVICE_TYPE_LOGIC), userId(0) {}
 	~PlayerInfo() {}

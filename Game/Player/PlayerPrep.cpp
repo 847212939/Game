@@ -45,6 +45,8 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 
 			index = (int)uIndex;
 
+			playerInfo->serMsgData.uIndex = uIndex;
+
 			memcpy(playerInfo->pData, dataMsg.c_str(), dataMsg.size());
 			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
 		}
@@ -63,6 +65,9 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 				>> dataMsg;
 
 			index = (int)uIndex;
+
+			playerInfo->serMsgData.serverid = serverid;
+			playerInfo->serMsgData.uIndex = uIndex;
 
 			memcpy(playerInfo->pData, dataMsg.c_str(), dataMsg.size());
 			playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();

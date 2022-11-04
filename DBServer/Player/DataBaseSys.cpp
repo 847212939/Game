@@ -205,6 +205,8 @@ bool DataBaseSys::LoadPlayerMysql(PlayerInfo* playerInfo)
 	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
 	msg << userid:
 	msg << uIndex;
+
+	// 2.数据体
 	if (!outStr.empty())
 	{
 		msg << outStr;
@@ -256,10 +258,15 @@ bool DataBaseSys::LoadLoginMysql(PlayerInfo* playerInfo)
 	std::string outStr;
 	G_PlayerPrepClient->LoadLoginMysql(sqlName, serverid, userid, outStr);
 
+	// 1.数据库解析头
+	uint64_t id = 0;
 	msg << serverid;
 	(ServiceType)serverType == ServiceType::SERVICE_TYPE_CROSS ?
-	msg << userid:
+	msg << id:
 	msg << uIndex;
+
+	// 2.解析数据部分
+	msg << userid;
 	msg << passWord;
 	if (!outStr.empty())
 	{

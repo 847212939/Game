@@ -96,12 +96,7 @@ bool LoginSys::NetVerificationAccount(Netmsg& msg, PlayerInfo* playerInfo)
 }
 bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
-	int serverid = 0;
-	unsigned int uIndex = 0;
-	msg >> serverid
-		>> uIndex;
-
-	LoginData* pLoginData = GetLoginInMap(uIndex);
+	LoginData* pLoginData = GetLoginInMap(playerInfo->serMsgData.uIndex);
 	if (!pLoginData)
 	{
 		return false;
@@ -137,23 +132,15 @@ bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 }
 bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
-	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
-	{
-		return false;
-	}
-	int serverid = 0;
-	unsigned int uIndex = 0;
-	std::string account;
+	std::string userid;
 	std::string password;
-	msg >> serverid
-		>> account
-		>> password
-		>> uIndex;
+	msg >> userid
+		>> password;
 
 	LoginData loginData;
-	loginData.index = uIndex;
-	loginData.id = account;
+	loginData.id = userid;
 	loginData.pw = password;
+	loginData.index = playerInfo->serMsgData.uIndex;
 
 	if (!msg.empty())
 	{
@@ -184,12 +171,12 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 
 	AddLoginInMap(loginData);
-	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo((int)uIndex);
+	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo((int)loginData.index);
 	if (sockInfo)
 	{
 		Netmsg msg;
 		msg << (int)true;
-		G_NetClient->SendMsg((int)uIndex, msg.str().c_str(), msg.str().size(),
+		G_NetClient->SendMsg((int)loginData.index, msg.str().c_str(), msg.str().size(),
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
 	}
 
