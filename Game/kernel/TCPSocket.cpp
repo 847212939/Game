@@ -2261,6 +2261,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 			return false;
 		}
 
+		pHead->uMessageSize = (unsigned int)data.size();
 		SocketReadLine msg;
 		msg.uHandleSize = (unsigned int)data.size();
 		msg.uIndex = clientIndex;
