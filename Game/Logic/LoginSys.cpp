@@ -349,7 +349,6 @@ void LoginSys::SaveServerIds(uint64_t userid)
 	}
 
 	Netmsg msg;
-	msg << userid;
 	msg << (int)useridIt->second.size();
 	for (auto id : useridIt->second)
 	{
