@@ -2274,7 +2274,8 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 		return false;
 	}
 	// 跨服到本服服务器只拦截MsgCmd::MsgCmd_LoginCross消息
-	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross)
+	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross ||
+		(MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_CrossLogin)
 	{
 		CDataLine* pDataLine = GetRecvDataLine();
 		if (!pDataLine)

@@ -26,8 +26,6 @@ private:
 	bool LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo);
 	// 客户端请求断开链接
 	bool ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo);
-	// 跨服返回关闭结果
-	bool CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo);
 
 private:
 	PlayerClient* m_Player;

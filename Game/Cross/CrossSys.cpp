@@ -37,11 +37,66 @@ void CrossSys::Network(PlayerInfo* playerInfo)
 		CloseCross(msg, playerInfo);
 		break;
 	}
+	case CrossClientMsgCmd::cs_cross_to_logic_logout:
+	{
+		CrossToLogicLogout(msg, playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
 }
+// 跨服返回本服数据
+bool CrossSys::CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	if (G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS)
+	{
+		return false;
+	}
+	uint64_t userid = 0;
+	int animalid = 0;
+	time_t refreshTime = 0;
+	bool lived = false;
+	int animaltype = 0;
+	std::string animalname;
+	std::string playername;
+	int serverid;
+	unsigned int logicIndex;
 
+	msg >> userid
+		>> animalid
+		>> refreshTime
+		>> lived
+		>> animaltype
+		>> animalname
+		>> playername
+		>> serverid
+		>> logicIndex;
+
+	TCPSocketInfo* pClientTcpInfo = G_NetClient->GetTCPSocketInfo(logicIndex);
+	if (!pClientTcpInfo)
+	{
+		return false;
+	}
+
+	pClientTcpInfo->isCross = false;
+
+	LoginData loginData;
+	loginData.index = logicIndex;
+	loginData.roleName = animalname;
+	loginData.netName = playername;
+	loginData.userId = userid;
+	loginData.roleid = animalid;
+	loginData.roleType = animaltype;
+	loginData.serverId = serverid;
+	loginData.logicIndex = 0;
+
+	// 创建玩家
+	G_PlayerCenterClient->CreatePlayer(loginData);
+
+	Log(CINF, "userid=%lld的玩家退出跨服", userid);
+	return true;
+}
 bool CrossSys::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	uint64_t userid = 0;
