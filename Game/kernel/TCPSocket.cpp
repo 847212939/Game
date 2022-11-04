@@ -2273,6 +2273,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 	{
 		return false;
 	}
+	// 跨服到本服服务器只拦截MsgCmd::MsgCmd_LoginCross消息
 	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross)
 	{
 		CDataLine* pDataLine = GetRecvDataLine();
@@ -2301,9 +2302,9 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 			return false;
 		}
 	}
+	// 发给客户端
 	else
 	{
-		// 发给客户端
 		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
 			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
 	}
