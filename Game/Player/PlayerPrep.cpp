@@ -59,6 +59,12 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 	if (G_NetClient->GetCrossServerIndex() == index)
 	{
 		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 2); 
+		if (cin.size() < 1)
+		{
+			Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
+				(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			return;
+		}
 		unsigned int uIndex = 0;
 		std::string dataMsg;
 		cin >> uIndex

@@ -2282,21 +2282,20 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 			return false;
 		}
 
-		pHead->uMessageSize = (unsigned int)data.size();
 		SocketReadLine msg;
-		msg.uHandleSize = (unsigned int)data.size();
+		msg.uHandleSize = len;
 		msg.uIndex = clientIndex;
 		msg.pBufferevent = pClientTcpInfo->bev;
 		msg.uAccessIP = 0;
 		msg.netMessageHead = *pHead;
 		msg.socketType = SocketType::SOCKET_TYPE_TCP;
 
-		std::unique_ptr<char[]> uniqueBuf(new char[msg.uHandleSize + sizeof(SocketReadLine)]);
+		std::unique_ptr<char[]> uniqueBuf(new char[len + sizeof(SocketReadLine)]);
 		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
-		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), data.c_str(), msg.uHandleSize);
+		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, len);
 
 		// 转发到本服服务器
-		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), msg.uHandleSize + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), len + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
 		if (addBytes == 0)
 		{
 			return false;
