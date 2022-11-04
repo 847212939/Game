@@ -1320,12 +1320,12 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		// 向DB发送消息
+		// 跨服向DB发送消息
 		if (index == GetDBServerIndex())
 		{
 			return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 		}
-		// 向本服发送消息
+		// 跨服向本服发送消息
 		else
 		{
 			if (userid <= 0)
@@ -2258,9 +2258,12 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 	{
 		return false;
 	}
+
 	int clientIndex = 0;
 	std::string data;
-	msg >> clientIndex >> data;
+	msg >> clientIndex 
+		>> data;
+
 	if (clientIndex < 0)
 	{
 		return false;
@@ -2291,6 +2294,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
 		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), data.c_str(), msg.uHandleSize);
 
+		// 转发到本服服务器
 		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), msg.uHandleSize + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
 		if (addBytes == 0)
 		{
@@ -2299,6 +2303,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 	}
 	else
 	{
+		// 发给客户端
 		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
 			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
 	}
