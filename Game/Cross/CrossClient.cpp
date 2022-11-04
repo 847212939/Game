@@ -113,7 +113,7 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	msgCin << m_Player->GetLogicIndex();
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_LoginCross,
 		(int)CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, 0, m_Player->GetID());
 
 	// ¿ç·þÉ¾³ýÍæ¼Ò
