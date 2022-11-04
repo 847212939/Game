@@ -3,7 +3,7 @@
 enum class CrossClientMsgCmd
 {
 	cs_logic_to_cross_login		= 1,		// 本服发给跨服登录
-	cs_logic_to_cross_logout	= 2,		// 退出跨服
+	cs_client_to_cross_logout	= 2,		// 退出跨服
 	cs_logic_to_cross_close		= 3,		// 对方关闭了socket
 	cs_cross_to_logic_logout	= 4,		// 跨服返回登录结果
 };
@@ -25,7 +25,7 @@ private:
 	// 客户端请求登录跨服
 	bool LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo);
 	// 客户端请求断开链接
-	bool LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo);
+	bool ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo);
 	// 跨服返回关闭结果
 	bool CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo);
 

@@ -32,9 +32,9 @@ void CrossClient::Network(PlayerInfo* playerInfo)
 		LogicToCrossLogin(msg, playerInfo);
 		break;
 	}
-	case CrossClientMsgCmd::cs_logic_to_cross_logout:
+	case CrossClientMsgCmd::cs_client_to_cross_logout:
 	{
-		LogicToCrossLogout(msg, playerInfo);
+		ClientToCrossLogout(msg, playerInfo);
 		break;
 	}
 	case CrossClientMsgCmd::cs_cross_to_logic_logout:
@@ -89,7 +89,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	return true;
 }
 // 客户端请求跨服断开链接
-bool CrossClient::LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
+bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (G_NetClient->GetServerType() != ServiceType::SERVICE_TYPE_CROSS)
 	{
