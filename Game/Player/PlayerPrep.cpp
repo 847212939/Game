@@ -56,15 +56,20 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
 		return;
 	}
-	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
-	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
-		MsgCmd::MsgCmd_PlayerCenter == identification ||
-		MsgCmd::MsgCmd_Scene == identification)
+	if (G_NetClient->GetCrossServerIndex() == index)
 	{
-		CallBackFun(cmd, playerInfo);
-		return;
+		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 2); 
+		unsigned int uIndex = 0;
+		std::string dataMsg;
+		cin >> uIndex
+			>> dataMsg;
+
+		index = (int)uIndex;
+
+		playerInfo->pData = (void*)dataMsg.c_str();
+		playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
 	}
-	if (G_NetClient->GetDBServerIndex() == index)
+	else if (G_NetClient->GetDBServerIndex() == index)
 	{
 		Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
 		if (cin.size() < 2)
@@ -75,10 +80,23 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		}
 		int serverid = 0;
 		unsigned int uIndex = 0;
+		std::string dataMsg;
 		cin >> serverid
-			>> uIndex;
+			>> uIndex
+			>> dataMsg;
 
 		index = (int)uIndex;
+
+		playerInfo->pData = (void*)dataMsg.c_str();
+		playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
+	}
+	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
+	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
+		MsgCmd::MsgCmd_PlayerCenter == identification ||
+		MsgCmd::MsgCmd_Scene == identification)
+	{
+		CallBackFun(cmd, playerInfo);
+		return;
 	}
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (!playerClient)
