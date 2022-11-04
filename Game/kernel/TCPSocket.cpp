@@ -1300,7 +1300,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 		{
 			return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 		}
-		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, userid);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
@@ -1308,7 +1308,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 		{
 			return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 		}
-		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, userid);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
@@ -1316,7 +1316,7 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 		{
 			return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
 		}
-		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, userid);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
