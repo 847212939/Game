@@ -116,10 +116,13 @@
     <Filter Include="逻辑管理\活动系统\全天活动">
       <UniqueIdentifier>{c9e18bd9-bcd2-4bfa-b6ab-c2c1411d5576}</UniqueIdentifier>
     </Filter>
-    <Filter Include="逻辑管理\登录跨服">
+    <Filter Include="逻辑管理\登录系统\玩家登录">
+      <UniqueIdentifier>{080efccb-6545-4dbe-93b4-6dc8c9e46457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="逻辑管理\登录系统\登录跨服">
       <UniqueIdentifier>{07ad20ac-c5d2-4383-af70-52c17ce9607b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="逻辑管理\跨服登录">
+    <Filter Include="逻辑管理\登录系统\跨服登录">
       <UniqueIdentifier>{4db73f5a-5a6c-4617-9a24-09b0c4832f50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -205,9 +208,6 @@
     <ClCompile Include="Lua\LuaMgr.cpp">
       <Filter>配置管理\配置管理</Filter>
     </ClCompile>
-    <ClCompile Include="Logic\LoginSys.cpp">
-      <Filter>逻辑管理\登录系统</Filter>
-    </ClCompile>
     <ClCompile Include="Logic\ActiveTime.cpp">
       <Filter>逻辑管理\活动系统\定点活动</Filter>
     </ClCompile>
@@ -242,10 +242,13 @@
       <Filter>网络管理\数据管理</Filter>
     </ClCompile>
     <ClCompile Include="Cross\CrossClient.cpp">
-      <Filter>逻辑管理\登录跨服</Filter>
+      <Filter>逻辑管理\登录系统\登录跨服</Filter>
     </ClCompile>
     <ClCompile Include="Cross\CrossSys.cpp">
-      <Filter>逻辑管理\跨服登录</Filter>
+      <Filter>逻辑管理\登录系统\跨服登录</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\LoginSys.cpp">
+      <Filter>逻辑管理\登录系统\玩家登录</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -342,9 +345,6 @@
     <ClInclude Include="Lua\LuaMgr.h">
       <Filter>配置管理\配置管理</Filter>
     </ClInclude>
-    <ClInclude Include="Logic\LoginSys.h">
-      <Filter>逻辑管理\登录系统</Filter>
-    </ClInclude>
     <ClInclude Include="Logic\ActiveTime.h">
       <Filter>逻辑管理\活动系统\定点活动</Filter>
     </ClInclude>
@@ -379,10 +379,13 @@
       <Filter>网络管理\数据管理</Filter>
     </ClInclude>
     <ClInclude Include="Cross\CrossClient.h">
-      <Filter>逻辑管理\登录跨服</Filter>
+      <Filter>逻辑管理\登录系统\登录跨服</Filter>
     </ClInclude>
     <ClInclude Include="Cross\CrossSys.h">
-      <Filter>逻辑管理\跨服登录</Filter>
+      <Filter>逻辑管理\登录系统\跨服登录</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\LoginSys.h">
+      <Filter>逻辑管理\登录系统\玩家登录</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
