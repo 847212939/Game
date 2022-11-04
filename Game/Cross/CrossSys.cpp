@@ -32,11 +32,6 @@ void CrossSys::Network(PlayerInfo* playerInfo)
 		LogicToCrossLogin(msg, playerInfo);
 		break;
 	}
-	case CrossClientMsgCmd::cs_logic_to_cross_logout:
-	{
-		LogicToCrossLogout(msg, playerInfo);
-		break;
-	}
 	case CrossClientMsgCmd::cs_logic_to_cross_close:
 	{
 		CloseCross(msg, playerInfo);
@@ -85,42 +80,6 @@ bool CrossSys::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-
-bool CrossSys::LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
-{
-	int serverid = 0;
-	uint64_t userid = 0;
-	msg >> serverid
-		>> userid;
-
-	PlayerClient* player = G_PlayerCenterClient->GetPlayerByUserid(userid);
-	if (!player)
-	{
-		return false;
-	}
-	TCPSocketInfo* pLogicTcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
-	if (!pLogicTcpInfo)
-	{
-		return false;
-	}
-
-	Netmsg msgCin;
-	msgCin << userid;
-	msgCin << player->GetAnimalid();
-	msgCin << player->GetRefreshTime();
-	msgCin << player->GetLived();
-	msgCin << (int)player->GetAnimaltype();
-	msgCin << player->GetAnimalname().c_str();
-	msgCin << player->GetPlayername().c_str();
-	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
-	msgCin << player->GetLogicIndex();
-
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
-		(int)CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, 0, userid);
-	
-	return true;
-}
-
 bool CrossSys::CloseCross(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	uint64_t userid = 0;

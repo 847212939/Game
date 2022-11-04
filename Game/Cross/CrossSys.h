@@ -20,8 +20,6 @@ private:
 private:
 	// 客户端请求登录跨服
 	bool LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo);
-	// 客户端请求断开链接
-	bool LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo);
 	// 系统主动放松断开链接
 	bool CloseCross(Netmsg& msg, PlayerInfo* playerInfo);
 };
