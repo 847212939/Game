@@ -95,11 +95,7 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		return;
 	}
-	int serverid = 0;
-	uint64_t userid = 0;
-	msg >> serverid
-		>> userid;
-
+	
 	TCPSocketInfo* pLogicTcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
 	if (!pLogicTcpInfo)
 	{
@@ -107,7 +103,7 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 
 	Netmsg msgCin;
-	msgCin << userid;
+	msgCin << m_Player->GetID();
 	msgCin << m_Player->GetAnimalid();
 	msgCin << m_Player->GetRefreshTime();
 	msgCin << m_Player->GetLived();
@@ -118,10 +114,10 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	msgCin << m_Player->GetLogicIndex();
 
 	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
-		(int)CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, 0, userid);
+		(int)CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, 0, m_Player->GetID());
 
 	// ¿ç·þÉ¾³ýÍæ¼Ò
-	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, userid);
+	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, m_Player->GetID());
 
 	return true;
 }

@@ -37,6 +37,9 @@ public:
 	*/
 	bool SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 		void* pBufferevent, unsigned int uIdentification = 0, uint64_t userid = 0, bool WSPackData = true);
+	// 向跨服发送消息或者客户端
+	bool SendCrossMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+		void* pBufferevent, unsigned int uIdentification = 0, uint64_t userid = 0, bool WSPackData = true);
 	// 关闭连接函数
 	bool CloseSocket(int index);
 	// 设置tcp为未连接状态

@@ -1281,20 +1281,42 @@ bool CTCPSocketManage::BuffereventWrite(int index, void* data, unsigned int size
 
 	return true;
 }
+bool CTCPSocketManage::SendCrossMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
+	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/, bool WSPackData/* = true*/)
+{
+	Netmsg msg;
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
+		<< userid
+		<< std::string(pData, size);
+
+	return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+}
 bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/, bool WSPackData/* = true*/)
 {
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC)
 	{
-		return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		if (index != GetCrossServerIndex())
+		{
+			return SendLogicMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
+		}
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WS)
 	{
-		return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		if (index != GetCrossServerIndex())
+		{
+			return SendLogicWsMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		}
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		if (index != GetCrossServerIndex())
+		{
+			return SendLogicWssMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification, WSPackData);
+		}
+		return SendCrossMsg(index, pData, size, mainID, assistID, handleCode, pBufferevent, uIdentification);
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
@@ -2224,13 +2246,8 @@ bool CTCPSocketManage::MsgForwardToCross(int clientIndex, NetMessageHead* pHead,
 		return false;
 	}
 
-	Netmsg msg;
-	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId()
-		<< player->GetID()
-		<< std::string(pData, len);
-
-	SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), (MsgCmd)pHead->uMainID,
-		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification);
+	SendMsg(crossIndex, pData, len, (MsgCmd)pHead->uMainID,
+		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification, player->GetID());
 	return true;
 }
 // 跨服消息转发到客户端

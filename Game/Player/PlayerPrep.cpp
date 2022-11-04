@@ -140,6 +140,25 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		Log(CERR, "非法消息cmd=%d", (int)cmd);
 		return;
 	}
+
+	Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
+	if (cin.size() < 2)
+	{
+		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port);
+		return;
+	}
+
+	int serverid = 0;
+	uint64_t userid = 0;
+	std::string dataMsg;
+	cin >> serverid
+		>> userid
+		>> dataMsg;
+
+	playerInfo->pData = (void*)dataMsg.c_str();
+	playerInfo->pMsg->uHandleSize = (unsigned int)dataMsg.size();
+
 	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
 	if (MsgCmd::MsgCmd_PlayerPreproces == identification ||
 		MsgCmd::MsgCmd_PlayerCenter == identification ||
@@ -148,17 +167,7 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
-	Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
-	if (cin.size() < 2)
-	{
-		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port);
-		return;
-	}
-	int serverid = 0;
-	uint64_t userid = 0;
-	cin >> serverid
-		>> userid;
+
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByUserid(userid);
 	if (!playerClient)
 	{
