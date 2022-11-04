@@ -21,11 +21,6 @@ bool MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	unsigned int x = 0, y = 0;
-	msg >> x >> y;
-
-	Log(CINF, "x = %u, y = %u", x, y);
-
 	return true;
 }
 
