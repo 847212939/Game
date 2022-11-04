@@ -76,6 +76,8 @@ bool CrossSys::CrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 	G_PlayerCenterClient->CreatePlayer(loginData);
 
+	Log(CINF, "userid=%lld的玩家登录跨服", userid);
+
 	return true;
 }
 
@@ -87,5 +89,6 @@ bool CrossSys::CrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	// 投递到关闭回调函数中
 	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, userid);
 
+	Log(CINF, "userid=%lld的玩家退出跨服", userid);
 	return true;
 }
