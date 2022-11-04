@@ -1,16 +1,16 @@
 ﻿#pragma once
 
-class CTCPSocketManage
+class TCPSocket
 {
 public:
 	// 构造函数
-	CTCPSocketManage();
-	virtual ~CTCPSocketManage();
+	TCPSocket();
+	virtual ~TCPSocket();
 
 protected:
 	// 禁用拷贝构造函数
-	CTCPSocketManage(const CTCPSocketManage& my);
-	CTCPSocketManage& operator=(const CTCPSocketManage& my);
+	TCPSocket(const TCPSocket& my);
+	TCPSocket& operator=(const TCPSocket& my);
 
 public:
 	// 停止服务

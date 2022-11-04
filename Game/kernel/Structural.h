@@ -38,12 +38,12 @@ enum WS_FrameType
 
 enum class SysMsgCmd
 {
-	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
-	HD_SOCKET_READ				= 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼ş´¦Àí
-	HD_SOCKET_CLOSE				= 2,											// SOCKFD ¹Ø±ÕÊÂ¼ş´¦Àí
-	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
-	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
-	HD_PLATFORM_SOCKET_READ		= 5,											// ÖĞĞÄ·ş¶ÁÈ¡ÊÂ¼ş´¦Àí
+	HD_SYS_MSG_BEGIN = 0,											// ¿ªÊ¼
+	HD_SOCKET_READ = 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼ş´¦Àí
+	HD_SOCKET_CLOSE = 2,											// SOCKFD ¹Ø±ÕÊÂ¼ş´¦Àí
+	HD_ASYN_THREAD_RESULT = 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
+	HD_TIMER_MESSAGE = 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
+	HD_PLATFORM_SOCKET_READ = 5,											// ÖĞĞÄ·ş¶ÁÈ¡ÊÂ¼ş´¦Àí
 };
 
 // ÈÕÖ¾µÈ¼¶
@@ -61,29 +61,29 @@ enum LogLevel
 // ·şÎñÆ÷ÀàĞÍ
 enum class ServiceType
 {
-	SERVICE_TYPE_BEGIN          = 0,
-	SERVICE_TYPE_LOGIC          = 1,											// Âß¼­·şÎñÆ÷
-	SERVICE_TYPE_DB             = 2,											// DB·şÎñÆ÷
-	SERVICE_TYPE_GATA           = 3,											// Íø¹Ø·şÎñÆ÷
-	SERVICE_TYPE_CROSS			= 4,											// GameCenter
-	SERVICE_TYPE_LOGON          = 5,											// LOGON
-	SERVICE_TYPE_LOGIC_WS		= 6,											// WSÂß¼­·şÎñÆ÷
-	SERVICE_TYPE_LOGIC_WSS		= 7,											// WSSÂß¼­·şÎñÆ÷
+	SERVICE_TYPE_BEGIN = 0,
+	SERVICE_TYPE_LOGIC = 1,											// Âß¼­·şÎñÆ÷
+	SERVICE_TYPE_DB = 2,											// DB·şÎñÆ÷
+	SERVICE_TYPE_GATA = 3,											// Íø¹Ø·şÎñÆ÷
+	SERVICE_TYPE_CROSS = 4,											// GameCenter
+	SERVICE_TYPE_LOGON = 5,											// LOGON
+	SERVICE_TYPE_LOGIC_WS = 6,											// WSÂß¼­·şÎñÆ÷
+	SERVICE_TYPE_LOGIC_WSS = 7,											// WSSÂß¼­·şÎñÆ÷
 	SERVICE_TYPE_END,
 };
 
 // socketÀàĞÍ
 enum class SocketType
 {
-	SOCKET_TYPE_TCP             = 0,											//tcp
-	SOCKET_TYPE_WEBSOCKET       = 1,											//websocket
+	SOCKET_TYPE_TCP = 0,											//tcp
+	SOCKET_TYPE_WEBSOCKET = 1,											//websocket
 };
 
 // ¶¨Ê±Æ÷ÀàĞÍ
 enum SERVERTIMER_TYPE
 {
-	SERVERTIMER_TYPE_PERISIST   = 0,											// ³Ö¾Ã¶¨Ê±Æ÷
-	SERVERTIMER_TYPE_SINGLE     = 1,											// Ò»´ÎĞÔ¶¨Ê±Æ÷
+	SERVERTIMER_TYPE_PERISIST = 0,											// ³Ö¾Ã¶¨Ê±Æ÷
+	SERVERTIMER_TYPE_SINGLE = 1,											// Ò»´ÎĞÔ¶¨Ê±Æ÷
 };
 
 /**
@@ -100,18 +100,18 @@ enum class FT
 // ³¡¾°ÄÚÀàĞÍ
 enum class AnimalType
 {
-	at_player		= 1,														// Íæ¼Ò
-	at_monster		= 2,														// ¹ÖÎï
+	at_player = 1,														// Íæ¼Ò
+	at_monster = 2,														// ¹ÖÎï
 };
 
 // ³¡¾°ÄÚÀàĞÍ
 enum class HeroType
 {
-	ht_shooter		= 1,														// ÉäÊÖ
-	ht_warrior		= 2,														// Õ½Ê¿
-	ht_master		= 3,														// ·¨Ê¦
-	ht_meat			= 4,														// Èâ
-	ht_wild			= 5,														// ´òÒ°
+	ht_shooter = 1,														// ÉäÊÖ
+	ht_warrior = 2,														// Õ½Ê¿
+	ht_master = 3,														// ·¨Ê¦
+	ht_meat = 4,														// Èâ
+	ht_wild = 5,														// ´òÒ°
 };
 
 class Animal;
@@ -119,7 +119,7 @@ class PlayerClient;
 enum class ActType;
 struct ActtiveOpen;
 struct CActivityList;
-class CTCPSocketManage;
+class TCPSocket;
 enum class HurtSysMsgCmd;
 
 #pragma pack(1)
@@ -130,7 +130,7 @@ struct DataLineHead
 	unsigned int uSize;															//Êı¾İ´óĞ¡
 	unsigned int uDataKind;														//Êı¾İÀàĞÍ
 
-	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }	
+	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }
 };
 
 //¶¨Ê±Æ÷ÏûÏ¢½á¹¹¶¨Òå
@@ -156,8 +156,8 @@ struct NetMessageHead
 // ¹¤×÷Ïß³ÌĞÅÏ¢
 struct WorkThreadInfo
 {
-	struct event_base*	base;
-	struct event*		event;													//read_fdµÄ¶ÁÊÂ¼ş
+	struct event_base* base;
+	struct event* event;													//read_fdµÄ¶ÁÊÂ¼ş
 	SOCKFD				read_fd;
 	SOCKFD				write_fd;
 
@@ -172,11 +172,11 @@ struct TCPSocketInfo
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
 	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
-	bufferevent*	bev;
-	std::mutex*		lock;
+	bufferevent* bev;
+	std::mutex* lock;
 	bool			bHandleAccptMsg;											//ÊÇ·ñ´¦ÀíÁËÎÕÊÖÏûÏ¢£¬websocketÊ¹ÓÃ
 	uint64_t		link;														//²âÊÔÁ¬½ÓÊÇ·ñ³É¹¦
-	SSL*			ssl;
+	SSL* ssl;
 	bool			isCross;													//ÊÇ·ñÊÇ¿ç·ştrue¿ç·şfalse±¾·ş
 
 	void Reset(ServiceType& serviceType);
@@ -200,7 +200,7 @@ struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;										//¶ÓÁĞÍ·
 	int						socketIndex;										//socketË÷Òı»òÕßÎÄ¼şÃèÊö·û
-	void*					pBufferevent;										//bufferevent	
+	void* pBufferevent;										//bufferevent	
 
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
@@ -213,7 +213,7 @@ struct SocketReadLine
 	unsigned int						uHandleSize;							//Êı¾İ°ü´¦Àí´óĞ¡
 	unsigned int						uIndex;									//SOCKFD Ë÷Òı
 	unsigned long int					uAccessIP;								//SOCKFD IP
-	void*								pBufferevent;							//bufferevent
+	void* pBufferevent;							//bufferevent
 	SocketType							socketType;								//socketÀàĞÍ enum SocketType
 
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
@@ -244,7 +244,7 @@ pData		:Ã¿¸öÁ´±íÏîÊı¾İµÄÖ¸Õë£¬Ê¹ÓÃÓÃnew·½Ê½ÉêÇëµÄÄÚ´æ£¬×¢Òâ£¬ÔÚ³ö¶ÓÁĞÊ±£¬ÒªÏÔÊ½µ
 struct ListItemData
 {
 	DataLineHead		stDataHead;
-	unsigned char*		pData;
+	unsigned char* pData;
 
 	ListItemData() : pData(nullptr) {}
 };
@@ -271,8 +271,8 @@ struct ServerMsgData
 // Íæ¼ÒĞÅÏ¢
 struct PlayerInfo
 {
-	SocketReadLine*			pMsg;				// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
-	void*					pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
+	SocketReadLine* pMsg;				// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+	void* pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
 	ServiceType				uSrverType;			// ·şÎñÆ÷ÀàĞÍ
 	uint64_t				userId;				// Íæ¼Òid
 	ServerMsgData			serMsgData;			// ÄÚ²¿ÏûÏ¢²ğ·ÖÍ·
@@ -294,7 +294,7 @@ struct LoginData
 	int						serverId;
 	int						logicIndex;
 
-	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""), 
+	LoginData() : index(0), id(""), pw(""), roleid(0), userId(0), roleName(""),
 		netName(""), roleType(0), serverId(0), logicIndex(-1) {}
 	~LoginData() {}
 };
@@ -302,7 +302,7 @@ struct LoginData
 //½ÓÊÕÏß³Ì²ÎÊı
 struct RecvThreadParam
 {
-	CTCPSocketManage*		pThis;
+	TCPSocket* pThis;
 	int						index;
 
 	RecvThreadParam() :pThis(nullptr), index(0) {}
@@ -356,7 +356,7 @@ struct RefMonsterKey
 	int mid;
 	int x;
 	int y;
-	~RefMonsterKey(){}
+	~RefMonsterKey() {}
 	RefMonsterKey() : mid(0), x(0), y(0) {}
 	RefMonsterKey(int mId, int X, int Y) : mid(mId), x(X), y(Y) {}
 	bool operator < (const RefMonsterKey& other) const

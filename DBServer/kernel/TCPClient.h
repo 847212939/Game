@@ -1,7 +1,7 @@
 #pragma once
 
 class PlayerPrepClient;
-class TCPClient : public CTCPSocketManage
+class TCPClient : public TCPSocket
 {
 public:
 	TCPClient();

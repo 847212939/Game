@@ -78,7 +78,7 @@ enum class FT
 	DB_STR,
 };
 
-class CTCPSocketManage;
+class TCPSocket;
 #pragma pack(1)
 
 //数据队列信息头
@@ -216,7 +216,7 @@ struct PlayerInfo
 //接收线程参数
 struct RecvThreadParam
 {
-	CTCPSocketManage*		pThis;
+	TCPSocket*		pThis;
 	int						index;
 
 	RecvThreadParam() :pThis(nullptr), index(0) {}

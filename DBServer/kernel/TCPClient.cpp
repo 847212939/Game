@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-TCPClient::TCPClient() : CTCPSocketManage(), m_PlayerPrepClient(new PlayerPrepClient)
+TCPClient::TCPClient() : TCPSocket(), m_PlayerPrepClient(new PlayerPrepClient)
 {
 }
 TCPClient::~TCPClient()
@@ -28,7 +28,7 @@ bool TCPClient::Init(ServiceType serverType)
 	const CServerCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetServerCfg();
 	int maxSocketCnt = G_CfgMgr->GetCBaseCfgMgr().GetMaxSocketCnt();
 
-	if (!CTCPSocketManage::Init(maxSocketCnt, serverCfg.port, serverCfg.ip.c_str(), serverType))
+	if (!TCPSocket::Init(maxSocketCnt, serverCfg.port, serverCfg.ip.c_str(), serverType))
 	{
 		return false;
 	}
