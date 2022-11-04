@@ -32,6 +32,20 @@ void CrossClient::Network(PlayerInfo* playerInfo)
 		LogicToCrossLogin(msg, playerInfo);
 		break;
 	}
+	case CrossClientMsgCmd::cs_logic_to_cross_logout:
+	{
+		LogicToCrossLogout(msg, playerInfo);
+		break;
+	}
+	case CrossClientMsgCmd::cs_logic_to_cross_close:
+	{
+		break;
+	}
+	case CrossClientMsgCmd::cs_cross_to_logic_logout:
+	{
+		CrossToLogicLogout(msg, playerInfo);
+		break;
+	}
 	default:
 		break;
 	}
@@ -78,18 +92,27 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 
 	return true;
 }
-
-void CrossClient::LogoutCross()
+// 客户端请求断开链接
+bool CrossClient::LogicToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 {
+	TCPSocketInfo* pLogicTcpInfo = G_NetClient->GetTCPSocketInfo(playerInfo->pMsg->uIndex);
+	if (!pLogicTcpInfo)
+	{
+		return false;
+	}
+	if (!pLogicTcpInfo->isCross)
+	{
+		return false;
+	}
 	int crossIndex = G_NetClient->GetCrossServerIndex();
 	if (crossIndex < 0)
 	{
-		return;
+		return false;
 	}
 	TCPSocketInfo* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(crossIndex);
 	if (!pCrossTcpInfo)
 	{
-		return;
+		return false;
 	}
 	uint64_t userid = m_Player->GetID();
 	Netmsg msg;
@@ -98,4 +121,72 @@ void CrossClient::LogoutCross()
 	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_CrossLogin, (int)CrossClientMsgCmd::cs_logic_to_cross_logout,
 		0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
+
+	return true;
+}
+// 系统主动放松断开链接
+bool CrossClient::CloseCross()
+{
+	int crossIndex = G_NetClient->GetCrossServerIndex();
+	if (crossIndex < 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pCrossTcpInfo = G_NetClient->GetTCPSocketInfo(crossIndex);
+	if (!pCrossTcpInfo)
+	{
+		return false;
+	}
+	uint64_t userid = m_Player->GetID();
+	Netmsg msg;
+	msg << userid;
+
+	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(),
+		MsgCmd::MsgCmd_CrossLogin, (int)CrossClientMsgCmd::cs_logic_to_cross_close,
+		0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
+
+	return true;
+}
+bool CrossClient::CrossToLogicLogout(Netmsg& msg, PlayerInfo* playerInfo)
+{
+	uint64_t userid = 0;
+	int animalid = 0;
+	time_t refreshTime = 0;
+	bool lived = false;
+	int animaltype = 0;
+	std::string animalname;
+	std::string playername;
+	int serverid;
+	unsigned int logicIndex;
+
+	msg >> userid
+		>> animalid
+		>> refreshTime
+		>> lived
+		>> animaltype
+		>> animalname
+		>> playername
+		>> serverid
+		>> logicIndex;
+
+	TCPSocketInfo* pClientTcpInfo = G_NetClient->GetTCPSocketInfo(logicIndex);
+	if (!pClientTcpInfo)
+	{
+		return false;
+	}
+
+	LoginData loginData;
+	loginData.index = playerInfo->pMsg->uIndex;
+	loginData.roleName = animalname;
+	loginData.netName = playername;
+	loginData.userId = userid;
+	loginData.roleid = animalid;
+	loginData.roleType = animaltype;
+	loginData.serverId = serverid;
+	loginData.logicIndex = 0;
+
+	G_PlayerCenterClient->CreatePlayer(loginData);
+
+	Log(CINF, "userid=%lld的玩家退出跨服", userid);
+	return true;
 }

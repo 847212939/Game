@@ -216,7 +216,7 @@ void TCPClient::CloseSocketLogicCallback(void* pDataLineHead)
 	}
 	if (pSocketClose->isCross)
 	{
-		playerClient->GetCrossClient().LogoutCross();
+		playerClient->GetCrossClient().CloseCross();
 	}
 	else
 	{
