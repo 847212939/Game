@@ -60,7 +60,7 @@ CTCPSocketManage::~CTCPSocketManage()
 #endif
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, 
+bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 	ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
 	if (maxCount <= 0 || port <= 1000)
@@ -117,26 +117,7 @@ bool CTCPSocketManage::WaitConnect(int threadIndex)
 	}
 	return true;
 }
-bool CTCPSocketManage::IsServerMsg(int index)
-{
-	if (index == GetDBServerIndex())
-	{
-		return true;
-	}
-	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
-	{
-		return true;;
-	}
-	else
-	{
-		if (index == GetCrossServerIndex())
-		{
-			return true;
-		}
-	}
-	
-	return false;
-}
+
 SOCKFD CTCPSocketManage::GetNewSocket()
 {
 	SOCKFD sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -151,7 +132,7 @@ SOCKFD CTCPSocketManage::GetNewSocket()
 bool CTCPSocketManage::ConnectCrossServer(SOCKFD& sock)
 {
 	const CLogicCfg& serverCfg = G_CfgMgr->GetCBaseCfgMgr().GetCrossServerCfg();
-	
+
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(serverCfg.port);
@@ -245,7 +226,7 @@ bool CTCPSocketManage::ConnectServer()
 	}
 	else
 	{
-		sock = GetNewSocket(); 
+		sock = GetNewSocket();
 		if (sock < 0)
 		{
 			return false;
@@ -509,7 +490,7 @@ void CTCPSocketManage::ServerSocketInfo(PlatformSocketInfo* tcpInfo)
 	static int lastThreadIndex = 0;
 	lastThreadIndex = lastThreadIndex % m_workBaseVec.size();
 	// 投递到接收线程
-	if (send(m_workBaseVec[lastThreadIndex].write_fd, (const char*)(tcpInfo), 
+	if (send(m_workBaseVec[lastThreadIndex].write_fd, (const char*)(tcpInfo),
 		sizeof(PlatformSocketInfo), 0) < sizeof(PlatformSocketInfo))
 	{
 		Log(CERR, "投递连接消息失败,fd=%d", tcpInfo->acceptFd);
@@ -789,7 +770,7 @@ bool CTCPSocketManage::VerifyConnection(int index, char* data, int len)
 	{
 		return false;
 	}
-	
+
 	tcpInfo->link = (uint64_t)MsgCmd::MsgCmd_Testlink;
 
 	Log(CINF, "TCP connect [ip=%s port=%d index=%d fd=%d bufferevent=%p]",
@@ -819,14 +800,14 @@ void TCPSocketInfo::Reset(ServiceType& serviceType)
 	lock->unlock();
 }
 //网络关闭处理
-bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+bool CTCPSocketManage::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross, uint64_t userid/* = 0*/)
 {
 	return GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
 		OnCrossSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross, userid) :
 		OnLogicSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross);
 }
-bool CTCPSocketManage::OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+bool CTCPSocketManage::OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross)
 {
 	SocketCloseLine SocketClose;
@@ -837,7 +818,7 @@ bool CTCPSocketManage::OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned
 	return (m_pRecvDataLine->AddData(&SocketClose, sizeof(SocketClose),
 		SysMsgCmd::HD_SOCKET_CLOSE) != 0);
 }
-bool CTCPSocketManage::OnCrossSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex, 
+bool CTCPSocketManage::OnCrossSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross, uint64_t& userid)
 {
 	SocketCloseLine SocketClose;
@@ -1344,10 +1325,10 @@ bool CTCPSocketManage::SendMsg(int index, const char* pData, size_t size, MsgCmd
 			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
 		}
 	}
-	
+
 	return true;
 }
-bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID,
 	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/)
 {
 	if (!pBufferevent)
@@ -1399,7 +1380,7 @@ bool CTCPSocketManage::SendLogicMsg(int index, const char* pData, size_t size, M
 
 	return true;
 }
-bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, 
+bool CTCPSocketManage::SendLogicWsMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID,
 	int handleCode, void* pBufferevent, unsigned int uIdentification/* = 0*/, bool PackData/* = true*/)
 {
 	if (!pBufferevent)
@@ -2035,7 +2016,7 @@ bool CTCPSocketManage::HandShark(bufferevent* bev, int index)
 		SendMsg(index, requestSendStr.c_str(), requestSendStr.size(),
 			MsgCmd::MsgCmd_HandShark, 0, 0, tcpInfo->bev, 0, 0, tcpInfo->bHandleAccptMsg);
 	}
-	
+
 	return true;
 }
 
@@ -2072,14 +2053,14 @@ int CTCPSocketManage::FetchPayloadLength(char* msg, int& pos, WebSocketMsg& wbms
 {
 	wbmsg.payloadLength = msg[pos] & 0x7f;
 	pos++;
-	if (wbmsg.payloadLength == 126) 
+	if (wbmsg.payloadLength == 126)
 	{
 		uint16_t length = 0;
 		memcpy(&length, msg + pos, 2);
 		pos += 2;
 		wbmsg.payloadLength = ntohs(length);
 	}
-	else if (wbmsg.payloadLength == 127) 
+	else if (wbmsg.payloadLength == 127)
 	{
 		uint32_t length = 0;
 		memcpy(&length, msg + pos, 4);
@@ -2095,9 +2076,9 @@ int CTCPSocketManage::FetchPayload(char* msg, int& pos, WebSocketMsg& wbmsg)
 {
 	wbmsg.payload = msg + pos;
 
-	if (wbmsg.mask == 1) 
+	if (wbmsg.mask == 1)
 	{
-		for (uint32_t i = 0; i < wbmsg.payloadLength; i++) 
+		for (uint32_t i = 0; i < wbmsg.payloadLength; i++)
 		{
 			uint32_t j = i % 4;
 			wbmsg.payload[i] = msg[pos + i] ^ wbmsg.maskingKey[j];
@@ -2115,7 +2096,7 @@ void CTCPSocketManage::FetchPrint(const WebSocketMsg& wbmsg)
 }
 
 // 网络消息派发
-bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead,
 	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	if (!pBufferevent || !pHead)
@@ -2124,11 +2105,11 @@ bool CTCPSocketManage::DispatchPacket(void* pBufferevent, int index, NetMessageH
 	}
 
 	return m_ServiceType == ServiceType::SERVICE_TYPE_CROSS ?
-		DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType):
+		DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType) :
 		DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
 }
 // 跨服消息处理
-bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead,
 	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	CDataLine* pDataLine = GetRecvDataLine();
@@ -2160,7 +2141,7 @@ bool CTCPSocketManage::DispatchCrossPacket(void* pBufferevent, int index, NetMes
 	return true;
 }
 // 本服消息处理
-bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, 
+bool CTCPSocketManage::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead,
 	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
 {
 	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
@@ -2222,7 +2203,7 @@ bool CTCPSocketManage::MsgForward(int index, NetMessageHead* pHead, char* pData,
 	{
 		return false;
 	}
-	
+
 	return index == crossIndex ?
 		MsgForwardToClient(index, pHead, pData, len) :
 		MsgForwardToCross(index, pHead, pData, len);
@@ -2261,7 +2242,7 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 
 	int clientIndex = 0;
 	std::string data;
-	msg >> clientIndex 
+	msg >> clientIndex
 		>> data;
 
 	if (clientIndex < 0)
@@ -2308,6 +2289,6 @@ bool CTCPSocketManage::MsgForwardToClient(int crossIndex, NetMessageHead* pHead,
 		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
 			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
 	}
-	
+
 	return true;
 }
