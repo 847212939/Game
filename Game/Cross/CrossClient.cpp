@@ -37,11 +37,6 @@ void CrossClient::Network(PlayerInfo* playerInfo)
 		ClientToCrossLogout(msg, playerInfo);
 		break;
 	}
-	case CrossClientMsgCmd::cs_cross_to_logic_logout:
-	{
-		CrossToLogicLogout(msg, playerInfo);
-		break;
-	}
 	default:
 		break;
 	}
