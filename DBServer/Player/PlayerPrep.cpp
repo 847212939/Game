@@ -49,6 +49,7 @@ bool PlayerPrep::InitDB()
 	m_CMysqlHelperSave.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperSave.connect();
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -61,6 +62,7 @@ bool PlayerPrep::InitDB()
 	m_CMysqlHelperLoad.init(dbCfg.ip.c_str(), dbCfg.user.c_str(), dbCfg.passwd.c_str(), dbCfg.database.c_str(), "", dbCfg.port);
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperLoad.connect();
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -160,9 +162,8 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
-
 	m_mutex.lock();
+	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
 	m_sqlList.push_back(sSql);
 	m_mutex.unlock();
 	m_cond.notify_one();
@@ -177,9 +178,8 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
-
 	m_mutex.lock();
+	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
 	m_sqlList.push_back(sSql);
 	m_mutex.unlock();
 	m_cond.notify_one();
@@ -195,9 +195,8 @@ void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std:
 	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-
 	m_mutex.lock();
+	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 	m_sqlList.push_back(sSql);
 	m_mutex.unlock();
 	m_cond.notify_one();
@@ -217,9 +216,8 @@ void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint
 	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_INT, msgUserid.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-
 	m_mutex.lock();
+	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 	m_sqlList.push_back(sSql);
 	m_mutex.unlock();
 	m_cond.notify_one();
@@ -236,9 +234,8 @@ void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::
 	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_STR, userid)));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-
 	m_mutex.lock();
+	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
 	m_sqlList.push_back(sSql);
 	m_mutex.unlock();
 	m_cond.notify_one();
@@ -261,6 +258,7 @@ void PlayerPrep::LoadGlobalMysql(std::string sqlName, int serverid, std::string&
 	CMysqlHelper::MysqlData data;
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperLoad.queryRecord(sql, data);
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -291,6 +289,7 @@ void PlayerPrep::LoadLoginMysql(std::string sqlName, int serverid, std::string& 
 	CMysqlHelper::MysqlData data;
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperLoad.queryRecord(sql, data);
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -321,6 +320,7 @@ void PlayerPrep::LoadPlayerMysql(std::string sqlName, int serverid, uint64_t use
 	CMysqlHelper::MysqlData queryData;
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -349,6 +349,7 @@ bool PlayerPrep::LoadMulitySql(std::string sqlName, uint64_t userId, CMysqlHelpe
 
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperLoad.queryRecord(sql, queryData);
 	}
 	catch (MysqlHelper_Exception& excep)
@@ -391,6 +392,7 @@ void PlayerPrep::HandleEexcuteMysql(std::string& sql)
 {
 	try
 	{
+		std::lock_guard<std::mutex> guard(m_mutex);
 		m_CMysqlHelperSave.execute(sql);
 	}
 	catch (MysqlHelper_Exception& excep)
