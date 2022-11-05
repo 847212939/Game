@@ -79,14 +79,18 @@ private:
 	bool VerifyConnection(int index, char* data, int len);
 	// 等待连接
 	bool WaitConnect(int threadIndex);
-	// 获取套接字
-	SOCKFD GetNewSocket();
+	// 初始化跨服信息
+	bool InitCrossServer();
+	// 初始化DB信息
+	bool InitDBServer();
 	// 连接DB服务器
 	bool ConnectDBServer(SOCKFD& sock);
 	// 连接跨服服务器
 	bool ConnectCrossServer(SOCKFD& sock);
 	// 转到内部消息
 	void ServerSocketInfo(PlatformSocketInfo* pTCPSocketInfo);
+	// 获取套接字
+	SOCKFD GetNewSocket();
 
 public:
 	// 发送数据函数.

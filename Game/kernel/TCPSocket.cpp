@@ -195,9 +195,44 @@ void TCPSocket::Sleepseconds(int seconds)
 {
 	std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
+bool TCPSocket::InitCrossServer()
+{
+	SOCKFD sock = GetNewSocket();
+	if (sock < 0)
+	{
+		return false;
+	}
+	while (true)
+	{
+		if (ConnectCrossServer(sock))
+		{
+			break;
+		}
+		Sleepseconds(5);
+	}
+
+	return true;
+}
+bool TCPSocket::InitDBServer()
+{
+	SOCKFD sock = GetNewSocket();
+	if (sock < 0)
+	{
+		return false;
+	}
+	while (true)
+	{
+		if (ConnectDBServer(sock))
+		{
+			break;
+		}
+		Sleepseconds(5);
+	}
+
+	return true;
+}
 bool TCPSocket::ConnectServer()
 {
-	SOCKFD sock = 0;
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
@@ -212,49 +247,21 @@ bool TCPSocket::ConnectServer()
 	}
 	if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
 	{
-		sock = GetNewSocket();
-		if (sock < 0)
+		if (!InitDBServer())
 		{
 			return false;
-		}
-		while (true)
-		{
-			if (ConnectDBServer(sock))
-			{
-				break;
-			}
-			Sleepseconds(5);
 		}
 	}
 	else
 	{
-		sock = GetNewSocket();
-		if (sock < 0)
+		if (!InitDBServer())
 		{
 			return false;
 		}
-		while (true)
-		{
-			if (ConnectDBServer(sock))
-			{
-				break;
-			}
-			Sleepseconds(5);
-		}
-
-		sock = GetNewSocket();
-		if (sock < 0)
+		/*if (!InitCrossServer())
 		{
 			return false;
-		}
-		while (true)
-		{
-			if (ConnectCrossServer(sock))
-			{
-				break;
-			}
-			Sleepseconds(5);
-		}
+		}*/
 	}
 
 	return true;
