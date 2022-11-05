@@ -42,11 +42,11 @@ enum WS_FrameType
 enum class SysMsgCmd
 {
 	HD_SYS_MSG_BEGIN = 0,											// 开始
-	HD_SOCKET_READ = 1,											// SOCKFD 读取事件处理
+	HD_SOCKET_READ = 1,												// SOCKFD 读取事件处理
 	HD_SOCKET_CLOSE = 2,											// SOCKFD 关闭事件处理
-	HD_ASYN_THREAD_RESULT = 3,											// 异步线程结果处理
+	HD_ASYN_THREAD_RESULT = 3,										// 异步线程结果处理
 	HD_TIMER_MESSAGE = 4,											// 定时器消息处理
-	HD_PLATFORM_SOCKET_READ = 5,											// 中心服读取事件处理
+	HD_PLATFORM_SOCKET_READ = 5,									// 中心服读取事件处理
 };
 
 // 日志等级
