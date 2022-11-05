@@ -24,6 +24,9 @@ const int					MAX_FILE_NAME_SIZE = 256;							// 最大文件名长度
 const int					MAX_FUNC_NAME_SIZE = 128;							// 最大函数名长度
 const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//日子文件的最大的长度，超过长度会生成新的文件
 
+// 获取接收线程池数量
+const int					RECV_THREAD_DEFAULT_NUM = 16;
+
 enum WS_FrameType
 {
 	WS_EMPTY_FRAME = 0xF0,

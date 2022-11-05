@@ -236,7 +236,7 @@ bool TCPSocket::ConnectServer()
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
-		workBaseCount = 8;
+		workBaseCount = RECV_THREAD_DEFAULT_NUM;
 	}
 	for (int i = 0; i < workBaseCount; i++)
 	{
@@ -352,7 +352,7 @@ void TCPSocket::ThreadAccept()
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
 	{
-		workBaseCount = 8;
+		workBaseCount = RECV_THREAD_DEFAULT_NUM;
 	}
 
 	// 初始工作线程信息
