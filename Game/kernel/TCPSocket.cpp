@@ -1,5 +1,7 @@
 ﻿#include "../stdafx.h"
 
+int TCPSocket::m_lastThreadIndex = 0;
+
 TCPSocket::TCPSocket() :
 	m_bindIP(""),
 	m_running(false),
@@ -487,14 +489,15 @@ void TCPSocket::ServerSocketInfo(PlatformSocketInfo* tcpInfo)
 	// 设置底层收发缓冲区
 	SetTcpRcvSndBUF(tcpInfo->acceptFd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
-	static int lastThreadIndex = 0;
-	lastThreadIndex = lastThreadIndex % m_workBaseVec.size();
+	m_lastThreadIndex = m_lastThreadIndex % m_workBaseVec.size();
 	// 投递到接收线程
-	if (send(m_workBaseVec[lastThreadIndex].write_fd, (const char*)(tcpInfo),
+	if (send(m_workBaseVec[m_lastThreadIndex].write_fd, (const char*)(tcpInfo),
 		sizeof(PlatformSocketInfo), 0) < sizeof(PlatformSocketInfo))
 	{
 		Log(CERR, "投递连接消息失败,fd=%d", tcpInfo->acceptFd);
 	}
+
+	m_lastThreadIndex++;
 }
 struct bufferevent* TCPSocket::GetBufferEvent(struct event_base* base, SOCKFD& fd, SSL* ssl)
 {
@@ -695,17 +698,16 @@ void TCPSocket::ListenerCB(evconnlistener* listener, evutil_socket_t fd, sockadd
 	SetTcpRcvSndBUF(fd, SOCKET_RECV_BUF_SIZE, SOCKET_SEND_BUF_SIZE);
 
 	// memcached中线程负载均衡算法
-	static int lastThreadIndex = 0;
-	lastThreadIndex = lastThreadIndex % pThis->m_workBaseVec.size();
+	m_lastThreadIndex = m_lastThreadIndex % pThis->m_workBaseVec.size();
 
 	// 投递到接收线程
-	if (send(pThis->m_workBaseVec[lastThreadIndex].write_fd,
+	if (send(pThis->m_workBaseVec[m_lastThreadIndex].write_fd,
 		(const char*)(&tcpInfo), sizeof(PlatformSocketInfo), 0) < sizeof(PlatformSocketInfo))
 	{
 		Log(CERR, "投递连接消息失败,fd=%d", fd);
 	}
 
-	lastThreadIndex++;
+	m_lastThreadIndex++;
 }
 void TCPSocket::ReadCB(bufferevent* bev, void* data)
 {

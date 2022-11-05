@@ -236,4 +236,5 @@ private:
 	int					 m_DBServerIndex;
 	SOCKFD				 m_CrossServerSock;
 	int					 m_CrossServerIndex;
+	static int			 m_lastThreadIndex;
 };
