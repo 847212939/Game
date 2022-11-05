@@ -20,8 +20,8 @@ public:
 	SceneClient* GetSceneClient();
 
 public:
-	// 发送操作结果
-	void SendOperateResults(SocketReadLine* pMsg, bool results = true);
+	// 向客户端发送操作结果
+	void SendOperateResults(SocketReadLine* pMsg, bool results, uint64_t userid);
 
 private:
 	SceneClient	m_SceneClient;

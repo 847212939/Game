@@ -179,7 +179,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
 	}
 
-	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg, true, loginData.userId);
 
 	return true;
 }
@@ -209,7 +209,7 @@ bool LoginSys::NetSelectServer(Netmsg& msg, PlayerInfo* playerInfo)
 
 	pLoginData->serverId = serverid;
 
-	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg, true, 0);
 
 	return true;
 }
@@ -266,7 +266,7 @@ bool LoginSys::NetSelectRole(Netmsg& msg, PlayerInfo* playerInfo)
 	pLoginData->roleType = pCHeroList->heroType;
 	pLoginData->roleName = pCHeroList->heroName;
 
-	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg, true, 0);
 
 	return true;
 }
@@ -287,7 +287,7 @@ bool LoginSys::NetLoginIn(Netmsg& msg, PlayerInfo* playerInfo)
 	}
 
 	G_PlayerPrepClient->CreatePlayer(*pLoginData);
-	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg);
+	G_PlayerPrepClient->SendOperateResults(playerInfo->pMsg, true, 0);
 
 	AddServerIdMap(pLoginData->userId, pLoginData->serverId);
 	SaveServerIds(pLoginData->userId);
