@@ -402,7 +402,12 @@ void PlayerPrep::HandlerExecuteSqlThread()
 	while (run)
 	{
 		std::unique_lock<std::mutex> uniqLock(m_mutex);
-		m_cond.wait(uniqLock, [this] {return this->m_sqlList.size() > 0; });
+		m_cond.wait(uniqLock, [this, &run] {return this->m_sqlList.size() > 0 || !run; });
+		if (m_sqlList.size() <= 0)
+		{
+			uniqLock.unlock();
+			continue;
+		}
 
 		std::string str = m_sqlList.front();
 		m_sqlList.pop_front();
