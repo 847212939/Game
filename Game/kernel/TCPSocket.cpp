@@ -1331,7 +1331,9 @@ bool TCPSocket::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID
 			Netmsg msg;
 			msg << player->GetLogicIndex()
 				<< std::string(pData, size);
-			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+
+			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, 
+				handleCode, pBufferevent, uIdentification);
 		}
 	}
 
