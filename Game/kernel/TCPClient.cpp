@@ -247,8 +247,8 @@ void TCPClient::CloseSocketCrossCallback(void* pDataLineHead)
 void TCPClient::CloseSocketCallback(void* pDataLineHead)
 {
 	GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
-		CloseSocketCrossCallback(pDataLineHead) :
-		CloseSocketLogicCallback(pDataLineHead);
+	CloseSocketCrossCallback(pDataLineHead):
+	CloseSocketLogicCallback(pDataLineHead);
 }
 
 const CLogicCfg* TCPClient::GetServerCfg(ServiceType serverType)
