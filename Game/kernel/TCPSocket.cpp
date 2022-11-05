@@ -104,7 +104,7 @@ bool TCPSocket::WaitConnect(int threadIndex)
 	{
 		while (true)
 		{
-			std::this_thread::sleep_for(std::chrono::microseconds(10));
+			std::this_thread::sleep_for(std::chrono::microseconds(2));
 			if (m_workBaseVec.size() > threadIndex)
 			{
 				struct event_base* base = m_workBaseVec[threadIndex].base;
