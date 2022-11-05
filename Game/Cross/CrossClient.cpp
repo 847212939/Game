@@ -81,6 +81,8 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
 
+	Log(CINF, "userid=%lld logic->cross玩家请求跨服登陆", userid);
+
 	return true;
 }
 // 客户端请求跨服断开链接
@@ -116,6 +118,8 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	// 跨服删除玩家
 	G_NetClient->OnSocketCloseEvent(0, 0, 0, true, m_Player->GetID());
 
+	Log(CINF, "userid=%lld client->cross玩家请求跨服退出", m_Player->GetID());
+
 	return true;
 }
 // 系统主动放松断开链接
@@ -138,6 +142,8 @@ bool CrossClient::CloseCross()
 	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_CrossLogin, (int)CrossClientMsgCmd::cs_logic_to_cross_close,
 		0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
+
+	Log(CINF, "userid=%lld logic->cross网络断开请求跨服退出", m_Player->GetID());
 
 	return true;
 }
