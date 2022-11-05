@@ -91,22 +91,22 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 	}
 	int index = pMsg->uIndex;
 	MsgCmd cmd = (MsgCmd)pMsg->netMessageHead.uMainID;
-	TCPSocketInfo* tcpInfo = G_NetClient->GetTCPSocketInfo(index);
-	if (!tcpInfo)
+	TCPSocketInfo* pSerTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	if (!pSerTcpInfo)
 	{
-		Log(CERR, "!tcpInfo");
+		Log(CERR, "!pSerTcpInfo");
 		return;
 	}
 	if (cmd >= MsgCmd::MsgCmd_End || cmd <= MsgCmd::MsgCmd_Begin)
 	{
 		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			(int)cmd, index, pSerTcpInfo->ip, pSerTcpInfo->port);
 		return;
 	}
-	if (!MessageLogicMachin(index, playerInfo, tcpInfo))
+	if (!MessageLogicMachin(index, playerInfo, pSerTcpInfo))
 	{
 		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			(int)cmd, index, pSerTcpInfo->ip, pSerTcpInfo->port);
 		return;
 	}
 	MsgCmd identification = (MsgCmd)pMsg->netMessageHead.uIdentification;
@@ -117,36 +117,35 @@ void PlayerPrep::MessageLogicDispatch(PlayerInfo* playerInfo)
 		CallBackFun(cmd, playerInfo);
 		return;
 	}
+	const TCPSocketInfo* pClientTcpInfo = G_NetClient->GetTCPSocketInfo(index);
+	if (!pClientTcpInfo)
+	{
+		Log(CERR, "!pClientTcpInfo");
+		return;
+	}
+	if (!pClientTcpInfo->isConnect)
+	{
+		Log(CERR, "!pClientTcpInfo->isConnect[cmd=%d,index=%d,ip=%s,port=%d]",
+			(int)cmd, index, pClientTcpInfo->ip, pClientTcpInfo->port);
+		return;
+	}
 	PlayerClient* playerClient = G_PlayerCenterClient->GetPlayerByIndex(index);
 	if (!playerClient)
 	{
 		Log(CERR, "!playerClient[cmd=%d,index=%d,ip=%s,port=%d]", 
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
-		return;
-	}
-	const TCPSocketInfo* pInfo = G_NetClient->GetTCPSocketInfo(index);
-	if (!pInfo)
-	{
-		Log(CERR, "!pInfo[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
-		return;
-	}
-	if (!pInfo->isConnect)
-	{
-		Log(CERR, "!pInfo->isConnect[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			(int)cmd, index, pSerTcpInfo->ip, pSerTcpInfo->port);
 		return;
 	}
 	if (!playerClient->GetLoad())
 	{
 		Log(CERR, "!playerClient->GetLoad()[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			(int)cmd, index, pClientTcpInfo->ip, pClientTcpInfo->port);
 		return;
 	}
 	if (playerClient->GetIndex() != index && index != G_NetClient->GetDBServerIndex())
 	{
 		Log(CERR, "playerClient->GetIndex() != index[cmd=%d,index=%d,ip=%s,port=%d]",
-			(int)cmd, index, tcpInfo->ip, tcpInfo->port);
+			(int)cmd, index, pClientTcpInfo->ip, pClientTcpInfo->port);
 		return;
 	}
 	playerClient->MessageDispatch(cmd, playerInfo);
@@ -235,10 +234,9 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 // 处理消息
 void PlayerPrep::MessageDispatch(PlayerInfo* playerInfo)
 {
-	G_NetClient->GetServerType() ==
-		ServiceType::SERVICE_TYPE_CROSS ?
-		MessageCrossDispatch(playerInfo) :
-		MessageLogicDispatch(playerInfo);
+	G_NetClient->GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
+	MessageCrossDispatch(playerInfo):
+	MessageLogicDispatch(playerInfo);
 }
 
 // 创建角色
@@ -260,14 +258,14 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 		return;
 	}
 
-	Log(CERR, "There is already a callback for this message. Please check the code cmd = %d", cmd);
+	Log(CERR, "网络回调添加错误 cmd = %d", cmd);
 }
 bool PlayerPrep::CallBackFun(MsgCmd cmd, PlayerInfo* playerInfo)
 {
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		Log(CERR, "No corresponding callback function found cmd = %d", cmd);
+		Log(CERR, "网络回调错误 cmd = %d", cmd);
 		return false;
 	}
 

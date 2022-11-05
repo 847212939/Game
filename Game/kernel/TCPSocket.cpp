@@ -1777,9 +1777,7 @@ bool TCPSocket::RecvLogicWsData(bufferevent* bev, int index)
 	}
 
 	struct evbuffer* input = bufferevent_get_input(bev);
-
 	size_t maxSingleRead = Min_(evbuffer_get_length(input), SOCKET_RECV_BUF_SIZE);
-
 	std::unique_ptr<char[]> recvBuf(new char[maxSingleRead]);
 
 	size_t realAllSize = evbuffer_copyout(input, recvBuf.get(), maxSingleRead);
