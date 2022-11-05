@@ -171,35 +171,3 @@ void Util::Exit(bool& run)
 	G_NetClient->Stop();
 	G_NetClient->NotifyAll();
 }
-
-ListString Util::StringSplit(std::string& str, std::string separator, size_t count/* = 0*/)
-{
-	ListString listString;
-	size_t pos = 0, cnt = 0;
-	size_t size = str.size();
-
-	for (size_t i = 0; i < size; i++)
-	{
-		// 最后一次拆分
-		if (count > 0 && ++cnt >= count)
-		{
-			listString.push_back(str.substr(i, size - i));
-			break;
-		}
-		pos = str.find(separator, i);
-		if (pos == std::string::npos)
-		{
-			// 防止最后没有结尾分隔符保留
-			if (i < size)
-			{
-				listString.push_back(str.substr(i, size - i));
-			}
-			break;
-		}
-		listString.push_back(str.substr(i, pos - i));
-		i = pos + separator.size() - 1;
-	}
-
-	return listString;
-}
-

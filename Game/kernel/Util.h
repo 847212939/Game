@@ -41,14 +41,6 @@ public:
 	static bool InitTime();
 	// 生产怪
 	static Animal* CreatAnimal(AnimalType type, int mid = 0);
-	/*
-	* @brief 字符串拆分函数
-	* @param str 原始字符串
-	* @param separator 分隔符
-	* @param count 拆分为几个子串
-	* @return ListString
-	*/
-	static ListString StringSplit(std::string& str, std::string separator, size_t count = 0);
 
 public:
 	// 唯一ID
