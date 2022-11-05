@@ -806,8 +806,8 @@ bool TCPSocket::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross, uint64_t userid/* = 0*/)
 {
 	return GetServerType() == ServiceType::SERVICE_TYPE_CROSS ?
-		OnCrossSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross, userid) :
-		OnLogicSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross);
+	OnCrossSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross, userid):
+	OnLogicSocketCloseEvent(uAccessIP, uIndex, uConnectTime, isCross);
 }
 bool TCPSocket::OnLogicSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
 	unsigned int uConnectTime, bool isCross)
@@ -2105,8 +2105,8 @@ bool TCPSocket::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pH
 	}
 
 	return m_ServiceType == ServiceType::SERVICE_TYPE_CROSS ?
-		DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType) :
-		DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
+	DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType):
+	DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
 }
 // 跨服消息处理
 bool TCPSocket::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead,
