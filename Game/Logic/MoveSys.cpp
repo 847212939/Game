@@ -17,7 +17,6 @@ bool MoveSys::LoadMysql(Netmsg& msg, PlayerInfo* playerInfo)
 {
 	if (!m_PlayerClient)
 	{
-		Log(CERR, "MoveSys sub player is null");
 		return false;
 	}
 
@@ -40,12 +39,10 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 {
 	if (!playerInfo)
 	{
-		Log(CERR, "Player Info is null");
 		return;
 	}
 	if (!playerInfo->pMsg)
 	{
-		Log(CERR, "player info pMsg is null or player info sock info is null");
 		return;
 	}
 
@@ -73,18 +70,9 @@ void MoveSys::NetWork(PlayerInfo* playerInfo)
 
 void MoveSys::Exit(SocketCloseLine* socketCloseLine)
 {
-	Log(CINF, "Íæ¼ÒÍË³ö");
 }
 
 bool MoveSys::MoveCoo(Netmsg& msg, PlayerInfo* playerInfo)
 {
-	unsigned int x = 0, y = 0;
-	msg >> x >> y;
-
-	Netmsg msgos;
-	msgos << x << y;
-
-	SavePlayerMysql(m_PlayerClient->GetID(), "move", msgos);
-
 	return true;
 }
