@@ -163,8 +163,7 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	m_mutex.lock();
-	std::string sSql = m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns);
-	m_sqlList.push_back(sSql);
+	m_sqlList.push_back(m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns));
 	m_mutex.unlock();
 	m_cond.notify_one();
 }
@@ -179,8 +178,7 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	m_mutex.lock();
-	std::string sSql = m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition);
-	m_sqlList.push_back(sSql);
+	m_sqlList.push_back(m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition));
 	m_mutex.unlock();
 	m_cond.notify_one();
 }
@@ -196,8 +194,7 @@ void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std:
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	m_mutex.lock();
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-	m_sqlList.push_back(sSql);
+	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	m_mutex.unlock();
 	m_cond.notify_one();
 }
@@ -217,8 +214,7 @@ void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	m_mutex.lock();
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-	m_sqlList.push_back(sSql);
+	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	m_mutex.unlock();
 	m_cond.notify_one();
 }
@@ -235,8 +231,7 @@ void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	m_mutex.lock();
-	std::string sSql = m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns);
-	m_sqlList.push_back(sSql);
+	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	m_mutex.unlock();
 	m_cond.notify_one();
 }
