@@ -21,6 +21,27 @@ public:
 	bool Init(int maxCount, int port, const char* ip = nullptr,
 		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
+private:
+	// 线程函数
+	// SOCKET 连接应答线程
+	void ThreadAccept();
+	// SOCKET 数据发送线程
+	void ThreadSendMsg();
+	// SOCKET 数据接收线程
+	static void ThreadRSSocket(void* pThreadData);
+	// 新的连接到来，ThreadRSSocket线程函数
+	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
+
+private:
+	// 新的数据到来，ThreadRSSocket线程函数
+	static void ReadCB(struct bufferevent*, void*);
+	// 连接关闭等等错误消息，ThreadRSSocket线程函数
+	static void EventCB(struct bufferevent*, short, void*);
+	// accept失败，ThreadAccept线程函数
+	static void AcceptErrorCB(struct evconnlistener* listener, void*);
+	// 新的连接到来，ThreadAccept线程函数
+	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
+
 public:
 	// 关闭连接函数
 	bool CloseSocket(int index);
@@ -36,27 +57,6 @@ private:
 		unsigned int uConnectTime, bool isCross, uint64_t& userid);
 	// 设置tcp为未连接状态
 	void RemoveTCPSocketStatus(int index, bool isClientAutoClose = false);
-
-private:
-	// 线程函数
-	// SOCKET 连接应答线程
-	void ThreadAccept();
-	// SOCKET 数据发送线程
-	void ThreadSendMsg();
-	// SOCKET 数据接收线程
-	static void ThreadRSSocket(void* pThreadData);
-
-private:
-	// 新的数据到来，ThreadRSSocket线程函数
-	static void ReadCB(struct bufferevent*, void*);
-	// 连接关闭等等错误消息，ThreadRSSocket线程函数
-	static void EventCB(struct bufferevent*, short, void*);
-	// accept失败，ThreadAccept线程函数
-	static void AcceptErrorCB(struct evconnlistener* listener, void*);
-	// 新的连接到来，ThreadRSSocket线程函数
-	static void ThreadLibeventProcess(evutil_socket_t readfd, short which, void* arg);
-	// 新的连接到来，ThreadAccept线程函数
-	static void ListenerCB(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int socklen, void*);
 
 private:
 	// 派发数据包
