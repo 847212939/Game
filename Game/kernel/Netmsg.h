@@ -39,7 +39,8 @@ public:
 private:
 	std::ostringstream	m_os;
 	std::istringstream	m_is;
-	ListString			m_SplitsList;
+	VectorString		m_Splits;
+	int					m_cnt;
 };
 
 template<class T>
@@ -52,12 +53,11 @@ Netmsg& Netmsg::operator << (T t)
 template<class T>
 Netmsg& Netmsg::operator >> (T& t)
 {
-	if (!m_SplitsList.empty())
+	if (m_cnt < m_Splits.size())
 	{
-		m_is.clear();
-		m_is.str(m_SplitsList.front());
+		m_is.clear(); 
+		m_is.str(m_Splits[m_cnt++]);
 		m_is >> t;
-		m_SplitsList.pop_front();
 	}
 	return *this;
 }

@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 
-Netmsg::Netmsg()
+Netmsg::Netmsg() : m_cnt(0)
 {
 
 }
@@ -8,7 +8,7 @@ Netmsg::~Netmsg()
 {
 
 }
-Netmsg::Netmsg(char* data, int len, int count)
+Netmsg::Netmsg(char* data, int len, int count) : m_cnt(0)
 {
 	std::string separator = "\n";
 	std::string str(data, len);
@@ -22,7 +22,7 @@ Netmsg::Netmsg(char* data, int len, int count)
 		// 最后一次拆分
 		if (count > 0 && ++cnt >= count)
 		{
-			m_SplitsList.push_back(str.substr(i, size - i));
+			m_Splits.push_back(str.substr(i, size - i));
 			break;
 		}
 		pos = str.find(separator, i);
@@ -31,23 +31,23 @@ Netmsg::Netmsg(char* data, int len, int count)
 			// 防止最后没有结尾分隔符保留
 			if (i < size)
 			{
-				m_SplitsList.push_back(str.substr(i, size - i));
+				m_Splits.push_back(str.substr(i, size - i));
 			}
 			break;
 		}
-		m_SplitsList.push_back(str.substr(i, pos - i));
+		m_Splits.push_back(str.substr(i, pos - i));
 		i = pos + separatorSize - 1;
 	}
 }
 
 size_t Netmsg::size()
 {
-	return m_SplitsList.size();
+	return m_Splits.size();
 }
 
 bool Netmsg::empty()
 {
-	return m_SplitsList.empty();
+	return m_Splits.empty();
 }
 
 Netmsg::operator std::string()
@@ -61,10 +61,9 @@ std::string Netmsg::str()
 
 Netmsg& Netmsg::operator >> (std::string& t)
 {
-	if (!m_SplitsList.empty())
+	if (m_cnt < m_Splits.size())
 	{
-		t = m_SplitsList.front();
-		m_SplitsList.pop_front();
+		t = m_Splits[m_cnt++];
 	}
 	return *this;
 }
