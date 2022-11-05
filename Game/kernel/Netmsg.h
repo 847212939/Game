@@ -9,7 +9,7 @@ public:
 	* @param size 字符串长度
 	* @param count 拆分为几个子串
 	*/
-	Netmsg(char* data, int len, int count);
+	Netmsg(char* data, int len, int count = 0);
 	/*
 	* @brief 消息拆分构造函数
 	*/
