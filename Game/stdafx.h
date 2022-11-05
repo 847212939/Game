@@ -66,7 +66,7 @@ extern "C"
 #include "Lua/BaseCfgMgr.h"				// 网络配置
 
 #include "kernel/Macro.h"				// 宏
-#include "kernel/MessageCmd.h"			// 玩家消息定义
+#include "kernel/MsgCmd.h"				// 玩家消息定义
 #include "kernel/AttrsCmd.h"			// 玩家属性
 #include "kernel/TimerCmd.h"			// 定时器
 #include "kernel/Structural.h"			// 结构

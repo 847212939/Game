@@ -28,10 +28,6 @@
 #pragma comment(lib,"libcrypto.lib")
 #pragma comment(lib,"libssl.lib")
 
-//#define CA_CERT_FILE "server/ca.crt"
-//#define SERVER_CERT_FILE "server/server.crt"
-//#define SERVER_KEY_FILE "server/server.key"
-
 #define CA_CERT_FILE "../Res/openssl/bin/mycert.crt"
 #define SERVER_CERT_FILE "../Res/openssl/bin/mycert.crt"
 #define SERVER_KEY_FILE "../Res/openssl/bin/mycert_no_passwd.key"
