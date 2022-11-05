@@ -63,22 +63,21 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	uint64_t userid = m_Player->GetID();
 	unsigned int logciIndex = playerInfo->pMsg->uIndex;
 
-	Netmsg msgCin;
-	msgCin << userid;
-	msgCin << m_Player->GetAnimalid();
-	msgCin << m_Player->GetRefreshTime();
-	msgCin << m_Player->GetLived();
-	msgCin << (int)m_Player->GetAnimaltype();
-	msgCin << m_Player->GetAnimalname().c_str();
-	msgCin << m_Player->GetPlayername().c_str();
-	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
-	msgCin << logciIndex;
+	msg << userid;
+	msg << m_Player->GetAnimalid();
+	msg << m_Player->GetRefreshTime();
+	msg << m_Player->GetLived();
+	msg << (int)m_Player->GetAnimaltype();
+	msg << m_Player->GetAnimalname().c_str();
+	msg << m_Player->GetPlayername().c_str();
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	msg << logciIndex;
 
 	new(m_Player) PlayerClient(playerInfo->pMsg->uIndex);
 	m_Player->SetID(userid);
 	m_Player->SetIndex(playerInfo->pMsg->uIndex);
 
-	G_NetClient->SendMsg(crossIndex, msgCin.str().c_str(), msgCin.str().size(), MsgCmd::MsgCmd_CrossLogin,
+	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
 
 	Log(CINF, "userid=%lld logic->crossÍæ¼ÒÇëÇó¿ç·þµÇÂ½", userid);
@@ -99,18 +98,17 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 		return false;
 	}
 
-	Netmsg msgCin;
-	msgCin << m_Player->GetID();
-	msgCin << m_Player->GetAnimalid();
-	msgCin << m_Player->GetRefreshTime();
-	msgCin << m_Player->GetLived();
-	msgCin << (int)m_Player->GetAnimaltype();
-	msgCin << m_Player->GetAnimalname().c_str();
-	msgCin << m_Player->GetPlayername().c_str();
-	msgCin << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
-	msgCin << m_Player->GetLogicIndex();
+	msg << m_Player->GetID();
+	msg << m_Player->GetAnimalid();
+	msg << m_Player->GetRefreshTime();
+	msg << m_Player->GetLived();
+	msg << (int)m_Player->GetAnimaltype();
+	msg << m_Player->GetAnimalname().c_str();
+	msg << m_Player->GetPlayername().c_str();
+	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
+	msg << m_Player->GetLogicIndex();
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msgCin.str().c_str(), msgCin.str().size(), 
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msg.str().c_str(), msg.str().size(),
 		MsgCmd::MsgCmd_CrossLogin,(int)
 		CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, (unsigned int)
 		MsgCmd::MsgCmd_PlayerPreproces, m_Player->GetID());

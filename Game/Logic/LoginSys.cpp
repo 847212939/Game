@@ -174,7 +174,6 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	TCPSocketInfo* sockInfo = G_NetClient->GetTCPSocketInfo((int)loginData.index);
 	if (sockInfo)
 	{
-		Netmsg msg;
 		msg << (int)true;
 		G_NetClient->SendMsg((int)loginData.index, msg.str().c_str(), msg.str().size(),
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
