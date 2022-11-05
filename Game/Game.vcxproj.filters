@@ -285,7 +285,7 @@
     <ClInclude Include="kernel\AttrsCmd.h">
       <Filter>网络管理\公共定义</Filter>
     </ClInclude>
-    <ClInclude Include="kernel\MessageCmd.h">
+    <ClInclude Include="kernel\MsgCmd.h">
       <Filter>网络管理\公共定义</Filter>
     </ClInclude>
     <ClInclude Include="kernel\base64.h">

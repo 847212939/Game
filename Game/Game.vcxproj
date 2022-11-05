@@ -211,7 +211,7 @@
     <ClInclude Include="kernel\IDGen.h" />
     <ClInclude Include="kernel\LogManager.h" />
     <ClInclude Include="kernel\Macro.h" />
-    <ClInclude Include="kernel\MessageCmd.h" />
+    <ClInclude Include="kernel\MsgCmd.h" />
     <ClInclude Include="kernel\MysqlClient.h" />
     <ClInclude Include="kernel\Netmsg.h" />
     <ClInclude Include="kernel\ServerTimer.h" />
