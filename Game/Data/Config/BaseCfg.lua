@@ -9,7 +9,7 @@ BaseCfg=
     --定时器的个数
     TimerCnt = 1,
     --日志打印时间秒
-    LogPrintfTime = 1,
+    LogPrintfTime = 10,
     --程序退出
     Exit = "exit",
     --最大链接数量 单线程默认的32000
