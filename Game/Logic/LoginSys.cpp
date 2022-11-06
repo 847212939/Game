@@ -142,7 +142,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	loginData.pw = password;
 	loginData.index = playerInfo->serMsgData.uIndex;
 
-	if (!msg.empty())
+	if (msg.size() > 2)
 	{
 		uint64_t userid = 0;
 		std::string sqlPasswaed;
