@@ -37,12 +37,13 @@ bool Player::SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int ass
 	}
 	return G_NetClient->SendMsg(m_Index, pData, size, mainID, assistID, handleCode, pCrossTcpInfo->bev, uIdentification, GetID());
 }
-bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, unsigned int uIdentification/* = 0*/, int handleCode/* = 0*/)
+bool Player::SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, 
+	MsgCmd uIdentification/* = MsgCmd::MsgCmd_Begin*/, int handleCode/* = 0*/)
 {
 	return G_NetClient->GetServerType() ==
 	ServiceType::SERVICE_TYPE_CROSS ?
-	SendCrossMsg(pData, size, mainID, assistID, handleCode, uIdentification):
-	SendLogicMsg(pData, size, mainID, assistID, handleCode, uIdentification);
+	SendCrossMsg(pData, size, mainID, assistID, handleCode, (unsigned int)uIdentification):
+	SendLogicMsg(pData, size, mainID, assistID, handleCode, (unsigned int)uIdentification);
 }
 
 void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)

@@ -16,7 +16,7 @@ protected:
 
 public:
 	// 给一个玩家发送消息
-	bool SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, unsigned int uIdentification = 0, int handleCode = 0);
+	bool SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, MsgCmd uIdentification = MsgCmd::MsgCmd_Begin, int handleCode = 0);
 	// 消息派发
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
 private:
