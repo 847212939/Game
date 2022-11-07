@@ -321,7 +321,7 @@ bool CMysqlHelper::queryRecord(const std::string& sSql, MysqlData& data, bool bC
 	MYSQL_FIELD* field;
 	while ((field = mysql_fetch_field(pstRes)))
 	{
-		vtFields.push_back(field->name);
+		vtFields.emplace_back(field->name);
 	}
 
 	std::map<std::string, std::string> mpRow;
@@ -343,7 +343,7 @@ bool CMysqlHelper::queryRecord(const std::string& sSql, MysqlData& data, bool bC
 			}
 		}
 
-		data.data().push_back(mpRow);
+		data.data().emplace_back(mpRow);
 	}
 
 	mysql_free_result(pstRes);

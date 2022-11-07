@@ -9,7 +9,7 @@ struct CHeroList
 
 	void AddskillId(int skillid)
 	{
-		skillId.push_back(skillid);
+		skillId.emplace_back(skillid);
 	}
 
 	CHeroList() : heroId(0), heroType(0), heroName("") {}
@@ -36,7 +36,7 @@ struct CSkillIdList
 
 	void AddAttrs(int id, int value)
 	{
-		attrs.insert({(AttrsCmd)id, value});
+		attrs.emplace(std::make_pair((AttrsCmd)id, value));
 	}
 
 	CSkillIdList() : skillId(0), skillType(0), 

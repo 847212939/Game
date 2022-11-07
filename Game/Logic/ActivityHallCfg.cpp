@@ -30,22 +30,22 @@ CActivityBreakdown::~CActivityBreakdown()
 
 void CActivityList::AddBeginTime(int tm)
 {
-	beginTime.push_back(tm);
+	beginTime.emplace_back(tm);
 }
 
 void CActivityList::AddEndTime(int tm)
 {
-	endTime.push_back(tm);
+	endTime.emplace_back(tm);
 }
 
 void CActivityList::AddSolidTime(int tm)
 {
-	solidTime.push_back(tm);
+	solidTime.emplace_back(tm);
 }
 
 void CActivityList::AddOpenServerTime(int tm)
 {
-	openServerTime.push_back(tm);
+	openServerTime.emplace_back(tm);
 }
 
 bool CActivityList::operator < (const CActivityList& other) const
@@ -60,12 +60,12 @@ void CActivityBreakdown::AddDayBreakdownList(int idex, int tm)
 	if (it == dayBreakdownList.end())
 	{
 		VectorTemplate<int> tmp;
-		tmp.push_back(tm);
-		dayBreakdownList.insert({ idex , tmp });
+		tmp.emplace_back(tm);
+		dayBreakdownList.emplace(std::make_pair(idex, tmp));
 	}
 	else
 	{
-		it->second.push_back(tm);
+		it->second.emplace_back(tm);
 	}
 }
 
@@ -75,12 +75,12 @@ void CActivityBreakdown::AddHourBreakdownList(int idex, int tm)
 	if (it == hourBreakdownList.end())
 	{
 		VectorTemplate<int> tmp;
-		tmp.push_back(tm);
-		hourBreakdownList.insert({ idex , tmp });
+		tmp.emplace_back(tm);
+		hourBreakdownList.emplace(std::make_pair(idex, tmp));
 	}
 	else
 	{
-		it->second.push_back(tm);
+		it->second.emplace_back(tm);
 	}
 }
 
@@ -206,12 +206,12 @@ VectorTemplate<CBrushMonsterCfg>* ActivityHallCfg::GetBrushMonsterCfg(int id)
 
 void ActivityHallCfg::ReadActivityBreakdownCfg(CActivityBreakdown* config)
 {
-	m_ActivityBreakdownCfgSet.insert(*config);
+	m_ActivityBreakdownCfgSet.emplace(*config);
 }
 
 void ActivityHallCfg::ReadActivityList(CActivityList* config)
 {
-	m_ActivityListCfgSet.insert(*config);
+	m_ActivityListCfgSet.emplace(*config);
 }
 
 void ActivityHallCfg::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
@@ -220,11 +220,11 @@ void ActivityHallCfg::ReadBrushMonsterCfg(CBrushMonsterCfg* config)
 	if (it == m_BrushMonsterCfgMap.end())
 	{
 		VectorTemplate<CBrushMonsterCfg> tmp;
-		tmp.push_back(*config);
-		m_BrushMonsterCfgMap.insert({ config->id, tmp });
+		tmp.emplace_back(*config);
+		m_BrushMonsterCfgMap.emplace(std::make_pair(config->id, tmp));
 	}
 	else
 	{
-		it->second.push_back(*config);
+		it->second.emplace_back(*config);
 	}
 }

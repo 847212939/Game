@@ -22,7 +22,7 @@ Netmsg::Netmsg(char* data, int len, int count) : m_cnt(0)
 		// 最后一次拆分
 		if (count > 0 && ++cnt >= count)
 		{
-			m_Splits.push_back(str.substr(i, size - i));
+			m_Splits.emplace_back(str.substr(i, size - i));
 			break;
 		}
 		pos = str.find(separator, i);
@@ -31,11 +31,11 @@ Netmsg::Netmsg(char* data, int len, int count) : m_cnt(0)
 			// 防止最后没有结尾分隔符保留
 			if (i < size)
 			{
-				m_Splits.push_back(str.substr(i, size - i));
+				m_Splits.emplace_back(str.substr(i, size - i));
 			}
 			break;
 		}
-		m_Splits.push_back(str.substr(i, pos - i));
+		m_Splits.emplace_back(str.substr(i, pos - i));
 		i = pos + separatorSize - 1;
 	}
 }

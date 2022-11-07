@@ -53,22 +53,22 @@ void Player::MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo)
 
 void Player::AddExitCallback(std::function<void(SocketCloseLine*)>&& fun)
 {
-	m_ExitFunMap.push_back(fun);
+	m_ExitFunMap.emplace_back(fun);
 }
 void Player::AddAttrsCallback(std::function<void()>&& fun)
 {
-	m_AttrsFunMap.push_back(fun);
+	m_AttrsFunMap.emplace_back(fun);
 }
 void Player::AddEnterSceneCallback(std::function<void()>&& fun)
 {
-	m_EnterSceneFunMap.push_back(fun);
+	m_EnterSceneFunMap.emplace_back(fun);
 }
 void Player::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& fun)
 {
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
+		m_NetCBFunMap.emplace(std::make_pair(cmd, fun));
 		return;
 	}
 
@@ -88,7 +88,7 @@ void Player::AddMysqlCallback(SLoadMysql loadMysql)
 	MapMysqlFunc::iterator it = m_MysqlCBFunMap.find(loadMysql.uMainID);
 	if (it == m_MysqlCBFunMap.end())
 	{
-		m_MysqlCBFunMap.insert(std::make_pair(loadMysql.uMainID, loadMysql));
+		m_MysqlCBFunMap.emplace(std::make_pair(loadMysql.uMainID, loadMysql));
 		return;
 	}
 

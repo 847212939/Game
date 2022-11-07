@@ -64,7 +64,7 @@ void CLog::Write(const char* pLogfile, int level, const char* pFile, int line, c
 
 	std::list<std::pair<FILE*, std::string>>& logMap = G_LogMgr->GetLogMap();
 	std::lock_guard<std::mutex> guard(G_LogMgr->GetMutex());
-	logMap.push_back(std::make_pair(fp, buf));
+	logMap.emplace_back(std::make_pair(fp, buf));
 }
 
 CGameLogManage::CGameLogManage()
@@ -324,5 +324,5 @@ void CGameLogManage::HandlerLogThread(bool& run)
 
 void CGameLogManage::Init(bool& run)
 {
-	m_threadVec.push_back(new std::thread(&CGameLogManage::HandlerLogThread, this, std::ref(run)));
+	m_threadVec.emplace_back(new std::thread(&CGameLogManage::HandlerLogThread, this, std::ref(run)));
 }

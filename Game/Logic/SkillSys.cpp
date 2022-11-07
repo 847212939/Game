@@ -160,7 +160,7 @@ void SkillSys::AddNorSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 		{
 			cnt = pCSkillIdList->minSkillCd;
 		}
-		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
+		m_SkillCDList.emplace_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
 		animal->SetSkillAcitve(skillpos, false);
 		RegisterSkillTimer();
 	}
@@ -188,7 +188,7 @@ void SkillSys::AddSkillCD(Animal* animal, const CSkillIdList* pCSkillIdList)
 			cnt = pCSkillIdList->minSkillCd;
 		}
 
-		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
+		m_SkillCDList.emplace_back(SkillCDData(HurtSysMsgCmd::sc_skillcd, skillpos, cnt, animal));
 		animal->SetSkillAcitve(skillpos, false);
 		RegisterSkillTimer();
 	}
@@ -209,7 +209,7 @@ void SkillSys::AddSkillEffectCD(Animal* animal, const CSkillIdList* pCSkillIdLis
 		{
 			cnt = pCSkillIdList->minSkillEffect;
 		}
-		m_SkillCDList.push_back(SkillCDData(HurtSysMsgCmd::sc_effeckcd, pCSkillIdList->skillId, cnt, animal));
+		m_SkillCDList.emplace_back(SkillCDData(HurtSysMsgCmd::sc_effeckcd, pCSkillIdList->skillId, cnt, animal));
 		RegisterSkillTimer();
 	}
 }

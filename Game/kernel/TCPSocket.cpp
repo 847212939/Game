@@ -310,8 +310,8 @@ bool TCPSocket::Start()
 	m_uCurSocketSize = 0;
 	m_uCurSocketIndex = 0;
 
-	m_socketThread.push_back(new std::thread(&TCPSocket::ThreadSendMsg, this));
-	m_socketThread.push_back(new std::thread(&TCPSocket::ThreadAccept, this));
+	m_socketThread.emplace_back(new std::thread(&TCPSocket::ThreadSendMsg, this));
+	m_socketThread.emplace_back(new std::thread(&TCPSocket::ThreadAccept, this));
 
 	return true;
 }
@@ -403,14 +403,14 @@ void TCPSocket::ThreadAccept()
 			return;
 		}
 
-		m_workBaseVec.push_back(workInfo);
+		m_workBaseVec.emplace_back(workInfo);
 	}
 
 	std::vector<std::thread> threadVev;
 	// 开辟工作线程池
 	for (int i = 0; i < workBaseCount; i++)
 	{
-		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
+		threadVev.emplace_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
 	}
 
 	event_base_dispatch(m_listenerBase);
@@ -579,7 +579,7 @@ bool TCPSocket::SaveTCPSocketInfo(PlatformSocketInfo* pTCPSocketInfo, struct buf
 		return false;
 	}
 	m_socketInfoVec[index] = tcpInfo;
-	m_heartBeatSocketSet.insert((unsigned int)index);
+	m_heartBeatSocketSet.emplace((unsigned int)index);
 	m_uCurSocketSize++;
 
 	return true;
@@ -924,7 +924,7 @@ void TCPSocket::GetSocketSet(std::vector<unsigned int>& vec)
 	std::lock_guard<std::mutex> guard(m_mutex);
 	for (auto iter = m_heartBeatSocketSet.begin(); iter != m_heartBeatSocketSet.end(); iter++)
 	{
-		vec.push_back(*iter);
+		vec.emplace_back(*iter);
 	}
 }
 const std::vector<TCPSocketInfo>& TCPSocket::GetSocketVector()

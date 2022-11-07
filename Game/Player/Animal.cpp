@@ -64,7 +64,7 @@ void Animal::SetAttrValue(AttrsCmd attrType, int attr)
 	MapAttrsCmdInt::iterator it = m_AttrsMap.find(attrType);
 	if (it == m_AttrsMap.end())
 	{
-		m_AttrsMap.insert(std::make_pair(attrType, attr));
+		m_AttrsMap.emplace(std::make_pair(attrType, attr));
 	}
 	else
 	{
@@ -126,7 +126,7 @@ void Animal::SetSkillAcitve(int pos, bool active)
 	if (it == m_SkillDataMap.end())
 	{
 		SkillData data;
-		m_SkillDataMap.insert({ pos, data });
+		m_SkillDataMap.emplace(std::make_pair(pos, data));
 	}
 	else
 	{

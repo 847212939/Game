@@ -102,7 +102,7 @@ ListString Util::StringSplit(std::string& str, std::string separator, size_t cou
 		// 最后一次拆分
 		if (count > 0 && ++cnt >= count)
 		{
-			listString.push_back(str.substr(i, size - i));
+			listString.emplace_back(str.substr(i, size - i));
 			break;
 		}
 		pos = str.find(separator, i);
@@ -111,11 +111,11 @@ ListString Util::StringSplit(std::string& str, std::string separator, size_t cou
 			// 防止最后没有结尾分隔符保留
 			if (i < size)
 			{
-				listString.push_back(str.substr(i, size - i));
+				listString.emplace_back(str.substr(i, size - i));
 			}
 			break;
 		}
-		listString.push_back(str.substr(i, pos - i));
+		listString.emplace_back(str.substr(i, pos - i));
 		i = pos + separator.size() - 1;
 	}
 

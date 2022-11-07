@@ -125,7 +125,7 @@ bool ActivityHallSys::InitMonster(CBrushMonsterCfg& cfg)
 			return false;
 		}
 
-		animalVec.push_back(animal);
+		animalVec.emplace_back(animal);
 	}
 
 	RefMonsterKey key(cfg.mid, cfg.x, cfg.y);
@@ -184,15 +184,15 @@ void ActivityHallSys::AddRefMonster(int sid, RefMonsterKey& key, std::vector<Ani
 	if (it == m_MonsterMap.end())
 	{
 		MapMonsterKV tmpMonsterKVMap;
-		tmpMonsterKVMap.insert({ key, value });
-		m_MonsterMap.insert({ sid, tmpMonsterKVMap });
+		tmpMonsterKVMap.emplace(std::make_pair(key, value));
+		m_MonsterMap.emplace(std::make_pair(sid, tmpMonsterKVMap));
 	}
 	else
 	{
 		MapMonsterKV::iterator pos = it->second.find(key);
 		if (pos == it->second.end())
 		{
-			it->second.insert({ key, value });
+			it->second.emplace(std::make_pair(key, value));
 		}
 		else
 		{
@@ -251,7 +251,7 @@ void ActivityHallSys::AddActiveCallback(ActType type, std::function<bool(CActivi
 	MapActivityFunc::iterator it = m_ActivityFunMap.find(type);
 	if (it == m_ActivityFunMap.end())
 	{
-		m_ActivityFunMap.insert(std::make_pair(type, fun));
+		m_ActivityFunMap.emplace(std::make_pair(type, fun));
 		return;
 	}
 
@@ -276,7 +276,7 @@ void ActivityHallSys::AddActiveEnterCallback(ActType type, std::function<bool(CA
 	MapActivityFunc::iterator it = m_ActivityEnterFunMap.find(type);
 	if (it == m_ActivityEnterFunMap.end())
 	{
-		m_ActivityEnterFunMap.insert(std::make_pair(type, fun));
+		m_ActivityEnterFunMap.emplace(std::make_pair(type, fun));
 		return;
 	}
 
@@ -300,7 +300,7 @@ void ActivityHallSys::AddActiveExitCallback(ActType type, std::function<bool(CAc
 	MapActivityFunc::iterator it = m_ActivityExitFunMap.find(type);
 	if (it == m_ActivityExitFunMap.end())
 	{
-		m_ActivityExitFunMap.insert(std::make_pair(type, fun));
+		m_ActivityExitFunMap.emplace(std::make_pair(type, fun));
 		return;
 	}
 
@@ -392,7 +392,7 @@ void ActivityHallSys::TimerCallback()
 		MapActiveOpen::iterator it = m_ActtiveOpenMap.find(cfg.id);
 		if (it == m_ActtiveOpenMap.end())
 		{
-			m_ActtiveOpenMap.insert({ cfg.id, ActtiveOpen(cfg.id, true) });
+			m_ActtiveOpenMap.emplace(std::make_pair(cfg.id, ActtiveOpen(cfg.id, true)));
 		}
 		else
 		{

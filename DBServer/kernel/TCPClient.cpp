@@ -39,7 +39,7 @@ bool TCPClient::Init(ServiceType serverType)
 
 	m_PlayerPrepClient->Init();
 
-	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	GetSockeThreadVec().emplace_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
 	Log(CINF, "Server initialization succeeded");
 	return true;

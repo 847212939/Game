@@ -26,7 +26,7 @@ bool CServerTimer::Start(int timeonce/* = 100*/)
 	m_bRun = true;
 	m_timeOnce = timeonce;
 
-	G_NetClient->GetSockeThreadVec().push_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
+	G_NetClient->GetSockeThreadVec().emplace_back(new std::thread(&CServerTimer::ThreadCheckTimer, this));
 
 	return true;
 }

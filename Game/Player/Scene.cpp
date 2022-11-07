@@ -40,12 +40,12 @@ void Scene::AddSceneAnimalMap(int sceneid, Animal* animal)
 	if (it == m_SceneAnimalMap.end())
 	{
 		std::map<uint64_t, Animal*> tmpMap;
-		tmpMap.insert({ animal->GetID(), animal });
-		m_SceneAnimalMap.insert({ sceneid, tmpMap });
+		tmpMap.emplace(std::make_pair(animal->GetID(), animal));
+		m_SceneAnimalMap.emplace(std::make_pair(sceneid, tmpMap));
 	}
 	else
 	{
-		it->second.insert({ animal->GetID(), animal });
+		it->second.emplace(std::make_pair(animal->GetID(), animal));
 	}
 }
 void Scene::DelSceneAnimalMap(int sceneid, Animal* animal)

@@ -46,7 +46,7 @@ unsigned int CDataLine::AddData(void* pData, unsigned int uDataSize, SysMsgCmd u
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_dataList.push_back(pListItem);
+		m_dataList.emplace_back(pListItem);
 	}
 
 	m_cond.notify_one();

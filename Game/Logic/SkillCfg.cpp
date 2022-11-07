@@ -10,12 +10,12 @@ SkillCfg::~SkillCfg()
 
 void SkillCfg::ReadHeroList(CHeroList* config)
 {
-	m_HeroListSet.insert(*config);
+	m_HeroListSet.emplace(*config);
 }
 
 void SkillCfg::ReadSkillIdList(CSkillIdList* config)
 {
-	m_SkillIdListSet.insert(*config);
+	m_SkillIdListSet.emplace(*config);
 }
 
 const CHeroList* SkillCfg::GetCHeroListCfg(int heroid)

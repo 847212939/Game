@@ -39,7 +39,7 @@ void PlayerPrep::Init()
 		return;
 	}
 
-	G_NetClient->GetSockeThreadVec().push_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
+	G_NetClient->GetSockeThreadVec().emplace_back(new std::thread(&PlayerPrep::HandlerExecuteSqlThread, this));
 }
 bool PlayerPrep::InitDB()
 {
@@ -133,7 +133,7 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
+		m_NetCBFunMap.emplace(std::make_pair(cmd, fun));
 		return;
 	}
 
@@ -159,12 +159,12 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+	mpColumns.emplace(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
+	mpColumns.emplace(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns));
+		m_sqlList.emplace_back(m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns));
 	}
 	m_cond.notify_one();
 }
@@ -175,12 +175,12 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+	mpColumns.emplace(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
+	mpColumns.emplace(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition));
+		m_sqlList.emplace_back(m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition));
 	}
 	m_cond.notify_one();
 }
@@ -192,12 +192,12 @@ void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std:
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+	mpColumns.emplace(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
+	mpColumns.emplace(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+		m_sqlList.emplace_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	}
 	m_cond.notify_one();
 }
@@ -212,13 +212,13 @@ void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint
 
 	MapRecordData mpColumns;
 
-	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
-	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_INT, msgUserid.str())));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+	mpColumns.emplace(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
+	mpColumns.emplace(std::make_pair(useridName, std::make_pair(FT::DB_INT, msgUserid.str())));
+	mpColumns.emplace(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+		m_sqlList.emplace_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	}
 	m_cond.notify_one();
 }
@@ -230,13 +230,13 @@ void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::
 	std::ostringstream msg;
 	msg << serverid;
 
-	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msg.str())));
-	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_STR, userid)));
-	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
+	mpColumns.emplace(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msg.str())));
+	mpColumns.emplace(std::make_pair(useridName, std::make_pair(FT::DB_STR, userid)));
+	mpColumns.emplace(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+		m_sqlList.emplace_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
 	}
 	m_cond.notify_one();
 }
@@ -247,7 +247,7 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 	
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(sSql.str());
+		m_sqlList.emplace_back(sSql.str());
 	}
 	m_cond.notify_one();
 }
@@ -385,7 +385,7 @@ void PlayerPrep::CreateTableSql(const char* sql)
 {
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_sqlList.push_back(sql);
+		m_sqlList.emplace_back(sql);
 	}
 	m_cond.notify_one();
 }

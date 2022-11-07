@@ -43,7 +43,7 @@ bool TCPClient::Init(ServiceType serverType)
 	}
 
 	m_PlayerPrepClient->Init();
-	GetSockeThreadVec().push_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
+	GetSockeThreadVec().emplace_back(new std::thread(&TCPClient::HandlerRecvDataListThread, this));
 
 	// 连接服务器
 	if (!ConnectServer())
@@ -148,7 +148,7 @@ void TCPClient::AddNetTypeCallback(SysMsgCmd cmd, std::function<void(void* pData
 	MapTypeFunc::iterator it = m_TypeFunMap.find(cmd);
 	if (it == m_TypeFunMap.end())
 	{
-		m_TypeFunMap.insert(std::make_pair(cmd, fun));
+		m_TypeFunMap.emplace(std::make_pair(cmd, fun));
 		return;
 	}
 

@@ -110,7 +110,7 @@ bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	else
 	{
 		std::set<int> tmpServerIdVec;
-		m_ServerIdMap.insert({ pLoginData->userId , tmpServerIdVec });
+		m_ServerIdMap.emplace(std::make_pair(pLoginData->userId, tmpServerIdVec));
 		serverIdVec = &(m_ServerIdMap.find(pLoginData->userId)->second);
 	}
 	if (!serverIdVec)
@@ -125,7 +125,7 @@ bool LoginSys::LoadServerListMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	{
 		int id = 0;
 		msg >> id;
-		serverIdVec->insert(id);
+		serverIdVec->emplace(id);
 	}
 
 	return true;
@@ -309,7 +309,7 @@ void LoginSys::DelLoginInMap(unsigned int index)
 }
 void LoginSys::AddLoginInMap(LoginData& key)
 {
-	m_LoginInMap.insert({ key.index , key });
+	m_LoginInMap.emplace(std::make_pair(key.index , key));
 }
 LoginData* LoginSys::GetLoginInMap(unsigned int index)
 {
@@ -381,11 +381,11 @@ void LoginSys::AddServerIdMap(uint64_t userid, int serverId)
 	if (useridIt == m_ServerIdMap.end())
 	{
 		std::set<int> serveridVec;
-		serveridVec.insert(serverId);
-		m_ServerIdMap.insert({ userid , serveridVec });
+		serveridVec.emplace(serverId);
+		m_ServerIdMap.emplace(std::make_pair(userid , serveridVec));
 	}
 	else
 	{
-		useridIt->second.insert(serverId);
+		useridIt->second.emplace(serverId);
 	}
 }

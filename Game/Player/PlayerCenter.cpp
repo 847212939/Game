@@ -22,7 +22,7 @@ void PlayerCenter::Init()
 		playerClient = nullptr;
 	}
 	
-	G_NetClient->GetSockeThreadVec().push_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
+	G_NetClient->GetSockeThreadVec().emplace_back(new std::thread(&PlayerCenter::HandlerPlayerThread, this));
 }
 
 // ´´½¨½ÇÉ«
@@ -30,7 +30,7 @@ void PlayerCenter::CreatePlayer(LoginData& loginData)
 {
 	{
 		std::lock_guard<std::mutex> guard(m_mutex);
-		m_LoadPlayerList.push_back(loginData);
+		m_LoadPlayerList.emplace_back(loginData);
 	}
 
 	m_cond.notify_one();
@@ -226,7 +226,7 @@ void PlayerCenter::AddMapPlayerClient(uint64_t& userid, PlayerClient* player)
 	{
 		return;
 	}
-	m_MapPlayerClient.insert({ userid , player });
+	m_MapPlayerClient.emplace(std::make_pair(userid , player));
 }
 void PlayerCenter::DelMapPlayerClient(uint64_t& userid)
 {

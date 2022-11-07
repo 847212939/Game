@@ -254,7 +254,7 @@ void PlayerPrep::AddNetCallback(MsgCmd cmd, std::function<void(PlayerInfo*)>&& f
 	MapNetFun::iterator it = m_NetCBFunMap.find(cmd);
 	if (it == m_NetCBFunMap.end())
 	{
-		m_NetCBFunMap.insert(std::make_pair(cmd, fun));
+		m_NetCBFunMap.emplace(std::make_pair(cmd, fun));
 		return;
 	}
 
@@ -299,7 +299,7 @@ void PlayerPrep::AddTimerCallback(TimerCmd cmd, std::function<void()>&& fun)
 	MapTimerFunc::iterator it = m_TimerFunMap.find(cmd);
 	if (it == m_TimerFunMap.end())
 	{
-		m_TimerFunMap.insert(std::make_pair(cmd, fun));
+		m_TimerFunMap.emplace(std::make_pair(cmd, fun));
 		return;
 	}
 
