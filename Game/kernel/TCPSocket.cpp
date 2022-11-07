@@ -570,19 +570,17 @@ bool TCPSocket::SaveTCPSocketInfo(PlatformSocketInfo* pTCPSocketInfo, struct buf
 	}
 	tcpInfo.bHandleAccptMsg = false;
 
-	m_mutex.lock();	//加锁
+	std::lock_guard<std::mutex> guard(m_mutex);
 	if (m_socketInfoVec[index].isConnect)
 	{
 		Log(CERR, "分配索引失败,fd=%d,ip=%s", pTCPSocketInfo->acceptFd, pTCPSocketInfo->ip);
 		closesocket(pTCPSocketInfo->acceptFd);
 		bufferevent_free(bev);
-		m_mutex.unlock(); //解锁
 		return false;
 	}
 	m_socketInfoVec[index] = tcpInfo;
 	m_heartBeatSocketSet.insert((unsigned int)index);
 	m_uCurSocketSize++;
-	m_mutex.unlock(); //解锁
 
 	return true;
 }
@@ -927,12 +925,11 @@ void TCPSocket::GetSocketSet(std::vector<unsigned int>& vec)
 {
 	vec.clear();
 
-	m_mutex.lock();
+	std::lock_guard<std::mutex> guard(m_mutex);
 	for (auto iter = m_heartBeatSocketSet.begin(); iter != m_heartBeatSocketSet.end(); iter++)
 	{
 		vec.push_back(*iter);
 	}
-	m_mutex.unlock();
 }
 const std::vector<TCPSocketInfo>& TCPSocket::GetSocketVector()
 {
@@ -986,7 +983,7 @@ bool TCPSocket::IsConnected(int index)
 // 分配索引算法
 int TCPSocket::GetSocketIndex()
 {
-	m_mutex.lock();
+	std::lock_guard<std::mutex> guard(m_mutex);
 	m_uCurSocketIndex = m_uCurSocketIndex % m_socketInfoVec.size();
 	int index = -1;
 	for (unsigned int iCount = 0; iCount < m_uMaxSocketSize * 2; iCount++)
@@ -1000,11 +997,9 @@ int TCPSocket::GetSocketIndex()
 	}
 	if (index >= m_socketInfoVec.size())
 	{
-		m_mutex.unlock();
 		return -1;
 	}
 
-	m_mutex.unlock();
 	return index;
 }
 
