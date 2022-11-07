@@ -63,10 +63,10 @@ private:
 	bool DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 	// 派发数据包
-	bool DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
+	bool DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 	// 派发数据包
-	bool DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
+	bool DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead, void* pData,
 		int size, SocketType socketType = SocketType::SOCKET_TYPE_TCP);
 
 public:
@@ -196,7 +196,6 @@ public:
 	TCPSocketInfo* GetTCPSocketInfo(int index);
 
 private:
-	// 设置tcp属性
 	// 设置tcp收发缓冲区
 	static void SetTcpRcvSndBUF(SOCKFD fd, int rcvBufSize, int sndBufSize);
 	// 设置应用层单次读取数据包的大小 bufferevent_set_max_single_read

@@ -1901,6 +1901,220 @@ bool TCPSocket::RecvLogicWssData(bufferevent* bev, int index)
 	return RecvLogicWsData(bev, index);
 }
 
+// 网络消息派发
+bool TCPSocket::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead,
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+{
+	if (!pBufferevent || !pHead)
+	{
+		return false;
+	}
+
+	return m_ServiceType == ServiceType::SERVICE_TYPE_CROSS ?
+	DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType):
+	DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
+}
+// 本服消息处理
+bool TCPSocket::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead,
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+{
+	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
+	if (!pTcpInfo || !pHead || !pBufferevent)
+	{
+		return false;
+	}
+	if ((MsgCmd)(pHead->uMainID) <= MsgCmd::MsgCmd_Begin ||
+		(MsgCmd)(pHead->uMainID) >= MsgCmd::MsgCmd_End)
+	{
+		return false;
+	}
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
+	{
+		return true;
+	}
+	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
+	{
+		if (!VerifyConnection(index, (char*)pData, size))
+		{
+			RemoveTCPSocketStatus(index);
+		}
+		return true;
+	}
+	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS && pTcpInfo->isCross)
+	{
+		return MsgForward(index, pHead, (char*)pData, size);
+	}
+
+	CDataLine* pDataLine = GetRecvDataLine();
+	if (!pDataLine)
+	{
+		return false;
+	}
+
+	SocketReadLine msg;
+
+	msg.uHandleSize = size;
+	msg.uIndex = index;
+	msg.pBufferevent = pBufferevent;
+	msg.uAccessIP = 0;
+	msg.netMessageHead = *pHead;
+	msg.socketType = socketType;
+
+	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
+	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
+	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
+
+	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+
+	if (addBytes == 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+// 跨服消息处理
+bool TCPSocket::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead,
+	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
+{
+	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
+	if (!pTcpInfo || !pHead || !pBufferevent)
+	{
+		return false;
+	}
+	if ((MsgCmd)(pHead->uMainID) <= MsgCmd::MsgCmd_Begin ||
+		(MsgCmd)(pHead->uMainID) >= MsgCmd::MsgCmd_End)
+	{
+		return false;
+	}
+	CDataLine* pDataLine = GetRecvDataLine();
+	if (!pDataLine)
+	{
+		return false;
+	}
+
+	SocketReadLine msg;
+
+	msg.uHandleSize = size;
+	msg.uIndex = index;
+	msg.pBufferevent = pBufferevent;
+	msg.uAccessIP = 0;
+	msg.netMessageHead = *pHead;
+	msg.socketType = socketType;
+
+	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
+	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
+	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
+
+	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+
+	if (addBytes == 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// 跨服消息转发
+bool TCPSocket::MsgForward(int index, NetMessageHead* pHead, char* pData, int len)
+{
+	int crossIndex = GetCrossServerIndex();
+	if (crossIndex <= 0)
+	{
+		return false;
+	}
+
+	return index == crossIndex ?
+		MsgForwardToClient(index, pHead, pData, len) :
+		MsgForwardToCross(index, pHead, pData, len);
+}
+// 客户端消息转发到跨服服务器
+bool TCPSocket::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* pData, int len)
+{
+	int crossIndex = GetCrossServerIndex();
+	if (crossIndex <= 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
+	if (!pCrossTcpInfo)
+	{
+		return false;
+	}
+	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(clientIndex);
+	if (!player)
+	{
+		return false;
+	}
+
+	SendMsg(crossIndex, pData, len, (MsgCmd)pHead->uMainID,
+		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification, player->GetID());
+	return true;
+}
+// 跨服消息转发到客户端
+bool TCPSocket::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData, int len)
+{
+	Netmsg msg(pData, len, 2);
+	if (msg.size() < 2)
+	{
+		return false;
+	}
+
+	int clientIndex = 0;
+	std::string data;
+	msg >> clientIndex
+		>> data;
+
+	if (clientIndex < 0)
+	{
+		return false;
+	}
+	TCPSocketInfo* pClientTcpInfo = GetTCPSocketInfo(clientIndex);
+	if (!pClientTcpInfo)
+	{
+		return false;
+	}
+	// 跨服到本服服务器只拦截MsgCmd::MsgCmd_LoginCross消息
+	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross ||
+		(MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_CrossLogin)
+	{
+		CDataLine* pDataLine = GetRecvDataLine();
+		if (!pDataLine)
+		{
+			return false;
+		}
+
+		SocketReadLine msg;
+		msg.uHandleSize = len;
+		msg.uIndex = clientIndex;
+		msg.pBufferevent = pClientTcpInfo->bev;
+		msg.uAccessIP = 0;
+		msg.netMessageHead = *pHead;
+		msg.socketType = SocketType::SOCKET_TYPE_TCP;
+
+		std::unique_ptr<char[]> uniqueBuf(new char[len + sizeof(SocketReadLine)]);
+		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
+		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, len);
+
+		// 转发到本服服务器
+		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), len + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
+		if (addBytes == 0)
+		{
+			return false;
+		}
+	}
+	// 发给客户端
+	else
+	{
+		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
+			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
+	}
+
+	return true;
+}
+
+
 // 进行openssl握手
 bool TCPSocket::OpensslInit()
 {
@@ -2102,202 +2316,4 @@ void TCPSocket::FetchPrint(const WebSocketMsg& wbmsg)
 {
 	Log(CINF, "WEBSOCKET PROTOCOL FIN: %d OPCODE: %d MASK: %d DATALEN:%u PAYLOADLEN: %u\n",
 		wbmsg.fin, wbmsg.opcode, wbmsg.mask, wbmsg.dataLength, wbmsg.payloadLength);
-}
-
-// 网络消息派发
-bool TCPSocket::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pHead,
-	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
-{
-	if (!pBufferevent || !pHead)
-	{
-		return false;
-	}
-
-	return m_ServiceType == ServiceType::SERVICE_TYPE_CROSS ?
-	DispatchCrossPacket(pBufferevent, index, pHead, pData, size, socketType):
-	DispatchLogicPacket(pBufferevent, index, pHead, pData, size, socketType);
-}
-// 跨服消息处理
-bool TCPSocket::DispatchCrossPacket(void* pBufferevent, int index, NetMessageHead* pHead,
-	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
-{
-	CDataLine* pDataLine = GetRecvDataLine();
-	if (!pDataLine)
-	{
-		return false;
-	}
-
-	SocketReadLine msg;
-
-	msg.uHandleSize = size;
-	msg.uIndex = index;
-	msg.pBufferevent = pBufferevent;
-	msg.uAccessIP = 0;
-	msg.netMessageHead = *pHead;
-	msg.socketType = socketType;
-
-	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
-	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
-	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
-
-	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
-
-	if (addBytes == 0)
-	{
-		return false;
-	}
-
-	return true;
-}
-// 本服消息处理
-bool TCPSocket::DispatchLogicPacket(void* pBufferevent, int index, NetMessageHead* pHead,
-	void* pData, int size, SocketType socketType/* = SocketType::SOCKET_TYPE_TCP*/)
-{
-	TCPSocketInfo* pTcpInfo = GetTCPSocketInfo(index);
-	if (!pTcpInfo)
-	{
-		return false;
-	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_HeartBeat) //心跳包
-	{
-		return true;
-	}
-	if (pHead->uMainID == (unsigned int)MsgCmd::MsgCmd_Testlink) //测试连接包
-	{
-		if (!VerifyConnection(index, (char*)pData, size))
-		{
-			RemoveTCPSocketStatus(index);
-		}
-		return true;
-	}
-	if (m_ServiceType != ServiceType::SERVICE_TYPE_CROSS && pTcpInfo->isCross)
-	{
-		return MsgForward(index, pHead, (char*)pData, size);
-	}
-
-	CDataLine* pDataLine = GetRecvDataLine();
-	if (!pDataLine)
-	{
-		return false;
-	}
-
-	SocketReadLine msg;
-
-	msg.uHandleSize = size;
-	msg.uIndex = index;
-	msg.pBufferevent = pBufferevent;
-	msg.uAccessIP = 0;
-	msg.netMessageHead = *pHead;
-	msg.socketType = socketType;
-
-	std::unique_ptr<char[]> uniqueBuf(new char[size + sizeof(SocketReadLine)]);
-	memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
-	memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, size);
-
-	unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), size + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
-
-	if (addBytes == 0)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-// 跨服消息转发
-bool TCPSocket::MsgForward(int index, NetMessageHead* pHead, char* pData, int len)
-{
-	int crossIndex = GetCrossServerIndex();
-	if (crossIndex <= 0)
-	{
-		return false;
-	}
-
-	return index == crossIndex ?
-		MsgForwardToClient(index, pHead, pData, len) :
-		MsgForwardToCross(index, pHead, pData, len);
-}
-// 客户端消息转发到跨服服务器
-bool TCPSocket::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* pData, int len)
-{
-	int crossIndex = GetCrossServerIndex();
-	if (crossIndex <= 0)
-	{
-		return false;
-	}
-	TCPSocketInfo* pCrossTcpInfo = GetTCPSocketInfo(crossIndex);
-	if (!pCrossTcpInfo)
-	{
-		return false;
-	}
-	PlayerClient* player = G_PlayerCenterClient->GetPlayerByIndex(clientIndex);
-	if (!player)
-	{
-		return false;
-	}
-
-	SendMsg(crossIndex, pData, len, (MsgCmd)pHead->uMainID,
-		pHead->uAssistantID, pHead->uHandleCode, pCrossTcpInfo->bev, pHead->uIdentification, player->GetID());
-	return true;
-}
-// 跨服消息转发到客户端
-bool TCPSocket::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData, int len)
-{
-	Netmsg msg(pData, len, 2);
-	if (msg.size() < 2)
-	{
-		return false;
-	}
-
-	int clientIndex = 0;
-	std::string data;
-	msg >> clientIndex
-		>> data;
-
-	if (clientIndex < 0)
-	{
-		return false;
-	}
-	TCPSocketInfo* pClientTcpInfo = GetTCPSocketInfo(clientIndex);
-	if (!pClientTcpInfo)
-	{
-		return false;
-	}
-	// 跨服到本服服务器只拦截MsgCmd::MsgCmd_LoginCross消息
-	if ((MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_LoginCross ||
-		(MsgCmd)pHead->uMainID == MsgCmd::MsgCmd_CrossLogin)
-	{
-		CDataLine* pDataLine = GetRecvDataLine();
-		if (!pDataLine)
-		{
-			return false;
-		}
-
-		SocketReadLine msg;
-		msg.uHandleSize = len;
-		msg.uIndex = clientIndex;
-		msg.pBufferevent = pClientTcpInfo->bev;
-		msg.uAccessIP = 0;
-		msg.netMessageHead = *pHead;
-		msg.socketType = SocketType::SOCKET_TYPE_TCP;
-
-		std::unique_ptr<char[]> uniqueBuf(new char[len + sizeof(SocketReadLine)]);
-		memcpy(uniqueBuf.get(), &msg, sizeof(SocketReadLine));
-		memcpy(uniqueBuf.get() + sizeof(SocketReadLine), pData, len);
-
-		// 转发到本服服务器
-		unsigned int addBytes = pDataLine->AddData(uniqueBuf.get(), len + sizeof(SocketReadLine), SysMsgCmd::HD_SOCKET_READ);
-		if (addBytes == 0)
-		{
-			return false;
-		}
-	}
-	// 发给客户端
-	else
-	{
-		SendMsg(clientIndex, data.c_str(), data.size(), (MsgCmd)pHead->uMainID,
-			pHead->uAssistantID, pHead->uHandleCode, pClientTcpInfo->bev, pHead->uIdentification);
-	}
-
-	return true;
 }
