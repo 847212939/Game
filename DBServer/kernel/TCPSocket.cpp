@@ -521,16 +521,13 @@ bool TCPSocket::DispatchPacket(void* pBufferevent, int index, NetMessageHead* pH
 
 void TCPSocketInfo::Reset(ServiceType& serviceType)
 {
-	// 和发送线程相关的锁
-	lock->lock();
-
-	isConnect = false;
-	bufferevent_free(bev);
-	bev = nullptr;
-	bHandleAccptMsg = false;
-
-	// 解锁发送线程
-	lock->unlock();
+	{
+		std::lock_guard<std::mutex> guard(*lock);
+		isConnect = false;
+		bufferevent_free(bev);
+		bev = nullptr;
+		bHandleAccptMsg = false;
+	}
 }
 bool TCPSocket::CloseSocket(int index)
 {

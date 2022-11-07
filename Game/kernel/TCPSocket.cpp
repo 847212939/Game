@@ -788,23 +788,21 @@ bool TCPSocket::VerifyConnection(int index, char* data, int len)
 void TCPSocketInfo::Reset(ServiceType& serviceType)
 {
 	// 和发送线程相关的锁
-	lock->lock();
-
-	isConnect = false;
-	bufferevent_free(bev);
-	bev = nullptr;
-	bHandleAccptMsg = false;
-	link = 0;
-	if (serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
 	{
-		SSL_shutdown(ssl);
-		SSL_free(ssl);
-		ssl = nullptr;
+		std::lock_guard<std::mutex> guard(*lock);
+		isConnect = false;
+		bufferevent_free(bev);
+		bev = nullptr;
+		bHandleAccptMsg = false;
+		link = 0;
+		if (serviceType == ServiceType::SERVICE_TYPE_LOGIC_WSS)
+		{
+			SSL_shutdown(ssl);
+			SSL_free(ssl);
+			ssl = nullptr;
+		}
+		isCross = false;
 	}
-	isCross = false;
-
-	// 解锁发送线程
-	lock->unlock();
 }
 //网络关闭处理
 bool TCPSocket::OnSocketCloseEvent(unsigned long uAccessIP, unsigned int uIndex,
