@@ -16,11 +16,12 @@ protected:
 
 public:
 	// 给一个玩家发送消息
-	bool SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
-	bool SendLogicMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
-	bool SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
+	bool SendMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, unsigned int uIdentification = 0, int handleCode = 0);
 	// 消息派发
 	void MessageDispatch(MsgCmd cmd, PlayerInfo* playerInfo);
+private:
+	bool SendLogicMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
+	bool SendCrossMsg(const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode, unsigned int uIdentification = 0);
 
 public:
 	// 上下线处理
