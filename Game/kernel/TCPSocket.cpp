@@ -856,33 +856,31 @@ void TCPSocket::RemoveTCPSocketStatus(int index, bool isClientAutoClose/* = fals
 
 	bool isCross = tcpInfo->isCross;
 
-	// 加锁
-	m_mutex.lock();
-	// 重复调用
-	if (!tcpInfo->isConnect)
 	{
-		m_mutex.unlock();
-		return;
+		std::lock_guard<std::mutex> guard(m_mutex);
+		// 重复调用
+		if (!tcpInfo->isConnect)
+		{
+			return;
+		}
+		// 如果锁没有分配内存，就分配
+		if (!tcpInfo->lock)
+		{
+			tcpInfo->lock = new std::mutex;
+		}
+		uAccessIP = inet_addr(tcpInfo->ip);
+		m_uCurSocketSize--;
+		m_heartBeatSocketSet.erase((unsigned int)index);
+		// 释放参数内存
+		RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
+		bufferevent_getcb(tcpInfo->bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
+		if (pRecvThreadParam)
+		{
+			SafeDelete(pRecvThreadParam);
+		}
+		// 和发送线程相关的锁
+		tcpInfo->Reset(m_ServiceType);
 	}
-	// 如果锁没有分配内存，就分配
-	if (!tcpInfo->lock)
-	{
-		tcpInfo->lock = new std::mutex;
-	}
-	uAccessIP = inet_addr(tcpInfo->ip);
-	m_uCurSocketSize--;
-	m_heartBeatSocketSet.erase((unsigned int)index);
-	// 释放参数内存
-	RecvThreadParam* pRecvThreadParam = (RecvThreadParam*)0x01;
-	bufferevent_getcb(tcpInfo->bev, nullptr, nullptr, nullptr, (void**)&pRecvThreadParam);
-	if (pRecvThreadParam)
-	{
-		SafeDelete(pRecvThreadParam);
-	}
-	// 和发送线程相关的锁
-	tcpInfo->Reset(m_ServiceType);
-	// 解锁多线程
-	m_mutex.unlock();
 
 	// 如果没有设置BEV_OPT_CLOSE_ON_FREE 选项，则关闭socket
 	closesocket(tcpInfo->acceptFd);

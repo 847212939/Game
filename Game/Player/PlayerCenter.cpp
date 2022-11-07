@@ -28,9 +28,10 @@ void PlayerCenter::Init()
 // ´´½¨½ÇÉ«
 void PlayerCenter::CreatePlayer(LoginData& loginData)
 {
-	m_mutex.lock();
-	m_LoadPlayerList.push_back(loginData);
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_LoadPlayerList.push_back(loginData);
+	}
 
 	m_cond.notify_one();
 }

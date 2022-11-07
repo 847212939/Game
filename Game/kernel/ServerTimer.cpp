@@ -91,28 +91,27 @@ void CServerTimer::TimeoutCB(evutil_socket_t fd, short event, void* arg)
 
 	MapServerTimerInfo& timerMap = pCServerTimer->m_timerMap;
 	// lock
-	pCServerTimer->m_mutex.lock();
-
-	for (MapServerTimerInfo::iterator iter = timerMap.begin(); iter != timerMap.end();)
 	{
-		if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
+		std::lock_guard<std::mutex> guard(pCServerTimer->m_mutex);
+		for (MapServerTimerInfo::iterator iter = timerMap.begin(); iter != timerMap.end();)
 		{
-			ServerTimerLine WindowTimer;
-			WindowTimer.uMainID = (unsigned int)MsgCmd::MsgCmd_Timer;
-			WindowTimer.uTimerID = iter->first;
-			pCDataLine->AddData(&WindowTimer, sizeof(ServerTimerLine), SysMsgCmd::HD_TIMER_MESSAGE);
-
-			if (iter->second.timertype == SERVERTIMER_TYPE_SINGLE)
+			if ((currTime >= iter->second.starttime) && (currTime - iter->second.starttime) % iter->second.elapse == 0)
 			{
-				timerMap.erase(iter++);
-				continue;
+				ServerTimerLine WindowTimer;
+				WindowTimer.uMainID = (unsigned int)MsgCmd::MsgCmd_Timer;
+				WindowTimer.uTimerID = iter->first;
+				pCDataLine->AddData(&WindowTimer, sizeof(ServerTimerLine), SysMsgCmd::HD_TIMER_MESSAGE);
+
+				if (iter->second.timertype == SERVERTIMER_TYPE_SINGLE)
+				{
+					timerMap.erase(iter++);
+					continue;
+				}
 			}
+
+			iter++;
 		}
-
-		iter++;
 	}
-
-	pCServerTimer->m_mutex.unlock();
 }
 
 bool CServerTimer::Stop()

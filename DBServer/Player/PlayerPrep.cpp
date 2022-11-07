@@ -162,9 +162,10 @@ void PlayerPrep::SaveInsertSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	m_mutex.lock();
-	m_sqlList.push_back(m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns));
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(m_CMysqlHelperSave.buildInsertSQL(sqlName, mpColumns));
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string& data, const std::string& sCondition, std::string keyName/* = "userid"*/, std::string dataName/* = "data"*/)
@@ -177,9 +178,10 @@ void PlayerPrep::SaveUpdateSQL(std::string sqlName, uint64_t userId, std::string
 	mpColumns.insert(std::make_pair(keyName, std::make_pair(FT::DB_INT, msg.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	m_mutex.lock();
-	m_sqlList.push_back(m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition));
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(m_CMysqlHelperSave.buildUpdateSQL(sqlName, mpColumns, sCondition));
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std::string& data,
@@ -193,9 +195,10 @@ void PlayerPrep::SaveReplaceGlobalMysql(std::string& sqlName, int serverid, std:
 	mpColumns.insert(std::make_pair(serveridName, std::make_pair(FT::DB_INT, msgServerid.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	m_mutex.lock();
-	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint64_t userid, std::string& data,
@@ -213,9 +216,10 @@ void PlayerPrep::SaveReplacePlayerMysql(std::string& sqlName, int serverid, uint
 	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_INT, msgUserid.str())));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	m_mutex.lock();
-	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::string& userid, std::string data,
@@ -230,9 +234,10 @@ void PlayerPrep::SaveReplaceLoginMysql(std::string& sqlName, int serverid, std::
 	mpColumns.insert(std::make_pair(useridName, std::make_pair(FT::DB_STR, userid)));
 	mpColumns.insert(std::make_pair(dataName, std::make_pair(FT::DB_STR, data)));
 
-	m_mutex.lock();
-	m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(m_CMysqlHelperSave.buildReplaceSQL(sqlName, mpColumns));
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sCondition)
@@ -240,9 +245,10 @@ void PlayerPrep::SaveDeleteSQL(std::string sqlName, const std::string& sConditio
 	std::ostringstream sSql;
 	sSql << "delete from " << sqlName << " " << sCondition;
 	
-	m_mutex.lock();
-	m_sqlList.push_back(sSql.str());
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(sSql.str());
+	}
 	m_cond.notify_one();
 }
 void PlayerPrep::LoadGlobalMysql(std::string sqlName, int serverid, std::string& outStr, std::string dataStr/* = "data"*/)
@@ -377,9 +383,10 @@ void PlayerPrep::CreateLoginTable(std::string name, int cnt)
 }
 void PlayerPrep::CreateTableSql(const char* sql)
 {
-	m_mutex.lock();
-	m_sqlList.push_back(sql);
-	m_mutex.unlock();
+	{
+		std::lock_guard<std::mutex> guard(m_mutex);
+		m_sqlList.push_back(sql);
+	}
 	m_cond.notify_one();
 }
 
