@@ -13,7 +13,7 @@ const int					SOCKET_SEND_BUF_SIZE = MAX_TEMP_SENDBUF_SIZE * 8;	// TCP发送缓冲区
 const int					SOCKET_RECV_BUF_SIZE = MAX_TEMP_SENDBUF_SIZE * 8;	// TCP接收缓冲区最小值
 
 // 心跳、socket相关
-const unsigned int			CHECK_HEAETBEAT_SECS = 3;							// 心跳定时器时间(s)
+const unsigned int			CHECK_HEAETBEAT_SECS = 15;							// 心跳定时器时间(s)
 const unsigned int			KEEP_ACTIVE_HEARTBEAT_COUNT = 3;					// 前端和服务器的心跳
 
 // 消息队列最大长度
