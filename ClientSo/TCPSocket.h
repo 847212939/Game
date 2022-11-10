@@ -18,8 +18,7 @@ public:
 	// 开始服务
 	bool Start();
 	// 初始化
-	bool Init(int maxCount, int port, const char* ip = nullptr, 
-		ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
+	bool Init(int maxCount, ServiceType serverType = ServiceType::SERVICE_TYPE_BEGIN);
 
 public:
 	// 发送数据函数
@@ -43,8 +42,6 @@ public:
 		unsigned int uConnectTime, bool isCross, uint64_t userid = 0);
 
 public:
-	// 获取event_base
-	event_base* GetEventBase();
 	// 获取服务器类型
 	ServiceType GetServerType();
 	// 获取接收dataline
@@ -128,14 +125,12 @@ public:
 
 private:
 	bool				 m_running;
-	char				 m_bindIP[48];
 	unsigned int		 m_uMaxSocketSize;
 	unsigned int		 m_uCurSocketSize;
 	unsigned int		 m_uCurSocketIndex;
 	CDataLine*			 m_pRecvDataLine;
 	CDataLine*			 m_pSendDataLine;
 	event_config*		 m_eventBaseCfg;
-	event_base*			 m_listenerBase;
 	ServiceType			 m_ServiceType;
 	std::mutex			 m_mutex;
 

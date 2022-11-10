@@ -1,12 +1,10 @@
 #include "pch.h"
 
 CTCPSocketManage::CTCPSocketManage() :
-	m_bindIP(""),
 	m_running(false),
 	m_uMaxSocketSize(0),
 	m_uCurSocketSize(0),
 	m_uCurSocketIndex(0),
-	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
 	m_eventBaseCfg(event_config_new()),
@@ -56,20 +54,9 @@ CTCPSocketManage::~CTCPSocketManage()
 #endif
 }
 
-bool CTCPSocketManage::Init(int maxCount, int port, const char* ip, 
-	ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
+bool CTCPSocketManage::Init(int maxCount, ServiceType serverType/* = ServiceType::SERVICE_TYPE_BEGIN*/)
 {
-	if (maxCount <= 0 || port <= 1000)
-	{
-		Log(CERR, "invalid params input maxCount=%d port=%d", maxCount, port);
-		return false;
-	}
 	m_uMaxSocketSize = maxCount;
-	if (ip && strlen(ip) < sizeof(m_bindIP))
-	{
-		strcpy(m_bindIP, ip);
-	}
-
 	m_ServiceType = serverType;
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();
@@ -94,7 +81,6 @@ bool CTCPSocketManage::Stop()
 	m_uCurSocketSize = 0;
 	m_uCurSocketIndex = 0;
 
-	event_base_loopbreak(m_listenerBase);
 	for (size_t i = 0; i < m_workBaseVec.size(); i++)
 	{
 		event_base_loopbreak(m_workBaseVec[i].base);
@@ -774,10 +760,6 @@ bool& CTCPSocketManage::GetRuninged()
 ServiceType CTCPSocketManage::GetServerType()
 {
 	return m_ServiceType;
-}
-event_base* CTCPSocketManage::GetEventBase()
-{
-	return m_listenerBase;
 }
 std::vector<std::thread*>& CTCPSocketManage::GetSockeThreadVec()
 {

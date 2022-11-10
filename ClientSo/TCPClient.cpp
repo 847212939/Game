@@ -59,7 +59,7 @@ bool TCPClient::InitCallBack(NetworkCallBackFunc netFunc,
 
 bool TCPClient::Init(ServiceType serverType)
 {
-	if (!CTCPSocketManage::Init(1024, 8887, "127.0.0.1", serverType))
+	if (!CTCPSocketManage::Init(1024, serverType))
 	{
 		return false;
 	}
