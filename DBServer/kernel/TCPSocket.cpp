@@ -9,7 +9,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_listenerBase(nullptr),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new())
+	m_eventBaseCfg(event_config_new()),
+	m_port(0)
 {
 #if defined(_WIN32)
 	WSADATA wsa;

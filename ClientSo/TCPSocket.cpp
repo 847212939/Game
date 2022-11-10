@@ -70,7 +70,6 @@ bool CTCPSocketManage::Init(int maxCount, int port, const char* ip,
 		strcpy(m_bindIP, ip);
 	}
 
-	m_port = port;
 	m_ServiceType = serverType;
 	m_workBaseVec.clear();
 	m_heartBeatSocketSet.clear();

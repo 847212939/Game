@@ -14,7 +14,8 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_DBServerIndex(-1),
 	m_CrossServerIndex(-1),
 	m_DBServerSock(-1),
-	m_CrossServerSock(-1)
+	m_CrossServerSock(-1),
+	m_port(0)
 {
 #if defined(_WIN32)
 	WSADATA wsa;

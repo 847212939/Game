@@ -129,7 +129,6 @@ public:
 private:
 	bool				 m_running;
 	char				 m_bindIP[48];
-	unsigned short		 m_port;
 	unsigned int		 m_uMaxSocketSize;
 	unsigned int		 m_uCurSocketSize;
 	unsigned int		 m_uCurSocketIndex;
