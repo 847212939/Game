@@ -7,9 +7,10 @@ CTCPSocketManage::CTCPSocketManage() :
 	m_uCurSocketIndex(0),
 	m_pRecvDataLine(new CDataLine),
 	m_pSendDataLine(new CDataLine),
-	m_eventBaseCfg(event_config_new()),
 	m_ServerIndex(-1),
-	m_IsConnect(false)
+	m_IsConnect(false),
+	m_ServerSock(-1),
+	m_ServiceType(ServiceType::SERVICE_TYPE_BEGIN)
 {
 #if defined(_WIN32)
 	WSADATA wsa;
@@ -19,17 +20,9 @@ CTCPSocketManage::CTCPSocketManage() :
 	{
 		Log(CERR, "Init socket dll err");
 	}
-	if (event_config_set_flag(m_eventBaseCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
-	{
-		Log(CERR, "Init iocp is err");
-	}
 	if (evthread_use_windows_threads() != 0)
 	{
 		Log(CERR, "Init iocp thread is err");
-	}
-	if (event_config_set_num_cpus_hint(m_eventBaseCfg, si.dwNumberOfProcessors) != 0)
-	{
-		Log(CERR, "Set the number of CPU is err");
 	}
 #elif defined(_WIN64)
 #elif defined(__linux__)
@@ -132,11 +125,10 @@ void CTCPSocketManage::ThreadAccept()
 	}
 
 	// 初始工作线程信息
-	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount],
-		[](RecvThreadParam* p)
-		{
-			SafeDeleteArray(p);
-		});
+	std::shared_ptr<RecvThreadParam[]> uniqueParam(new RecvThreadParam[workBaseCount],[](RecvThreadParam* p)
+	{
+		SafeDeleteArray(p);
+	});
 	int socketPairBufSize = sizeof(PlatformSocketInfo) * MAX_POST_CONNECTED_COUNT;
 	for (int i = 0; i < workBaseCount; i++)
 	{
@@ -158,7 +150,6 @@ void CTCPSocketManage::ThreadAccept()
 		SetTcpRcvSndBUF(workInfo.write_fd, socketPairBufSize, socketPairBufSize);
 
 		workInfo.base = event_base_new();
-		//workInfo.base = event_base_new_with_config(m_eventBaseCfg);
 		if (!workInfo.base)
 		{
 			Log(CERR, "TCP Could not initialize libevent!");

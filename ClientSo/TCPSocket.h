@@ -130,7 +130,6 @@ private:
 	unsigned int		 m_uCurSocketIndex;
 	CDataLine*			 m_pRecvDataLine;
 	CDataLine*			 m_pSendDataLine;
-	event_config*		 m_eventBaseCfg;
 	ServiceType			 m_ServiceType;
 	std::mutex			 m_mutex;
 
