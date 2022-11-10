@@ -139,36 +139,6 @@ bool CTCPSocketManage::Start()
 
 void CTCPSocketManage::ThreadAccept()
 {
-	struct sockaddr_in sin;
-	struct evconnlistener* listener;
-
-	//m_listenerBase = event_base_new();
-	m_listenerBase = event_base_new_with_config(m_eventBaseCfg);
-	event_config_free(m_eventBaseCfg);
-
-	if (!m_listenerBase)
-	{
-		Log(CERR, "TCP Could not initialize libevent!");
-		return;
-	}
-
-	memset(&sin, 0, sizeof(sin));
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(m_port);
-	sin.sin_addr.s_addr = strlen(m_bindIP) == 0 ? INADDR_ANY : inet_addr(m_bindIP);
-
-	listener = evconnlistener_new_bind(m_listenerBase, ListenerCB, (void*)this,
-		LEV_OPT_REUSEABLE | /*LEV_OPT_CLOSE_ON_FREE |*/ LEV_OPT_THREADSAFE,
-		-1, (struct sockaddr*)&sin, sizeof(sin));
-
-	if (!listener)
-	{
-		Log(INF, "Could not create a listener! 尝试换个端口或者稍等一会。");
-		return;
-	}
-
-	evconnlistener_set_error_cb(listener, AcceptErrorCB);
-
 	// 获取接收线程池数量
 	int workBaseCount = G_CfgMgr->GetCBaseCfgMgr().GetThreadCnt();
 	if (workBaseCount <= 1)
@@ -234,12 +204,6 @@ void CTCPSocketManage::ThreadAccept()
 		threadVev.push_back(std::thread(ThreadRSSocket, (void*)&uniqueParam[i]));
 	}
 
-	event_base_dispatch(m_listenerBase);
-
-	evconnlistener_free(listener);
-	event_base_free(m_listenerBase);
-	//event_config_free(m_eventBaseCfg);
-
 	for (int i = 0; i < workBaseCount; i++)
 	{
 		threadVev[i].join();
@@ -248,16 +212,6 @@ void CTCPSocketManage::ThreadAccept()
 
 		closesocket(workInfo.read_fd);
 		closesocket(workInfo.write_fd);
-
-		if (workInfo.base)
-		{
-			event_base_free(workInfo.base);
-		}
-		if (workInfo.event)
-		{
-			// 不知道为什么退出时发生崩溃
-			//event_free(workInfo.event);
-		}
 	}
 
 	Log(CINF, "accept thread end");
