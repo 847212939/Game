@@ -658,7 +658,7 @@ void TCPSocket::AddTCPSocketInfoAfter(int index, TCPSocketInfo& tcpInfo, SSL* ss
 	{
 		// TCP服务器 验证客户端
 		Netmsg msg; msg << tcpInfo.link;
-		SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
+		SendMsg(index, msg.os_str().c_str(), msg.os_size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo.bev);
 		return;
 	}
 	else if (m_ServiceType == ServiceType::SERVICE_TYPE_CROSS)
@@ -1270,7 +1270,7 @@ bool TCPSocket::SendCrossMsg(int index, const char* pData, size_t size, MsgCmd m
 		<< userid
 		<< std::string(pData, size);
 
-	return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
+	return SendLogicMsg(index, msg.os_str().c_str(), msg.os_size(), mainID, assistID, handleCode, pBufferevent, uIdentification);
 }
 bool TCPSocket::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID, int assistID, int handleCode,
 	void* pBufferevent, unsigned int uIdentification/* = 0*/, uint64_t userid/* = 0*/, bool WSPackData/* = true*/)
@@ -1323,7 +1323,7 @@ bool TCPSocket::SendMsg(int index, const char* pData, size_t size, MsgCmd mainID
 			msg << player->GetLogicIndex()
 				<< std::string(pData, size);
 
-			return SendLogicMsg(index, msg.str().c_str(), msg.str().size(), mainID, assistID, 
+			return SendLogicMsg(index, msg.os_str().c_str(), msg.os_size(), mainID, assistID,
 				handleCode, pBufferevent, uIdentification);
 		}
 	}
@@ -1585,7 +1585,7 @@ void TCPSocket::HandleSendWsData(ListItemData* pListItem)
 		{
 			// websocket服务器 握手成功 验证客户端
 			Netmsg msg; msg << tcpInfo->link;
-			SendMsg(index, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo->bev);
+			SendMsg(index, msg.os_str().c_str(), msg.os_size(), MsgCmd::MsgCmd_Testlink, 0, 0, tcpInfo->bev);
 		}
 		return;
 	}
@@ -2047,7 +2047,7 @@ bool TCPSocket::MsgForwardToCross(int clientIndex, NetMessageHead* pHead, char* 
 bool TCPSocket::MsgForwardToClient(int crossIndex, NetMessageHead* pHead, char* pData, int len)
 {
 	Netmsg msg(pData, len, 2);
-	if (msg.size() < 2)
+	if (msg.is_size() < 2)
 	{
 		return false;
 	}

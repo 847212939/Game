@@ -77,7 +77,7 @@ bool CrossClient::LogicToCrossLogin(Netmsg& msg, PlayerInfo* playerInfo)
 	m_Player->SetID(userid);
 	m_Player->SetIndex(playerInfo->pMsg->uIndex);
 
-	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(), MsgCmd::MsgCmd_CrossLogin,
+	G_NetClient->SendMsg(crossIndex, msg.os_str().c_str(), msg.os_size(), MsgCmd::MsgCmd_CrossLogin,
 		(int)CrossClientMsgCmd::cs_logic_to_cross_login, 0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
 
 	Log(CINF, "userid=%lld logic->crossÍæ¼ÒÇëÇó¿ç·þµÇÂ½", userid);
@@ -108,7 +108,7 @@ bool CrossClient::ClientToCrossLogout(Netmsg& msg, PlayerInfo* playerInfo)
 	msg << G_CfgMgr->GetCBaseCfgMgr().GetServerId();
 	msg << m_Player->GetLogicIndex();
 
-	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msg.str().c_str(), msg.str().size(),
+	G_NetClient->SendMsg(playerInfo->pMsg->uIndex, msg.os_str().c_str(), msg.os_size(),
 		MsgCmd::MsgCmd_CrossLogin,(int)
 		CrossClientMsgCmd::cs_cross_to_logic_logout, 0, pLogicTcpInfo->bev, (unsigned int)
 		MsgCmd::MsgCmd_PlayerPreproces, m_Player->GetID());
@@ -137,7 +137,7 @@ bool CrossClient::CloseCross()
 	Netmsg msg;
 	msg << userid;
 
-	G_NetClient->SendMsg(crossIndex, msg.str().c_str(), msg.str().size(),
+	G_NetClient->SendMsg(crossIndex, msg.os_str().c_str(), msg.os_size(),
 		MsgCmd::MsgCmd_CrossLogin, (int)CrossClientMsgCmd::cs_logic_to_cross_close,
 		0, pCrossTcpInfo->bev, (unsigned int)MsgCmd::MsgCmd_PlayerPreproces, userid);
 

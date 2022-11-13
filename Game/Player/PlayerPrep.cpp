@@ -34,7 +34,7 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 		if (G_NetClient->GetCrossServerIndex() == index)
 		{
 			Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 2);
-			if (cin.size() < 1)
+			if (cin.is_size() < 1)
 			{
 				return false;
 			}
@@ -53,7 +53,7 @@ bool PlayerPrep::MessageLogicMachin(int& index, PlayerInfo* playerInfo, TCPSocke
 		else if (G_NetClient->GetDBServerIndex() == index)
 		{
 			Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
-			if (cin.size() < 2)
+			if (cin.is_size() < 2)
 			{
 				return false;
 			}
@@ -178,7 +178,7 @@ void PlayerPrep::MessageCrossDispatch(PlayerInfo* playerInfo)
 	}
 
 	Netmsg cin((char*)playerInfo->pData, playerInfo->pMsg->uHandleSize, 3);
-	if (cin.size() < 2)
+	if (cin.is_size() < 2)
 	{
 		Log(CERR, "非法消息[cmd=%d,index=%d,ip=%s,port=%d]",
 			(int)cmd, index, pTcpInfo->ip, pTcpInfo->port);

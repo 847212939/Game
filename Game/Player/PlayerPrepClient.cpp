@@ -22,7 +22,7 @@ void PlayerPrepClient::SendOperateResults(SocketReadLine* pMsg, bool results, ui
 
 	Netmsg msg;
 	msg << (int)results;
-	G_NetClient->SendMsg(pMsg->uIndex, msg.str().c_str(), msg.str().size(),
+	G_NetClient->SendMsg(pMsg->uIndex, msg.os_str().c_str(), msg.os_size(),
 		MsgCmd(pMsg->netMessageHead.uMainID), 
 		pMsg->netMessageHead.uAssistantID, 0, 
 		pMsg->pBufferevent, 

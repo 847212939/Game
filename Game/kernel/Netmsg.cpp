@@ -40,25 +40,6 @@ Netmsg::Netmsg(char* data, int len, int count) : m_cnt(0)
 	}
 }
 
-size_t Netmsg::size()
-{
-	return m_Splits.size();
-}
-
-bool Netmsg::empty()
-{
-	return m_Splits.empty();
-}
-
-Netmsg::operator std::string()
-{
-	return m_os.str();
-}
-std::string Netmsg::str()
-{
-	return m_os.str();
-}
-
 Netmsg& Netmsg::operator >> (std::string& t)
 {
 	if (m_cnt < m_Splits.size())

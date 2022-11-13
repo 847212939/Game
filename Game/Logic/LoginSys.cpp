@@ -142,7 +142,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	loginData.pw = password;
 	loginData.index = playerInfo->serMsgData.uIndex;
 
-	if (msg.size() > 2)
+	if (msg.is_size() > 2)
 	{
 		uint64_t userid = 0;
 		std::string sqlPasswaed;
@@ -175,7 +175,7 @@ bool LoginSys::LoadLoginMysql(Netmsg& msg, PlayerInfo* playerInfo)
 	if (sockInfo)
 	{
 		msg << (int)true;
-		G_NetClient->SendMsg((int)loginData.index, msg.str().c_str(), msg.str().size(),
+		G_NetClient->SendMsg((int)loginData.index, msg.os_str().c_str(), msg.os_size(),
 			MsgCmd::MsgCmd_Login, (int)LoginSysMsgCmd::cs_verification_account, 0, sockInfo->bev, 0);
 	}
 
@@ -344,7 +344,7 @@ void LoginSys::SaveServerIds(uint64_t userid)
 		msg << id;
 	}
 
-	MysqlClient::SaveReplacePlayerMysql(userid, "serverlist", msg.str());
+	MysqlClient::SaveReplacePlayerMysql(userid, "serverlist", msg.os_str());
 }
 void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 {
@@ -361,8 +361,7 @@ void LoginSys::SendServerIds(uint64_t userid, SocketReadLine* pMsg)
 		msg << *it;
 	}
 
-	std::string data = msg;
-	G_NetClient->SendMsg(pMsg->uIndex, data.c_str(), data.size(),
+	G_NetClient->SendMsg(pMsg->uIndex, msg.os_str().c_str(), msg.os_size(),
 		MsgCmd(pMsg->netMessageHead.uMainID),
 		pMsg->netMessageHead.uAssistantID, 0,
 		pMsg->pBufferevent, 0);
@@ -372,7 +371,7 @@ void LoginSys::SaveUserAccount(std::string& id, std::string& pw, uint64_t userid
 	Netmsg msg;
 	msg << pw << userid;
 
-	MysqlClient::SaveReplaceLoginMysql(id, "useraccount", msg.str());
+	MysqlClient::SaveReplaceLoginMysql(id, "useraccount", msg.os_str());
 }
 
 void LoginSys::AddServerIdMap(uint64_t userid, int serverId)

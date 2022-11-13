@@ -31,10 +31,22 @@ public:
 	Netmsg& operator >> (std::string& t);
 
 public:
-	std::string str();
-	operator std::string();
-	size_t size();
-	bool empty();
+	std::string os_str()
+	{
+		return m_os.str();
+	}
+	size_t os_size()
+	{
+		return m_os.str().size();
+	}
+	size_t is_size()
+	{
+		return m_Splits.size();
+	}
+	bool is_empty()
+	{
+		return m_Splits.empty();
+	}
 
 private:
 	std::ostringstream	m_os;
