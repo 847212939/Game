@@ -166,7 +166,6 @@
     <ClCompile Include="kernel\IDGen.cpp" />
     <ClCompile Include="kernel\LogManager.cpp" />
     <ClCompile Include="kernel\MysqlClient.cpp" />
-    <ClCompile Include="kernel\Netmsg.cpp" />
     <ClCompile Include="kernel\ServerTimer.cpp" />
     <ClCompile Include="kernel\sha1.cpp" />
     <ClCompile Include="kernel\TCPClient.cpp" />
