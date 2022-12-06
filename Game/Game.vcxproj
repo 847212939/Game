@@ -171,6 +171,7 @@
     <ClCompile Include="kernel\TCPClient.cpp" />
     <ClCompile Include="kernel\TCPSocket.cpp" />
     <ClCompile Include="kernel\Util.cpp" />
+    <ClCompile Include="kernel\Netmsg.cpp" />
     <ClCompile Include="Logic\ActiveAlways.cpp" />
     <ClCompile Include="Logic\ActiveSection.cpp" />
     <ClCompile Include="Logic\ActiveService.cpp" />

@@ -247,6 +247,9 @@
     <ClCompile Include="Logic\LoginSys.cpp">
       <Filter>逻辑管理\登录系统\玩家登录</Filter>
     </ClCompile>
+    <ClCompile Include="kernel\Netmsg.cpp">
+      <Filter>网络管理\消息解析</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
