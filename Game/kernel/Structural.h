@@ -70,8 +70,10 @@ enum class ServiceType
 	SERVICE_TYPE_GATA = 3,											// 网关服务器
 	SERVICE_TYPE_CROSS = 4,											// GameCenter
 	SERVICE_TYPE_LOGON = 5,											// LOGON
-	SERVICE_TYPE_LOGIC_WS = 6,											// WS逻辑服务器
-	SERVICE_TYPE_LOGIC_WSS = 7,											// WSS逻辑服务器
+	SERVICE_TYPE_LOGIC_WS = 6,										// WS逻辑服务器
+	SERVICE_TYPE_LOGIC_WSS = 7,										// WSS逻辑服务器
+	SERVICE_TYPE_LOGIC_HTTP = 8,									// http逻辑服务器
+	SERVICE_TYPE_LOGIC_HTTPS = 8,									// https逻辑服务器
 	SERVICE_TYPE_END,
 };
 
