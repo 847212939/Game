@@ -26,12 +26,12 @@ const int					MAX_LOG_FILE_SIZE = 1024 * 1024 * 30;				//ÈÕ×ÓÎÄ¼şµÄ×î´óµÄ³¤¶È£¬³
 
 enum class SysMsgCmd
 {
-	HD_SYS_MSG_BEGIN			= 0,											// ¿ªÊ¼
-	HD_SOCKET_READ				= 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼ş´¦Àí
-	HD_SOCKET_CLOSE				= 2,											// SOCKFD ¹Ø±ÕÊÂ¼ş´¦Àí
-	HD_ASYN_THREAD_RESULT		= 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
-	HD_TIMER_MESSAGE			= 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
-	HD_PLATFORM_SOCKET_READ		= 5,											// ÖĞĞÄ·ş¶ÁÈ¡ÊÂ¼ş´¦Àí
+	HD_SYS_MSG_BEGIN = 0,											// ¿ªÊ¼
+	HD_SOCKET_READ = 1,											// SOCKFD ¶ÁÈ¡ÊÂ¼ş´¦Àí
+	HD_SOCKET_CLOSE = 2,											// SOCKFD ¹Ø±ÕÊÂ¼ş´¦Àí
+	HD_ASYN_THREAD_RESULT = 3,											// Òì²½Ïß³Ì½á¹û´¦Àí
+	HD_TIMER_MESSAGE = 4,											// ¶¨Ê±Æ÷ÏûÏ¢´¦Àí
+	HD_PLATFORM_SOCKET_READ = 5,											// ÖĞĞÄ·ş¶ÁÈ¡ÊÂ¼ş´¦Àí
 };
 
 // ÈÕÖ¾µÈ¼¶
@@ -49,22 +49,22 @@ enum LogLevel
 // ·şÎñÆ÷ÀàĞÍ
 enum class ServiceType
 {
-	SERVICE_TYPE_BEGIN          = 0,
-	SERVICE_TYPE_LOGIC          = 1,											// Âß¼­·şÎñÆ÷
-	SERVICE_TYPE_DB             = 2,											// DB·şÎñÆ÷
-	SERVICE_TYPE_GATA           = 3,											// Íø¹Ø·şÎñÆ÷
-	SERVICE_TYPE_CROSS			= 4,											// Cross
-	SERVICE_TYPE_LOGON          = 5,											// LOGON
-	SERVICE_TYPE_LOGIC_WS		= 6,											// WSÂß¼­·şÎñÆ÷
-	SERVICE_TYPE_LOGIC_WSS		= 7,											// WSSÂß¼­·şÎñÆ÷
+	SERVICE_TYPE_BEGIN = 0,
+	SERVICE_TYPE_LOGIC = 1,											// Âß¼­·şÎñÆ÷
+	SERVICE_TYPE_DB = 2,											// DB·şÎñÆ÷
+	SERVICE_TYPE_GATA = 3,											// Íø¹Ø·şÎñÆ÷
+	SERVICE_TYPE_CROSS = 4,											// Cross
+	SERVICE_TYPE_LOGON = 5,											// LOGON
+	SERVICE_TYPE_LOGIC_WS = 6,											// WSÂß¼­·şÎñÆ÷
+	SERVICE_TYPE_LOGIC_WSS = 7,											// WSSÂß¼­·şÎñÆ÷
 	SERVICE_TYPE_END,
 };
 
 // socketÀàĞÍ
 enum class SocketType
 {
-	SOCKET_TYPE_TCP             = 0,											//tcp
-	SOCKET_TYPE_WEBSOCKET       = 1,											//websocket
+	SOCKET_TYPE_TCP = 0,											//tcp
+	SOCKET_TYPE_WEBSOCKET = 1,											//websocket
 };
 
 /**
@@ -87,7 +87,7 @@ struct DataLineHead
 	unsigned int uSize;															//Êı¾İ´óĞ¡
 	unsigned int uDataKind;														//Êı¾İÀàĞÍ
 
-	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }	
+	DataLineHead() { memset(this, 0, sizeof(DataLineHead)); }
 };
 
 //¶¨Ê±Æ÷ÏûÏ¢½á¹¹¶¨Òå
@@ -113,8 +113,8 @@ struct NetMessageHead
 // ¹¤×÷Ïß³ÌĞÅÏ¢
 struct WorkThreadInfo
 {
-	struct event_base*	base;
-	struct event*		event;													//read_fdµÄ¶ÁÊÂ¼ş
+	struct event_base* base;
+	struct event* event;													//read_fdµÄ¶ÁÊÂ¼ş
 	SOCKFD				read_fd;
 	SOCKFD				write_fd;
 
@@ -129,8 +129,8 @@ struct TCPSocketInfo
 	char			ip[MAX_NUM_IP_ADDR_SIZE];
 	unsigned short	port;
 	SOCKFD			acceptFd;													//×Ô¼ºµÄsocket
-	bufferevent*	bev;
-	std::mutex*		lock;
+	bufferevent* bev;
+	std::mutex* lock;
 	bool			bHandleAccptMsg;											//ÊÇ·ñ´¦ÀíÁËÎÕÊÖÏûÏ¢£¬websocketÊ¹ÓÃ
 
 	void Reset(ServiceType& serviceType);
@@ -154,7 +154,7 @@ struct SendDataLineHead
 {
 	DataLineHead			dataLineHead;										//¶ÓÁĞÍ·
 	int						socketIndex;										//socketË÷Òı»òÕßÎÄ¼şÃèÊö·û
-	void*					pBufferevent;										//bufferevent	
+	void* pBufferevent;										//bufferevent	
 
 	SendDataLineHead() { memset(this, 0, sizeof(SendDataLineHead)); }
 };
@@ -167,7 +167,7 @@ struct SocketReadLine
 	unsigned int						uHandleSize;							//Êı¾İ°ü´¦Àí´óĞ¡
 	unsigned int						uIndex;									//SOCKFD Ë÷Òı
 	unsigned long int					uAccessIP;								//SOCKFD IP
-	void*								pBufferevent;							//bufferevent
+	void* pBufferevent;							//bufferevent
 	SocketType							socketType;								//socketÀàĞÍ enum SocketType
 
 	SocketReadLine() { memset(this, 0, sizeof(SocketReadLine)); }
@@ -196,7 +196,7 @@ pData		:Ã¿¸öÁ´±íÏîÊı¾İµÄÖ¸Õë£¬Ê¹ÓÃÓÃnew·½Ê½ÉêÇëµÄÄÚ´æ£¬×¢Òâ£¬ÔÚ³ö¶ÓÁĞÊ±£¬ÒªÏÔÊ½µ
 struct ListItemData
 {
 	DataLineHead		stDataHead;
-	unsigned char*		pData;
+	unsigned char* pData;
 
 	ListItemData() : pData(nullptr) {}
 };
@@ -204,8 +204,8 @@ struct ListItemData
 // Íæ¼ÒĞÅÏ¢
 struct PlayerInfo
 {
-	SocketReadLine*			pMsg;				// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
-	void*					pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
+	SocketReadLine* pMsg;				// SOCKFD¶ÁÈ¡Í¨Öª½á¹¹¶¨Òå
+	void* pData;				// Íæ¼Ò·¢ËÍ¹ıÀ´µÄÊı¾İ
 	ServiceType				uSrverType;			// ·şÎñÆ÷ÀàĞÍ
 	uint64_t				userId;				// Íæ¼Òid
 
@@ -216,7 +216,7 @@ struct PlayerInfo
 //½ÓÊÕÏß³Ì²ÎÊı
 struct RecvThreadParam
 {
-	TCPSocket*		pThis;
+	TCPSocket* pThis;
 	int						index;
 
 	RecvThreadParam() :pThis(nullptr), index(0) {}

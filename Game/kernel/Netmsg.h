@@ -67,7 +67,7 @@ Netmsg& Netmsg::operator >> (T& t)
 {
 	if (m_cnt < m_Splits.size())
 	{
-		m_is.clear(); 
+		m_is.clear();
 		m_is.str(m_Splits[m_cnt++]);
 		m_is >> t;
 	}

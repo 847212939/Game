@@ -33,7 +33,7 @@ private:
 	// 断开链接回调函数
 	void CloseSocketCallback(void* pDataLineHead);
 	// 本服断开链接回调函数
-	void CloseSocketLogicCallback(void* pDataLineHead); 
+	void CloseSocketLogicCallback(void* pDataLineHead);
 	// 跨服断开链接回调函数
 	void CloseSocketCrossCallback(void* pDataLineHead);
 	// 回调到TimerCallback or SocketCallback or CloseSocketCallback 中
@@ -53,5 +53,5 @@ private:
 
 private:
 	MapTypeFunc			m_TypeFunMap;
-	PlayerPrepClient*	m_PlayerPrepClient;
+	PlayerPrepClient* m_PlayerPrepClient;
 };
